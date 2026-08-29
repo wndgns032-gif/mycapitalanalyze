@@ -185,6 +185,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
   <meta property="og:type" content="{og_type}" />
   <meta property="og:url" content="{og_url}" />
   <meta name="twitter:card" content="summary_large_image" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9243770518153989" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config = {{ {TAILWIND_CONFIG} }};</script>
   <link rel="stylesheet" href="/assets/css/custom.css" />
