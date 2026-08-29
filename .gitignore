@@ -1,0 +1,17 @@
+# API 키 등 민감정보 (절대 커밋 금지)
+config.json
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 번역 중간 결과 (로컬에서 재생성 가능)
+content/translations/
+
+# OS
+.DS_Store
+Thumbs.db

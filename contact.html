@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact — MyCapital Analyze</title>
+  <meta name="description" content="Contact MyCapital Analyze." />
+  <link rel="canonical" href="https://www.mycapitalanalyze.com/contact.html" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { 50:'#eef4ff',100:'#dbe7ff',200:'#b9d0ff',300:'#8fb0ff',400:'#5f86f5',500:'#1e4fd8',600:'#1a3fb0',700:'#142f85',800:'#122560',900:'#0e1a3d' } } } } };</script>
+  <link rel="stylesheet" href="/assets/css/custom.css" />
+</head>
+<body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
+
+  <header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-10">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+      <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="/">MyCapital Analyze</a>
+      <nav class="flex items-center gap-4 text-sm">
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/">Home</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-3xl font-bold mb-6 text-slate-900 dark:text-slate-100">Contact</h1>
+      <div class="prose">
+        <p>If you have any inquiries, corrections, or partnership proposals, please contact the email below.</p>
+        <p><a href="mailto:contact@mycapitalanalyze.com">contact@mycapitalanalyze.com</a></p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-slate-200 dark:border-slate-800 mt-16">
+    <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
+      <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
+      <p class="text-xs leading-relaxed">Posts on this blog are AI-curated summaries and independent analysis of public macro and economic data. Content is for informational purposes only and does not constitute investment advice.</p>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

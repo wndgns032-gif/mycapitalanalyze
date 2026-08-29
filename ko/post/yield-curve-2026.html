@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>수익률 곡선의 역전 해소: 경기 침체 신호인가, 오경보인가? — MyCapital Analyze</title>
+  <meta name="description" content="2년물과 10년물 국채 수익률 스프레드가 다시 플러스로 전환됐다. 역사는 지금부터가 시작이라고 말하지만, 이번 사이클은 다를 수 있다." />
+  <link rel="canonical" href="https://www.mycapitalanalyze.com/ko/post/yield-curve-2026.html" />
+  <link rel="alternate" type="application/rss+xml" href="https://www.mycapitalanalyze.com/feed.xml" />
+  <meta property="og:title" content="수익률 곡선의 역전 해소: 경기 침체 신호인가, 오경보인가? — MyCapital Analyze" />
+  <meta property="og:description" content="2년물과 10년물 국채 수익률 스프레드가 다시 플러스로 전환됐다. 역사는 지금부터가 시작이라고 말하지만, 이번 사이클은 다를 수 있다." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://www.mycapitalanalyze.com/ko/post/yield-curve-2026.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { 50:'#eef4ff',100:'#dbe7ff',200:'#b9d0ff',300:'#8fb0ff',400:'#5f86f5',500:'#1e4fd8',600:'#1a3fb0',700:'#142f85',800:'#122560',900:'#0e1a3d' } } } } };</script>
+  <link rel="stylesheet" href="/assets/css/custom.css" />
+</head>
+<body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
+
+<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-10">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+      <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="/ko/">MyCapital Analyze</a>
+      <nav class="flex items-center gap-4 text-sm">
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ko/">Home</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+<div class="max-w-5xl mx-auto px-4 pt-3 flex flex-wrap items-center gap-1"><span class="text-slate-500 mr-1 text-sm">Language:</span><a href="/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="English">EN</a><a href="/zh/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="中文">ZH</a><a href="/hi/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="हिन्दी">HI</a><a href="/es/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Español">ES</a><a href="/ar/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="العربية">AR</a><a href="/fr/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Français">FR</a><a href="/bn/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="বাংলা">BN</a><a href="/pt/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Português">PT</a><a href="/ru/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Русский">RU</a><a href="/de/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Deutsch">DE</a><a href="/ja/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="日本語">JA</a><a href="/id/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Bahasa Indonesia">ID</a><a href="/ko/" class="px-2 py-0.5 rounded text-sm bg-brand-600 text-white" title="한국어">KO</a></div>
+
+<main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
+<article class="max-w-3xl mx-auto">
+  <header class="mb-8">
+    <div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
+      <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">Bonds</span>
+      <time datetime="2026-08-22">Published: 2026-08-22</time>
+      <span class="text-slate-400">&middot;</span>
+      <span>Independent Analysis</span>
+    </div>
+    <h1 class="text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 mb-4">수익률 곡선의 역전 해소: 경기 침체 신호인가, 오경보인가?</h1>
+    <p class="text-slate-600 dark:text-slate-400">2년물과 10년물 국채 수익률 스프레드가 다시 플러스로 전환됐다. 역사는 지금부터가 시작이라고 말하지만, 이번 사이클은 다를 수 있다.</p>
+  </header>
+  <div class="my-6 text-center" aria-hidden="true"><div id="medianet-inarticle-1" class="ad-slot" style="min-height:120px">Ad — In-article (Media.net)</div></div>
+  <div class="prose"><p>지난 반세기 동안 가장 신뢰할 만한 경기 침체 지표가 아무도 듣고 싶어 하지 않는 메시지를 보냈다. 2년물과 10년물 국채 수익률 간의 스프레드인 수익률 곡선이 장기간의 역전 이후 다시 플러스 영역으로 돌아섰다. 역사적으로 이 전환은 &#x27;역전 해소&#x27;로 알려져 있으며, 안전 신호가 아니라 경기 침체 카운트다운의 시작을 의미했다.</p>
+<h2>역전이 발생한 이유</h2>
+<p>2s10s 곡선은 연방준비제도(Fed)가 단기 금리를 공격적으로 인상하는 동안 장기 금리가 인플레이션 기대 하락과 성장 둔화 전망에 고정되면서 역전됐다. 역전된 곡선은 투자자들이 미래에 금리가 하락할 것으로 예상한다는 뜻인데, 이는 일반적으로 경제가 충분히 약화되어 Fed가 금리를 인하할 수밖에 없을 것이라는 기대를 반영한다.</p>
+<p>이번 역전을 특이하게 만든 것은 그 지속 기간이었다. 곡선은 이전 사이클보다 더 오래 역전 상태를 유지했는데, 이는 긴축 속도와 노동 시장의 이례적인 탄력성 때문이었다. 이러한 탄력성은 경기 침체를 곡선의 역사적 기록이 시사하는 것보다 훨씬 더 오래 지연시켰다.</p>
+<h2>역전 해소와 경기 침체 시계</h2>
+<p>전형적인 패턴은 다음과 같다: 곡선이 역전되고, 역전 상태를 유지하다가, Fed가 금리를 인하하기 시작하고 장기 금리가 단기 금리보다 더 느리게 하락하면서 역전이 해소된다. 경기 침체는 일반적으로 역전 해소 후 약 6개월에서 18개월의 시차를 두고 뒤따른다. 그 논리는 Fed가 금리를 인하할 때쯤이면 이미 신용과 수요에 대한 피해가 발생했다는 것이다.</p>
+<p>만약 이번 사이클이 역사적 패턴을 따른다면, 우리가 지금 목격하고 있는 역전 해소는 2027년 어느 시점에 경기 침체를 예고하는 셈이다. 하지만 이번 사이클은 다를 수 있다. 이번 역전은 전통적인 과열만이 아니라 공급 충격, 즉 팬데믹 이후의 인플레이션 급증에 의해 발생했으며, 기업 부문은 비정상적으로 강한 재무 상태로 이번 사이클에 진입했다.</p>
+<h2>주목할 점</h2>
+<p>결정적인 변수는 신용 스프레드와 노동 시장이다. 스프레드가 타이트하게 유지되고 실업률이 낮게 유지된다면 연착륙 시나리오는 유효하다. 스프레드가 확대되고 해고가 가속화되면 곡선의 명성은 다시 한 번 입증될 것이다. 곡선은 위험의 방향을 알려줄 뿐 정확한 날짜를 알려주지 않는다. 그리고 지금은 주의를 기울여야 할 때다.</p>
+<p>이 지표가 중요한 이유는 과거에 여러 번 경고를 무시했을 때 결과가 좋지 않았기 때문이다. 예를 들어, 2006년 역전 해소 후 2008년 금융 위기가 발생했다. 당시에도 많은 전문가들이 이번에는 다를 것이라고 주장했다. 그러나 결국 경기 침체는 피할 수 없었다. 물론 모든 역전이 침체로 이어지는 것은 아니며, 일부는 연착륙으로 끝나기도 했다. 중요한 것은 데이터와 신호를 주의 깊게 모니터링하는 것이다. 현재의 경제 지표는 혼합된 신호를 보내고 있다. 인플레이션은 둔화되고 있지만 여전히 목표치를 웃돌고 있고, 고용 시장은 견고하지만 일부 부문에서 약화 조짐이 나타나고 있다. 따라서 투자자와 정책 입안자들은 경계를 늦추지 말아야 하며, 곡선의 메시지를 단순한 오경보로 치부해서는 안 된다.</p></div>
+  <div class="my-6 text-center" aria-hidden="true"><div id="medianet-inarticle-2" class="ad-slot" style="min-height:120px">Ad — In-article (Media.net)</div></div>
+</article>
+</main>
+
+<footer class="border-t border-slate-200 dark:border-slate-800 mt-16">
+    <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
+      <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
+      <p class="text-xs leading-relaxed">Posts on this blog are AI-curated summaries and independent analysis of public macro and economic data. Content is for informational purposes only and does not constitute investment advice.</p>
+    </div>
+  </footer>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

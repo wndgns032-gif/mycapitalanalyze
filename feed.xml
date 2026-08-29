@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MyCapital Analyze</title>
+    <link>https://www.mycapitalanalyze.com/</link>
+    <description>Global macro and economics analysis</description>
+    <language>en</language>
+    <atom:link href="https://www.mycapitalanalyze.com/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>The Fed&#x27;s Next Move: Why Markets Are Pricing a September Cut</title>
+    <link>https://www.mycapitalanalyze.com/post/fed-rate-outlook-2026.html</link>
+    <guid>https://www.mycapitalanalyze.com/post/fed-rate-outlook-2026.html</guid>
+    <pubDate>2026-08-26T00:00:00Z</pubDate>
+    <description>Markets are converging on a rate cut, but the path after September remains contested. We break down the data driving the decision.</description>
+  </item>
+  <item>
+    <title>Global Inflation: The Last Mile Is the Hardest</title>
+    <link>https://www.mycapitalanalyze.com/post/global-inflation-trend-2026.html</link>
+    <guid>https://www.mycapitalanalyze.com/post/global-inflation-trend-2026.html</guid>
+    <pubDate>2026-08-25T00:00:00Z</pubDate>
+    <description>Headline inflation has cooled, but core services remain sticky. Why the final stretch to 2% targets could take longer than consensus expects.</description>
+  </item>
+  <item>
+    <title>China&#x27;s Growth Pivot: Stimulus, Exports, and the Debt Overhang</title>
+    <link>https://www.mycapitalanalyze.com/post/china-growth-pivot-2026.html</link>
+    <guid>https://www.mycapitalanalyze.com/post/china-growth-pivot-2026.html</guid>
+    <pubDate>2026-08-24T00:00:00Z</pubDate>
+    <description>Beijing is shifting from property-led growth to advanced manufacturing. Can exports and stimulus offset a structurally weaker consumer?</description>
+  </item>
+  <item>
+    <title>The Yield Curve Un-Inversion: Recession Signal or False Alarm?</title>
+    <link>https://www.mycapitalanalyze.com/post/yield-curve-2026.html</link>
+    <guid>https://www.mycapitalanalyze.com/post/yield-curve-2026.html</guid>
+    <pubDate>2026-08-22T00:00:00Z</pubDate>
+    <description>The 2s10s curve has steepened back into positive territory. History says the clock starts now — but this cycle may be different.</description>
+  </item>
+  <item>
+    <title>AI and Productivity: Can Technology Rescue Stagnant Labor Markets?</title>
+    <link>https://www.mycapitalanalyze.com/post/ai-productivity-2026.html</link>
+    <guid>https://www.mycapitalanalyze.com/post/ai-productivity-2026.html</guid>
+    <pubDate>2026-08-20T00:00:00Z</pubDate>
+    <description>Productivity growth is the single most important variable for long-run living standards. Is AI finally delivering, or is it another hype cycle?</description>
+  </item>
+  </channel>
+</rss>

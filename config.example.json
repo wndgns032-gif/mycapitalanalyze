@@ -1,0 +1,23 @@
+{
+  "deepseek": {
+    "api_key": "YOUR_DEEPSEEK_API_KEY_HERE",
+    "base_url": "https://api.deepseek.com",
+    "model": "deepseek-v4-flash"
+  },
+  "languages": {
+    "zh": "Chinese (Mandarin)",
+    "hi": "Hindi",
+    "es": "Spanish",
+    "ar": "Arabic",
+    "fr": "French",
+    "bn": "Bengali",
+    "pt": "Portuguese",
+    "ru": "Russian",
+    "de": "German",
+    "ja": "Japanese",
+    "id": "Indonesian",
+    "ko": "Korean"
+  },
+  "char_min": 1500,
+  "char_max": 2300
+}

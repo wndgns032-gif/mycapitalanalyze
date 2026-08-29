@@ -1,0 +1,63 @@
+/* ============================================
+   MyCapital Analyze — 공통 커스텀 스타일
+   Tailwind CDN 위에 얹는 보조 스타일
+   ============================================ */
+
+:root {
+  --brand-50:  #eef4ff;
+  --brand-100: #dbe7ff;
+  --brand-500: #1e4fd8;
+  --brand-600: #1a3fb0;   /* deep navy — 금융 권위/신뢰 */
+  --brand-700: #142f85;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 본문 prose 스타일 (개별 포스트) */
+.prose { line-height: 1.75; color: #334155; }
+.dark .prose { color: #cbd5e1; }
+.prose h2 {
+  font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem;
+  color: #0f172a;
+}
+.dark .prose h2 { color: #f1f5f9; }
+.prose h3 {
+  font-size: 1.2rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;
+  color: #0f172a;
+}
+.dark .prose h3 { color: #f1f5f9; }
+.prose p { margin-bottom: 1rem; }
+.prose ul, .prose ol { margin: 1rem 0 1rem 1.5rem; }
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
+.prose li { margin-bottom: 0.5rem; }
+.prose a { color: var(--brand-600); text-decoration: underline; }
+.dark .prose a { color: #93b4ff; }
+.prose blockquote {
+  border-left: 4px solid var(--brand-500);
+  padding-left: 1rem; margin: 1.5rem 0;
+  color: #64748b; font-style: italic;
+}
+.dark .prose blockquote { color: #94a3b8; }
+.prose strong { font-weight: 700; }
+.prose table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+.prose th, .prose td { border: 1px solid #e2e8f0; padding: 0.5rem 0.75rem; }
+.dark .prose th, .dark .prose td { border-color: #1e293b; }
+
+/* Media.net 광고 슬롯 자리표시 (승인 후 cid 교체) */
+.ad-slot {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 0.5rem;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 250px;
+  color: #94a3b8; font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+.dark .ad-slot { background: #0f172a; border-color: #334155; color: #475569; }
