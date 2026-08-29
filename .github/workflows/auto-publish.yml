@@ -1,0 +1,45 @@
+name: Auto Publish (30min)
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Create config.json (from secrets)
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python -c "import json,os; json.dump({'deepseek':{'api_key':os.environ['DEEPSEEK_API_KEY'],'base_url':'https://api.deepseek.com','model':'deepseek-v4-flash'},'languages':{'zh':'Chinese (Mandarin)','hi':'Hindi','es':'Spanish','ar':'Arabic','fr':'French','bn':'Bengali','pt':'Portuguese','ru':'Russian','de':'German','ja':'Japanese','id':'Indonesian','ko':'Korean'},'char_min':1500,'char_max':2300}, open('config.json','w'), ensure_ascii=False)"
+
+      - name: Run publish pipeline
+        run: python scripts/publish.py
+
+      - name: Commit and push
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config user.name "wndgns032-gif"
+          git config user.email "279455992+wndgns032-gif@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "no changes to commit"
+          else
+            git commit -m "auto: content update $(date -u +%Y%m%d-%H%M)"
+            git remote set-url origin https://x-access-token:${GH_PAT}@github.com/wndgns032-gif/mycapitalanalyze.git
+            git push origin main
+          fi

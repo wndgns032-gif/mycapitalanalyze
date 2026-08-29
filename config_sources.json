@@ -1,0 +1,43 @@
+{
+  "feeds": [
+    {
+      "name": "FRED Blog",
+      "url": "https://fredblog.stlouisfed.org/feed/",
+      "category": "US Economy",
+      "note": "Federal Reserve Bank of St. Louis"
+    },
+    {
+      "name": "IMF Blog",
+      "url": "https://www.imf.org/en/Blogs/rss",
+      "category": "Global Macro",
+      "note": "International Monetary Fund"
+    },
+    {
+      "name": "World Bank Blogs",
+      "url": "https://blogs.worldbank.org/rss.xml",
+      "category": "Global Economy",
+      "note": "World Bank"
+    },
+    {
+      "name": "VoxEU",
+      "url": "https://cepr.org/voxeu/rss.xml",
+      "category": "Economic Research",
+      "note": "CEPR policy portal"
+    },
+    {
+      "name": "BIS",
+      "url": "https://www.bis.org/press/rss.htm",
+      "category": "Central Banking",
+      "note": "Bank for International Settlements"
+    },
+    {
+      "name": "Project Syndicate",
+      "url": "https://www.project-syndicate.org/rss",
+      "category": "Global Economy",
+      "note": "Op-eds by economists and policymakers"
+    }
+  ],
+  "max_new_per_run": 3,
+  "min_chars": 1500,
+  "max_chars": 2300
+}
