@@ -8,6 +8,7 @@ RSS 크롤러 — 매크로/경제 뉴스 피드에서 새 글을 수집해 원�
 """
 import json, os, re, sys, time, hashlib, datetime, urllib.request, urllib.error
 import xml.etree.ElementTree as ET
+from email.utils import parsedate_to_datetime
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = json.load(open(os.path.join(BASE, 'config_sources.json'), encoding='utf-8'))
@@ -72,15 +73,26 @@ def slugify(source_name, link):
     name = re.sub(r'[^a-z0-9]+', '-', source_name.lower()).strip('-')
     return f'{name}-{h}'
 
+def parse_date(s):
+    """RSS pubDate/updated 문자열을 datetime으로. 실패 시 최소값(오래된 것)으로 처리."""
+    if not s:
+        return datetime.datetime.min.replace(tzinfo=datetime.timezone.utc)
+    try:
+        return parsedate_to_datetime(s)
+    except (TypeError, ValueError):
+        try:
+            return datetime.datetime.fromisoformat(s.replace('Z', '+00:00'))
+        except ValueError:
+            return datetime.datetime.min.replace(tzinfo=datetime.timezone.utc)
+
 def main():
     processed = {}
     if os.path.exists(PROCESSED_PATH):
         processed = json.load(open(PROCESSED_PATH, encoding='utf-8'))
 
-    collected = 0
+    # 1) 모든 피드의 새 항목 수집 (피드 정보 포함)
+    candidates = []
     for feed in SRC['feeds']:
-        if collected >= MAX_NEW:
-            break
         name, url = feed['name'], feed['url']
         print(f'[{name}] {url}')
         xml_bytes = fetch(url)
@@ -89,31 +101,40 @@ def main():
         items = parse_feed(xml_bytes)
         print(f'  항목 {len(items)}개')
         for it in items:
-            if collected >= MAX_NEW:
-                break
-            link = it['link']
-            if link in processed:
+            if it['link'] in processed:
                 continue
-            slug = slugify(name, link)
-            raw = {
-                'slug': slug,
-                'source_name': name,
-                'source_url': link,
-                'category': feed['category'],
-                'title': it['title'],
-                'description': it['description'][:500],
-                'pubDate': it['pubDate'],
-                'fetched_at': datetime.datetime.utcnow().isoformat() + 'Z',
-            }
-            out_path = os.path.join(RAW_DIR, slug + '.json')
-            json.dump(raw, open(out_path, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
-            processed[link] = {'slug': slug, 'at': raw['fetched_at']}
-            print(f'  NEW: {slug}')
-            collected += 1
-            time.sleep(0.3)
+            candidates.append((it, feed, name))
+
+    # 2) 발행일 기준 최신순 정렬
+    candidates.sort(key=lambda c: parse_date(c[0].get('pubDate')), reverse=True)
+    print(f'새 후보 {len(candidates)}개 (최신순 정렬 완료)')
+
+    # 3) 최신 글부터 최대 MAX_NEW개 수집
+    collected = 0
+    for it, feed, name in candidates:
+        if collected >= MAX_NEW:
+            break
+        link = it['link']
+        slug = slugify(name, link)
+        raw = {
+            'slug': slug,
+            'source_name': name,
+            'source_url': link,
+            'category': feed['category'],
+            'title': it['title'],
+            'description': it['description'][:500],
+            'pubDate': it['pubDate'],
+            'fetched_at': datetime.datetime.utcnow().isoformat() + 'Z',
+        }
+        out_path = os.path.join(RAW_DIR, slug + '.json')
+        json.dump(raw, open(out_path, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
+        processed[link] = {'slug': slug, 'at': raw['fetched_at']}
+        print(f'  NEW: {slug} ({it.get("pubDate", "날짜없음")})')
+        collected += 1
+        time.sleep(0.3)
 
     json.dump(processed, open(PROCESSED_PATH, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
-    print(f'수집 완료: {collected}개 새 글')
+    print(f'수집 완료: {collected}개 새 글 (최신 우선순위)')
 
 if __name__ == '__main__':
     main()
