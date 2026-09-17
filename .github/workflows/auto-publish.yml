@@ -1,8 +1,10 @@
-name: Auto Publish (30min)
+name: Auto Publish (daily)
 
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    # 매일 UTC 06:17 (한국 15:17) — 30분 주기로 돌리면 하루 최대 144편이 쌓여
+    # 구글 '스케일드 콘텐츠 어뷰즈' 판정을 받는다. 하루 1회만 돈다.
+    - cron: '17 6 * * *'
   workflow_dispatch:
 
 permissions:
@@ -22,9 +24,47 @@ jobs:
 
       - name: Create config.json (from secrets)
         env:
+          GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         run: |
-          python -c "import json,os; json.dump({'deepseek':{'api_key':os.environ['DEEPSEEK_API_KEY'],'base_url':'https://api.deepseek.com','model':'deepseek-v4-flash'},'languages':{'zh':'Chinese (Mandarin)','hi':'Hindi','es':'Spanish','ar':'Arabic','fr':'French','bn':'Bengali','pt':'Portuguese','ru':'Russian','de':'German','ja':'Japanese','id':'Indonesian','ko':'Korean'},'char_min':1500,'char_max':2300}, open('config.json','w'), ensure_ascii=False)"
+          python - <<'PY'
+          import json, os
+          glm = os.environ.get('GLM_API_KEY', '').strip()
+          ds  = os.environ.get('DEEPSEEK_API_KEY', '').strip()
+          if not (glm or ds):
+              raise SystemExit('GLM_API_KEY 또는 DEEPSEEK_API_KEY 시크릿이 필요합니다')
+          provider = 'glm' if glm else 'deepseek'
+          cfg = {
+            "provider": provider,
+            "glm": {
+              "api_key": glm,
+              "base_url": "https://open.bigmodel.cn/api/paas/v4",
+              "model": "glm-4-flash"
+            },
+            "deepseek": {
+              "api_key": ds,
+              "base_url": "https://api.deepseek.com",
+              "model": "deepseek-v4-flash"
+            },
+            "languages": {
+              "zh": "Chinese (Mandarin)", "hi": "Hindi", "es": "Spanish",
+              "ar": "Arabic", "fr": "French", "bn": "Bengali",
+              "pt": "Portuguese", "ru": "Russian", "de": "German",
+              "ja": "Japanese", "id": "Indonesian", "ko": "Korean"
+            },
+            "translate_languages": {
+              "ko": "Korean", "zh": "Chinese (Mandarin)", "ja": "Japanese",
+              "es": "Spanish", "fr": "French", "de": "German",
+              "pt": "Portuguese", "ru": "Russian", "hi": "Hindi",
+              "id": "Indonesian", "ar": "Arabic", "bn": "Bengali"
+            },
+            "char_min": 3000,
+            "char_max": 5000,
+            "max_new_posts_per_run": 3
+          }
+          json.dump(cfg, open('config.json', 'w'), ensure_ascii=False, indent=2)
+          print('provider =', provider)
+          PY
 
       - name: Run publish pipeline
         run: python scripts/publish.py

@@ -40,6 +40,27 @@ def strip_html(s):
     s = re.sub(r'\s+', ' ', s)
     return s.strip()
 
+def fetch_full_text(url, limit=8000):
+    """기사 본문 전문 수집 — 요약(description)만 쓰면 글이 얇아진다."""
+    data = fetch(url)
+    if not data:
+        return ''
+    try:
+        html = data.decode('utf-8', 'replace')
+    except Exception:
+        return ''
+    html = re.sub(r'<(script|style|nav|header|footer|aside|form|noscript)[^>]*>.*?</\1>',
+                  ' ', html, flags=re.S | re.I)
+    m = re.search(r'<article[^>]*>(.*?)</article>', html, re.S | re.I)
+    if m and len(m.group(1)) > 500:
+        html = m.group(1)
+    else:
+        m = re.search(r'<main[^>]*>(.*?)</main>', html, re.S | re.I)
+        if m and len(m.group(1)) > 500:
+            html = m.group(1)
+    return strip_html(html)[:limit]
+
+
 def parse_feed(xml_bytes):
     """RSS 2.0 또는 Atom에서 항목 목록 추출. 각 항목: {title, link, description, pubDate}"""
     items = []
@@ -126,6 +147,8 @@ def main():
             'pubDate': it['pubDate'],
             'fetched_at': datetime.datetime.utcnow().isoformat() + 'Z',
         }
+        raw['content'] = fetch_full_text(link)
+        print(f'      본문 {len(raw["content"])}자 수집')
         out_path = os.path.join(RAW_DIR, slug + '.json')
         json.dump(raw, open(out_path, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
         processed[link] = {'slug': slug, 'at': raw['fetched_at']}

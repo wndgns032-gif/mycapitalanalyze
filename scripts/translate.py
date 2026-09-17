@@ -13,10 +13,12 @@ import json, os, re, sys, time, urllib.request, urllib.error, glob
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG = json.load(open(os.path.join(BASE, 'config.json'), encoding='utf-8'))
 
-API_KEY = CONFIG['deepseek']['api_key']
-BASE_URL = CONFIG['deepseek']['base_url'].rstrip('/')
-MODEL = CONFIG['deepseek']['model']
-LANGS = CONFIG['languages']
+PROVIDER = CONFIG.get('provider', 'deepseek')
+PROV = CONFIG[PROVIDER]
+API_KEY = PROV['api_key']
+BASE_URL = PROV['base_url'].rstrip('/')
+MODEL = PROV['model']
+LANGS = CONFIG.get('translate_languages') or CONFIG['languages']
 CHAR_MIN = CONFIG['char_min']
 CHAR_MAX = CONFIG['char_max']
 
@@ -53,15 +55,54 @@ def char_count(s):
     """공백 포함 문자 수"""
     return len(s)
 
-# ---------- DeepSeek 호출 ----------
-def call_deepseek(messages, json_mode=False, net_retries=3):
+
+# 한국어 번역 품질 게이트 — 중국어 잔재(번역 안 된 한자) 감지
+CJK_RE = re.compile(r'[\u4e00-\u9fff]')
+
+def quality_gate(lang, title, body):
+    """(ok, hint) 반환. 통과하면 (True, None)."""
+    if lang == 'ko':
+        n = len(CJK_RE.findall(body))
+        if n > 8:
+            return False, (
+                f'Your {lang} body still contains {n} untranslated Chinese Han characters '
+                f'(e.g. 公积金, 市值, 中际旭创). Modern Korean does NOT use Hanja in normal prose. '
+                f'You MUST convert every Chinese term into proper Korean: '
+                f'translate the meaning or transliterate the official Korean name '
+                f'(e.g. 宁德时代 -> CATL, 公积金 -> 주택공적금). Output Korean ONLY, no Hanja.'
+            )
+    return True, None
+
+# ---------- LLM 호출 (provider 공통) ----------
+def extract_json(text):
+    """모델이 코드펜스나 설명을 붙여도 JSON만 뽑아낸다."""
+    text = text.strip()
+    if text.startswith('```'):
+        text = re.sub(r'^```[a-zA-Z]*\s*', '', text)
+        text = re.sub(r'```\s*$', '', text).strip()
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+    start = text.find('{')
+    end = text.rfind('}')
+    if start != -1 and end > start:
+        try:
+            return json.loads(text[start:end + 1])
+        except json.JSONDecodeError:
+            pass
+    return None
+
+
+def call_llm(messages, json_mode=False, net_retries=3):
     body = {
         'model': MODEL,
         'messages': messages,
-        'thinking': {'type': 'disabled'},   # 비사고 모드 (번역엔 사고 불필요)
         'max_tokens': 8192,
         'temperature': 0.5,
     }
+    if PROVIDER == 'deepseek':
+        body['thinking'] = {'type': 'disabled'}
     if json_mode:
         body['response_format'] = {'type': 'json_object'}
     req = urllib.request.Request(
@@ -95,22 +136,29 @@ def translate_post(slug, lang, lang_name, title, desc, body):
         'You strictly obey the character-count requirement for the body.'
     )
     density = LANG_DENSITY.get(lang, 'normal')
+    # 언어별 현실적인 길이 목표 (영문 원본 대비 문자 밀도 반영)
+    if density == 'dense':
+        lo, hi = int(CHAR_MIN * 0.60), int(CHAR_MAX * 0.72)
+    elif density == 'verbose':
+        lo, hi = int(CHAR_MIN * 1.10), int(CHAR_MAX * 1.10)
+    else:
+        lo, hi = int(CHAR_MIN * 0.85), int(CHAR_MAX * 0.92)
     if density == 'dense':
         density_hint = (
             f'IMPORTANT: {lang_name} uses roughly 40-50% FEWER characters than English, '
             f'so a literal translation will be far too short. You MUST substantially EXPAND '
-            f'the content to reach at least {CHAR_MIN} characters: add background context, '
+            f'the content to reach at least {lo} characters: add background context, '
             f'explain the economic data and its implications in depth, and add concrete examples.'
         )
     elif density == 'verbose':
         density_hint = (
             f'IMPORTANT: {lang_name} runs roughly 15-25% LONGER than English, so a literal '
             f'translation will likely exceed the limit. You MUST CONDENSE the text to stay '
-            f'under {CHAR_MAX} characters while keeping all key facts and figures.'
+            f'under {hi} characters while keeping all key facts and figures.'
         )
     else:
         density_hint = (
-            f'Keep the body between {CHAR_MIN} and {CHAR_MAX} characters (counting spaces).'
+            f'Keep the body between {lo} and {hi} characters (counting spaces).'
         )
 
     user = f"""Translate the following English article into {lang_name}.
@@ -121,7 +169,7 @@ Return a JSON object with exactly these three string fields:
 - "body": the translated article body in Markdown (keep "##" headings and paragraph breaks)
 
 STRICT length rule for "body":
-The body text MUST be between {CHAR_MIN} and {CHAR_MAX} characters (counting spaces) in {lang_name}. This is a hard requirement.
+The body text MUST be between {lo} and {hi} characters (counting spaces) in {lang_name}. This is a hard requirement.
 
 {density_hint}
 
@@ -134,34 +182,40 @@ DESCRIPTION: {desc}
 BODY:
 {body}"""
 
+    last = {'title': '', 'description': '', 'body': ''}
     for attempt in range(1, MAX_RETRY + 1):
-        content = call_deepseek(
+        content = call_llm(
             [{'role': 'system', 'content': system},
              {'role': 'user', 'content': user}],
             json_mode=True,
         )
-        try:
-            obj = json.loads(content)
-        except json.JSONDecodeError:
+        obj = extract_json(content or '')
+        if not obj or not isinstance(obj, dict):
             print(f'    [{attempt}] JSON 파싱 실패, 재시도...')
             continue
-        t = obj.get('title', '')
-        d = obj.get('description', '')
-        b = obj.get('body', '')
+        t = str(obj.get('title', '') or '')
+        d = str(obj.get('description', '') or '')
+        b = str(obj.get('body', '') or '')
+        last = {'slug': slug, 'lang': lang, 'title': t, 'description': d, 'body': b}
         n = char_count(b)
-        if not (CHAR_MIN <= n <= CHAR_MAX):
+        if not (lo <= n <= hi):
             print(f'    [{attempt}] {lang} body {n}자 (범위 밖), 재시도...')
             if n < CHAR_MIN:
-                hint = f'Your previous body was {n} characters, which is TOO SHORT. Expand it substantially: add background context, explain the economic data and its implications in more depth, and give concrete examples. It must reach at least {CHAR_MIN} characters.'
+                hint = f'Your previous body was {n} characters, which is TOO SHORT. Expand it substantially: add background context, explain the economic data and its implications in more depth, and give concrete examples. It must reach at least {lo} characters.'
             else:
-                hint = f'Your previous body was {n} characters, which is TOO LONG. Condense it to at most {CHAR_MAX} characters while keeping all key points.'
+                hint = f'Your previous body was {n} characters, which is TOO LONG. Condense it to at most {hi} characters while keeping all key points.'
+            user += '\n\n' + hint
+            continue
+        ok, hint = quality_gate(lang, t, b)
+        if not ok:
+            print(f'    [{attempt}] {lang} 품질 게이트 실패, 재시도...')
             user += '\n\n' + hint
             continue
         print(f'    {lang}: 제목 {len(t)}자 / 본문 {n}자 [OK]')
         return {'slug': slug, 'lang': lang, 'title': t, 'description': d, 'body': b}
     # 재시도 소진 — 그래도 결과 있으면 마지막 것 반환
-    print(f'    {lang}: 재시도 소진, 마지막 결과 사용 ({char_count(b)}자)')
-    return {'slug': slug, 'lang': lang, 'title': t, 'description': d, 'body': b}
+    print(f'    {lang}: 재시도 소진, 마지막 결과 사용 ({char_count(last["body"])}자)')
+    return last
 
 # ---------- 메인 ----------
 def main():
