@@ -1,0 +1,37 @@
+name: Deploy to GitHub Pages
+
+# 정적 사이트를 gh-pages 브랜치로 배포한다.
+# 최초 1회: 저장소 Settings → Pages → Source를 "Deploy from a branch" / gh-pages / root 로 지정.
+# 그 이후부터는 main에 푸시될 때마다 자동 반영된다.
+# 배포 URL: https://wndgns032-gif.github.io/mycapitalanalyze/
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy (gh-pages branch)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          publish_branch: gh-pages
+          # config.json(API 키)과 소스 스크립트는 배포 대상에서 제외
+          exclude_assets: |
+            config.json
+            scripts
+            content
+            .github
+          user_name: wndgns032-gif
+          user_email: 279455992+wndgns032-gif@users.noreply.github.com
+          commit_message: "deploy: pages ${{ github.sha }}"

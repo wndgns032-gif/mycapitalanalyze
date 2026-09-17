@@ -28,7 +28,7 @@ scripts/build.py     → index.html / post/*.html / {lang}/** / sitemap.xml / fe
 
 | provider | 모델 | 비고 |
 |---|---|---|
-| `glm` (현재) | `glm-4-flash` | https://open.bigmodel.cn — 무료/저가. 번역 품질은 준수 |
+| `glm` (현재) | `glm-5.3-flash` | https://open.bigmodel.cn — 무료/저가. 번역 품질은 준수 |
 | `deepseek` | `deepseek-v4-flash` | 품질 더 좋음, 유료 |
 
 ## 3. 발행량 정책 (중요 — 구글 스케일드 콘텐츠 어뷰즈 방지)
