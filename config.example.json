@@ -1,0 +1,44 @@
+{
+  "provider": "glm",
+  "glm": {
+    "api_key": "YOUR_GLM_API_KEY_HERE",
+    "base_url": "https://open.bigmodel.cn/api/paas/v4",
+    "model": "glm-4-flash"
+  },
+  "deepseek": {
+    "api_key": "YOUR_DEEPSEEK_API_KEY_HERE",
+    "base_url": "https://api.deepseek.com",
+    "model": "deepseek-v4-flash"
+  },
+  "languages": {
+    "zh": "Chinese (Mandarin)",
+    "hi": "Hindi",
+    "es": "Spanish",
+    "ar": "Arabic",
+    "fr": "French",
+    "bn": "Bengali",
+    "pt": "Portuguese",
+    "ru": "Russian",
+    "de": "German",
+    "ja": "Japanese",
+    "id": "Indonesian",
+    "ko": "Korean"
+  },
+  "translate_languages": {
+    "ko": "Korean",
+    "zh": "Chinese (Mandarin)",
+    "ja": "Japanese",
+    "es": "Spanish",
+    "fr": "French",
+    "de": "German",
+    "pt": "Portuguese",
+    "ru": "Russian",
+    "hi": "Hindi",
+    "id": "Indonesian",
+    "ar": "Arabic",
+    "bn": "Bengali"
+  },
+  "char_min": 3000,
+  "char_max": 5000,
+  "max_new_posts_per_run": 3
+}

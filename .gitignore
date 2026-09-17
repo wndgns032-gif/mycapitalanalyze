@@ -1,0 +1,17 @@
+# API 키 등 민감정보 (절대 커밋 금지)
+config.json
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 번역 결과는 커밋한다 — CI에서 매번 재번역하면 비용이 든다.
+# (content/translations/ 은 12개 언어 번역본. 용량 작음.)
+
+# OS
+.DS_Store
+Thumbs.db
