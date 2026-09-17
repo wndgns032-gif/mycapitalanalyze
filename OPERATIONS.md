@@ -42,12 +42,14 @@ scripts/build.py     → index.html / post/*.html / {lang}/** / sitemap.xml / fe
 
 저장소 → Settings → Secrets and variables → Actions → New repository secret
 
-| Secret 이름 | 값 |
-|---|---|
-| `GLM_API_KEY` | `***REMOVED***` |
-| `GH_PAT` | repo 권한이 있는 Personal Access Token (Actions가 커밋을 푸시해야 함) |
+| Secret 이름 | 값 | 필수 |
+|---|---|---|
+| `GLM_API_KEY` | `***REMOVED***` | ✅ |
 
+`GH_PAT`은 더 이상 필요 없다 — 워크플로가 기본 `GITHUB_TOKEN`(`permissions: contents: write`)으로 푸시한다.
 `DEEPSEEK_API_KEY`는 선택(provider를 deepseek으로 바꿀 때만).
+
+로이용 단계별 설정 가이드는 `SETUP_GUIDE.md` 참고.
 
 ## 5. SEO 관련 적용된 사항 (build.py)
 
