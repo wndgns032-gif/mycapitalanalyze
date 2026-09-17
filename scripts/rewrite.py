@@ -47,7 +47,7 @@ def call_llm(messages):
     body = {
         'model': MODEL,
         'messages': messages,
-        'max_tokens': 8192,
+        'max_tokens': 16384,
         'temperature': 0.6,
         'response_format': {'type': 'json_object'},
     }

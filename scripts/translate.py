@@ -59,8 +59,16 @@ def char_count(s):
 # 한국어 번역 품질 게이트 — 중국어 잔재(번역 안 된 한자) 감지
 CJK_RE = re.compile(r'[\u4e00-\u9fff]')
 
+# 번역하지 말고 그대로 둬도 되는 로마자 토큰 (기관 약칭/지표명)
+LATIN_ALLOW = {'fed', 'fred', 'cboe', 'cpi', 'ppi', 'gdp', 'm1', 'm2', 'kc', 'prs', 'irs',
+               'imf', 'oecd', 'ecb', 'boj', 'bis', 'bls', 'bea', 'ai', 'etf', 'us', 'uk', 'eu'}
+
+LATIN_WORD_RE = re.compile(r'\b[A-Za-z]{3,}\b')
+
+
 def quality_gate(lang, title, body):
     """(ok, hint) 반환. 통과하면 (True, None)."""
+    # 1) 한국어에 중국어 한자 잔재가 남으면 실패
     if lang == 'ko':
         n = len(CJK_RE.findall(body))
         if n > 8:
@@ -70,6 +78,18 @@ def quality_gate(lang, title, body):
                 f'You MUST convert every Chinese term into proper Korean: '
                 f'translate the meaning or transliterate the official Korean name '
                 f'(e.g. 宁德时代 -> CATL, 公积金 -> 주택공적금). Output Korean ONLY, no Hanja.'
+            )
+    # 2) CJK 언어에 영어 단어가 그대로 남으면 실패 (기관명 오역의 주원인)
+    if lang in ('ko', 'zh', 'ja'):
+        leftovers = [w for w in LATIN_WORD_RE.findall(body) if w.lower() not in LATIN_ALLOW]
+        if len(leftovers) > 6:
+            sample = ', '.join(sorted(set(leftovers))[:12])
+            return False, (
+                f'Your {lang} text still contains {len(leftovers)} untranslated English words '
+                f'(e.g. {sample}). Translate EVERY English term into natural {lang} '
+                f'financial terminology — only established acronyms (Fed, FRED, CPI, GDP, Cboe) '
+                f'may stay in Latin script. Also check proper nouns: "Kansas City Fed" is '
+                f'캔자스시티 연준 / 堪萨斯城联储, NOT a Korean bank.'
             )
     return True, None
 
@@ -98,7 +118,8 @@ def call_llm(messages, json_mode=False, net_retries=3):
     body = {
         'model': MODEL,
         'messages': messages,
-        'max_tokens': 8192,
+        # 추론형 모델은 reasoning 토큰을 많이 쓰므로 출력 예산을 넉넉히 준다
+        'max_tokens': 16384,
         'temperature': 0.5,
     }
     if PROVIDER == 'deepseek':
@@ -131,7 +152,9 @@ def call_llm(messages, json_mode=False, net_retries=3):
 # ---------- 번역 ----------
 def translate_post(slug, lang, lang_name, title, desc, body):
     system = (
-        'You are a professional translator AND editor for a macro-economics blog. '
+        'You are a professional financial translator AND editor for a macro-economics blog. '
+        'You write in the register of a national financial newspaper '
+        '(e.g. Hankyoreh/Chosun Biz for Korean, Nikkei for Japanese, FT/Le Monde style for European). '
         'You return valid JSON only, with no extra commentary. '
         'You strictly obey the character-count requirement for the body.'
     )
@@ -173,6 +196,18 @@ The body text MUST be between {lo} and {hi} characters (counting spaces) in {lan
 
 {density_hint}
 
+TERMINOLOGY RULES (critical):
+- Translate EVERY term into natural {lang_name} financial terminology. Do not leave English words in the text.
+- Only these may stay in Latin script: Fed, FRED, CPI, GDP, Cboe, ETF, IMF, ECB, BIS, BLS, OECD.
+- Institution names must be translated by MEANING, never by sound:
+  "Kansas City Fed" = 캔자스시티 연준 (ko) / 堪萨斯城联储 (zh) / カンザスシティ連邦準備銀行 (ja) — it is NOT a Korean "Korea City Bank".
+  "Federal Reserve" = 연방준비제도(Fed) / 美联储 / FRB.
+  "Treasury" (securities) = 미 국채 / 美国国债 / 米国債 — not "재무부" when it means bonds.
+  "financial market" = 금융시장 (ko) — never "재무 시장".
+  "monetary policy" = 통화정책, "inflation" = 인플레이션(물가 상승), "yield curve" = 수익률 곡선,
+  "policy rate" = 정책금리, "skew" = 스큐(비대칭도), "subprime" = 서브프라임(저신용).
+- Keep every number, date and unit exactly as in the source. Never invent data.
+
 Keep all key facts and figures. Never invent false data. The goal is a natural, well-developed article of the required length.
 
 Original English:
@@ -191,7 +226,9 @@ BODY:
         )
         obj = extract_json(content or '')
         if not obj or not isinstance(obj, dict):
-            print(f'    [{attempt}] JSON 파싱 실패, 재시도...')
+            print(f'    [{attempt}] JSON 파싱 실패, 재시도... (응답 {len(content or "")}자)')
+            print('    응답 앞부분:', repr((content or '')[:160]))
+            print('    응답 뒷부분:', repr((content or '')[-160:]))
             continue
         t = str(obj.get('title', '') or '')
         d = str(obj.get('description', '') or '')
@@ -213,7 +250,10 @@ BODY:
             continue
         print(f'    {lang}: 제목 {len(t)}자 / 본문 {n}자 [OK]')
         return {'slug': slug, 'lang': lang, 'title': t, 'description': d, 'body': b}
-    # 재시도 소진 — 그래도 결과 있으면 마지막 것 반환
+    # 재시도 소진 — 본문이 사실상 비어 있으면 실패로 간주해 파일을 쓰지 않는다
+    if char_count(last.get('body', '')) < 500:
+        print(f'    {lang}: 번역 실패 (본문 {char_count(last.get("body", ""))}자) — 다음 실행에 재시도')
+        return None
     print(f'    {lang}: 재시도 소진, 마지막 결과 사용 ({char_count(last["body"])}자)')
     return last
 
@@ -247,6 +287,8 @@ def main():
                 print(f'    {lang}: 이미 존재, 스킵')
                 continue
             result = translate_post(slug, lang, lang_name, title, desc, body)
+            if not result:
+                continue
             json.dump(result, open(out_path, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
             time.sleep(0.3)  # rate limit 여유
 

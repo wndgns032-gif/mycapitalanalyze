@@ -39,7 +39,7 @@ jobs:
             "glm": {
               "api_key": glm,
               "base_url": "https://open.bigmodel.cn/api/paas/v4",
-              "model": "glm-4-flash"
+              "model": "glm-5.3-flash"
             },
             "deepseek": {
               "api_key": ds,
@@ -71,7 +71,8 @@ jobs:
 
       - name: Commit and push
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          # GH_PAT 대신 기본 GITHUB_TOKEN 사용 (permissions: contents: write 로 푸시 가능)
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "wndgns032-gif"
           git config user.email "279455992+wndgns032-gif@users.noreply.github.com"
@@ -80,6 +81,6 @@ jobs:
             echo "no changes to commit"
           else
             git commit -m "auto: content update $(date -u +%Y%m%d-%H%M)"
-            git remote set-url origin https://x-access-token:${GH_PAT}@github.com/wndgns032-gif/mycapitalanalyze.git
+            git remote set-url origin https://x-access-token:${TOKEN}@github.com/wndgns032-gif/mycapitalanalyze.git
             git push origin main
           fi
