@@ -49,15 +49,3 @@ body {
 .prose table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
 .prose th, .prose td { border: 1px solid #e2e8f0; padding: 0.5rem 0.75rem; }
 .dark .prose th, .dark .prose td { border-color: #1e293b; }
-
-/* Media.net 광고 슬롯 자리표시 (승인 후 cid 교체) */
-.ad-slot {
-  background: #f8fafc;
-  border: 1px dashed #cbd5e1;
-  border-radius: 0.5rem;
-  display: flex; align-items: center; justify-content: center;
-  min-height: 250px;
-  color: #94a3b8; font-size: 0.75rem;
-  letter-spacing: 0.05em;
-}
-.dark .ad-slot { background: #0f172a; border-color: #334155; color: #475569; }

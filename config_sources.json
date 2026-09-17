@@ -7,37 +7,61 @@
       "note": "Federal Reserve Bank of St. Louis"
     },
     {
+      "name": "Federal Reserve Board",
+      "url": "https://www.federalreserve.gov/feeds/press_all.xml",
+      "category": "Monetary Policy",
+      "note": "Board of Governors of the Federal Reserve System"
+    },
+    {
+      "name": "VoxEU",
+      "url": "https://voxeu.org/rss.xml",
+      "category": "Economic Research",
+      "note": "CEPR policy portal"
+    },
+    {
+      "name": "NBER",
+      "url": "https://www.nber.org/rss/new.xml",
+      "category": "Economic Research",
+      "note": "National Bureau of Economic Research"
+    },
+    {
+      "name": "ECB",
+      "url": "https://www.ecb.europa.eu/rss/press.html",
+      "category": "Central Banking",
+      "note": "European Central Bank"
+    },
+    {
+      "name": "Bank of England",
+      "url": "https://www.bankofengland.co.uk/rss/news",
+      "category": "Central Banking",
+      "note": "Bank of England"
+    },
+    {
+      "name": "CBO",
+      "url": "https://www.cbo.gov/publications/all/rss.xml",
+      "category": "Fiscal Policy",
+      "note": "Congressional Budget Office"
+    },
+    {
       "name": "IMF Blog",
       "url": "https://www.imf.org/en/Blogs/rss",
       "category": "Global Macro",
-      "note": "International Monetary Fund"
+      "note": "International Monetary Fund (차단 시 자동 스킵)"
     },
     {
       "name": "World Bank Blogs",
       "url": "https://blogs.worldbank.org/rss.xml",
       "category": "Global Economy",
-      "note": "World Bank"
-    },
-    {
-      "name": "VoxEU",
-      "url": "https://cepr.org/voxeu/rss.xml",
-      "category": "Economic Research",
-      "note": "CEPR policy portal"
-    },
-    {
-      "name": "BIS",
-      "url": "https://www.bis.org/press/rss.htm",
-      "category": "Central Banking",
-      "note": "Bank for International Settlements"
+      "note": "World Bank (차단 시 자동 스킵)"
     },
     {
       "name": "Project Syndicate",
       "url": "https://www.project-syndicate.org/rss",
       "category": "Global Economy",
-      "note": "Op-eds by economists and policymakers"
+      "note": "Op-eds by economists and policymakers (차단 시 자동 스킵)"
     }
   ],
   "max_new_per_run": 3,
-  "min_chars": 1500,
-  "max_chars": 2300
+  "min_chars": 3000,
+  "max_chars": 5000
 }
