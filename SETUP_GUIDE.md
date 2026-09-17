@@ -1,91 +1,112 @@
-# 로이(Roy)가 직접 해야 하는 설정 — 단계별 가이드
+# 로이(Roy)용 운영 가이드 — mycapitalanalyze.com
 
-총 소요 시간 약 **5분**. 순서대로 하면 된다.
-
----
-
-## ✅ 1단계. GitHub Actions 시크릿 등록 (2분)
-
-자동 발행 파이프라인이 GLM API를 쓰려면 키를 넣어줘야 한다.
-
-1. 브라우저에서 **https://github.com/wndgns032-gif/mycapitalanalyze** 접속 (로그인 필요)
-2. 리포 페이지 **오른쪽 위의 ⚙️ Settings** 탭 클릭
-   - (브라우저 폭이 좁으면 "⋯" 더보기 메뉴 안에 있다)
-3. 왼쪽 사이드바에서 **Secrets and variables** 클릭 → **Actions** 클릭
-4. 오른쪽 위 초록 버튼 **New repository secret** 클릭
-5. 아래 두 칸 입력:
-   - **Name**: `GLM_API_KEY` ← 이 철자 그대로, 대문자
-   - **Secret**: `91cb67c7ae554102bb244f82da7f8a6b.hXJxpHP4N5UXYJfL`
-6. **Add secret** 클릭
-
-> **GH_PAT은 이제 필요 없다.** 워크플로를 기본 `GITHUB_TOKEN`으로 고쳐서 푸시 권한 문제를 없앴다.
-
-### 동작 확인
-1. 리포 상단 **Actions** 탭 클릭
-2. 왼쪽 목록에서 **Auto Publish (daily)** 선택
-3. 오른쪽 위 **Run workflow** 드롭다운 → 초록 **Run workflow** 버튼
-4. 2~3분 후 목록에 뜨는 실행 하나를 클릭 → `Create config.json` → `Run publish pipeline` 스텝이 초록 체크면 성공
-   - 빨간 X면 그 스텝을 클릭해서 로그를 캡처해 나한테 보내줘
+마지막 업데이트: 2026-09-18
+작성자: WorkBuddy (위임받은 운영)
 
 ---
 
-## ✅ 2단계. GitHub Pages 켜기 (1분)
+## 0. 지금 상태 (2026-09-18 기준)
 
-정비된 사이트를 실제로 볼 수 있는 공개 URL을 만든다.
-
-1. 같은 리포 → **Settings** 탭
-2. 왼쪽 사이드바 **Pages** 클릭
-3. **Source** 항목에서:
-   - **Deploy from a branch** 선택 (GitHub Actions가 아니라 이쪽)
-   - **Branch**: `gh-pages` 선택, 폴더는 `/ (root)`
-4. **Save** 클릭
-5. 1~2분 기다린 뒤 **https://wndgns032-gif.github.io/mycapitalanalyze/** 접속
-
-### 여기서 막히는 경우
-`gh-pages` 브랜치가 목록에 안 보이면 → `pages.yml` 워크플로가 아직 안 돌았다는 뜻이다.
-**Actions** 탭 → **Deploy to GitHub Pages** 워크플로가 초록 체크인지 확인. 빨간 X면 나한테 알려줘.
-
----
-
-## 🔶 3단계. 라이브 도메인 접근권 (선택 — 도메인을 건드리고 싶을 때만)
-
-`https://mycapitalanalyze.com` 은 지금 **별도의 Next.js 앱(Vercel)** 이 서비스 중이다.
-내가 가진 코드(위 정적 사이트)와 다른 프로그램이라, 도메인 쪽을 만지려면 아래 둘 중 **하나**가 필요하다.
-
-### 방법 A. Vercel 토큰 발급 (추천)
-1. **https://vercel.com** 로그인
-2. 오른쪽 위 프로필 아이콘 → **Settings**
-3. 왼쪽 메뉴 **Tokens**
-4. **Create Token** 클릭
-   - Token Name: 아무거나 (`workbuddy`)
-   - Scope: **Full Account**
-   - Expiration: **No Expiration**
-5. 생성된 토큰 문자열 복사 → **나한테 전달**
-
-### 방법 B. 라이브 사이트의 GitHub 리포 주소 찾기
-1. Vercel 대시보드에서 **mycapitalanalyze** 프로젝트 클릭
-2. **Settings** 탭 → 왼쪽 **Git**
-3. **Connected Git Repository** 옆에 있는 링크(예: `github.com/xxx/yyy`) → 그 URL을 **나한테 전달**
-
-> 방법 B로 리포 주소만 알려주면, 내가 클론해서 코드를 직접 고칠 수 있다.
-> A·B 둘 다 어려우면 **안 해도 된다.** 대신 정적 사이트(GitHub Pages) 쪽만 키우는 방향으로 간다.
-
----
-
-## 체크리스트
-
-- [ ] `GLM_API_KEY` 시크릿 등록
-- [ ] Actions 수동 실행 1회 → 초록 체크 확인
-- [ ] Settings → Pages → `gh-pages` / root → Save
-- [ ] https://wndgns032-gif.github.io/mycapitalanalyze/ 접속 확인
-- [ ] (선택) Vercel 토큰 또는 라이브 리포 URL 전달
-
----
-
-## 참고: 각 단계를 안 하면 생기는 일
-
-| 안 한 것 | 결과 |
+| 항목 | 상태 |
 |---|---|
-| 1단계 | 자동 발행이 매일 실패한다. 글은 안 늘어난다. 사이트 자체는 정상. |
-| 2단계 | 사이트를 볼 수 있는 공개 URL이 없다. 도메인만 기존 Next.js 앱이 서비스. |
-| 3단계 | 기존 라이브 도메인은 계속 예전 방식(속보 뉴스 대량 발행)으로 돌아간다. 내 진단대로 고칠 수 없다. |
+| GitHub 리포 `wndgns032-gif/mycapitalanalyze` | ✅ 정상 (public, main) |
+| `GLM_API_KEY` 시크릿 | ✅ 등록됨 (2026-09-17 15:45) |
+| Vercel ↔ 리포 연동 | ✅ **이미 되어 있었음** (Vercel 프로젝트 `mycapitalanalyze`, productionBranch = main) |
+| `mycapitalanalyze.com` 서비스 내용 | ✅ 내가 정비한 정적 사이트 (된 것: 이전 Next.js 속보 앱은 대체됨) |
+| GitHub Pages | ✅ 켜짐 → https://wndgns032-gif.github.io/mycapitalanalyze/ |
+| 일일 자동 발행 | ✅ 돌아감 (매일 KST 15:17) |
+| IndexNow 자동 제출 | ✅ 워크플로 등록됨 (매일 KST 16:15 + 발행 후 자동 체이닝) |
+| **Google Search Console 등록** | ❌ **미완 — 이거 하나가 남았다. 아래 1단계** |
+
+> **결론: 내가 필요한 Vercel 권한은 이미 해결됐다.** 앞으로 도메인 쪽에서 필요한 추가 작업은 없다.
+
+---
+
+## 1단계. Google Search Console 등록 (5분) — 남은 유일한 필수 작업
+
+### 왜 꼭 해야 하나
+IndexNow에 참여하는 검색엔진은 **Bing, 네이버, Yandex, Seznam, Yep** 뿐이다.
+**Google은 IndexNow를 쓰지 않는다** (2021년 실험 이후 미채택). Google은 전 세계 검색의 약 **83%**.
+
+GSC에 사이트를 등록하지 않으면:
+- Google이 이 사이트를 우연히 발견할 때까지 **몇 주~몇 달** 걸리고, 발견 자체를 안 할 수도 있다
+- 발견되더라도 Search Console 없이는 색인 상태·검색어·클릭을 **볼 수 없다** (측정 불가 = 개선 불가)
+
+등록하면:
+- 사이트맵을 Google에 직접 제출 → 크롤러가 즉시 목록을 가져감
+- 도메인 단위 1회 인증으로 `/ko/`, `/zh/`, `/ja/`, `/es/` **모든 언어 폴더가 한 번에 커버된다**
+  (같은 도메인이라 언어별로 따로 인증할 필요 없음 — 이게 다국어 구조의 큰 이점)
+
+### 하는 법
+1. https://search.google.com/search-console 접속 → **시작하기**
+2. 오른쪽 **속성 유형** 선택에서 **도메인** 을 고른다 (URL 접두사가 아니라 **도메인**)
+3. 입력칸에 `mycapitalanalyze.com` 입력 → 계속
+4. DNS 소유권 확인 창이 뜬다. 복사 버튼으로 TXT 레코드를 복사한다
+   - `google-site-verification=xxxxxxxxxxxx` 형태
+5. 도메인 DNS 설정 화면으로 이동 (도메인 등록업체 또는 Vercel → 프로젝트 → Domains → DNS)
+6. TXT 레코드 1개 추가: 호스트 `@`, 값 = 4번에서 복사한 문자열
+7. GSC로 돌아와 **확인** 클릭 → 통과하면 완료 (전파에 몇 분~몇 시간)
+   - Vercel이 DNS를 관리 중이면 https://vercel.com → 프로젝트 → **Domains** → `mycapitalanalyze.com` → **DNS Records** 에서 추가
+8. 왼쪽 메뉴 **Sitemaps** → `sitemap.xml` 입력 → **제출**
+
+### 끝나면 나한테 알려줘
+등록이 끝나면 Search Console 데이터를 기반으로 "어떤 검색어로 들어오는지 / 어떤 글이 안 먹히는지" 분석해서 다음 글 주제를 정할 수 있다. 그게 진짜 운영의 시작이다.
+
+---
+
+## 2. (선택) 네이버 서치어드바이저 — 한국 유입을 노린다면
+
+한국어 페이지가 9편밖에 안 되지만, 한국이 주력 시장이라면 해둘 가치가 있다.
+
+1. https://searchadvisor.naver.com 접속 → **웹마스터 도구** → 사이트 등록
+2. `https://www.mycapitalanalyze.com/sitemap.xml` 제출
+3. 소유 확인은 HTML 파일 업로드 또는 메타 태그 (메타 태그 추천 — 사이트에 한 줄 넣으면 됨)
+
+> 참고: 네이버는 IndexNow 참여사이므로 **IndexNow 제출만으로도 통보는 간다.**
+> 다만 외국 도메인의 한국어 페이지를 실제로 얼마나 잘 크롤하는지는 별개 문제다.
+
+---
+
+## 3. 자동으로 되는 것 / 안 되는 것
+
+### 자동 (이미 구현됨)
+| 시각 (KST) | 일 |
+|---|---|
+| 15:17 | RSS 수집(FRED·연준·ECB·BOE·CBO·NBER·VoxEU·세계은행) → 영문 분석 글 **1편** 생성 |
+| 15:17 | 한국어·중국어·일본어·스페인어 번역 + 품질 게이트 통과 |
+| 15:17 | 사이트맵·hreflang·JSON-LD 스키마 갱신 → 푸시 → **Vercel 자동 배포** |
+| 16:15 | 새 URL을 **IndexNow**로 Bing · 네이버 · Yandex · Seznam · Yep에 통보 |
+
+### 자동이 아닌 것 — 여기를 오해하면 안 된다
+- ❌ **Google 자동 등록.** 위 1단계를 사람이 1회 해야 한다.
+- ❌ **"색인되면 트래픽이 온다"는 착각.** 색인은 *검색엔진이 페이지를 읽었다*는 뜻일 뿐, 순위는 전혀 다른 문제다. IndexNow도 공식 문서에 "통지일 뿐 색인 보장이 아니다"라고 명시돼 있다.
+- ❌ **바이두(중국).** 별개 생태계 + 이 사이트는 중국에서 접근 차단 대상. 의미 없다.
+- ❌ **단기간 결과.** 도메인 개설 9일 차, 글 9편(유효) 기준으로 **의미 있는 검색 유입은 통상 3~6개월**이다.
+- ✅ **야후재팬**은 Google 인덱스를 쓰므로, Google만 해결되면 일본도 같이 커버된다.
+
+---
+
+## 4. 운영 설정값 — 여기 숫자 하나로 방향이 바뀐다
+
+설정은 **`.github/workflows/auto-publish.yml` 36~64번째 줄**에 있다 ( 리포의 `config.json`이 아니라 이게 실제 동작값이다).
+
+| 항목 | 현재값 | 설명 |
+|---|---|---|
+| `max_new_posts_per_run` | **1** | 하루 최대 신규 글 수. 신규 도메인에 대량 발행은 구글 '스케일드 콘텐츠 어뷰즈' 판정 리스크가 있어서 1로 묶었다. 늘리려면 이 숫자만 바꾸면 된다. |
+| `translate_languages` | ko, zh, ja, es | 자동 번역 대상. 나머지 8개 언어는 기존 글만 남고 새 글은 안 번역된다. |
+| `translate_exclude_prefixes` | `project-syndicate-` | 저작권 리스크가 있는 외부 칼럼 재가공본은 번역·투자하지 않는다. |
+| `max_translations_per_run` | 40 | 한 실행당 번역 상한. 비용·시간 폭주 방지. |
+| `translate_workers` | 5 | 병렬 번역 워커 수. |
+
+### 발행량을 늘리고 싶다면
+3개월 뒤에 도메인이 건강해지면 `max_new_posts_per_run`을 2~3으로, 번역 언어를 6~8개로 늘리는 게 정석이다. 지금 늘리면 진단에서 말한 리스크를 다시 키우는 것이다.
+
+---
+
+## 5. 미해결 의사결정 — 로이가 정해줘야 하는 것
+
+### Project Syndicate 글 11편
+- 상태: **이미 발행되어 라이브에 있음** (영문만, 번역 안 함), 신규 수집은 **중단** 했다
+- 문제: 타인의 칼럼을 AI로 재가공한 것 → 저작권 리스크. 원문이 제목/요약만 있어서 내용의 상당 부분이 모델이 쓴 추측에 가깝다 (thin content)
+- 선택지: **① 전부 삭제** (리스크 제거, URL 11개 감소) / **② 유지** (볼륨 유지) / **③ 원문 링크만 남긴 요약 페이지로 축소**
+- 내 추천: **① 삭제.** 이 사이트의 asset은 FRED·연준 같은 1차 데이터 출처다. 남의 오피니언은 asset이 아니라 liability다.

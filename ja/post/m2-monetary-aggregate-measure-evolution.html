@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>マネーサプライ指標M2の進化――構成要素と最近の改定を検証する — MyCapital Analyze</title>
+  <meta name="description" content="米連邦準備制度（FRB）のマネーサプライ指標M2の構成要素、集計方法の変更、そしてその経済的意味を分析する。" />
+  <link rel="canonical" href="https://www.mycapitalanalyze.com/ja/post/m2-monetary-aggregate-measure-evolution.html" />
+  <link rel="alternate" hreflang="en" href="https://www.mycapitalanalyze.com/post/m2-monetary-aggregate-measure-evolution.html" />
+  <link rel="alternate" hreflang="zh" href="https://www.mycapitalanalyze.com/zh/post/m2-monetary-aggregate-measure-evolution.html" />
+  <link rel="alternate" hreflang="es" href="https://www.mycapitalanalyze.com/es/post/m2-monetary-aggregate-measure-evolution.html" />
+  <link rel="alternate" hreflang="ja" href="https://www.mycapitalanalyze.com/ja/post/m2-monetary-aggregate-measure-evolution.html" />
+  <link rel="alternate" hreflang="ko" href="https://www.mycapitalanalyze.com/ko/post/m2-monetary-aggregate-measure-evolution.html" />
+  <link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/post/m2-monetary-aggregate-measure-evolution.html" />
+  <link rel="alternate" type="application/rss+xml" href="https://www.mycapitalanalyze.com/feed.xml" />
+  <meta property="og:title" content="マネーサプライ指標M2の進化――構成要素と最近の改定を検証する — MyCapital Analyze" />
+  <meta property="og:description" content="米連邦準備制度（FRB）のマネーサプライ指標M2の構成要素、集計方法の変更、そしてその経済的意味を分析する。" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://www.mycapitalanalyze.com/ja/post/m2-monetary-aggregate-measure-evolution.html" />
+  <meta property="og:site_name" content="MyCapital Analyze" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9243770518153989" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { 50:'#eef4ff',100:'#dbe7ff',200:'#b9d0ff',300:'#8fb0ff',400:'#5f86f5',500:'#1e4fd8',600:'#1a3fb0',700:'#142f85',800:'#122560',900:'#0e1a3d' } } } } };</script>
+  <link rel="stylesheet" href="/assets/css/custom.css" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "マネーサプライ指標M2の進化――構成要素と最近の改定を検証する", "description": "米連邦準備制度（FRB）のマネーサプライ指標M2の構成要素、集計方法の変更、そしてその経済的意味を分析する。", "inLanguage": "ja", "datePublished": "2026-09-17", "dateModified": "2026-09-17", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ja/post/m2-monetary-aggregate-measure-evolution.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 30, "isBasedOn": {"@type": "CreativeWork", "name": "FRED Blog", "url": "https://fredblog.stlouisfed.org/2026/09/measuring-money-with-m2/"}}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ja/"}, {"@type": "ListItem", "position": 2, "name": "マネーサプライ指標M2の進化――構成要素と最近の改定を検証する", "item": "https://www.mycapitalanalyze.com/ja/post/m2-monetary-aggregate-measure-evolution.html"}]}</script>
+</head>
+<body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
+
+<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-10">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+      <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="/ja/">MyCapital Analyze</a>
+      <nav class="flex items-center gap-4 text-sm">
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ja/">Home</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+<div class="max-w-5xl mx-auto px-4 pt-3 flex flex-wrap items-center gap-1"><span class="text-slate-500 mr-1 text-sm">Language:</span><a href="/post/m2-monetary-aggregate-measure-evolution.html" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="English" hreflang="en">EN</a><a href="/zh/post/m2-monetary-aggregate-measure-evolution.html" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="中文" hreflang="zh">ZH</a><a href="/hi/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="हिन्दी" hreflang="hi">HI</a><a href="/es/post/m2-monetary-aggregate-measure-evolution.html" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Español" hreflang="es">ES</a><a href="/ar/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="العربية" hreflang="ar">AR</a><a href="/fr/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Français" hreflang="fr">FR</a><a href="/bn/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="বাংলা" hreflang="bn">BN</a><a href="/pt/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Português" hreflang="pt">PT</a><a href="/ru/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Русский" hreflang="ru">RU</a><a href="/de/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Deutsch" hreflang="de">DE</a><a href="/ja/post/m2-monetary-aggregate-measure-evolution.html" class="px-2 py-0.5 rounded text-sm bg-brand-600 text-white" title="日本語" hreflang="ja">JA</a><a href="/id/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Bahasa Indonesia" hreflang="id">ID</a><a href="/ko/post/m2-monetary-aggregate-measure-evolution.html" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="한국어" hreflang="ko">KO</a></div>
+
+<main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
+<article class="max-w-3xl mx-auto">
+  <header class="mb-8">
+    <div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
+      <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">Monetary Policy</span>
+      <time datetime="2026-09-17">公開日: 2026-09-17</time>
+      <span class="text-slate-400">&middot;</span>
+      <span>Independent Analysis</span>
+    </div>
+    <h1 class="text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 mb-4">マネーサプライ指標M2の進化――構成要素と最近の改定を検証する</h1>
+    <p class="text-slate-600 dark:text-slate-400">米連邦準備制度（FRB）のマネーサプライ指標M2の構成要素、集計方法の変更、そしてその経済的意味を分析する。</p>
+    <p class="mt-4 text-xs text-slate-500">出典: <a class="underline hover:text-brand-600" rel="nofollow noopener" target="_blank" href="https://fredblog.stlouisfed.org/2026/09/measuring-money-with-m2/">FRED Blog</a></p>
+  </header>
+  <div class="prose prose-slate dark:prose-invert max-w-none"><p>米連邦準備制度（Fed）が公表する金融集計（マネタリー・アグリゲート）は、経済全体に流通する貨幣の量を体系的に捉えるための基本的な統計群である。マネタリズムの伝統を引くエコノミストにとって、貨幣供給量の動きはインフレ（物価上昇）や景気循環を理解する出発点であり、統計の質が政策の質を左右すると言っても過言ではない。こうした指標の中でも、現金と当座預金を中心とする狭義のM1に準通貨と呼ばれる預金資産を加えて定義されるM2は、即時の支払いに使える資金から短期間で現金化できる資産までを幅広く含み、経済の流動性を測る代表指標としてとりわけ重要視されてきた。本稿では、M2の仕組みと構成要素を詳しく見たうえで、最近行われた集計方法の改定とその意味を掘り下げていく。</p>
+<h2 id="h-1">基本データ――M2の中身を分解する</h2>
+<p>M2とは、現金、当座預金、および一定の換金性を備えた資産を含む「広義の貨幣」指標である。土地や株式のように換金に時間とコストがかかる資産は含まれず、個人退職口座（アイアールエー）や自営業者向け退職口座（キーグ口座）のように、早期引き出しにペナルティが課される非流動的な資産も除外される。FRBの統計によれば、2026年6月時点でM2残高は23兆ドルに達している。経済の規模を考えれば極めて巨大な資金の塊であり、米国経済にどれほどの購買力が蓄えられているかを示す一つの目安だ。</p>
+<p>M2の構成要素は、FRED（セントルイス連邦準備銀行が運営する経済データベース）のグラフ上で、次のように色分けして表示されている。</p>
+<ul>
+<li><strong>M1</strong>：現金および当座預金・普通預金型の預金。グラフでは青色で示される。最も流動性が高い部分である。</li>
+<li><strong>小口定期性預金</strong>：小規模の定期性預金で、緑色で表示される。</li>
+<li><strong>個人向けマネーマーケット・ファンド</strong>：短期金融資産で運用される投資信託で、茶色で表示される。</li>
+<li><strong>個人退職口座・キーグ口座残高</strong>：紫色で表示され、M2の総額から差し引かれる。</li>
+<p>これらを合計したうえで退職口座分を差し引くことで、M2の総額が確定する仕組みだ。</p>
+<p>M2が重視される理由は、支出や物価との関係にある。流通する貨幣の量が経済の生産能力を大きく上回って増加すれば、インフレ圧力が高まる恐れがある。新型コロナウイルス禍の2020年以降にM2が急拡大し、その後の世界的な物価上昇をめぐる議論が活発化したことは記憶に新しい。そうした経験を踏まえれば、貨幣統計の正確性がこれほど強く問われる時代はないと言えるだろう。</p>
+<h2 id="h-11">2026年の集計変更――何がどう変わったのか</h2>
+<p>近年の改定で注目すべきは、個人退職口座とキーグ口座の残高をM2の計算から控除する方法が変わった点である。2026年7月28日以降、これらの残高は、従来のように小口定期性預金と個人向けマネーマーケット・ファンドの各数値から個別に差し引くのではなく、M2全体の総額から一括して差し引く方式へと移行した。</p>
+<p>この改定によるM2総額への影響は最小限にとどまっている。しかし、小口定期性預金と個人向けマネーマーケット・ファンドという二つの構成要素の数値は再計算の対象となり、過去の系列との接続に留意が必要になった。たとえるなら、家計簿の記入方法を変えたもので、家計全体の総資産額はほぼ変わらないものの、預金科目ごとの内訳の数字が組み替えられたようなものである。時系列分析を重視するエコノミストや市場参加者にとって、系列の断絶はモデルの推定やトレンド読みに影響を及ぼしうる、見落とせない変更点だ。</p>
+<h2 id="h-14">分析――なぜ見直しが必要だったのか</h2>
+<p>そもそも個人退職口座やキーグ口座の資金が特別扱いされてきたのは、預金者が原則として退職まで引き出さない、つまり流動性が低いという前提があったからだ。ところが最近の調査では、これらの口座残高のうち相当部分が普通預金や当座預金型の形態で保有されており、必要に応じて容易に動かせる実態が明らかになってきた。統計上は「非流動」として扱われながら、実際にはかなり流動性の高い資金が存在していたことになる。このズレの解消こそが、今回の改定の核心である。</p>
+<p>こうした実態の変化を受け、FRBはM2の計算方法を修正し、貨幣供給のより正確な測定を目指した。統計の精度向上は単なる技術的な事務作業ではない。経済全体の流動性を正しく把握できなければ、金融政策の運営は誤った方向へ傾くリスクを抱えるからだ。インフレ抑制を優先すべき局面なのか、景気刺激を優先すべき局面なのか。政策判断の出発点となるのがマネーサプライ統計であり、その質が高まることで、FRBは政策金利の調整の要否をより的確に評価できるようになる。なお、マネーサプライ統計の定義見直しは米国特有の話ではなく、欧州中央銀行（ECB）や日本銀行も金融環境の変化に応じて統計のあり方を改めてきた経緯がある。</p>
+<h2 id="h-17">市場と投資家への含意</h2>
+<p>M2の見直しは、市場参加者や投資家にも無縁ではない。改定後のM2数値は、流動性の全体像について従来とは異なる視点を提供する可能性があり、投資家は経済のマネーサプライや流動性環境に対する評価を調整する必要に迫られるかもしれない。米国債市場や株式市場の先行きを考えるうえでも、資金の余剰と不足は重要な判断材料だからだ。</p>
+<p>市場にとっては、M2の構成変化が金利判断やその他の金融政策運営に影響を与えうる点も見逃せない。Fedは改定後のデータを政策決定プロセスに組み込むため、マネーサプライの伸びを手がかりとする市場の金利観にも変化が及ぶ可能性がある。</p>
+<h2 id="h-20">統計の進化は金融システムの進化の反映</h2>
+<p>M2に代表される金融集計が絶えず洗練されているのは、金融システム自体が変化し続けて</p></div>
+  <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
+  <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">関連分析</h2>
+  <ul class="space-y-2 text-slate-700 dark:text-slate-300">
+    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="/ja/post/kansas-city-fed-policy-rate-skew.html">カンザスシティ連邦準備銀行の政策金利スキュー：市場の期待を映す窓</a></li>
+    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="/ja/post/new-york-fed-subprime-credit-risk-assessment.html">ニューヨーク連銀、サブプライム信用リスク評価を刷新――新手法が描く米消費者信用の実像</a></li>
+    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="/ja/post/fred-blog-32a976cfd0.html">生成人工知能の業務活用が急拡大――時間の節約が労働市場を塗り替える</a></li>
+  </ul>
+</nav>
+</article>
+</main>
+
+<footer class="border-t border-slate-200 dark:border-slate-800 mt-16">
+    <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
+      <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
+      <p class="text-xs leading-relaxed">本ブログの記事は公開されたマクロ経済データに基づく AI 支援の要約と独自分析です。情報提供のみを目的とし、投資助言ではありません。</p>
+    </div>
+  </footer>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

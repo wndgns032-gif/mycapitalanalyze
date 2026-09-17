@@ -54,14 +54,11 @@
       "category": "Global Economy",
       "note": "World Bank (차단 시 자동 스킵)"
     },
-    {
-      "name": "Project Syndicate",
-      "url": "https://www.project-syndicate.org/rss",
-      "category": "Global Economy",
-      "note": "Op-eds by economists and policymakers (차단 시 자동 스킵)"
-    }
   ],
-  "max_new_per_run": 3,
+  "max_new_per_run": 2,
   "min_chars": 3000,
-  "max_chars": 5000
+  "max_chars": 5000,
+  "_removed_2026-09-18": [
+    "Project Syndicate (https://www.project-syndicate.org/rss) — 타인의 칼럼을 AI로 재가공하는 저작권 리스크 때문에 수집 중단. 이미 발행된 11편은 남아 있고, 삭제 여부는 운영자가 결정한다."
+  ]
 }
