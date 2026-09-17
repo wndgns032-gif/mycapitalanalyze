@@ -13,6 +13,7 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -53,14 +54,15 @@ jobs:
               "ja": "Japanese", "id": "Indonesian", "ko": "Korean"
             },
             "translate_languages": {
-              "ko": "Korean", "zh": "Chinese (Mandarin)", "ja": "Japanese",
-              "es": "Spanish", "fr": "French", "de": "German",
-              "pt": "Portuguese", "ru": "Russian", "hi": "Hindi",
-              "id": "Indonesian", "ar": "Arabic", "bn": "Bengali"
+              "ko": "Korean", "zh": "Chinese (Mandarin)",
+              "ja": "Japanese", "es": "Spanish"
             },
+            "translate_exclude_prefixes": ["project-syndicate-"],
+            "translate_workers": 5,
+            "max_translations_per_run": 40,
             "char_min": 3000,
             "char_max": 5000,
-            "max_new_posts_per_run": 3
+            "max_new_posts_per_run": 1
           }
           json.dump(cfg, open('config.json', 'w'), ensure_ascii=False, indent=2)
           print('provider =', provider)

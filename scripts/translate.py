@@ -8,7 +8,20 @@ content/posts/*.md (영어 원본) → 12개 언어 번역 → content/translati
   python scripts/translate.py fed-rate-outlook-2026   # 특정 slug만
   python scripts/translate.py --lang ko       # 특정 언어만
 """
-import json, os, re, sys, time, urllib.request, urllib.error, glob
+import json, os, re, sys, time, urllib.request, urllib.error, glob, builtins, threading
+from concurrent.futures import ThreadPoolExecutor
+
+# 워커 스레드가 동시에 출력하면 로그가 뒤섞이므로 모듈 전역 print를 잠금 버전으로 대체한다.
+# (이 모듈 안의 모든 print()가 자동으로 이 함수를 쓴다)
+# RLock이어야 한다: 누군가 이미 락을 쥔 상태에서 print()를 호출해도 스스로 교착되지 않는다.
+# (Lock으로 쓰면 첫 작업이 끝나는 순간 모든 워커가 영구히 멈춘다 — 실제로 한 번 겪은 사고다)
+_LOG_LOCK = threading.RLock()
+
+
+def print(*a, **k):  # noqa: A001
+    with _LOG_LOCK:
+        builtins.print(*a, **k)
+
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG = json.load(open(os.path.join(BASE, 'config.json'), encoding='utf-8'))
@@ -26,6 +39,13 @@ POSTS_DIR = os.path.join(BASE, 'content', 'posts')
 TRANS_DIR = os.path.join(BASE, 'content', 'translations')
 
 MAX_RETRY = 5
+
+# 이 접두사로 시작하는 글은 번역하지 않는다 (예: 저작권 리스크가 있는 외부 칼럼 재가공본)
+EXCLUDE_PREFIXES = tuple(CONFIG.get('translate_exclude_prefixes') or [])
+# 한 번의 실행에서 처리할 최대 번역 수 (0 = 무제한). CI 폭주·비용 폭발 방지.
+MAX_PER_RUN = int(CONFIG.get('max_translations_per_run') or 0)
+# 동시에 돌릴 워커 수
+WORKERS = max(1, int(CONFIG.get('translate_workers') or 1))
 
 # 언어별 문자 밀도 특성 (번역 시 길이 보정 전략)
 # dense: 영어보다 문자 수가 훨씬 적음 → 확장 필수
@@ -269,28 +289,59 @@ def main():
         else:
             only_slug = args[i]; i += 1
 
-    posts = sorted(glob.glob(os.path.join(POSTS_DIR, '*.md')))
-    for path in posts:
+    tasks = []
+    for path in sorted(glob.glob(os.path.join(POSTS_DIR, '*.md'))):
         slug = os.path.splitext(os.path.basename(path))[0]
         if only_slug and slug != only_slug:
             continue
+        if any(slug.startswith(p) for p in EXCLUDE_PREFIXES):
+            print(f'[{slug}] 제외 규칙 해당 — 번역 건너뜀')
+            continue
         fm, body = parse_md(path)
-        title, desc = fm['title'], fm['description']
-        print(f'[{slug}]')
         for lang, lang_name in LANGS.items():
             if only_lang and lang != only_lang:
                 continue
-            out_dir = os.path.join(TRANS_DIR, lang)
-            os.makedirs(out_dir, exist_ok=True)
-            out_path = os.path.join(out_dir, slug + '.json')
+            out_path = os.path.join(TRANS_DIR, lang, slug + '.json')
+            os.makedirs(os.path.dirname(out_path), exist_ok=True)
             if os.path.exists(out_path):
-                print(f'    {lang}: 이미 존재, 스킵')
                 continue
-            result = translate_post(slug, lang, lang_name, title, desc, body)
+            tasks.append((slug, lang, lang_name, fm['title'], fm['description'], body, out_path))
+
+    if not tasks:
+        print('번역할 대상 없음 (모두 최신)')
+        return
+
+    if MAX_PER_RUN and len(tasks) > MAX_PER_RUN:
+        print(f'대상 {len(tasks)}건 — 이번 실행은 최대 {MAX_PER_RUN}건만 처리한다')
+        tasks = tasks[:MAX_PER_RUN]
+
+    total = len(tasks)
+    print(f'번역 대상 {total}건 / 동시 워커 {WORKERS}개')
+    counter = {'done': 0}
+
+    def work(task):
+        slug, lang, lang_name, title, desc, body, out_path = task
+        result = translate_post(slug, lang, lang_name, title, desc, body)
+        if result:
+            tmp = out_path + '.tmp'
+            with open(tmp, 'w', encoding='utf-8') as f:
+                json.dump(result, f, ensure_ascii=False, indent=2)
+            os.replace(tmp, out_path)   # 원자적 교체 — 중간에 죽어도 반쪽 파일이 남지 않는다
+        counter['done'] += 1
+        print(f'  [{counter["done"]}/{total}] {lang} {slug} '
+              f'{"OK" if result else "실패"}')
+        return result
+
+    fails = []
+    with ThreadPoolExecutor(max_workers=WORKERS) as ex:
+        for task, result in zip(tasks, ex.map(work, tasks)):
             if not result:
-                continue
-            json.dump(result, open(out_path, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
-            time.sleep(0.3)  # rate limit 여유
+                fails.append(f'{task[1]}/{task[0]}')
+
+    print(f'\n번역 완료: {total - len(fails)}/{total} 성공')
+    if fails:
+        print('실패(다음 실행에서 재시도): ' + ', '.join(fails[:30]))
+
 
 if __name__ == '__main__':
     main()
