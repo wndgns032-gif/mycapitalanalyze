@@ -2,7 +2,12 @@
   "_comment": "공개 설정. API 키 등 민감정보는 절대 넣지 않는다. config.json(git 제외, CI 시크릿 주입) 값이 비어 있지 않으면 이 값을 덮어쓴다.",
   "analytics": {
     "ga4_id": "G-1E3087HBL7",
-    "google_site_verification": "DSgNHo4SPmiOp6akCru8PRqv1Mpmvk4vyVCPX2AII6A"
+    "google_site_verification": "DSgNHo4SPmiOp6akCru8PRqv1Mpmvk4vyVCPX2AII6A",
+    "_portal_note": "언어권별 대표 포털 소유권 확인 값. 값을 넣으면 해당 메타 태그가 전 페이지 <head>에 삽입된다. 발급처는 아래와 같다.",
+    "naver_site_verification": "",
+    "baidu_site_verification": "",
+    "yandex_verification": "",
+    "bing_site_verification": ""
   },
   "adsense": {
     "enabled": false,

@@ -53,7 +53,7 @@
       "url": "https://blogs.worldbank.org/rss.xml",
       "category": "Global Economy",
       "note": "World Bank (차단 시 자동 스킵)"
-    },
+    }
   ],
   "max_new_per_run": 2,
   "min_chars": 3000,
