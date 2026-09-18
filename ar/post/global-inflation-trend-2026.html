@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "التضخم العالمي: الميل الأخير هو الأصعب", "description": "تراجع التضخم الرئيسي، لكن الخدمات الأساسية لا تزال لزجة، ولماذا قد يستغرق الوصول إلى هدف 2% وقتًا أطول مما تتوقعه التوقعات.", "inLanguage": "ar", "datePublished": "2026-08-25", "dateModified": "2026-08-25", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ar/post/global-inflation-trend-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 277}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ar/"}, {"@type": "ListItem", "position": 2, "name": "التضخم العالمي: الميل الأخير هو الأصعب", "item": "https://www.mycapitalanalyze.com/ar/post/global-inflation-trend-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <p>لهذا تتردد البنوك المركزية في إعلان النصر. السيناريو الأكثر ترجيحًا هو نمط انتظار مطول: تظل أسعار الفائدة مقيدة لفترة أطول مما تتوقعه الأسواق، ويمتد الطريق إلى الهدف حتى عام 2027.</p>
 <h2 id="h-7">الآثار الاستثمارية</h2>
 <p>&quot;الأسعار الأعلى لفترة أطول&quot; غير مسعّرة بالكامل. قد تظل العوائد الحقيقية مرتفعة، مما يضغط على الأصول طويلة الأجل ويدعم الحذر بشأن الأسهم الحساسة للنمو. السندات المرتبطة بالتضخم والسلع المقيدة بالعرض تظل أكثر أدوات التحوط المباشرة. الدرس من السنوات الثلاث الماضية هو أن التضخم، بمجرد أن يترسخ، لا يستسلم بهدوء.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">تحليلات ذات صلة</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">المقالات ملخصات بمساعدة الذكاء الاصطناعي وتحليل مستقل لبيانات اقتصادية عامة. لأغراض المعلومات فقط ولا تمثل نصيحة استثمارية.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ar/disclosure.html">إفصاح الروابط التابعة</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

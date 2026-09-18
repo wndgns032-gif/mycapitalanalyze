@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "Der nächste Schritt der Fed: Warum die Märkte eine Zinssenkung im September einpreisen", "description": "Die Märkte einigen sich auf eine Zinssenkung, doch der Weg danach bleibt umstritten. Wir analysieren die Daten hinter der Entscheidung.", "inLanguage": "de", "datePublished": "2026-08-26", "dateModified": "2026-08-26", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/de/post/fed-rate-outlook-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 311}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/de/"}, {"@type": "ListItem", "position": 2, "name": "Der nächste Schritt der Fed: Warum die Märkte eine Zinssenkung im September einpreisen", "item": "https://www.mycapitalanalyze.com/de/post/fed-rate-outlook-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <p>Unser Basisszenario ist ein gradueller Pfad: eine Senkung im September, eine Pause im Oktober, eine letzte im Dezember. Das dominante Risiko ist asymmetrisch – verschlechtert sich der Arbeitsmarkt schneller als erwartet, könnte die Fed weit aggressiver handeln, als es die Preise andeuten.</p>
 <h2 id="h-7">Was das für Anleger bedeutet</h2>
 <p>Bei festverzinslichen Wertpapieren unterstützt die Richtung die Duration. Bei Aktien bleibt eine sanfte Landung das wahrscheinlichste Szenario, doch die Bewertungen spiegeln bereits viel Optimismus wider. Die größte Chance liegt vielleicht in der Zinsstrukturkurve: Wenn die Fed senkt, während eine Rezession vermieden wird, wird die Kurve deutlich steiler. Das größte Risiko ist das Gegenteil – die Fed lockert in einen Abschwung, den sie nicht vollständig abfedern kann.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Weitere Analysen</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Die Beiträge sind KI-gestützte Zusammenfassungen und unabhängige Analysen öffentlicher Makrodaten. Nur zu Informationszwecken, keine Anlageberatung.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/de/disclosure.html">Affiliate-Offenlegung</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

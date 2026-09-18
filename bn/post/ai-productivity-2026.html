@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "এআই এবং উৎপাদনশীলতা: প্রযুক্তি কি স্থবির শ্রমবাজারকে রক্ষা করতে পারে?", "description": "উৎপাদনশীলতা বৃদ্ধি দীর্ঘমেয়াদী জীবনযাত্রার মানের জন্য সবচেয়ে গুরুত্বপূর্ণ পরিবর্তনশীল। এআই কি অবশেষে তা প্রদান করছে, নাকি এটি আরেকটি হাইপ চক্র?", "inLanguage": "bn", "datePublished": "2026-08-20", "dateModified": "2026-08-20", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/bn/post/ai-productivity-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 310}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/bn/"}, {"@type": "ListItem", "position": 2, "name": "এআই এবং উৎপাদনশীলতা: প্রযুক্তি কি স্থবির শ্রমবাজারকে রক্ষা করতে পারে?", "item": "https://www.mycapitalanalyze.com/bn/post/ai-productivity-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <h2 id="h-6">শ্রমবাজার প্রশ্ন</h2>
 <p>গভীর অনিশ্চয়তা হলো বণ্টনগত। পূর্ববর্তী প্রযুক্তির বিপরীতে, এআই সরাসরি জ্ঞানভিত্তিক শ্রমের সাথে প্রতিযোগিতা করে — যে ধরনের কাজ দীর্ঘদিন ধরে অটোমেশন থেকে সুরক্ষিত ছিল। এই পরিবর্তন মধ্যম-দক্ষ সাদা-কলার চাকরি স্থানচ্যুত করতে পারে, এমনকি এটি বিভিন্ন দক্ষতার দাবি করে এমন নতুন ভূমিকা তৈরি করে।</p>
 <p>আমাদের দৃষ্টিভঙ্গি হলো যে এআই শেষ পর্যন্ত উৎপাদনশীলতার পরিসংখ্যানে দেখা দেবে, তবে বিলম্ব বছরে পরিমাপযোগ্য, ত্রৈমাসিকে নয়। যে অর্থনীতিগুলি সবচেয়ে দ্রুত মানিয়ে নেয় — পুনঃপ্রশিক্ষণ এবং মূলধন বিনিয়োগের মাধ্যমে — তারা লাভ অর্জন করবে। বিনিয়োগকারীদের জন্য, উৎপাদনশীলতার উত্থান, যখন আসবে, দশকের সবচেয়ে গুরুত্বপূর্ণ সামষ্টিক অর্থনৈতিক অনুকূল বায়ু হবে।</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">সম্পর্কিত বিশ্লেষণ</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">নিবন্ধগুলো প্রকাশ্য ম্যাক্রো তথ্যের এআই-সহায়তাপ্রাপ্ত সারসংক্ষেপ ও স্বাধীন বিশ্লেষণ। শুধুমাত্র তথ্যের জন্য, বিনিয়োগ পরামর্শ নয়।</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/bn/disclosure.html">অ্যাফিলিয়েট প্রকাশ</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

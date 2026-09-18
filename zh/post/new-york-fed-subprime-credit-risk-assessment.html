@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "纽约联储推出升级版次级信用风险评估体系", "description": "纽约联储修订次级信用风险衡量方法，将约3300万此前未被评分的借款人纳入统计，次级信用占比随之显著上升，其影响将波及投资者、政策制定者与普通消费者。", "inLanguage": "zh", "datePublished": "2026-09-17", "dateModified": "2026-09-17", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/zh/post/new-york-fed-subprime-credit-risk-assessment.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 23, "isBasedOn": {"@type": "CreativeWork", "name": "FRED Blog", "url": "https://fredblog.stlouisfed.org/2026/09/a-new-calculation-for-subprime-credit-risk/"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/zh/"}, {"@type": "ListItem", "position": 2, "name": "纽约联储推出升级版次级信用风险评估体系", "item": "https://www.mycapitalanalyze.com/zh/post/new-york-fed-subprime-credit-risk-assessment.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -73,6 +74,7 @@
 <p><strong>对政策制定者而言：</strong> 更完整的数据为美联储研判经济风险状况提供了更精确的工具。如果次级信用人群的实际规模被证明更为庞大，决策层在调整政策利率、实施宏观审慎监管措施时，或将更加关注家庭部门的偿债压力与信贷可得性，货币政策的节奏与力度也可能因此受到影响。</p>
 <p><strong>对普通消费者而言：</strong> 被新模型归类为次级借款人的消费者，未来在申请住房抵押贷款、汽车贷款或信用卡时，可能面临更严格的审核标准与更高的借贷成本。如果放贷机构据此普遍收紧信贷条件，居民消费支出乃至整体经济增长都可能受到一定拖累。不过，对于信用记录较薄但实际还款能力良好的消费者来说，新模型凭借更丰富的数据维度，也有望更公平地评估其真实信用状况，这是此次调整的积极一面。</p>
 <p>从艾可菲风险评分3.0到4.0版联合评分模型的过渡，标志着次级信用风险评估迈出了重要一步，也体现了金融分析方法不断演进、数据体系日趋完善的行业趋势。随着市场逐步消化这一变化，其对资产定价、信贷供给与政策走向的深层影响，将在未来数个季度内持续显现，值得投资者、研究者与政策制定者密切跟踪。</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">相关分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -88,8 +90,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本博客文章为基于公开宏观数据的 AI 辅助摘要与独立分析，仅供参考，不构成投资建议。</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/zh/disclosure.html">联盟营销披露</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

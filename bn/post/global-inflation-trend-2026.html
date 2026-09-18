@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "বৈশ্বিক মুদ্রাস্ফীতি: শেষ মাইলটি সবচেয়ে কঠিন", "description": "শিরোনাম মুদ্রাস্ফীতি কমেছে, তবে মূল পরিষেবা খাত এখনও আঠালো। কেন ২% লক্ষ্যে পৌঁছানোর শেষ ধাপটি প্রত্যাশার চেয়ে বেশি সময় নিতে পারে।", "inLanguage": "bn", "datePublished": "2026-08-25", "dateModified": "2026-08-25", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/bn/post/global-inflation-trend-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 276}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/bn/"}, {"@type": "ListItem", "position": 2, "name": "বৈশ্বিক মুদ্রাস্ফীতি: শেষ মাইলটি সবচেয়ে কঠিন", "item": "https://www.mycapitalanalyze.com/bn/post/global-inflation-trend-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <p>এই কারণেই কেন্দ্রীয় ব্যাংকগুলি বিজয় ঘোষণায় দ্বিধাগ্রস্ত। সম্ভাব্য পরিস্থিতি হলো দীর্ঘস্থায়ী স্থবিরতা: সুদের হার বাজারের প্রত্যাশার চেয়ে বেশি সময় ধরে সীমাবদ্ধ থাকবে, এবং লক্ষ্যে ফিরে আসার যাত্রা ২০২৭ সাল পর্যন্ত প্রসারিত হবে।</p>
 <h2 id="h-7">বিনিয়োগের প্রভাব</h2>
 <p>&quot;দীর্ঘ সময়ের জন্য উচ্চ হার&quot; সম্পূর্ণভাবে মূল্যায়িত হয়নি। প্রকৃত ফলন উচ্চ থাকতে পারে, যা দীর্ঘমেয়াদী সম্পদের উপর চাপ সৃষ্টি করে এবং প্রবৃদ্ধি-সংবেদনশীল ইক্যুইটিতে সতর্কতা সমর্থন করে। মুদ্রাস্ফীতি-সূচক বন্ড এবং সরবরাহ-সীমাবদ্ধ পণ্যগুলি সবচেয়ে সরাসরি হেজ। গত তিন বছরের শিক্ষা হলো, একবার মুদ্রাস্ফীতি প্রতিষ্ঠিত হলে, তা নীরবে আত্মসমর্পণ করে না।</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">সম্পর্কিত বিশ্লেষণ</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">নিবন্ধগুলো প্রকাশ্য ম্যাক্রো তথ্যের এআই-সহায়তাপ্রাপ্ত সারসংক্ষেপ ও স্বাধীন বিশ্লেষণ। শুধুমাত্র তথ্যের জন্য, বিনিয়োগ পরামর্শ নয়।</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/bn/disclosure.html">অ্যাফিলিয়েট প্রকাশ</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

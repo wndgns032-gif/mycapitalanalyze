@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "Следующий шаг ФРС: почему рынки закладывают снижение ставки в сентябре", "description": "Рынки сходятся на снижении ставки, но путь после сентября остается спорным. Разбираем данные, определяющие решение.", "inLanguage": "ru", "datePublished": "2026-08-26", "dateModified": "2026-08-26", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ru/post/fed-rate-outlook-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 280}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ru/"}, {"@type": "ListItem", "position": 2, "name": "Следующий шаг ФРС: почему рынки закладывают снижение ставки в сентябре", "item": "https://www.mycapitalanalyze.com/ru/post/fed-rate-outlook-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <p>Наш базовый сценарий — постепенный путь: снижение в сентябре, пауза в октябре и финальное снижение в декабре. Но доминирующий риск асимметричен: если рынок труда ухудшится быстрее ожиданий, ФРС может действовать гораздо агрессивнее, чем закладывают цены.</p>
 <h2 id="h-7">Что это значит для инвесторов</h2>
 <p>Для инструментов с фиксированной доходностью направление движения поддерживает дюрацию. Для акций мягкая посадка остается основным сценарием, но оценки уже отражают изрядный оптимизм. Наибольшая возможность может быть в кривой доходности: если ФРС снижает ставку, избегая рецессии, кривая значительно выгнется вверх. Наибольший риск — обратное: ФРС смягчает политику на фоне спада, который не может полностью компенсировать.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Похожие материалы</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Статьи — подготовленные с помощью ИИ сводки и независимый анализ открытых макроэкономических данных. Только для информации, не инвестиционная рекомендация.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ru/disclosure.html">Раскрытие партнёрских ссылок</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "수익률 곡선의 역전 해소: 경기 침체 신호인가, 오경보인가?", "description": "2년물과 10년물 국채 수익률 스프레드가 다시 플러스로 전환됐다. 역사는 지금부터가 시작이라고 말하지만, 이번 사이클은 다를 수 있다.", "inLanguage": "ko", "datePublished": "2026-08-22", "dateModified": "2026-08-22", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ko/post/yield-curve-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 367}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ko/"}, {"@type": "ListItem", "position": 2, "name": "수익률 곡선의 역전 해소: 경기 침체 신호인가, 오경보인가?", "item": "https://www.mycapitalanalyze.com/ko/post/yield-curve-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -75,6 +76,7 @@
 <h2 id="h-7">주목할 점</h2>
 <p>결정적인 변수는 신용 스프레드와 노동 시장이다. 스프레드가 타이트하게 유지되고 실업률이 낮게 유지된다면 연착륙 시나리오는 유효하다. 스프레드가 확대되고 해고가 가속화되면 곡선의 명성은 다시 한 번 입증될 것이다. 곡선은 위험의 방향을 알려줄 뿐 정확한 날짜를 알려주지 않는다. 그리고 지금은 주의를 기울여야 할 때다.</p>
 <p>이 지표가 중요한 이유는 과거에 여러 번 경고를 무시했을 때 결과가 좋지 않았기 때문이다. 예를 들어, 2006년 역전 해소 후 2008년 금융 위기가 발생했다. 당시에도 많은 전문가들이 이번에는 다를 것이라고 주장했다. 그러나 결국 경기 침체는 피할 수 없었다. 물론 모든 역전이 침체로 이어지는 것은 아니며, 일부는 연착륙으로 끝나기도 했다. 중요한 것은 데이터와 신호를 주의 깊게 모니터링하는 것이다. 현재의 경제 지표는 혼합된 신호를 보내고 있다. 인플레이션은 둔화되고 있지만 여전히 목표치를 웃돌고 있고, 고용 시장은 견고하지만 일부 부문에서 약화 조짐이 나타나고 있다. 따라서 투자자와 정책 입안자들은 경계를 늦추지 말아야 하며, 곡선의 메시지를 단순한 오경보로 치부해서는 안 된다.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">관련 분석</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -90,8 +92,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">이 블로그의 글은 공개된 거시경제 데이터를 AI가 요약·분석한 것입니다. 정보 제공 목적이며 투자 조언이 아닙니다.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ko/disclosure.html">제휴 수익 고지</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

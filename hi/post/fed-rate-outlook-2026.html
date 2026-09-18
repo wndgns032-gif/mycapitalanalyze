@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "फेड का अगला कदम: बाजार सितंबर में कटौती की उम्मीद क्यों कर रहे हैं", "description": "बाजार दर में कटौती पर सहमत हो रहे हैं, लेकिन सितंबर के बाद का रास्ता अभी भी विवादित है। हम निर्णय को प्रभावित करने वाले आंकड़ों का विश्लेषण करते हैं।", "inLanguage": "hi", "datePublished": "2026-08-26", "dateModified": "2026-08-26", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/hi/post/fed-rate-outlook-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 405}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/hi/"}, {"@type": "ListItem", "position": 2, "name": "फेड का अगला कदम: बाजार सितंबर में कटौती की उम्मीद क्यों कर रहे हैं", "item": "https://www.mycapitalanalyze.com/hi/post/fed-rate-outlook-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <p>हमारा आधार मामला एक क्रमिक रास्ता है: सितंबर में कटौती, अक्टूबर में ठहराव, और दिसंबर में अंतिम कटौती। लेकिन प्रमुख जोखिम असममित है - यदि श्रम बाजार उम्मीद से तेजी से बिगड़ता है, तो फेड अनुमान से कहीं अधिक आक्रामक कदम उठा सकता है।</p>
 <h2 id="h-7">निवेशकों के लिए इसका क्या मतलब है</h2>
 <p>निश्चित आय के लिए, दिशा अवधि का समर्थन करती है। इक्विटी के लिए, सॉफ्ट लैंडिंग ही मुख्य परिणाम है, लेकिन मूल्यांकन पहले से ही काफी आशावाद दर्शाते हैं। सबसे बड़ा अवसर उपज वक्र में हो सकता है: यदि फेड कटौती करता है और अर्थव्यवस्था मंदी से बचती है, तो वक्र काफी तीव्र होगा। सबसे बड़ा जोखिम इसका उल्टा है - कि फेड एक ऐसी मंदी में ढील दे रहा है जिसकी भरपाई वह पूरी तरह से नहीं कर सकता।</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">संबंधित विश्लेषण</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">ये लेख सार्वजनिक मैक्रो डेटा के AI-सहायता प्राप्त सारांश और स्वतंत्र विश्लेषण हैं। केवल जानकारी के लिए, निवेश सलाह नहीं।</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/hi/disclosure.html">एफिलिएट खुलासा</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

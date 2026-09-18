@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "IA e Produtividade: A Tecnologia Pode Resgatar Mercados de Trabalho Estagnados?", "description": "O crescimento da produtividade é a variável mais importante para o padrão de vida no longo prazo. Será que a IA finalmente está entregando resultados, ou é mais um ciclo de hype?", "inLanguage": "pt", "datePublished": "2026-08-20", "dateModified": "2026-08-20", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/pt/post/ai-productivity-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 389}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/pt/"}, {"@type": "ListItem", "position": 2, "name": "IA e Produtividade: A Tecnologia Pode Resgatar Mercados de Trabalho Estagnados?", "item": "https://www.mycapitalanalyze.com/pt/post/ai-productivity-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <h2 id="h-6">A Questão do Mercado de Trabalho</h2>
 <p>A incerteza mais profunda é distributiva. Ao contrário das tecnologias anteriores, a IA compete diretamente com o trabalho cognitivo — o tipo de trabalho há muito protegido da automação. A transição pode deslocar empregos de colarinho branco de qualificação média, mesmo enquanto cria novos papéis que exigem capacidades diferentes.</p>
 <p>Nossa visão é que a IA eventualmente aparecerá nas estatísticas de produtividade, mas com um atraso medido em anos, não em trimestres. As economias que se adaptarem mais rápido — por meio de requalificação e investimento de capital — capturarão os ganhos. Para os investidores, o boom de produtividade, quando chegar, será o vento macroeconômico mais importante da década.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Análises relacionadas</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Os artigos são resumos assistidos por IA e análises independentes de dados macroeconômicos públicos. Apenas informativos, não constituem aconselhamento de investimento.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/pt/disclosure.html">Divulgação de afiliados</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

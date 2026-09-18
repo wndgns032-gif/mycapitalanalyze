@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "चीन का विकास मोड़: प्रोत्साहन, निर्यात और ऋण का बोझ", "description": "बीजिंग संपत्ति-आधारित विकास से हटकर उन्नत विनिर्माण की ओर बढ़ रहा है। क्या निर्यात और प्रोत्साहन कमजोर उपभोक्ता मांग की भरपाई कर पाएंगे?", "inLanguage": "hi", "datePublished": "2026-08-24", "dateModified": "2026-08-24", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/hi/post/china-growth-pivot-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 407}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/hi/"}, {"@type": "ListItem", "position": 2, "name": "चीन का विकास मोड़: प्रोत्साहन, निर्यात और ऋण का बोझ", "item": "https://www.mycapitalanalyze.com/hi/post/china-growth-pivot-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -72,6 +73,7 @@
 <p>इसके जवाब में, बीजिंग ने आपूर्ति पक्ष पर दांव बढ़ा दिया है। इलेक्ट्रिक वाहनों, बैटरी, सौर ऊर्जा और अर्धचालकों में निवेश की बाढ़ आ गई है — ऐसे क्षेत्र जहां चीन पहले ही वैश्विक पैमाना हासिल कर चुका है। इन वस्तुओं के निर्यात में उछाल आया है, और चीन अब उन्नत विनिर्माण में बड़ा और बढ़ता हुआ व्यापार अधिशेष चला रहा है। समस्या यह है कि यह रणनीति सिर्फ वस्तुओं का निर्यात नहीं करती; यह अपस्फीति का निर्यात करती है। अतिरिक्त क्षमता वैश्विक कीमतों को नीचे धकेल रही है, जिससे अमेरिका और यूरोप से टैरिफ प्रतिशोध आमंत्रित होता है। चीन का विनिर्माण आक्रमण जितना सफल होता है, उतना ही अधिक व्यापार घर्षण पैदा होता है।</p>
 <h2 id="h-5">ऋण का बोझ</h2>
 <p>सब कुछ ऋण पर टिका है। सकल घरेलू उत्पाद के सापेक्ष कुल सामाजिक वित्तपोषण रिकॉर्ड स्तर पर है। संपत्ति से संक्रमण का मतलब है कि अर्थव्यवस्था को उन क्रेडिट चैनलों पर भरोसा किए बिना विकास करना होगा जो कभी इसे चलाते थे — यह ऐतिहासिक रूप से कठिन कार्य है। हमारा आकलन है कि चीन की विकास दर संरचनात्मक रूप से कम होकर 4-5% के दायरे में रहेगी, जिसमें सामयिक प्रोत्साहन तीव्र गिरावट को रोकेंगे लेकिन पुराने प्रक्षेपवक्र को बहाल नहीं करेंगे। वैश्विक निवेशकों के लिए, मुख्य संचरण चैनल वस्तु मांग, विनिर्माण इनपुट लागत और अपस्फीतिकारी दबाव हैं जो चीनी निर्यात विश्व बाजारों पर डालते रहते हैं।</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">संबंधित विश्लेषण</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -87,8 +89,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">ये लेख सार्वजनिक मैक्रो डेटा के AI-सहायता प्राप्त सारांश और स्वतंत्र विश्लेषण हैं। केवल जानकारी के लिए, निवेश सलाह नहीं।</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/hi/disclosure.html">एफिलिएट खुलासा</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

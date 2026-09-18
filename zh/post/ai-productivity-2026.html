@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "AI与生产率：技术能否拯救停滞的劳动力市场？", "description": "生产率增长是长期生活水平最重要的变量。AI最终能否带来提升，还是又一次炒作周期？", "inLanguage": "zh", "datePublished": "2026-08-20", "dateModified": "2026-08-20", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/zh/post/ai-productivity-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 19}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/zh/"}, {"@type": "ListItem", "position": 2, "name": "AI与生产率：技术能否拯救停滞的劳动力市场？", "item": "https://www.mycapitalanalyze.com/zh/post/ai-productivity-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -80,6 +81,7 @@
 <p>对于投资者而言，这种转变意味着行业赢家和输家的重新洗牌。科技巨头和AI基础设施提供商可能受益，而依赖传统白领劳动力的行业可能面临压力。投资者需要关注企业的AI采用策略和劳动力调整能力，以在变革中保持竞争力。例如，那些积极投资AI并重组业务流程的公司，可能获得竞争优势，而忽视AI的公司可能落后。</p>
 <h2 id="h-13">结论</h2>
 <p>我们的观点是，AI最终会出现在生产率统计数据中，但会有数年的滞后，而非几个季度。适应最快的经济体——通过再培训和资本投资——将获得收益。对于投资者来说，当生产率繁荣到来时，它将成为本十年最重要的宏观顺风。然而，政策制定者必须积极管理转型过程，确保收益广泛分享，避免加剧不平等。否则，AI的潜力可能无法充分实现，而社会代价可能超过其好处。</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">相关分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -95,8 +97,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本博客文章为基于公开宏观数据的 AI 辅助摘要与独立分析，仅供参考，不构成投资建议。</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/zh/disclosure.html">联盟营销披露</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

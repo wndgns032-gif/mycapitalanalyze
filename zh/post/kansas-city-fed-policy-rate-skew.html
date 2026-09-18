@@ -32,6 +32,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "堪萨斯城联储政策利率偏度：洞察市场预期的一扇窗口", "description": "堪萨斯城联储利用期权价格构建政策利率偏度指数，以衡量金融市场对未来利率风险的认知，其信号对理解市场动态与货币政策走向具有重要启示。", "inLanguage": "zh", "datePublished": "2026-09-17", "dateModified": "2026-09-17", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/zh/post/kansas-city-fed-policy-rate-skew.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 28, "isBasedOn": {"@type": "CreativeWork", "name": "FRED Blog", "url": "https://fredblog.stlouisfed.org/2026/09/using-options-prices-to-measure-financial-risk/"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/zh/"}, {"@type": "ListItem", "position": 2, "name": "堪萨斯城联储政策利率偏度：洞察市场预期的一扇窗口", "item": "https://www.mycapitalanalyze.com/zh/post/kansas-city-fed-policy-rate-skew.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -85,6 +86,7 @@
 <h3>对政策而言</h3>
 <p>决策者可以将该指数作为评估经济前景、制定货币政策的辅助工具。其前瞻性特征能够提供关于市场预期的宝贵信息，帮助政策制定者预判潜在的经济挑战。当市场所定价的利率路径与美联储自身的指引出现明显偏离时，决策者或需加强与市场的沟通，以避免金融条件出现不必要的波动，维护货币政策传导的有效性。</p>
 <p>总而言之，堪萨斯城联储的政策利率偏度指数是理解市场预期、预判未来经济趋势的重要工具。它以期权价格衡量金融风险的独特方法，提供了前瞻性视角，对投资者和决策者都至关重要。随着经济的持续演变，该指数很可能继续成为希望在复杂金融环境中导航的人士的重要参考。对于想在利率周期转换中占得先机的市场参与者来说，将其纳入自己的观察清单，无疑是明智之举。</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">相关分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -100,8 +102,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本博客文章为基于公开宏观数据的 AI 辅助摘要与独立分析，仅供参考，不构成投资建议。</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/zh/disclosure.html">联盟营销披露</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>
