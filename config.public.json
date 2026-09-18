@@ -6,8 +6,8 @@
     "_portal_note": "언어권별 대표 포털 소유권 확인 값. 값을 넣으면 해당 메타 태그가 전 페이지 <head>에 삽입된다. 발급처는 아래와 같다.",
     "naver_site_verification": "10c3cd10abecbdddf8beae5abf0aff0951cb26f3",
     "baidu_site_verification": "",
-    "yandex_verification": "",
-    "bing_site_verification": ""
+    "yandex_verification": "0462a741f1efadb4",
+    "bing_site_verification": "20CF9709C950EA226C24CDFC8B014EB1"
   },
   "adsense": {
     "enabled": false,
