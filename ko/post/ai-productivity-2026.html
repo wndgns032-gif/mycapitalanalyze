@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "AI와 생산성: 기술이 침체된 노동시장을 구할 수 있을까?", "description": "생산성 성장은 장기적인 생활수준을 결정하는 가장 중요한 변수입니다. AI가 마침내 성과를 내고 있을까요, 아니면 또 다른 과대광고에 불과할까요?", "inLanguage": "ko", "datePublished": "2026-08-20", "dateModified": "2026-08-20", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ko/post/ai-productivity-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 464}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ko/"}, {"@type": "ListItem", "position": 2, "name": "AI와 생산성: 기술이 침체된 노동시장을 구할 수 있을까?", "item": "https://www.mycapitalanalyze.com/ko/post/ai-productivity-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -75,6 +76,7 @@
 <h2 id="h-7">투자자에게 주는 시사점</h2>
 <p>우리의 견해는 AI가 결국 생산성 통계에 나타나겠지만, 분기가 아닌 몇 년의 시차가 있을 것이라는 점입니다. 가장 빠르게 적응하는 경제, 즉 재교육과 자본 투자를 통해 적응하는 경제가 이익을 얻을 것입니다. 투자자에게 생산성 붐은 도래할 때 이번 10년의 가장 중요한 거시적 순풍이 될 것입니다. AI 수혜 기업, 인프라 제공업체, 그리고 적응하는 기업에 대한 노출이 차별화 요소가 될 수 있습니다. 그러나 정책 입안자들은 노동 전환을 완화하고 성장의 혜택이 널리 공유되도록 해야 합니다.</p>
 <p>결론적으로, AI는 생산성 둔화에 대한 해답이 될 잠재력이 있지만, 그 경로는 순탄하지 않을 것입니다. 기술 낙관주의와 현실적 평가 사이의 균형이 중요합니다. 생산성 통계가 개선되기 시작하면, 이는 경제와 시장에 깊은 영향을 미칠 것입니다. 그때까지 우리는 인내심을 가지고 적응의 속도를 주시해야 합니다.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">관련 분석</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -90,8 +92,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">이 블로그의 글은 공개된 거시경제 데이터를 AI가 요약·분석한 것입니다. 정보 제공 목적이며 투자 조언이 아닙니다.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ko/disclosure.html">제휴 수익 고지</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

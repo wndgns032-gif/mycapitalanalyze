@@ -23,6 +23,15 @@ SITE_NAME = 'MyCapital Analyze'
 POSTS_DIR = os.path.join(BASE, 'content', 'posts')
 TRANS_DIR = os.path.join(BASE, 'content', 'translations')
 
+GA4_ID = ((CONFIG.get('analytics') or {}).get('ga4_id') or '').strip()
+AD_CLIENT = 'ca-pub-9243770518153989'
+
+AFF_CFG = CONFIG.get('affiliates') or {}
+AFF_ENABLED = bool(AFF_CFG.get('enabled'))
+AFF_ALL = AFF_CFG.get('offers') or []
+# url이 채워지지 않은 항목은 렌더링하지 않는다 (빈 링크 방지)
+AFF_LIVE = [o for o in AFF_ALL if (o.get('url') or '').strip()]
+
 # (code, 표시명, rtl 여부)
 LANG_META = {
     'en': ('English', 'ltr'),
@@ -96,6 +105,63 @@ LANG_STR = {
            'নিবন্ধগুলো প্রকাশ্য ম্যাক্রো তথ্যের এআই-সহায়তাপ্রাপ্ত সারসংক্ষেপ ও স্বাধীন বিশ্লেষণ। শুধুমাত্র তথ্যের জন্য, বিনিয়োগ পরামর্শ নয়।'],
 }
 DEFAULT_STR = LANG_STR['en']
+
+# 제휴 UI 문자열: [박스제목, 면책문구, 라벨, 페이지제목, 페이지서문]
+AFF_STR = {
+    'en': ['Recommended resources',
+           'Some of the links above are affiliate links. If you sign up through them we may earn a commission at no additional cost to you. This never influences our analysis or rankings.',
+           'Sponsored', 'Affiliate Disclosure',
+           'We believe in being fully transparent about how this site is funded.'],
+    'ko': ['추천 리소스',
+           '위 링크 중 일부는 제휴 링크입니다. 이를 통해 가입하시면 추가 비용 없이 저희가 수수료를 받을 수 있습니다. 이는 분석 내용이나 평가에 어떠한 영향도 주지 않습니다.',
+           '광고 · 제휴', '제휴 수익 고지',
+           '이 사이트가 어떻게 운영 자금을 조달하는지 투명하게 공개합니다.'],
+    'zh': ['推荐资源',
+           '以上部分链接为联盟链接。通过它们注册时我们可能获得佣金，您无需支付额外费用。这绝不会影响我们的分析或排名。',
+           '广告 · 联盟', '联盟营销披露',
+           '我们致力于完全公开本网站的资金来源。'],
+    'ja': ['おすすめリソース',
+           '上記リンクの一部はアフィリエイトリンクです。それらを経由して登録された場合、お客様に追加費用なく当サイトが報酬を受け取ることがあります。分析内容や評価に影響はありません。',
+           '広告 · アフィリエイト', 'アフィリエイト開示',
+           '本サイトの運営資金について全面的に透明性を確保します。'],
+    'es': ['Recursos recomendados',
+           'Algunos enlaces son de afiliado. Si te registras a través de ellos podemos recibir una comisión sin coste adicional para ti. Esto nunca influye en nuestro análisis.',
+           'Publicidad · Afiliado', 'Divulgación de afiliados',
+           'Creemos en la total transparencia sobre cómo se financia este sitio.'],
+    'fr': ['Ressources recommandées',
+           'Certains liens sont des liens d\'affiliation. Si vous vous inscrivez via ceux-ci, nous pouvons percevoir une commission sans frais supplémentaires pour vous. Cela n\'influence jamais notre analyse.',
+           'Publicité · Affiliation', 'Divulgation d\'affiliation',
+           'Nous croyons à une transparence totale sur le financement de ce site.'],
+    'de': ['Empfohlene Ressourcen',
+           'Einige Links sind Affiliate-Links. Wenn Sie sich über sie anmelden, erhalten wir eine Provision ohne zusätzliche Kosten für Sie. Dies beeinflusst unsere Analyse niemals.',
+           'Anzeige · Affiliate', 'Affiliate-Offenlegung',
+           'Wir setzen auf vollständige Transparenz bei der Finanzierung dieser Website.'],
+    'pt': ['Recursos recomendados',
+           'Alguns links são de afiliado. Se você se cadastrar por eles, podemos receber uma comissão sem custo adicional para você. Isso nunca influencia nossa análise.',
+           'Publicidade · Afiliado', 'Divulgação de afiliados',
+           'Acreditamos na total transparência sobre como este site é financiado.'],
+    'ru': ['Рекомендуемые ресурсы',
+           'Некоторые ссылки являются партнёрскими. Если вы зарегистрируетесь по ним, мы можем получить комиссию без дополнительных затрат для вас. Это никогда не влияет на наш анализ.',
+           'Реклама · Партнёрская ссылка', 'Раскрытие партнёрских ссылок',
+           'Мы за полную прозрачность в вопросах финансирования сайта.'],
+    'hi': ['अनुशंसित संसाधन',
+           'ऊपर दिए गए कुछ लिंक एफिलिएट लिंक हैं। इनके माध्यम से साइन अप करने पर हमें कमीशन मिल सकता है, जिसका आप पर कोई अतिरिक्त खर्च नहीं होगा। यह हमारे विश्लेषण को कभी प्रभावित नहीं करता।',
+           'विज्ञापन · एफिलिएट', 'एफिलिएट खुलासा',
+           'हम इस साइट के वित्तपोषण को लेकर पूर्ण पारदर्शिता में विश्वास करते हैं।'],
+    'id': ['Sumber daya yang direkomendasikan',
+           'Beberapa tautan adalah tautan afiliasi. Jika Anda mendaftar melaluinya, kami dapat menerima komisi tanpa biaya tambahan bagi Anda. Hal ini tidak pernah memengaruhi analisis kami.',
+           'Iklan · Afiliasi', 'Pengungkapan Afiliasi',
+           'Kami percaya pada transparansi penuh tentang bagaimana situs ini didanai.'],
+    'ar': ['موارد موصى بها',
+           'بعض الروابط أعلاه روابط تابعة (أفلييت). إذا سجلت عبرها قد نحصل على عمولة دون أي تكلفة إضافية عليك. هذا لا يؤثر أبداً على تحليلنا أو ترتيبنا.',
+           'إعلان · رابط تابع', 'إفصاح الروابط التابعة',
+           'نؤمن بالشفافية الكاملة حول كيفية تمويل هذا الموقع.'],
+    'bn': ['প্রস্তাবিত সংস্থান',
+           'উপরের কিছু লিংক অ্যাফিলিয়েট লিংক। এগুলোর মাধ্যমে সাইন আপ করলে আমরা কমিশন পেতে পারি, আপনার কোনো অতিরিক্ত খরচ হবে না। এটি আমাদের বিশ্লেষণে কখনো প্রভাব ফেলে না।',
+           'বিজ্ঞাপন · অ্যাফিলিয়েট', 'অ্যাফিলিয়েট প্রকাশ',
+           'এই সাইটের অর্থায়ন সম্পর্কে আমরা সম্পূর্ণ স্বচ্ছতায় বিশ্বাস করি।'],
+}
+DEFAULT_AFF = AFF_STR['en']
 
 CATEGORY_GRADIENT = {
     'Monetary Policy': 'from-brand-700 to-brand-500',
@@ -243,8 +309,118 @@ def footer_html(lang):
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 {SITE_NAME}. All rights reserved.</p>
       <p class="text-xs leading-relaxed">{strs(lang)[6]}</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="{(home_path(lang)) + AFF_CFG.get('disclosure_path', 'disclosure.html')}">{htmllib.escape(AFF_STR.get(lang, DEFAULT_AFF)[3])}</a></p>
     </div>
   </footer>'''
+
+
+def ga_html():
+    """GA4 추적 코드. 측정 ID가 설정되지 않았으면 빈 문자열."""
+    if not GA4_ID:
+        return ''
+    return (
+        f'  <script async src="https://www.googletagmanager.com/gtag/js?id={GA4_ID}"></script>\n'
+        "  <script>\n"
+        "    window.dataLayer = window.dataLayer || [];\n"
+        "    function gtag(){dataLayer.push(arguments);}\n"
+        "    gtag('js', new Date());\n"
+        f"    gtag('config', '{GA4_ID}');\n"
+        "  </script>"
+    )
+
+
+def conversion_tracking_js():
+    """아웃바운드(제휴/출처) 클릭을 GA4 이벤트로 전송."""
+    return """  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>"""
+
+
+def offers_for(category):
+    """카테고리에 맞는 실제 제휴 상품. 비활성/빈 링크는 제외."""
+    if not AFF_ENABLED or not AFF_LIVE:
+        return []
+    out = []
+    for o in AFF_LIVE:
+        cats = o.get('categories') or ['*']
+        if '*' in cats or category in cats:
+            out.append(o)
+    return out
+
+
+def affiliate_box(lang, category):
+    """포스트 하단 제휴 추천 박스 (FTC/표시광고법 준수: rel=sponsored + 고지 동일 화면)."""
+    offers = offers_for(category)
+    if not offers:
+        return ''
+    s = AFF_STR.get(lang, DEFAULT_AFF)
+    items = '\n'.join(
+        '    <li><a class="font-medium underline hover:text-brand-600" '
+        'rel="sponsored nofollow noopener" target="_blank" '
+        f'data-affiliate="{htmllib.escape(o["id"])}" href="{htmllib.escape(o["url"])}">'
+        f'{htmllib.escape(o["name"])}</a>'
+        f' — <span class="text-slate-600 dark:text-slate-400">{htmllib.escape(o["blurb"])}</span></li>'
+        for o in offers)
+    return f'''<aside class="mt-10 border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-slate-50 dark:bg-slate-900">
+  <p class="text-xs uppercase tracking-wide text-slate-500 mb-2">{htmllib.escape(s[2])}</p>
+  <h2 class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(s[0])}</h2>
+  <ul class="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+{items}
+  </ul>
+  <p class="mt-4 text-xs text-slate-500 leading-relaxed">{htmllib.escape(s[1])}</p>
+</aside>'''
+
+
+def build_disclosure(lang, available):
+    """제휴 수익 고지 페이지. 모든 언어에 생성 (AdSense 이용자 신뢰 목적)."""
+    s = AFF_STR.get(lang, DEFAULT_AFF)
+    f = LANG_STR.get(lang, DEFAULT_STR)
+    if AFF_LIVE and AFF_ENABLED:
+        items = '\n'.join(
+            f'    <li><a rel="sponsored nofollow noopener" target="_blank" '
+            f'data-affiliate="{htmllib.escape(o["id"])}" href="{htmllib.escape(o["url"])}">'
+            f'{htmllib.escape(o["name"])}</a> — {htmllib.escape(o["blurb"])}</li>'
+            for o in AFF_LIVE)
+        body_list = f'  <ul class="list-disc pl-5 text-sm text-slate-700 dark:text-slate-300 space-y-1">\n{items}\n  </ul>'
+    else:
+        body_list = ('  <p class="text-sm text-slate-600 dark:text-slate-400">'
+                     + htmllib.escape(s[1]) + '</p>')
+    content = f'''<article class="max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">{htmllib.escape(s[3])}</h1>
+  <p class="text-slate-600 dark:text-slate-400 mb-6">{htmllib.escape(s[4])}</p>
+  <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">{htmllib.escape(s[3])}</h2>
+  <p class="text-sm text-slate-700 dark:text-slate-300 mb-4">{htmllib.escape(s[1])}</p>
+{body_list}
+  <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-2">Advertising</h2>
+  <p class="text-sm text-slate-700 dark:text-slate-300">This site displays advertising, including Google AdSense. Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this or other websites.</p>
+  <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-2">Editorial independence</h2>
+  <p class="text-sm text-slate-700 dark:text-slate-300">Commercial relationships never determine which topics we cover or the conclusions of our analysis. All posts are based on publicly available economic data, with original sources credited.</p>
+  <p class="mt-6 text-xs text-slate-500 leading-relaxed">{htmllib.escape(f[6])}</p>
+</article>'''
+    canonical = DOMAIN + (('/' if lang == 'en' else f'/{lang}/')) + AFF_CFG.get('disclosure_path', 'disclosure.html')
+    html_doc = layout(lang, s[3] + ' — ' + SITE_NAME, s[4], canonical, content)
+    out_path = os.path.join(BASE, AFF_CFG.get('disclosure_path', 'disclosure.html')) if lang == 'en' \
+        else os.path.join(BASE, lang, AFF_CFG.get('disclosure_path', 'disclosure.html'))
+    os.makedirs(os.path.dirname(out_path) or BASE, exist_ok=True)
+    open(out_path, 'w', encoding='utf-8').write(html_doc)
+    return out_path
 
 
 def lang_switcher(current, slug=None, available=None):
@@ -304,6 +480,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
   <script>tailwind.config = {{ {TAILWIND_CONFIG} }};</script>
   <link rel="stylesheet" href="/assets/css/custom.css" />
 {ld}
+{ga_html()}
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -316,6 +493,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
 
 {footer_html(lang)}
 <script src="/assets/js/main.js"></script>
+{conversion_tracking_js()}
 </body>
 </html>
 '''
@@ -433,6 +611,7 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     <p class="text-slate-600 dark:text-slate-400">{htmllib.escape(desc)}</p>{src}
   </header>
   <div class="prose prose-slate dark:prose-invert max-w-none">{body_html}</div>
+  {affiliate_box(lang, category)}
   {related_html(lang, slug, posts_in_lang, s[5])}
 </article>'''
 
@@ -489,6 +668,13 @@ def build_sitemap(posts, avail_by_slug, langs_with_home):
     # 정적 페이지
     for p in ('about.html', 'privacy.html', 'contact.html'):
         emit(DOMAIN + '/' + p, [('en', DOMAIN + '/' + p)])
+
+    # 제휴 고지 페이지 (홈이 존재하는 모든 언어)
+    dp = AFF_CFG.get('disclosure_path', 'disclosure.html')
+    langs = [c for c in LANG_META if c in langs_with_home or c == 'en']
+    dp_alts = [(c, DOMAIN + home_path(c) + dp) for c in langs]
+    for c in langs:
+        emit(DOMAIN + home_path(c) + dp, dp_alts)
 
     # 홈 (존재하는 언어만)
     home_alts = [(c, DOMAIN + home_path(c)) for c in LANG_META if c in langs_with_home]
@@ -605,10 +791,12 @@ def main():
                            avail_by_slug[p['slug']])
             total += 1
         build_index(lang, plist, home_available)
+        build_disclosure(lang, home_available)
 
     build_sitemap(posts, avail_by_slug, langs_with_home)
     build_feed(posts)
-    print(f'빌드 완료: 포스트 페이지 {total}개 + 홈 {len(LANG_META)}개, sitemap.xml, feed.xml OK')
+    dp = AFF_CFG.get('disclosure_path', 'disclosure.html')
+    print(f'빌드 완료: 포스트 페이지 {total}개 + 홈 {len(LANG_META)}개 + {dp} {len(LANG_META)}개, sitemap.xml, feed.xml OK')
 
 
 if __name__ == '__main__':

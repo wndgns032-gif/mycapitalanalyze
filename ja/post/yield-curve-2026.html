@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "イールドカーブの逆転解消：景気後退のシグナルか、それとも誤報か？", "description": "2年10年スプレッドが再びプラス圏に戻った。歴史的には、この「逆転解消」は景気後退のカウントダウンの始まりを意味するが、今回は異なる可能性もある。", "inLanguage": "ja", "datePublished": "2026-08-22", "dateModified": "2026-08-22", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ja/post/yield-curve-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 15}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ja/"}, {"@type": "ListItem", "position": 2, "name": "イールドカーブの逆転解消：景気後退のシグナルか、それとも誤報か？", "item": "https://www.mycapitalanalyze.com/ja/post/yield-curve-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -77,6 +78,7 @@
 <p>この逆転解消をどう解釈すべきかについては、エコノミストの間でも見解が分かれている。楽観派は、今回の逆転は主に供給要因によるものであり、需要の過熱によるものではないため、景気後退の前触れとしての信頼性は低いと主張する。一方、悲観派は、歴史的なパターンが示すように、逆転解消は常に景気後退の前兆であり、今回も例外ではないと警告する。実際、過去のデータを見ると、逆転解消後の景気後退発生率は非常に高い。しかし、過去のサイクルと異なり、今回は労働市場が極めて堅調であり、企業の財務体質も健全である。これらの要因が、景気後退の発生を遅らせるか、あるいは回避させる可能性がある。</p>
 <p>投資家にとっては、イールドカーブの動きだけでなく、雇用統計や企業の業績動向、クレジット市場の状況を総合的に判断することが重要だ。特に、ハイイールド債のスプレッド拡大は、企業の資金調達環境の悪化を示す早期警告サインとなる。また、失業保険申請件数の増加や、非農業部門雇用者数の減少傾向も注意深く監視すべきだ。</p>
 <p>結論として、イールドカーブの逆転解消は、歴史的に見れば景気後退の有力な先行指標であることは間違いない。しかし、今回のサイクルが過去と異なる点も多く、単純に歴史の繰り返しと決めつけるのは危険だ。市場参加者は、このシグナルを無視するのではなく、他の経済指標と併せて慎重に解釈し、リスク管理に活かすことが求められる。</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">関連分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -92,8 +94,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本ブログの記事は公開されたマクロ経済データに基づく AI 支援の要約と独自分析です。情報提供のみを目的とし、投資助言ではありません。</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ja/disclosure.html">アフィリエイト開示</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

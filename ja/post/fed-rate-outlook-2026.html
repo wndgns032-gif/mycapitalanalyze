@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "FRBの次の一手：市場が9月利下げを織り込む理由", "description": "市場は利下げに収束しつつあるが、9月以降の道筋は依然として議論の的だ。その決定を左右するデータを詳しく解説する。", "inLanguage": "ja", "datePublished": "2026-08-26", "dateModified": "2026-08-26", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ja/post/fed-rate-outlook-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 16}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ja/"}, {"@type": "ListItem", "position": 2, "name": "FRBの次の一手：市場が9月利下げを織り込む理由", "item": "https://www.mycapitalanalyze.com/ja/post/fed-rate-outlook-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -78,6 +79,7 @@
 <p>また、FRBの独立性への懸念も浮上している。大統領選挙を控え、政治的压力が金融政策に影響を与える可能性が指摘されている。しかし、パウエル議長は独立性を強調し、データに基づいた判断を行うと述べている。市場はこの発言を信頼し、9月の利下げをほぼ確実視している。</p>
 <p>投資家にとっては、ポートフォリオの見直しが急務だ。金利低下局面では、長期債への投資が有効となる一方、株式市場ではセクター間の格差が拡大する可能性がある。特に、金融セクターは金利低下で収益が圧迫される一方、不動産や公益事業は恩恵を受けるだろう。また、新興国市場にも資金が流入する可能性が高く、為替市場ではドル安が進むかもしれない。</p>
 <p>結局のところ、FRBの次の一手は、経済指標と市場の期待の間の綱引きによって決まるだろう。我々は引き続き、労働市場とインフレの指標を注視し、その結果をいち早く読者に伝えていく。</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">関連分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -93,8 +95,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本ブログの記事は公開されたマクロ経済データに基づく AI 支援の要約と独自分析です。情報提供のみを目的とし、投資助言ではありません。</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ja/disclosure.html">アフィリエイト開示</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

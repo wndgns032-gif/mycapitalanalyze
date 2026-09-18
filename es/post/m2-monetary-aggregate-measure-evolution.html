@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "La evolución del M2 como medida de los agregados monetarios", "description": "Un análisis del agregado monetario M2 de la Reserva Federal (Fed), sus componentes y los cambios recientes introducidos en su cálculo.", "inLanguage": "es", "datePublished": "2026-09-17", "dateModified": "2026-09-17", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/es/post/m2-monetary-aggregate-measure-evolution.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 606, "isBasedOn": {"@type": "CreativeWork", "name": "FRED Blog", "url": "https://fredblog.stlouisfed.org/2026/09/measuring-money-with-m2/"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/es/"}, {"@type": "ListItem", "position": 2, "name": "La evolución del M2 como medida de los agregados monetarios", "item": "https://www.mycapitalanalyze.com/es/post/m2-monetary-aggregate-measure-evolution.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -75,6 +76,7 @@
 <p>Los cambios en el M2 tienen consecuencias tanto para los mercados como para los inversores. Estos últimos quizá deban revisar su valoración de la oferta monetaria y de las condiciones de liquidez de la economía, ya que la cifra revisada del M2 puede ofrecer una perspectiva distinta del panorama general de liquidez. Para los mercados, el cambio en la composición del M2 podría influir en las decisiones sobre los tipos de interés y en otras acciones de política monetaria, dado que la Reserva Federal tendrá en cuenta los datos revisados en su proceso de toma de decisiones.</p>
 <p>El perfeccionamiento continuo de agregados monetarios como el M2 refleja la naturaleza cambiante del sistema financiero y la necesidad de contar con indicadores económicos precisos y pertinentes. A medida que la economía se adapta a nuevos productos y servicios financieros, las medidas utilizadas para evaluarla también deben evolucionar.</p>
 <p>Comprender los matices del M2 y de sus componentes permite a economistas, inversores y responsables de políticas navegar mejor por el complejo panorama monetario y tomar decisiones informadas que inciden en la salud general de la economía.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Análisis relacionado</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -90,8 +92,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Los artículos son resúmenes asistidos por IA y análisis independientes de datos macroeconómicos públicos. Solo informativos, no constituyen asesoramiento de inversión.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/es/disclosure.html">Divulgación de afiliados</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

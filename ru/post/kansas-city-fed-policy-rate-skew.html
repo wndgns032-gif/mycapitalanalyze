@@ -32,6 +32,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "Индекс скью ключевой ставки Федерального резервного банка Канзас-Сити: окно в рыночные ожидания", "description": "Как Федеральный резервный банк Канзас-Сити использует цены опционов для оценки восприятия финансовых рисков и что это означает для динамики рынка.", "inLanguage": "ru", "datePublished": "2026-09-17", "dateModified": "2026-09-17", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ru/post/kansas-city-fed-policy-rate-skew.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 516, "isBasedOn": {"@type": "CreativeWork", "name": "FRED Blog", "url": "https://fredblog.stlouisfed.org/2026/09/using-options-prices-to-measure-financial-risk/"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ru/"}, {"@type": "ListItem", "position": 2, "name": "Индекс скью ключевой ставки Федерального резервного банка Канзас-Сити: окно в рыночные ожидания", "item": "https://www.mycapitalanalyze.com/ru/post/kansas-city-fed-policy-rate-skew.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -82,6 +83,7 @@
 <h3>Для политики</h3>
 <p>Регуляторы могут применять KC PRS как дополнительный инструмент оценки экономических перспектив и выработки решений в области денежно-кредитной политики. Опережающий характер индекса даёт ценную информацию об ожиданиях рынка и помогает заранее распознавать потенциальные экономические вызовы.</p>
 <p>В заключение отметим: индекс скью ключевой ставки Федерального резервного банка Канзас-Сити — ценный инструмент для понимания рыночных ожиданий и прогнозирования будущих экономических тенденций. Его уникальный подход к измерению финансовых рисков через цены опционов открывает опережающую перспективу, важную как для инвесторов, так и для политиков. По мере дальнейшего развития экономики KC PRS, скорее всего, останется значимым ориентиром для всех, кто стремится ориентироваться в сложном финансовом ландшафте.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Похожие материалы</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -97,8 +99,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Статьи — подготовленные с помощью ИИ сводки и независимый анализ открытых макроэкономических данных. Только для информации, не инвестиционная рекомендация.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ru/disclosure.html">Раскрытие партнёрских ссылок</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

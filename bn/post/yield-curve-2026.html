@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "ইল্ড কার্ভের আন-ইনভার্সন: মন্দার সংকেত নাকি মিথ্যা অ্যালার্ম?", "description": "2s10s কার্ভ আবারও ইতিবাচক অঞ্চলে ফিরে এসেছে। ইতিহাস বলে ঘড়ি এখন শুরু — তবে এই চক্রটি ভিন্ন হতে পারে।", "inLanguage": "bn", "datePublished": "2026-08-22", "dateModified": "2026-08-22", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/bn/post/yield-curve-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 308}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/bn/"}, {"@type": "ListItem", "position": 2, "name": "ইল্ড কার্ভের আন-ইনভার্সন: মন্দার সংকেত নাকি মিথ্যা অ্যালার্ম?", "item": "https://www.mycapitalanalyze.com/bn/post/yield-curve-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <p>যদি এই চক্রটি ঐতিহাসিক টেমপ্লেট অনুসরণ করে, তবে আমরা এখন যে আন-ইনভার্সন প্রত্যক্ষ করছি তা ২০২৭ সালে কোথাও একটি মন্দা স্থাপন করবে। কিন্তু এই চক্রটি ভিন্ন হতে পারে। ইনভার্সনটি ঐতিহ্যগত অতিরিক্ত গরমের মতোই একটি সরবরাহ শক — মহামারী-পরবর্তী মুদ্রাস্ফীতি বৃদ্ধি — দ্বারা ঘটেছিল এবং কর্পোরেট খাত অস্বাভাবিক শক্তিশালী ব্যালেন্স শীট নিয়ে চক্রে প্রবেশ করেছিল।</p>
 <h2 id="h-7">কী দেখতে হবে</h2>
 <p>নির্ধারক ভেরিয়েবল হল ক্রেডিট স্প্রেড এবং শ্রমবাজার। যদি স্প্রেড টাইট থাকে এবং বেকারত্ব কম থাকে, তবে সফট-ল্যান্ডিং পরিস্থিতি টিকে থাকে। যদি স্প্রেড প্রশস্ত হতে শুরু করে এবং ছাঁটাই ত্বরান্বিত হয়, তবে কার্ভের খ্যাতি আবারও সত্য প্রমাণিত হবে। কার্ভ আপনাকে ঝুঁকির দিক নির্দেশ করে, সঠিক তারিখ নয় — এবং এখন, এটি সতর্কতার দিকে ইঙ্গিত করছে।</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">সম্পর্কিত বিশ্লেষণ</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">নিবন্ধগুলো প্রকাশ্য ম্যাক্রো তথ্যের এআই-সহায়তাপ্রাপ্ত সারসংক্ষেপ ও স্বাধীন বিশ্লেষণ। শুধুমাত্র তথ্যের জন্য, বিনিয়োগ পরামর্শ নয়।</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/bn/disclosure.html">অ্যাফিলিয়েট প্রকাশ</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

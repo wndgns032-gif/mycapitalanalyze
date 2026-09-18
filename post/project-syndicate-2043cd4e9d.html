@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "AI Policy Debate: Why Economist Disagreements Matter for Markets", "description": "A look at the recent clash between Daron Acemoglu and critics, and what it signals for AI regulation and investment.", "inLanguage": "en", "datePublished": "2026-08-29", "dateModified": "2026-08-29", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/post/project-syndicate-2043cd4e9d.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 376, "isBasedOn": {"@type": "CreativeWork", "name": "Project Syndicate", "url": "https://www.project-syndicate.org/commentary/economist-attack-on-acemoglu-effort-to-discredit-not-engage-by-eran-yashiv-2026-08"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/"}, {"@type": "ListItem", "position": 2, "name": "AI Policy Debate: Why Economist Disagreements Matter for Markets", "item": "https://www.mycapitalanalyze.com/post/project-syndicate-2043cd4e9d.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -63,6 +64,7 @@
 <h2 id="h-6">Implications</h2>
 <p>For investors, the key takeaway is to monitor policy signals emanating from these academic disputes. While immediate market impact may be limited, the direction of AI policy will influence sectors from tech to manufacturing. For policymakers, the lesson is to foster constructive dialogue, avoiding the temptation to marginalize dissenting voices. The stakes are too high for intellectual bullying to replace evidence-based analysis.</p>
 <p>In conclusion, the clash over AI policy is more than an academic squabble; it is a bellwether for how society will navigate the challenges and opportunities of artificial intelligence. As the debate continues, all stakeholders should strive for civility and rigor, ensuring that the policies we adopt are grounded in sound economics rather than personal animosity.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Related Analysis</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -78,8 +80,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Posts on this blog are AI-assisted summaries and independent analysis of public macro and economic data. Content is for informational purposes only and does not constitute investment advice.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/disclosure.html">Affiliate Disclosure</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

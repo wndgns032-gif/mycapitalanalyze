@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "ニューヨーク連銀、サブプライム信用リスク評価を刷新――新手法が描く米消費者信用の実像", "description": "ニューヨーク連邦準備銀行が改訂したサブプライム信用リスクの測定手法は、対象となる借り手を大幅に広げ、金融市場と政策運営への影響を浮き彫りにする。", "inLanguage": "ja", "datePublished": "2026-09-17", "dateModified": "2026-09-17", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ja/post/new-york-fed-subprime-credit-risk-assessment.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 27, "isBasedOn": {"@type": "CreativeWork", "name": "FRED Blog", "url": "https://fredblog.stlouisfed.org/2026/09/a-new-calculation-for-subprime-credit-risk/"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ja/"}, {"@type": "ListItem", "position": 2, "name": "ニューヨーク連銀、サブプライム信用リスク評価を刷新――新手法が描く米消費者信用の実像", "item": "https://www.mycapitalanalyze.com/ja/post/new-york-fed-subprime-credit-risk-assessment.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -75,6 +76,7 @@
 <p><strong>消費者への影響：</strong> 新たにサブプライムと分類されれば、ローン審査で不利になったり、金利の上乗せを求められたりするリスクがある。信用供与の条件が全体的に厳しくなれば、個人消費の足かせとなり、経済成長を下押しする要因にもなりかねない。</p>
 <h2 id="h-15">展望</h2>
 <p>新手法への移行は、サブプライム信用リスクの評価における大きな前進であり、より正確で包括的なデータを追い求める金融分析の進化を象徴する出来事だ。統計の見え方が変われば、融資行動や投資判断も変わり、やがて実体経済へも波及する。金融業界がこの変更に適応していく中で、市場、投資家、政策への影響が今後どのように顕在化していくか、データの推移を慎重に見守る必要がある。</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">関連分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -90,8 +92,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本ブログの記事は公開されたマクロ経済データに基づく AI 支援の要約と独自分析です。情報提供のみを目的とし、投資助言ではありません。</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ja/disclosure.html">アフィリエイト開示</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

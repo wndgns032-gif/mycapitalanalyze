@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "マネーサプライ指標M2の進化――構成要素と最近の改定を検証する", "description": "米連邦準備制度（FRB）のマネーサプライ指標M2の構成要素、集計方法の変更、そしてその経済的意味を分析する。", "inLanguage": "ja", "datePublished": "2026-09-17", "dateModified": "2026-09-17", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ja/post/m2-monetary-aggregate-measure-evolution.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 30, "isBasedOn": {"@type": "CreativeWork", "name": "FRED Blog", "url": "https://fredblog.stlouisfed.org/2026/09/measuring-money-with-m2/"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ja/"}, {"@type": "ListItem", "position": 2, "name": "マネーサプライ指標M2の進化――構成要素と最近の改定を検証する", "item": "https://www.mycapitalanalyze.com/ja/post/m2-monetary-aggregate-measure-evolution.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -80,6 +81,7 @@
 <p>市場にとっては、M2の構成変化が金利判断やその他の金融政策運営に影響を与えうる点も見逃せない。Fedは改定後のデータを政策決定プロセスに組み込むため、マネーサプライの伸びを手がかりとする市場の金利観にも変化が及ぶ可能性がある。</p>
 <h2 id="h-20">統計の進化は金融システムの進化の反映</h2>
 <p>M2に代表される金融集計が絶えず洗練されているのは、金融システム自体が変化し続けて</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">関連分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -95,8 +97,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本ブログの記事は公開されたマクロ経済データに基づく AI 支援の要約と独自分析です。情報提供のみを目的とし、投資助言ではありません。</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ja/disclosure.html">アフィリエイト開示</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

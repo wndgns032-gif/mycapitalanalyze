@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "中国增长转向：刺激、出口与债务积压", "description": "北京正从房地产主导的增长转向先进制造业，但出口和刺激能否抵消结构性疲弱的消费？", "inLanguage": "zh", "datePublished": "2026-08-24", "dateModified": "2026-08-24", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/zh/post/china-growth-pivot-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 18}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/zh/"}, {"@type": "ListItem", "position": 2, "name": "中国增长转向：刺激、出口与债务积压", "item": "https://www.mycapitalanalyze.com/zh/post/china-growth-pivot-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -79,6 +80,7 @@
 <p>我们的评估是，中国增长将结构性放缓至4-5%区间，间歇性刺激措施防止急剧下滑，但不会恢复旧轨迹。对于全球投资者而言，关键传导渠道包括大宗商品需求、制造业投入成本以及中国出口对全球市场持续施加的通缩压力。</p>
 <p>例如，中国对钢铁、铜和铝的需求增长放缓，可能影响澳大利亚和巴西等资源出口国。过去二十年，中国需求支撑了大宗商品价格，如今这种支撑减弱，资源国可能面临贸易条件恶化。同时，中国制造业的规模效应压低了电池、太阳能组件等产品的全球价格，影响全球竞争对手的利润率。例如，欧洲和美国的太阳能制造商因无法与中国低成本产品竞争而倒闭或转移。此外，中国出口的通缩效应可能迫使其他央行维持宽松政策，从而影响全球利率和汇率。例如，如果中国商品压低通胀，美联储可能更倾向于降息，从而影响美元走势。</p>
 <p>总之，中国的增长转向是一个复杂的过程，充满挑战和机遇。投资者需要密切关注政策信号、贸易动态以及债务演变，以应对这一转变带来的风险与回报。在转型过程中，可能出现政策失误或外部冲击，导致经济波动加剧，因此风险管理至关重要。</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">相关分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -94,8 +96,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本博客文章为基于公开宏观数据的 AI 辅助摘要与独立分析，仅供参考，不构成投资建议。</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/zh/disclosure.html">联盟营销披露</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

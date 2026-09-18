@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "वैश्विक मुद्रास्फीति: आखिरी मील सबसे कठिन है", "description": "मुख्य मुद्रास्फीति में कमी आई है, लेकिन मुख्य सेवाएं अभी भी कठोर हैं। 2% लक्ष्य तक की अंतिम दूरी आम सहमति से अधिक लंबी क्यों हो सकती है।", "inLanguage": "hi", "datePublished": "2026-08-25", "dateModified": "2026-08-25", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/hi/post/global-inflation-trend-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 383}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/hi/"}, {"@type": "ListItem", "position": 2, "name": "वैश्विक मुद्रास्फीति: आखिरी मील सबसे कठिन है", "item": "https://www.mycapitalanalyze.com/hi/post/global-inflation-trend-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <p>यही कारण है कि केंद्रीय बैंक जीत की घोषणा करने में झिझक रहे हैं। अधिक संभावित परिदृश्य एक लंबे समय तक होल्डिंग पैटर्न है: दरें बाजार की उम्मीद से अधिक समय तक प्रतिबंधात्मक रहती हैं, और लक्ष्य की वापसी की यात्रा 2027 तक खिंचती है।</p>
 <h2 id="h-7">निवेश निहितार्थ</h2>
 <p>&quot;उच्च लंबे समय तक&quot; पूरी तरह से मूल्य निर्धारित नहीं है। वास्तविक पैदावार ऊंची बनी रह सकती है, जो लंबी अवधि की संपत्तियों पर दबाव डालती है और विकास-संवेदनशील इक्विटी पर सतर्कता का समर्थन करती है। मुद्रास्फीति-लिंक्ड बांड और आपूर्ति-प्रतिबंधित वस्तुएं सबसे सीधे बचाव हैं। पिछले तीन वर्षों का सबक यह है कि मुद्रास्फीति, एक बार अंतर्निहित हो जाने पर, चुपचाप आत्मसमर्पण नहीं करती है।</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">संबंधित विश्लेषण</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">ये लेख सार्वजनिक मैक्रो डेटा के AI-सहायता प्राप्त सारांश और स्वतंत्र विश्लेषण हैं। केवल जानकारी के लिए, निवेश सलाह नहीं।</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/hi/disclosure.html">एफिलिएट खुलासा</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

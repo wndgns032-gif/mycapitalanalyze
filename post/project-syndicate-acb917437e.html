@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "Monetarism's Quiet Return: Lessons for the Fed in a Post-Pandemic World", "description": "Monetarism is re-emerging in central bank debates, but its revival depends on adapting to modern financial systems.", "inLanguage": "en", "datePublished": "2026-08-29", "dateModified": "2026-08-29", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/post/project-syndicate-acb917437e.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 530, "isBasedOn": {"@type": "CreativeWork", "name": "Project Syndicate", "url": "https://www.project-syndicate.org/onpoint/how-monetarism-can-adapt-to-the-twenty-first-century-by-tim-congdon-2026-08"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/"}, {"@type": "ListItem", "position": 2, "name": "Monetarism's Quiet Return: Lessons for the Fed in a Post-Pandemic World", "item": "https://www.mycapitalanalyze.com/post/project-syndicate-acb917437e.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -62,6 +63,7 @@
 <p>For investors, this debate matters. If the Fed were to adopt a more monetarist stance, it could lead to a more predictable, rules-based policy, reducing market uncertainty. However, it might also imply a higher tolerance for interest rate volatility as the Fed adjusts liquidity to hit money targets. The credibility of any new monetarist framework would hinge on the Fed&#x27;s ability to communicate its approach clearly and to avoid the pitfalls of the past, such as targeting the wrong aggregate or ignoring shifts in money demand.</p>
 <h2 id="h-6">Implications</h2>
 <p>The potential comeback of monetarism has significant implications for global markets and policy. A more monetarist Fed would likely prioritize price stability over maximum employment, potentially leading to a more hawkish tilt in monetary policy. This could strengthen the dollar and put pressure on emerging markets, which often struggle with dollar-denominated debt. For the bond market, a credible commitment to controlling money growth might anchor long-term inflation expectations, but it could also increase short-term rate volatility as the Fed adjusts its balance sheet. Ultimately, the revival of monetarism is less about resurrecting old doctrines and more about integrating monetary analysis into a modern policy toolkit. The challenge lies in distinguishing between the signal and the noise in money data, and in recognizing that the transmission mechanism has evolved. If monetarists can adapt, their ideas might provide a valuable complement to the current framework, offering a clearer guide for policy in an era of uncertainty.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Related Analysis</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -77,8 +79,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Posts on this blog are AI-assisted summaries and independent analysis of public macro and economic data. Content is for informational purposes only and does not constitute investment advice.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/disclosure.html">Affiliate Disclosure</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

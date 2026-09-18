@@ -16,6 +16,9 @@
 | GitHub Pages | ✅ 켜짐 → https://wndgns032-gif.github.io/mycapitalanalyze/ |
 | 일일 자동 발행 | ✅ 돌아감 (매일 KST 15:17) |
 | IndexNow 자동 제출 | ✅ 워크플로 등록됨 (매일 KST 16:15 + 발행 후 자동 체이닝) |
+| 제휴 수익 인프라 | ✅ 구현 완료 (고지 페이지 13개 언어, rel=sponsored, GA4 전환추적) |
+| **Google Analytics 측정** | ❌ **미완 — 시크릿 `GA4_ID` 필요. 아래 5-1단계** |
+| **금융 제휴 링크** | ⏸ **인프라는 준비됨, 링크 발급 대기. 아래 5-2단계** |
 | **Google Search Console 등록** | ❌ **미완 — 이거 하나가 남았다. 아래 1단계** |
 
 > **결론: 내가 필요한 Vercel 권한은 이미 해결됐다.** 앞으로 도메인 쪽에서 필요한 추가 작업은 없다.
@@ -103,7 +106,63 @@ GSC에 사이트를 등록하지 않으면:
 
 ---
 
-## 5. 미해결 의사결정 — 로이가 정해줘야 하는 것
+## 5. 수익화 — GA4 + 금융 제휴 (남은 작업)
+
+현재 상태: **인프라는 다 만들어뒀다.** 코드 수정 없이, GitHub 시크릿만 넣으면 바로 작동한다.
+
+### 5-1. Google Analytics 4 측정 ID (2분) — 최우선
+
+지금 이 사이트에는 **트래픽 측정이 하나도 없다.** 얼마나 들어오는지, 어디서 오는지 모르면 제휴든 광고든 최적화가 불가능하다.
+
+1. https://analytics.google.com 접속 → **시작하기**
+2. 계정 이름 아무거나 → **속성 만들기**
+3. **데이터 스트림** → 플랫폼 **웹**
+   - 웹사이트 URL: `https://www.mycapitalanalyze.com`
+   - 스트림 이름: `MyCapital Analyze`
+4. 생성되면 **측정 ID** 가 보인다 → `G-XXXXXXXXXX` 형태 → 복사
+5. GitHub → 리포 → **Settings → Secrets and variables → Actions → New repository secret**
+   - Name: `GA4_ID`
+   - Secret: 복사한 측정 ID
+6. **다음 자동 발행(매일 15:17) 때 자동 반영됨.** 즉시 보고 싶으면 **Actions → Auto Publish → Run workflow**
+
+> 참고: Search Console이 **"어떤 검색어로 왔나"** 를 알려준다면, GA4는 **"와서 뭘 했나"** 를 알려준다. 둘 다 필요하고, 지금은 둘 다 없다.
+
+### 5-2. 금융 제휴 링크 (가입에 시간 걸림)
+
+구현은 끝나 있다. 아래 구조대로 시크릿만 넣으면 **포스트 하단에 추천 박스**가 생기고, 클릭이 GA4에 자동 기록된다.
+
+프로그램 추천 (이 사이트 독자와 의도가 맞는 것):
+
+| 프로그램 | 단가 모델 | 비고 |
+|---|---|---|
+| **TradingView** | 수익 공유 / CPA | 차트 플랫폼. 이 블로그 콘텐츠와 의도가 가장 정확히 일치 |
+| **Interactive Brokers** | CPA (가입+입금) | 글로벌 브로커, 국가 커버리지 넓음 |
+| **Seeking Alpha** | CPA | 리서치 구독, 개별 종목 분석 글과 궁합 |
+
+가입 후 제휴 링크를 받으면, GitHub 시크릿 `AFFILIATES_JSON` 에 **한 줄 JSON** 으로 넣는다:
+
+```json
+{"offers":[{"id":"tradingview","name":"TradingView","url":"여기에_제휴링크","blurb":"Advanced charting and market analysis tools","categories":["*"]}]}
+```
+
+- `categories: ["*"]` → 모든 글에 표시. 특정 카테고리에만 붙이려면 `["Monetary Policy","Bonds"]` 처럼 지정
+- 시크릿이 없으면 **아무것도 표시되지 않는다** (안전 기본값)
+- `url` 이 빈 항목은 자동으로 건너뛴다
+
+### 5-3. 같이 만들어둔 것
+
+| 항목 | 상태 |
+|---|---|
+| 제휴 고지 페이지 `/disclosure.html` | ✅ 13개 언어 자동 생성 (footer에 링크, sitemap 포함) |
+| `rel="sponsored"` + `nofollow noopener` | ✅ 자동 적용 (구글/FTC 표시광고법 요건) |
+| 제휴 클릭 GA4 이벤트 | ✅ `affiliate_click` 이벤트로 자동 수집 |
+| 언어별 면책 문구 | ✅ 13개 언어 번역 완료 |
+
+> 박스 안에 **고지 문구가 같은 화면에 같이 표시**된다. 이게 없으면 FTC/공정위 기준 위반이다.
+
+---
+
+## 6. 미해결 의사결정 — 로이가 정해줘야 하는 것
 
 ### Project Syndicate 글 11편
 - 상태: **이미 발행되어 라이브에 있음** (영문만, 번역 안 함), 신규 수집은 **중단** 했다

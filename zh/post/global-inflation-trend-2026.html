@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "全球通胀：最后一英里最难走", "description": "总体通胀已降温，但核心服务业通胀依然顽固，通往2%目标的最后一段路可能比市场预期的更长。", "inLanguage": "zh", "datePublished": "2026-08-25", "dateModified": "2026-08-25", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/zh/post/global-inflation-trend-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 18}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/zh/"}, {"@type": "ListItem", "position": 2, "name": "全球通胀：最后一英里最难走", "item": "https://www.mycapitalanalyze.com/zh/post/global-inflation-trend-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -80,6 +81,7 @@
 <p>这种分化对政策制定者构成严峻挑战。如果服务业通胀持续，央行可能被迫在更长时间内维持高利率，甚至进一步加息。这将对经济增长和就业产生负面影响，但央行更担心的是通胀预期脱锚。一旦企业和家庭开始预期高通胀将持续，工资-价格螺旋就可能形成，使通胀更难控制。例如，2023年德国工会要求大幅加薪，以弥补实际购买力的损失，这进一步加剧了工资上涨压力。</p>
 <p>从投资角度看，这意味着市场需要重新评估“软着陆”的可能性。如果央行过度紧缩，经济可能陷入衰退；如果紧缩不足，通胀可能反弹。因此，投资者应保持防御性配置，关注现金流强劲、定价能力强的公司，同时减少对长久期债券和成长股的敞口。此外，黄金和通胀挂钩债券等实际资产可作为对冲通胀风险的工具。</p>
 <p>总之，全球通胀的最后一英里将充满波折，投资者需保持警惕，灵活应对政策变化和市场波动。</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">相关分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -95,8 +97,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本博客文章为基于公开宏观数据的 AI 辅助摘要与独立分析，仅供参考，不构成投资建议。</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/zh/disclosure.html">联盟营销披露</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

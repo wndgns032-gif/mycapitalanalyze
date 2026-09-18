@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "China's Himalayan Mega-Dam: A Looming Water Security Crisis for South Asia", "description": "Planned world's largest dam in the Himalayas could threaten water supplies for two billion people, prompting calls for international oversight.", "inLanguage": "en", "datePublished": "2026-08-29", "dateModified": "2026-08-29", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/post/project-syndicate-86c744edd8.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 373, "isBasedOn": {"@type": "CreativeWork", "name": "Project Syndicate", "url": "https://www.project-syndicate.org/commentary/china-himalayan-super-dam-dangerous-and-plan-lacks-transparency-by-brahma-chellaney-2026-08"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/"}, {"@type": "ListItem", "position": 2, "name": "China's Himalayan Mega-Dam: A Looming Water Security Crisis for South Asia", "item": "https://www.mycapitalanalyze.com/post/project-syndicate-86c744edd8.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -62,6 +63,7 @@
 <p>The tension between China&#x27;s political ambitions and scientific warnings reflects a classic principal-agent problem in large infrastructure projects. While the dam promises significant energy output and low-carbon power, its externalities are largely borne by downstream countries. From a macroeconomic perspective, water scarcity is a growing risk factor for agricultural output, industrial production, and human capital in South Asia. A sudden disruption could trigger cross-border migration, trade disruptions, and even conflict. Moreover, the dam&#x27;s construction costs and potential delays could strain China&#x27;s fiscal position, especially if geological surprises emerge. The scientific community&#x27;s concerns suggest that the project&#x27;s risk-adjusted returns may be far lower than official projections.</p>
 <h2 id="h-6">Implications</h2>
 <p>For investors, the dam highlights the growing importance of environmental, social, and governance (ESG) factors in cross-border infrastructure financing. Chinese state banks and contractors involved in the project face reputational and financial risks if the dam&#x27;s adverse impacts materialize. For policymakers in downstream countries, the situation underscores the need for robust water-sharing agreements and early-warning systems. International institutions, such as the World Bank or the Asian Development Bank, could play a role in facilitating dialogue and technical cooperation. However, China&#x27;s reluctance to submit to external oversight may limit such efforts. Ultimately, the mega-dam is a litmus test for how major powers balance domestic energy needs against regional stability and shared resources.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Related Analysis</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -77,8 +79,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Posts on this blog are AI-assisted summaries and independent analysis of public macro and economic data. Content is for informational purposes only and does not constitute investment advice.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/disclosure.html">Affiliate Disclosure</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>
