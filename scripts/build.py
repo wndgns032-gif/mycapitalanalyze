@@ -62,6 +62,14 @@ TRANS_DIR = os.path.join(BASE, 'content', 'translations')
 GA4_ID = ((CONFIG.get('analytics') or {}).get('ga4_id') or '').strip()
 # Google Search Console HTML 태그 방식 인증 값 (없으면 메타 태그 미삽입)
 GSC_VERIFY = ((CONFIG.get('analytics') or {}).get('google_site_verification') or '').strip()
+# 언어권별 대표 포털(Naver/Baidu/Yandex/Bing) 소유권 확인 값. 비어 있으면 태그 미삽입.
+# 값은 각 포털 웹마스터 도구에서 발급받아 config.public.json > analytics 에 넣는다.
+PORTAL_VERIFY = {
+    'naver-site-verification': ((CONFIG.get('analytics') or {}).get('naver_site_verification') or '').strip(),
+    'baidu-site-verification': ((CONFIG.get('analytics') or {}).get('baidu_site_verification') or '').strip(),
+    'yandex-verification':     ((CONFIG.get('analytics') or {}).get('yandex_verification') or '').strip(),
+    'msvalidate.01':           ((CONFIG.get('analytics') or {}).get('bing_site_verification') or '').strip(),
+}
 ADS_CFG = CONFIG.get('adsense') or {}
 # 사이트가 애드센스에 승인되기 전에는 광고 코드를 아예 넣지 않는다.
 # 승인 전 광고 코드 삽입은 빈 박스만 노출시키고 계정 정책 리스크를 만든다.
@@ -416,10 +424,14 @@ def adsense_script_html():
 
 
 def verify_html():
-    """Google Search Console 소유권 확인 메타 태그. 값이 없으면 빈 문자열."""
-    if not GSC_VERIFY:
-        return ''
-    return f'  <meta name="google-site-verification" content="{htmllib.escape(GSC_VERIFY)}" />'
+    """검색 포털 소유권 확인 메타 태그. 값이 없는 포털은 태그를 넣지 않는다."""
+    tags = []
+    if GSC_VERIFY:
+        tags.append(f'  <meta name="google-site-verification" content="{htmllib.escape(GSC_VERIFY)}" />')
+    for name, val in PORTAL_VERIFY.items():
+        if val:
+            tags.append(f'  <meta name="{name}" content="{htmllib.escape(val)}" />')
+    return '\n'.join(tags)
 
 
 def conversion_tracking_js():

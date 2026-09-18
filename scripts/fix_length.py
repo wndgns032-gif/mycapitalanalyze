@@ -10,9 +10,20 @@ import json, os, re, sys, time, glob, urllib.request, urllib.error
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG = json.load(open(os.path.join(BASE, 'config.json'), encoding='utf-8'))
-API_KEY = CONFIG['deepseek']['api_key']
-BASE_URL = CONFIG['deepseek']['base_url'].rstrip('/')
-MODEL = CONFIG['deepseek']['model']
+# 제공자 자동 선택: config.json 의 provider 값을 따른다 (없으면 키가 있는 쪽을 우선).
+_PROVIDER = (CONFIG.get('provider') or '').strip().lower()
+if not _PROVIDER:
+    _PROVIDER = 'glm' if (CONFIG.get('glm') or {}).get('api_key') else 'deepseek'
+PROV = CONFIG.get(_PROVIDER) or {}
+if not (PROV.get('api_key') or '').strip():
+    for _alt in ('glm', 'deepseek'):
+        if (CONFIG.get(_alt) or {}).get('api_key'):
+            _PROVIDER, PROV = _alt, CONFIG[_alt]
+            break
+API_KEY = PROV.get('api_key', '')
+BASE_URL = PROV.get('base_url', '').rstrip('/')
+MODEL = PROV.get('model', '')
+IS_GLM = (_PROVIDER == 'glm')
 LANGS = CONFIG['languages']
 CHAR_MIN = CONFIG['char_min']
 CHAR_MAX = CONFIG['char_max']
@@ -24,11 +35,13 @@ def call_deepseek(messages):
     body = {
         'model': MODEL,
         'messages': messages,
-        'thinking': {'type': 'disabled'},
         'max_tokens': 8192,
         'temperature': 0.5,
         'response_format': {'type': 'json_object'},
     }
+    # thinking 파라미터는 DeepSeek 전용 — GLM 은 받지 않으므로 넣지 않는다.
+    if not IS_GLM:
+        body['thinking'] = {'type': 'disabled'}
     req = urllib.request.Request(
         BASE_URL + '/chat/completions',
         data=json.dumps(body).encode('utf-8'),
@@ -71,25 +84,47 @@ ARTICLE BODY:
 {body}"""
 
     user = base_user
+    last_body = None
     for attempt in range(1, MAX_RETRY + 1):
-        content = call_deepseek(
-            [{'role': 'system', 'content': system}, {'role': 'user', 'content': user}]
-        )
+        try:
+            content = call_deepseek(
+                [{'role': 'system', 'content': system}, {'role': 'user', 'content': user}]
+            )
+        except Exception as e:
+            print(f'    [{attempt}] 호출 실패: {type(e).__name__}')
+            continue
         try:
             obj = json.loads(content)
         except json.JSONDecodeError:
-            print(f'    [{attempt}] JSON 파싱 실패')
+            # 모델이 코드블록이나 설명을 섞어 보내는 경우에 대비한 보정 파싱
+            m = re.search(r'\{.*"body"\s*:\s*"(?:[^"\\]|\\.)*"\s*\}', content, re.S)
+            if m:
+                try:
+                    obj = json.loads(m.group(0))
+                except json.JSONDecodeError:
+                    obj = None
+            else:
+                obj = None
+            if obj is None:
+                print(f'    [{attempt}] JSON 파싱 실패 (응답 {len(content or "")}자)')
+                continue
+        new_body = obj.get('body', '') or ''
+        if not new_body.strip():
+            print(f'    [{attempt}] 빈 응답')
             continue
-        new_body = obj.get('body', '')
+        last_body = new_body
         nn = len(new_body)
         if CHAR_MIN <= nn <= CHAR_MAX:
             print(f'    {lang}: {n}자 -> {nn}자 [OK]')
             return new_body
         print(f'    [{attempt}] {lang}: {n}자 -> {nn}자 (여전히 범위 밖)')
         user = base_user + f'\n\nYour rewrite was {nn} characters. Try again: {goal}'
-    # 마지막 결과라도 반환
-    print(f'    {lang}: 보정 재시도 소진, 마지막 결과 사용 ({nn}자)')
-    return new_body
+    # 보정 실패 시 원본 유지 (파이프라인을 죽이지 않는다)
+    if last_body:
+        print(f'    {lang}: 보정 재시도 소진, 마지막 결과 사용 ({len(last_body)}자)')
+        return last_body
+    print(f'    {lang}: 보정 실패 — 원본 유지 ({n}자)')
+    return body
 
 
 def main():
@@ -110,7 +145,11 @@ def main():
             total += 1
             slug = d['slug']
             print(f'[{slug} / {lang}] {n}자 보정')
-            new_body = fix_length(lang, lang_name, d['body'], n)
+            try:
+                new_body = fix_length(lang, lang_name, d['body'], n)
+            except Exception as e:
+                print(f'  !! {slug}/{lang} 보정 중단: {type(e).__name__}: {e}')
+                continue
             d['body'] = new_body
             json.dump(d, open(path, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
             time.sleep(0.3)
