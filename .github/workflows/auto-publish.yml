@@ -27,6 +27,8 @@ jobs:
         env:
           GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GA4_ID: ${{ secrets.GA4_ID }}
+          AFFILIATES_JSON: ${{ secrets.AFFILIATES_JSON }}
         run: |
           python - <<'PY'
           import json, os
@@ -35,6 +37,25 @@ jobs:
           if not (glm or ds):
               raise SystemExit('GLM_API_KEY 또는 DEEPSEEK_API_KEY 시크릿이 필요합니다')
           provider = 'glm' if glm else 'deepseek'
+
+          # 분석 추적: GA4_ID 시크릿이 비어 있으면 추적 코드를 넣지 않는다.
+          ga4 = os.environ.get('GA4_ID', '').strip()
+
+          # 제휴 설정: AFFILIATES_JSON 시크릿 = {"offers":[{"id","name","url","blurb","categories"}]}
+          # 시크릿이 없으면 제휴 박스를 렌더링하지 않는다(안전 기본값).
+          aff_raw = os.environ.get('AFFILIATES_JSON', '').strip()
+          if aff_raw:
+              try:
+                  aff_cfg = json.loads(aff_raw)
+                  aff_cfg.setdefault('enabled', True)
+                  aff_cfg.setdefault('disclosure_path', 'disclosure.html')
+                  aff_cfg['offers'] = [o for o in aff_cfg.get('offers', []) if (o.get('url') or '').strip()]
+                  print('affiliate offers =', len(aff_cfg['offers']))
+              except Exception as e:
+                  print('AFFILIATES_JSON 파싱 실패, 제휴 비활성화:', e)
+                  aff_cfg = {'enabled': False, 'offers': []}
+          else:
+              aff_cfg = {'enabled': False, 'offers': []}
           cfg = {
             "provider": provider,
             "glm": {
@@ -62,7 +83,9 @@ jobs:
             "max_translations_per_run": 40,
             "char_min": 3000,
             "char_max": 5000,
-            "max_new_posts_per_run": 1
+            "max_new_posts_per_run": 1,
+            "analytics": {"ga4_id": ga4},
+            "affiliates": aff_cfg
           }
           json.dump(cfg, open('config.json', 'w'), ensure_ascii=False, indent=2)
           print('provider =', provider)

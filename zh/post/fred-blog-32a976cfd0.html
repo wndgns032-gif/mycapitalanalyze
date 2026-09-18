@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "生成式人工智能应用激增：时间节省如何重塑劳动力市场", "description": "最新调查显示，职场中生成式人工智能的使用大幅增加，其带来的显著时间节省有望提升生产率并重塑劳动力市场格局。", "inLanguage": "zh", "datePublished": "2026-08-29", "dateModified": "2026-08-29", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/zh/post/fred-blog-32a976cfd0.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 16, "isBasedOn": {"@type": "CreativeWork", "name": "FRED Blog", "url": "https://fredblog.stlouisfed.org/2026/08/does-generative-ai-save-time-at-work/"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/zh/"}, {"@type": "ListItem", "position": 2, "name": "生成式人工智能应用激增：时间节省如何重塑劳动力市场", "item": "https://www.mycapitalanalyze.com/zh/post/fred-blog-32a976cfd0.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -70,6 +71,7 @@
 <h2 id="h-10">影响与展望</h2>
 <p>对投资者而言，生成式人工智能的崛起是一把双刃剑。成功整合这些工具的公司有望改善盈利能力，从而成为颇具吸引力的投资标的；科技、专业服务和金融等行业最有可能率先受益。但另一方面，应用落后的企业可能在竞争中丧失优势。劳动力市场的参与者同样需要保持警觉：与人工智能形成互补的技能——例如提示词工程、数据解读和战略性监督——需求很可能持续增长，而例行的认知型工作则面临被自动化的风险。对个人投资者而言，与其追逐热门题材，不如关注企业是否真正把人工智能嵌入了自身的业务流程。</p>
 <p>与此同时，资本市场已经对人工智能主题作出了热烈反应，但投资者仍需仔细分辨：哪些企业的盈利改善来自真实的生产率提升，哪些只是概念炒作的泡沫。从更长的时间维度看，生成式人工智能的普及还可能改变自然失业率的水平和“充分就业”的内涵。如果生产率提升是真实且可持续的，经济就有机会在更低通胀的水平上实现更高增长——这正是政策制定者梦寐以求的理想组合。然而，技术转型的红利从来不会均匀分配，某些人群和行业可能首当其冲地承受冲击。随着调查数据的不断更新，持续监测这些趋势，对于从事经济预测和投资决策的每一个人而言，都将是不可或缺的功课。</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">相关分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -85,8 +87,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本博客文章为基于公开宏观数据的 AI 辅助摘要与独立分析，仅供参考，不构成投资建议。</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/zh/disclosure.html">联盟营销披露</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

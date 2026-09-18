@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "뉴욕 연준, 서브프라임(저신용) 신용위험 평가 체계 전면 개편", "description": "뉴욕 연준이 서브프라임 신용위험 측정 방법론을 뱅티지 스코어 4.0 기반으로 개정하면서 저신용 차주 범위가 3,300만 명 더 넓어졌고, 금융시장 전반에 미칠 파장이 주목받고 있다.", "inLanguage": "ko", "datePublished": "2026-09-17", "dateModified": "2026-09-17", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ko/post/new-york-fed-subprime-credit-risk-assessment.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 596, "isBasedOn": {"@type": "CreativeWork", "name": "FRED Blog", "url": "https://fredblog.stlouisfed.org/2026/09/a-new-calculation-for-subprime-credit-risk/"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ko/"}, {"@type": "ListItem", "position": 2, "name": "뉴욕 연준, 서브프라임(저신용) 신용위험 평가 체계 전면 개편", "item": "https://www.mycapitalanalyze.com/ko/post/new-york-fed-subprime-credit-risk-assessment.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <p><strong>정책당국자에게:</strong> 정책당국자들은 경제의 위험 프로필을 가늠할 더 정교한 도구를 손에 넣게 됐다. 이는 금리 조정 속도나 거시건전성 규제 강도 등 통화정책과 감독정책 결정에 반영될 수 있다. 저신용 차주 규모가 과거 추정보다 크다는 사실은 금리 변동이 가계에 미치는 충격을 더 무겁게 평가할 근거가 된다.</p>
 <p><strong>소비자에게:</strong> 이번 변경으로 서브프라임 차주로 분류된 소비자는 자금조달이 상대적으로 어려워질 수 있다. 금융사가 동일한 채점 모델을 심사에 활용한다면 대출 승인 문턱이 높아지고 조건도 까다로워질 수 있다. 이는 가계 소비 위축과 경기 둔화로 이어질 수 있는 요인이기도 하다.</p>
 <p>채점 모델의 변화는 시간이 지나면서 시장 참여자들의 학습과 적응을 거치게 된다. 그럼에도 이번 전환은 서브프라임 신용위험 평가가 한 단계 발전한 사건으로 평가된다. 신용 사각지대에 있던 수천만 명이 통계의 빛 아래로 들어온 만큼, 향후 금융시장과 정책 대응이 어떻게 달라질지 귀추가 주목된다.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">관련 분석</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">이 블로그의 글은 공개된 거시경제 데이터를 AI가 요약·분석한 것입니다. 정보 제공 목적이며 투자 조언이 아닙니다.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ko/disclosure.html">제휴 수익 고지</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

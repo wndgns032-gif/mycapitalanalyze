@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "The Evolution of M2 as a Monetary Aggregate Measure", "description": "An analysis of the Federal Reserve's M2 monetary aggregate measure, its components, and recent changes.", "inLanguage": "en", "datePublished": "2026-09-17", "dateModified": "2026-09-17", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/post/m2-monetary-aggregate-measure-evolution.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 489, "isBasedOn": {"@type": "CreativeWork", "name": "FRED Blog", "url": "https://fredblog.stlouisfed.org/2026/09/measuring-money-with-m2/"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/"}, {"@type": "ListItem", "position": 2, "name": "The Evolution of M2 as a Monetary Aggregate Measure", "item": "https://www.mycapitalanalyze.com/post/m2-monetary-aggregate-measure-evolution.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -75,6 +76,7 @@
 <p>The changes to M2 have implications for both markets and investors. Investors may need to adjust their assessments of the money supply and liquidity conditions in the economy, as the revised M2 figure may provide a different perspective on the overall liquidity landscape. For markets, the shift in M2 composition may influence interest rate decisions and other monetary policy actions, as the Federal Reserve considers the revised data in its decision-making process.</p>
 <p>The Federal Reserve&#x27;s continued refinement of monetary aggregates like M2 reflects the evolving nature of the financial system and the need for accurate and relevant economic indicators. As the economy adapts to new financial products and services, so too must the measures used to assess it.</p>
 <p>By understanding the nuances of M2 and its components, economists, investors, and policymakers can better navigate the complex monetary landscape and make informed decisions that impact the overall health of the economy.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Related Analysis</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -90,8 +92,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Posts on this blog are AI-assisted summaries and independent analysis of public macro and economic data. Content is for informational purposes only and does not constitute investment advice.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/disclosure.html">Affiliate Disclosure</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "Why Europe Should Back Canada in the US Trade Dispute", "description": "Europe must see the US-Canada trade conflict as a warning and unite with Canada to defend global trade rules.", "inLanguage": "en", "datePublished": "2026-08-29", "dateModified": "2026-08-29", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/post/project-syndicate-c1e4902e81.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 302, "isBasedOn": {"@type": "CreativeWork", "name": "Project Syndicate", "url": "https://www.project-syndicate.org/commentary/eu-must-stand-with-canada-against-trump-by-philippe-legrain-2026-08"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/"}, {"@type": "ListItem", "position": 2, "name": "Why Europe Should Back Canada in the US Trade Dispute", "item": "https://www.mycapitalanalyze.com/post/project-syndicate-c1e4902e81.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -60,6 +61,7 @@
 <p>This dispute is not just about bilateral trade deficits; it reflects a fundamental shift in US trade policy. By targeting a close ally, the US signals that no country is exempt from its tariff agenda. For Europe, the lesson is clear: if Canada cannot negotiate a fair deal, the EU&#x27;s larger trade surplus with the US makes it an even more likely target. The EU must therefore see Canada&#x27;s fight as its own. Solidarity with Canada would not only strengthen the EU&#x27;s bargaining position but also reinforce the rules-based trading system that both Europe and Canada rely on. Moreover, the US actions risk fragmenting global supply chains, which could lead to higher costs for businesses and consumers worldwide.</p>
 <h2 id="h-4">Implications</h2>
 <p>For investors, this trade conflict adds another layer of uncertainty. Markets may see heightened volatility in sectors like autos, agriculture, and technology. The EU&#x27;s response will be critical: if it fails to act, it may face similar tariffs, hurting European exporters and economic growth. On the other hand, a coordinated response could deter further US protectionism and preserve open markets. Policymakers should consider retaliatory measures that are targeted but proportional, while also pursuing new trade agreements with other partners to reduce dependence on the US. Ultimately, this is a test of whether the transatlantic alliance can withstand economic nationalism. The EU&#x27;s choice now will shape its economic sovereignty for years to come.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Related Analysis</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -75,8 +77,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Posts on this blog are AI-assisted summaries and independent analysis of public macro and economic data. Content is for informational purposes only and does not constitute investment advice.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/disclosure.html">Affiliate Disclosure</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

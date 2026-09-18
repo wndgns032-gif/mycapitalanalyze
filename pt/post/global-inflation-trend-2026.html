@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "Inflação Global: A Última Milha é a Mais Difícil", "description": "A inflação ao consumidor arrefeceu, mas os serviços permanecem rígidos. Por que o trecho final até as metas de 2% pode levar mais tempo do que o consenso espera.", "inLanguage": "pt", "datePublished": "2026-08-25", "dateModified": "2026-08-25", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/pt/post/global-inflation-trend-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 353}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/pt/"}, {"@type": "ListItem", "position": 2, "name": "Inflação Global: A Última Milha é a Mais Difícil", "item": "https://www.mycapitalanalyze.com/pt/post/global-inflation-trend-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <p>É por isso que os bancos centrais hesitam em declarar vitória. O cenário mais provável é um longo período de espera: as taxas permanecem restritivas por mais tempo do que os mercados antecipam, e a jornada de volta à meta se estende até 2027.</p>
 <h2 id="h-7">Implicações para Investimentos</h2>
 <p>&quot;Mais alto por mais tempo&quot; não está totalmente precificado. Os rendimentos reais podem permanecer elevados, o que pressiona ativos de longa duração e sugere cautela com ações sensíveis ao crescimento. Títulos indexados à inflação e commodities com restrição de oferta continuam sendo os hedges mais diretos. A lição dos últimos três anos é que a inflação, uma vez enraizada, não se rende silenciosamente.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Análises relacionadas</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Os artigos são resumos assistidos por IA e análises independentes de dados macroeconômicos públicos. Apenas informativos, não constituem aconselhamento de investimento.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/pt/disclosure.html">Divulgação de afiliados</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "ИИ и производительность: сможет ли технология спасти стагнирующие рынки труда?", "description": "Рост производительности — важнейшая переменная для долгосрочного уровня жизни. Приносит ли ИИ наконец результаты, или это очередной цикл хайпа?", "inLanguage": "ru", "datePublished": "2026-08-20", "dateModified": "2026-08-20", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ru/post/ai-productivity-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 277}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ru/"}, {"@type": "ListItem", "position": 2, "name": "ИИ и производительность: сможет ли технология спасти стагнирующие рынки труда?", "item": "https://www.mycapitalanalyze.com/ru/post/ai-productivity-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <h2 id="h-6">Вопрос рынка труда</h2>
 <p>Более глубокая неопределенность — распределительная. В отличие от предыдущих технологий, ИИ напрямую конкурирует с когнитивным трудом, долго защищенным от автоматизации. Переход может вытеснить белых воротничков средней квалификации, даже создавая новые роли.</p>
 <p>Наша точка зрения: ИИ проявится в статистике производительности, но с лагом в годы, а не кварталы. Экономики, адаптирующиеся быстрее всех — через переобучение и капитальные инвестиции, — получат выгоду. Для инвесторов бум производительности станет самым важным макроэкономическим попутным ветром десятилетия.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Похожие материалы</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Статьи — подготовленные с помощью ИИ сводки и независимый анализ открытых макроэкономических данных. Только для информации, не инвестиционная рекомендация.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ru/disclosure.html">Раскрытие партнёрских ссылок</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

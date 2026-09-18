@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "中国の成長転換：景気刺激策、輸出、そして債務の重荷", "description": "北京は不動産主導の成長から高度製造業へと軸足を移している。輸出と景気刺激策は、構造的に弱まる消費者を補えるだろうか。", "inLanguage": "ja", "datePublished": "2026-08-24", "dateModified": "2026-08-24", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ja/post/china-growth-pivot-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 18}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ja/"}, {"@type": "ListItem", "position": 2, "name": "中国の成長転換：景気刺激策、輸出、そして債務の重荷", "item": "https://www.mycapitalanalyze.com/ja/post/china-growth-pivot-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -80,6 +81,7 @@
 <p>家計部門では、将来不安から貯蓄率が高止まりしている。社会保障制度の不備や、教育・医療費の高騰が背景にある。政府は消費を刺激するため、家電や自動車の買い替え補助金を打ち出しているが、効果は限定的だ。また、若年層の失業率は高く、これが消費の重荷となっている。</p>
 <p>投資家にとって、中国経済の減速は、コモディティ価格の下落圧力となる。鉄鉱石や銅などの需要が鈍化すれば、資源国に影響が及ぶ。また、中国のデフレ圧力は、世界の製造業の価格設定に影響を与え、企業の収益を圧迫する可能性がある。</p>
 <p>結論として、中国の成長モデルは転換期にあり、新たなエンジンが旧来のものを完全に代替するには時間がかかる。当面は、低成長とデフレ圧力が続く可能性が高い。投資家は、中国関連の資産を評価する際、この構造的な変化を織り込む必要がある。</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">関連分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -95,8 +97,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本ブログの記事は公開されたマクロ経済データに基づく AI 支援の要約と独自分析です。情報提供のみを目的とし、投資助言ではありません。</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ja/disclosure.html">アフィリエイト開示</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

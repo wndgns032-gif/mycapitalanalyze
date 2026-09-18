@@ -32,6 +32,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "La asimetría de la tasa de política de la Fed de Kansas City: una ventana a las expectativas del mercado", "description": "La Fed de Kansas City utiliza los precios de las opciones para medir la percepción del riesgo financiero, un barómetro con importantes implicaciones para la dinámica de los mercados.", "inLanguage": "es", "datePublished": "2026-09-17", "dateModified": "2026-09-17", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/es/post/kansas-city-fed-policy-rate-skew.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 737, "isBasedOn": {"@type": "CreativeWork", "name": "FRED Blog", "url": "https://fredblog.stlouisfed.org/2026/09/using-options-prices-to-measure-financial-risk/"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/es/"}, {"@type": "ListItem", "position": 2, "name": "La asimetría de la tasa de política de la Fed de Kansas City: una ventana a las expectativas del mercado", "item": "https://www.mycapitalanalyze.com/es/post/kansas-city-fed-policy-rate-skew.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -82,6 +83,7 @@
 <h3>Para la política</h3>
 <p>Los responsables de la política pueden usar el KC PRS como una herramienta adicional para evaluar las perspectivas económicas y fundamentar sus decisiones de política monetaria. La naturaleza prospectiva del índice aporta información valiosa sobre las expectativas del mercado y ayuda a anticipar posibles desafíos económicos.</p>
 <p>En conclusión, el índice de asimetría de la tasa de política de la Fed de Kansas City es una herramienta valiosa para comprender las expectativas del mercado y anticipar las tendencias económicas futuras. Su enfoque singular para medir el riesgo financiero mediante los precios de las opciones ofrece una perspectiva adelantada que puede resultar crucial tanto para los inversores como para los responsables de la política. A medida que la economía siga evolucionando, es probable que el KC PRS siga siendo un indicador clave para quienes navegan por el complejo panorama financiero.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Análisis relacionado</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -97,8 +99,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Los artículos son resúmenes asistidos por IA y análisis independientes de datos macroeconómicos públicos. Solo informativos, no constituyen asesoramiento de inversión.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/es/disclosure.html">Divulgación de afiliados</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "중국의 성장 전환: 경기 부양, 수출, 그리고 부채 부담", "description": "베이징은 부동산 주도 성장에서 첨단 제조업으로 전환하고 있습니다. 수출과 경기 부양이 구조적으로 약화된 소비를 상쇄할 수 있을까요?", "inLanguage": "ko", "datePublished": "2026-08-24", "dateModified": "2026-08-24", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ko/post/china-growth-pivot-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 400}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ko/"}, {"@type": "ListItem", "position": 2, "name": "중국의 성장 전환: 경기 부양, 수출, 그리고 부채 부담", "item": "https://www.mycapitalanalyze.com/ko/post/china-growth-pivot-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <p>모든 것의 기저에는 부채가 있습니다. GDP 대비 총 사회 융자는 사상 최고 수준입니다. 부동산에서의 전환은 경제가 한때 성장을 견인했던 신용 채널에 의존하지 않고 성장을 창출해야 함을 의미하며, 이는 역사적으로 어려운 과제입니다. 예를 들어, 2023년 중국의 부동산 개발 투자는 전년 대비 약 9% 감소했습니다. 이는 수년간 두 자릿수 성장을 기록했던 것과 대조적입니다. 또한 중국의 신규 주택 가격은 주요 도시에서 하락했으며, 2024년에는 70개 주요 도시 중 약 60개에서 하락했습니다. 이러한 추세는 소비자 심리와 지방 정부 재정에 광범위한 영향을 미칩니다. 지방 정부는 토지 판매 수입에 크게 의존해 왔기 때문입니다.</p>
 <h2 id="h-7">투자자에 대한 시사점</h2>
 <p>우리의 평가는 중국의 성장이 구조적으로 낮아져 4-5% 범위에 머물 것이며, 경기 부양이 급격한 침체를 방지하지만 이전 궤도를 회복하지는 못할 것이라는 것입니다. 글로벌 투자자에게 주요 전달 채널은 원자재 수요, 제조업 투입 비용, 그리고 중국 수출이 세계 시장에 계속 가하는 디플레이션 압력입니다. 예를 들어, 중국의 전기차 수출은 2023년에 67% 급증하여 유럽 자동차 제조업체에 압력을 가했고, EU가 보조금 조사를 시작하도록 만들었습니다. 마찬가지로 중국의 태양광 패널 과잉 공급은 글로벌 가격을 하락시켜 미국과 인도에서 관세를 초래했습니다. 투자자들은 중국의 제조업 우위가 글로벌 가격과 무역 흐름을 계속 형성함에 따라 이러한 역학 관계를 면밀히 주시해야 합니다. 또한 중국의 부채 문제는 은행 부문과 기업 수익성에 위험을 초래합니다. 비금융 기업 부채는 GDP의 약 170%에 달하며, 이는 상당한 취약점입니다. 중국이 성장 모델을 전환함에 따라 정책 입안자와 투자자 모두에게 중요한 시험대가 될 것입니다.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">관련 분석</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">이 블로그의 글은 공개된 거시경제 데이터를 AI가 요약·분석한 것입니다. 정보 제공 목적이며 투자 조언이 아닙니다.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ko/disclosure.html">제휴 수익 고지</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

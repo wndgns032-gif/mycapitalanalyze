@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "Britain's G20 and G7 Leadership: A Chance to Reshape Global Economic Governance", "description": "As the UK prepares to lead the G20 and G7, PM Burnham can pivot from defense to a proactive, fairness-driven international economic agenda.", "inLanguage": "en", "datePublished": "2026-08-29", "dateModified": "2026-08-29", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/post/project-syndicate-b3b90df08d.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 408, "isBasedOn": {"@type": "CreativeWork", "name": "Project Syndicate", "url": "https://www.project-syndicate.org/commentary/andy-burnham-g7-g20-presidencies-opportunity-to-reshape-global-economy-by-danny-sriskandarajah-2026-08"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/"}, {"@type": "ListItem", "position": 2, "name": "Britain's G20 and G7 Leadership: A Chance to Reshape Global Economic Governance", "item": "https://www.mycapitalanalyze.com/post/project-syndicate-b3b90df08d.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -68,6 +69,7 @@
 <p>For the global economy, a fairness-driven agenda could result in more robust international cooperation on pressing issues like climate change and digital taxation. The UK&#x27;s leadership might catalyze reforms in international financial institutions, making them more responsive to developing countries&#x27; needs. Domestically, this approach could bolster the government&#x27;s popularity by aligning with public sentiment for a more just world.</p>
 <p>However, challenges remain. Balancing national interests with global goals will require deft diplomacy. Burnham must navigate geopolitical tensions, particularly with major economies like China and the US. Yet, if successful, this could mark a turning point in how middle powers exert influence, proving that soft power and economic diplomacy can be as impactful as military strength.</p>
 <p>In conclusion, Britain&#x27;s upcoming presidencies offer a window to advance a fairer global economic order. By seizing this opportunity, Burnham can leave a lasting legacy and set a precedent for future international leadership.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Related Analysis</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -83,8 +85,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Posts on this blog are AI-assisted summaries and independent analysis of public macro and economic data. Content is for informational purposes only and does not constitute investment advice.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/disclosure.html">Affiliate Disclosure</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

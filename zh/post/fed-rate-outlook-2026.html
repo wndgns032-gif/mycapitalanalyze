@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "美联储的下一步：市场为何押注九月降息", "description": "市场正趋向于降息，但九月之后的路径仍存争议。我们剖析驱动这一决策的数据。", "inLanguage": "zh", "datePublished": "2026-08-26", "dateModified": "2026-08-26", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/zh/post/fed-rate-outlook-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 17}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/zh/"}, {"@type": "ListItem", "position": 2, "name": "美联储的下一步：市场为何押注九月降息", "item": "https://www.mycapitalanalyze.com/zh/post/fed-rate-outlook-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -79,6 +80,7 @@
 <p>此外，通胀数据也显示出复杂性。虽然整体通胀率已降至3%以下，但核心服务价格（如住房和医疗保健）的涨幅仍然顽固。住房通胀虽然有所放缓，但租金仍以约5%的年率上涨，医疗保健成本也持续攀升。这提醒我们，通胀的最后一公里往往最为艰难。美联储需要平衡过早降息导致通胀反弹的风险与过晚降息导致经济衰退的风险。</p>
 <p>对于投资者而言，理解这些动态至关重要。债券市场已开始定价降息预期，导致短期国债收益率下降，两年期国债收益率已从5%以上降至4%左右。股票市场则表现出分化：科技股和成长股受益于利率下降预期，而价值股和周期股则因经济放缓担忧而承压。房地产行业同样敏感，抵押贷款利率的下降可能刺激住房需求，但商业地产仍面临高空置率和再融资压力。</p>
 <p>总之，美联储的下一步行动将取决于未来几个月的经济数据。如果通胀继续回落且劳动力市场保持稳定，九月降息的可能性将进一步提高。反之，如果数据出现意外，美联储可能会推迟行动。投资者应保持灵活，密切关注经济指标和政策信号，以调整资产配置策略。</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">相关分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -94,8 +96,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本博客文章为基于公开宏观数据的 AI 辅助摘要与独立分析，仅供参考，不构成投资建议。</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/zh/disclosure.html">联盟营销披露</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

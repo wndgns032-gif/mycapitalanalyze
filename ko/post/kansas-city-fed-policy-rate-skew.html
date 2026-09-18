@@ -32,6 +32,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "캔자스시티 연준의 정책금리 스큐(비대칭도): 시장 기대를 읽는 창", "description": "캔자스시티 연준이 옵션 가격을 활용해 금융 리스크 인식을 가늠하는 독특한 지표와 그것이 시장 역학에 시사하는 바를 살펴본다.", "inLanguage": "ko", "datePublished": "2026-09-17", "dateModified": "2026-09-17", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ko/post/kansas-city-fed-policy-rate-skew.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 433, "isBasedOn": {"@type": "CreativeWork", "name": "FRED Blog", "url": "https://fredblog.stlouisfed.org/2026/09/using-options-prices-to-measure-financial-risk/"}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ko/"}, {"@type": "ListItem", "position": 2, "name": "캔자스시티 연준의 정책금리 스큐(비대칭도): 시장 기대를 읽는 창", "item": "https://www.mycapitalanalyze.com/ko/post/kansas-city-fed-policy-rate-skew.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <p>옵션 가격을 활용해 금융 리스크를 측정한다는 발상은 경제 분석 방법론의 진화를 보여주는 사례다. 옵션 거래가 지닌 선취적 성격을 반영함으로써 KC PRS는 전통적 경제 지표로는 포착하기 어려운 시장 기대의 미묘한 결을 읽어낸다. 예컨대 같은 &#x27;금리 인하 기대&#x27;라 하더라도 완만한 인하를 예상하는 것인지, 경기 침체에 대비한 급격한 인하를 상정하는 것인지에 따라 시장이 감지하는 리스크의 성격은 전혀 다르다. 스큐 지수는 바로 이러한 비대칭적 기대의 방향과 강도를 수치로 드러낸다.</p>
 <p>금리의 순환적 패턴에 선행하는 지수의 능력은 특히 가치가 크다. 투자자와 정책결정자가 경제 환경의 변화를 미리 헤아릴 수 있게 해주는 선도 신호를 제공하기 때문이다. 예를 들어 KC PRS가 금리 상승 가능성을 가리킨다면 투자자는 포트폴리오를 그에 맞게 조정하고, 정책결정자는 통화정책 방향 설정 시 이를 참고할 수 있다. 수익률 곡선이 경기침체의 전조로 주목받아 왔듯이, 금리 옵션 스큐 역시 시장의 심층 심리를 드러내는 또 하나의 나침반으로 기능할 수 있다.</p>
 <h2 id="h-8">시사점</h2></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">관련 분석</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">이 블로그의 글은 공개된 거시경제 데이터를 AI가 요약·분석한 것입니다. 정보 제공 목적이며 투자 조언이 아닙니다.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ko/disclosure.html">제휴 수익 고지</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

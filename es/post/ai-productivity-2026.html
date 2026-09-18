@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "IA y productividad: ¿Puede la tecnología rescatar los mercados laborales estancados?", "description": "El crecimiento de la productividad es la variable más importante para el nivel de vida a largo plazo. ¿Está la IA finalmente dando resultados, o es otro ciclo de exageración?", "inLanguage": "es", "datePublished": "2026-08-20", "dateModified": "2026-08-20", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/es/post/ai-productivity-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 324}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/es/"}, {"@type": "ListItem", "position": 2, "name": "IA y productividad: ¿Puede la tecnología rescatar los mercados laborales estancados?", "item": "https://www.mycapitalanalyze.com/es/post/ai-productivity-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <h2 id="h-6">La cuestión del mercado laboral</h2>
 <p>La incertidumbre más profunda es distributiva. A diferencia de tecnologías anteriores, la IA compite con el trabajo cognitivo, aislado de la automatización. La transición podría desplazar empleos de oficina de habilidad media, incluso mientras crea nuevos roles.</p>
 <p>Nuestra opinión: la IA aparecerá en las estadísticas de productividad, pero con un desfase de años, no trimestres. Las economías que se adapten rápido, mediante reciclaje e inversión, capturarán las ganancias. Para los inversores, el auge de la productividad será el viento macroeconómico más importante de la década.</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Análisis relacionado</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Los artículos son resúmenes asistidos por IA y análisis independientes de datos macroeconómicos públicos. Solo informativos, no constituyen asesoramiento de inversión.</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/es/disclosure.html">Divulgación de afiliados</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>

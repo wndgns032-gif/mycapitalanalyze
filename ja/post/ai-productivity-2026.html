@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "AIと生産性：技術は停滞する労働市場を救えるか？", "description": "生産性の伸びは長期的な生活水準を決める最も重要な変数です。AIはついにその効果をもたらすのか、それともまたもや過大評価のサイクルに過ぎないのか。", "inLanguage": "ja", "datePublished": "2026-08-20", "dateModified": "2026-08-20", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.mycapitalanalyze.com/ja/post/ai-productivity-2026.html"}, "author": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "publisher": {"@type": "Organization", "name": "MyCapital Analyze", "url": "https://www.mycapitalanalyze.com/"}, "articleSection": "Macroeconomics", "wordCount": 14}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.mycapitalanalyze.com/ja/"}, {"@type": "ListItem", "position": 2, "name": "AIと生産性：技術は停滞する労働市場を救えるか？", "item": "https://www.mycapitalanalyze.com/ja/post/ai-productivity-2026.html"}]}</script>
+
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
@@ -74,6 +75,7 @@
 <h2 id="h-6">労働市場の問題</h2>
 <p>より深い不確実性は分配に関するものです。これまでの技術と異なり、AIは長い間自動化から守られてきた認知労働と直接競合します。この移行は、中技能のホワイトカラー職を displace する一方で、異なる能力を要求する新しい役割を生み出す可能性があります。例えば、データ入力や初級の事務職は自動化の影響を受けやすい一方で、AIシステムを管理・監視する新しい職種が生まれるでしょう。また、AIが生み出す効率化によって、企業はより少ない人員で同じ業務を遂行できるようになり、雇用の二極化が進む可能性があります。</p>
 <p>我々の見解では、AIは最終的には生産性統計に現れるでしょうが、その遅延は四半期ではなく年単位で測られます。再訓練と資本投資を通じて最も速く適応する経済が、その恩恵を享受するでしょう。投資家にとって、生産性ブームが到来すれば、それはこの10年で最も重要なマクロの追い風となるでしょう。企業収益の拡大、賃金上昇、そして持続可能な経済成長が期待できます。しかし、その恩恵を最大化するためには、政策立案者による教育・訓練制度の整備や、企業による組織改革への投資が不可欠です。</p></div>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">関連分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
@@ -89,8 +91,29 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本ブログの記事は公開されたマクロ経済データに基づく AI 支援の要約と独自分析です。情報提供のみを目的とし、投資助言ではありません。</p>
+      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ja/disclosure.html">アフィリエイト開示</a></p>
     </div>
   </footer>
 <script src="/assets/js/main.js"></script>
+  <script>
+  (function () {
+    if (!document.addEventListener) return;
+    function track(node, evt) {
+      var id = node.getAttribute('data-affiliate');
+      if (!id || typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', evt, {
+          affiliate_id: id,
+          outbound_url: node.getAttribute('href'),
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-affiliate]') : null;
+      if (el) track(el, 'affiliate_click');
+    }, true);
+  })();
+  </script>
 </body>
 </html>
