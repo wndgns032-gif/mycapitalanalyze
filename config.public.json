@@ -5,6 +5,8 @@
     "google_site_verification": "DSgNHo4SPmiOp6akCru8PRqv1Mpmvk4vyVCPX2AII6A"
   },
   "adsense": {
+    "enabled": false,
+    "_enabled_note": "false=사이트가 아직 애드센스에 승인되지 않음. 승인 후 true로 바꾸면 광고 코드가 렌더링된다. 승인 전에 광고 코드를 넣으면 빈 박스만 보이고 정책 리스크가 있다.",
     "client": "ca-pub-9243770518153989",
     "_slots_note": "myappanalyze.com 계정의 광고 단위를 재사용. 애드센스 > 사이트에서 mycapitalanalyze.com이 승인되어야 광고가 실제로 게재된다.",
     "slots": {
@@ -13,5 +15,18 @@
       "index": { "id": "9628592280", "format": "auto" },
       "index_infeed": { "id": "6675125886", "format": "fluid", "layout": "in-feed" }
     }
+  },
+  "affiliates": {
+    "enabled": true,
+    "_note": "url이 비어 있으면 렌더링되지 않는다. rel=sponsored nofollow로 출력되어 FTC/표시광고법 고지를 만족한다.",
+    "offers": [
+      {
+        "id": "tradingview",
+        "name": "TradingView",
+        "url": "https://www.tradingview.com/?aff_id=1171086",
+        "blurb": "Advanced charts, screeners and real-time market data. Free plan available.",
+        "categories": ["*"]
+      }
+    ]
   }
 }

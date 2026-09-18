@@ -63,15 +63,22 @@ GA4_ID = ((CONFIG.get('analytics') or {}).get('ga4_id') or '').strip()
 # Google Search Console HTML 태그 방식 인증 값 (없으면 메타 태그 미삽입)
 GSC_VERIFY = ((CONFIG.get('analytics') or {}).get('google_site_verification') or '').strip()
 ADS_CFG = CONFIG.get('adsense') or {}
-AD_CLIENT = (ADS_CFG.get('client') or 'ca-pub-9243770518153989').strip()
+# 사이트가 애드센스에 승인되기 전에는 광고 코드를 아예 넣지 않는다.
+# 승인 전 광고 코드 삽입은 빈 박스만 노출시키고 계정 정책 리스크를 만든다.
+ADS_ENABLED = bool(ADS_CFG.get('enabled'))
+AD_CLIENT = ((ADS_CFG.get('client') or '').strip() if ADS_ENABLED else '')
 # 광고 슬롯 ID. 값이 비어 있으면 해당 광고 유닛은 렌더링하지 않는다.
 AD_SLOTS = ADS_CFG.get('slots') or {}
 
 AFF_CFG = CONFIG.get('affiliates') or {}
-AFF_ENABLED = bool(AFF_CFG.get('enabled'))
 AFF_ALL = AFF_CFG.get('offers') or []
 # url이 채워지지 않은 항목은 렌더링하지 않는다 (빈 링크 방지)
 AFF_LIVE = [o for o in AFF_ALL if (o.get('url') or '').strip()]
+# 실제 URL이 채워진 오퍼가 하나라도 있으면 활성으로 본다.
+# config.json / CI 시크릿의 enabled:false가 공개 설정(config.public.json)에
+# 들어있는 실제 제휴 링크를 지워버리는 것을 막기 위한 처리다.
+# 숨기려면 offers의 url을 비우면 된다.
+AFF_ENABLED = bool(AFF_LIVE)
 
 # (code, 표시명, rtl 여부)
 LANG_META = {
@@ -400,6 +407,14 @@ def ad_unit(key, wrap_class='my-6'):
     )
 
 
+def adsense_script_html():
+    """애드센스 로더 스크립트. 승인 전(AD_CLIENT 없음)에는 삽입하지 않는다."""
+    if not AD_CLIENT:
+        return ''
+    return ('  <script async src="https://pagead2.googlesyndication.com/pagead/js/'
+            f'adsbygoogle.js?client={htmllib.escape(AD_CLIENT)}" crossorigin="anonymous"></script>')
+
+
 def verify_html():
     """Google Search Console 소유권 확인 메타 태그. 값이 없으면 빈 문자열."""
     if not GSC_VERIFY:
@@ -554,7 +569,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
   <meta property="og:url" content="{canonical}" />
   <meta property="og:site_name" content="{SITE_NAME}" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9243770518153989" crossorigin="anonymous"></script>
+{adsense_script_html()}
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config = {{ {TAILWIND_CONFIG} }};</script>
   <link rel="stylesheet" href="/assets/css/custom.css" />
