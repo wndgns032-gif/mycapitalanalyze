@@ -16,7 +16,43 @@ SEO: 페이지별 hreflang 상호 링크, NewsArticle/BreadcrumbList/FAQPage JSO
 import json, os, re, glob, html as htmllib
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CONFIG = json.load(open(os.path.join(BASE, 'config.json'), encoding='utf-8'))
+def _load_config():
+    """공개 설정(config.public.json)을 기본으로 하고, 시크릿 설정(config.json)이
+    비어 있지 않은 값일 때만 덮어쓴다.
+
+    GA4 측정 ID / 서치콘솔 인증 값은 페이지에 그대로 노출되는 공개값이므로
+    config.public.json(커밋 대상)에 둔다. API 키는 여전히 config.json에만 둔다.
+    """
+    cfg = {}
+    pub = os.path.join(BASE, 'config.public.json')
+    if os.path.exists(pub):
+        try:
+            cfg = json.load(open(pub, encoding='utf-8'))
+        except Exception:
+            cfg = {}
+
+    def _is_empty(v):
+        return v is None or v == '' or v == [] or v == {}
+
+    sec = os.path.join(BASE, 'config.json')
+    if os.path.exists(sec):
+        try:
+            s = json.load(open(sec, encoding='utf-8'))
+        except Exception:
+            s = {}
+        for k, v in (s or {}).items():
+            if isinstance(v, dict) and isinstance(cfg.get(k), dict):
+                merged = dict(cfg[k])
+                for kk, vv in v.items():
+                    if not _is_empty(vv):
+                        merged[kk] = vv
+                cfg[k] = merged
+            elif not _is_empty(v):
+                cfg[k] = v
+    return cfg
+
+
+CONFIG = _load_config()
 DOMAIN = 'https://www.mycapitalanalyze.com'
 SITE_NAME = 'MyCapital Analyze'
 
@@ -24,7 +60,12 @@ POSTS_DIR = os.path.join(BASE, 'content', 'posts')
 TRANS_DIR = os.path.join(BASE, 'content', 'translations')
 
 GA4_ID = ((CONFIG.get('analytics') or {}).get('ga4_id') or '').strip()
-AD_CLIENT = 'ca-pub-9243770518153989'
+# Google Search Console HTML 태그 방식 인증 값 (없으면 메타 태그 미삽입)
+GSC_VERIFY = ((CONFIG.get('analytics') or {}).get('google_site_verification') or '').strip()
+ADS_CFG = CONFIG.get('adsense') or {}
+AD_CLIENT = (ADS_CFG.get('client') or 'ca-pub-9243770518153989').strip()
+# 광고 슬롯 ID. 값이 비어 있으면 해당 광고 유닛은 렌더링하지 않는다.
+AD_SLOTS = ADS_CFG.get('slots') or {}
 
 AFF_CFG = CONFIG.get('affiliates') or {}
 AFF_ENABLED = bool(AFF_CFG.get('enabled'))
@@ -329,6 +370,43 @@ def ga_html():
     )
 
 
+def _slot_entry(key):
+    """슬롯 설정 파싱. "1234567890" 문자열 또는
+    {"id": "...", "format": "auto|autorelaxed|fluid", "layout": "in-feed"} 객체 지원."""
+    ent = AD_SLOTS.get(key)
+    if isinstance(ent, dict):
+        return ((ent.get('id') or '').strip(),
+                (ent.get('format') or 'auto').strip(),
+                (ent.get('layout') or '').strip())
+    return ((ent or '').strip() if isinstance(ent, str) else '', 'auto', '')
+
+
+def ad_unit(key, wrap_class='my-6'):
+    """AdSense 디스플레이 광고 유닛. 슬롯 ID가 설정되지 않았으면 빈 문자열.
+
+    애드센스는 각 <ins> 마다 한 번의 push가 필요하므로 유닛마다 스크립트를 붙인다.
+    """
+    slot, fmt, layout = _slot_entry(key)
+    if not slot or not AD_CLIENT:
+        return ''
+    layout_attr = f' data-ad-layout="{htmllib.escape(layout)}"' if layout else ''
+    return (
+        f'<div class="{wrap_class}" data-ad-slot-name="{htmllib.escape(key)}">\n'
+        f'  <ins class="adsbygoogle" style="display:block" '
+        f'data-ad-client="{AD_CLIENT}" data-ad-slot="{htmllib.escape(slot)}" '
+        f'data-ad-format="{htmllib.escape(fmt)}" data-full-width-responsive="true"{layout_attr}></ins>\n'
+        '  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>\n'
+        '</div>'
+    )
+
+
+def verify_html():
+    """Google Search Console 소유권 확인 메타 태그. 값이 없으면 빈 문자열."""
+    if not GSC_VERIFY:
+        return ''
+    return f'  <meta name="google-site-verification" content="{htmllib.escape(GSC_VERIFY)}" />'
+
+
 def conversion_tracking_js():
     """아웃바운드(제휴/출처) 클릭을 GA4 이벤트로 전송."""
     return """  <script>
@@ -467,6 +545,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
   <title>{htmllib.escape(title)}</title>
   <meta name="description" content="{htmllib.escape(description)}" />
   <link rel="canonical" href="{canonical}" />
+{verify_html()}
 {head_extra}
   <link rel="alternate" type="application/rss+xml" href="{DOMAIN}/feed.xml" />
   <meta property="og:title" content="{htmllib.escape(title)}" />
@@ -610,7 +689,9 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     <h1 class="text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 mb-4">{htmllib.escape(title)}</h1>
     <p class="text-slate-600 dark:text-slate-400">{htmllib.escape(desc)}</p>{src}
   </header>
+  {ad_unit('post_top')}
   <div class="prose prose-slate dark:prose-invert max-w-none">{body_html}</div>
+  {ad_unit('post_bottom')}
   {affiliate_box(lang, category)}
   {related_html(lang, slug, posts_in_lang, s[5])}
 </article>'''
@@ -631,7 +712,11 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
 
 def build_index(lang, posts, available):
     s = strs(lang)
-    cards = '\n'.join(card_html(lang, p['slug'], p['title'], p['desc'], p['category'], p['date']) for p in posts)
+    card_list = [card_html(lang, p['slug'], p['title'], p['desc'], p['category'], p['date']) for p in posts]
+    half = max(1, len(card_list) // 2)
+    cards = '\n'.join(card_list[:half])
+    cards2 = '\n'.join(card_list[half:])
+    infeed = ad_unit('index_infeed', wrap_class='sm:col-span-2 my-6 text-center')
     content = f'''<div class="space-y-6">
   <div>
     <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">{htmllib.escape(s[2])}</h1>
@@ -639,7 +724,10 @@ def build_index(lang, posts, available):
   </div>
   <div class="grid gap-4 sm:grid-cols-2">
 {cards}
+  {infeed}
+{cards2}
   </div>
+  {ad_unit('index')}
 </div>'''
     canonical = DOMAIN + home_path(lang)
     title = f'{SITE_NAME} — {s[0]}'
