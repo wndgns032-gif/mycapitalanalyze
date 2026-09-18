@@ -28,6 +28,7 @@ jobs:
           GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           GA4_ID: ${{ secrets.GA4_ID }}
+          GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
           AFFILIATES_JSON: ${{ secrets.AFFILIATES_JSON }}
         run: |
           python - <<'PY'
@@ -40,6 +41,7 @@ jobs:
 
           # 분석 추적: GA4_ID 시크릿이 비어 있으면 추적 코드를 넣지 않는다.
           ga4 = os.environ.get('GA4_ID', '').strip()
+          gsc = os.environ.get('GOOGLE_SITE_VERIFICATION', '').strip()
 
           # 제휴 설정: AFFILIATES_JSON 시크릿 = {"offers":[{"id","name","url","blurb","categories"}]}
           # 시크릿이 없으면 제휴 박스를 렌더링하지 않는다(안전 기본값).
@@ -84,7 +86,7 @@ jobs:
             "char_min": 3000,
             "char_max": 5000,
             "max_new_posts_per_run": 1,
-            "analytics": {"ga4_id": ga4},
+            "analytics": {"ga4_id": ga4, "google_site_verification": gsc},
             "affiliates": aff_cfg
           }
           json.dump(cfg, open('config.json', 'w'), ensure_ascii=False, indent=2)

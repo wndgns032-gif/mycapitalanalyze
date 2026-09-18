@@ -1,0 +1,17 @@
+{
+  "_comment": "공개 설정. API 키 등 민감정보는 절대 넣지 않는다. config.json(git 제외, CI 시크릿 주입) 값이 비어 있지 않으면 이 값을 덮어쓴다.",
+  "analytics": {
+    "ga4_id": "G-1E3087HBL7",
+    "google_site_verification": "DSgNHo4SPmiOp6akCru8PRqv1Mpmvk4vyVCPX2AII6A"
+  },
+  "adsense": {
+    "client": "ca-pub-9243770518153989",
+    "_slots_note": "myappanalyze.com 계정의 광고 단위를 재사용. 애드센스 > 사이트에서 mycapitalanalyze.com이 승인되어야 광고가 실제로 게재된다.",
+    "slots": {
+      "post_top": { "id": "9628592280", "format": "auto" },
+      "post_bottom": { "id": "8776397810", "format": "autorelaxed" },
+      "index": { "id": "9628592280", "format": "auto" },
+      "index_infeed": { "id": "6675125886", "format": "fluid", "layout": "in-feed" }
+    }
+  }
+}
