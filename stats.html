@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>방문자 통계 · MyCapital Analyze</title>
+<link rel="canonical" href="https://www.mycapitalanalyze.com/stats.html" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { 50:'#eef4ff',100:'#dbe7ff',200:'#b9d0ff',300:'#8fb0ff',400:'#5f86f5',500:'#1e4fd8',600:'#1a3fb0',700:'#142f85',800:'#122560',900:'#0e1a3d' } } } } };
+</script>
+<style>
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+  table td, table th { white-space: nowrap; }
+</style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
+<script>
+  try {
+    var p = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var s = localStorage.getItem('mycapital-theme');
+    if (s === 'dark' || (s !== 'light' && p)) document.documentElement.classList.add('dark');
+  } catch (e) {}
+</script>
+
+<main class="max-w-5xl mx-auto px-4 py-8">
+  <header class="flex flex-wrap items-end justify-between gap-3 mb-6">
+    <div>
+      <h1 class="text-2xl font-bold tracking-tight">방문자 통계</h1>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        MyCapital Analyze · 일/주/월 방문자 추이 &nbsp;·&nbsp; 기준시간 KST(UTC+9) &nbsp;·&nbsp; 집계 시작 <span id="startLabel">-</span>
+      </p>
+    </div>
+    <div class="flex items-center gap-3">
+      <span id="updated" class="text-xs text-slate-500 dark:text-slate-400"></span>
+      <button id="refresh" class="text-sm px-3 py-1.5 rounded border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">새로고침</button>
+      <a href="/ko/" class="text-sm px-3 py-1.5 rounded border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">사이트로</a>
+    </div>
+  </header>
+
+  <div id="warn" class="hidden mb-4 text-sm rounded-lg border border-amber-300 bg-amber-50 text-amber-800 px-4 py-3"></div>
+
+  <!-- KPI -->
+  <section id="kpis" class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8"></section>
+
+  <!-- 차트 -->
+  <section class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 mb-6">
+    <h2 class="text-sm font-semibold mb-3">일별 방문자 (최근 30일)</h2>
+    <div id="chart" class="text-slate-500 dark:text-slate-400 text-sm">불러오는 중…</div>
+  </section>
+
+  <div class="grid md:grid-cols-2 gap-6">
+    <section class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+      <h2 class="text-sm font-semibold mb-3">주간 집계 (최근 8주, 월~일)</h2>
+      <div id="weekly"></div>
+    </section>
+    <section class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+      <h2 class="text-sm font-semibold mb-3">월간 집계 (최근 6개월)</h2>
+      <div id="monthly"></div>
+    </section>
+  </div>
+
+  <section class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 mt-6">
+    <h2 class="text-sm font-semibold mb-3">일별 상세 (최근 14일)</h2>
+    <div id="daily"></div>
+  </section>
+
+  <p class="text-xs text-slate-500 dark:text-slate-400 mt-6 leading-relaxed">
+    · 이 수치는 사이트 자체 카운터(브라우저당 1일 1회 집계) 기준입니다. Google Analytics(GA4)와 집계 방식이 달라 숫자가 다를 수 있습니다.<br />
+    · 방문자만 집계하며, 누가·어디서·어떻게 들어왔는지에 대한 개인정보는 수집하지 않습니다.<br />
+    · 통계 서버 응답이 없으면 저장된 스냅샷(<code>data/visits.json</code>) 값으로 대체해 표시합니다.
+  </p>
+</main>
+
+<script>
+(function () {
+  var NS = 'mca-visit-7f3q';
+  var API = 'https://tallywire.cronpulse.workers.dev';
+  var START = '2026-09-19';
+  var values = {};
+  var liveOk = 0;
+
+  function kstYmd() { return new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10); }
+  function ymdAdd(s, n) {
+    var p = s.split('-').map(Number);
+    return new Date(Date.UTC(p[0], p[1] - 1, p[2]) + n * 86400e3).toISOString().slice(0, 10);
+  }
+  function diffDays(a, b) {
+    var pa = a.split('-').map(Number), pb = b.split('-').map(Number);
+    return Math.round((Date.UTC(pb[0], pb[1] - 1, pb[2]) - Date.UTC(pa[0], pa[1] - 1, pa[2])) / 86400e3);
+  }
+  function weekStart(s) {
+    var p = s.split('-').map(Number);
+    var dow = (new Date(Date.UTC(p[0], p[1] - 1, p[2])).getUTCDay() + 6) % 7; // 0=월
+    return ymdAdd(s, -dow);
+  }
+  function md(s) { return s.slice(5).replace('-', '/'); }
+  function num(n) { return (n || 0).toLocaleString('ko-KR'); }
+
+  async function mapLimit(arr, limit, fn) {
+    var out = new Array(arr.length), i = 0;
+    async function worker() { while (i < arr.length) { var k = i++; out[k] = await fn(arr[k]); } }
+    await Promise.all(Array.from({ length: Math.min(limit, arr.length) }, worker));
+    return out;
+  }
+
+  async function loadSnapshot() {
+    try {
+      var r = await fetch('data/visits.json', { cache: 'no-store' });
+      if (!r.ok) return {};
+      var j = await r.json();
+      return (j && j.days) || {};
+    } catch (e) { return {}; }
+  }
+
+  async function load() {
+    var today = kstYmd();
+    document.getElementById('startLabel').textContent = START;
+    var snap = await loadSnapshot();
+
+    var days = [], d = START, guard = 0;
+    while (d <= today && guard++ < 500) { days.push(d); d = ymdAdd(d, 1); }
+
+    var fetched = await mapLimit(days, 8, async function (day) {
+      try {
+        var r = await fetch(API + '/get/' + NS + '/v' + day.replace(/-/g, ''), { cache: 'no-store' });
+        if (!r.ok) throw new Error(r.status);
+        var j = await r.json();
+        liveOk++;
+        return Number(j.value || 0);
+      } catch (e) {
+        return (snap[day] != null) ? Number(snap[day]) : null;
+      }
+    });
+
+    values = {};
+    days.forEach(function (day, i) { values[day] = fetched[i] == null ? 0 : fetched[i]; });
+
+    var warn = document.getElementById('warn');
+    if (liveOk === 0) {
+      warn.classList.remove('hidden');
+      warn.textContent = '통계 서버에 연결할 수 없어 저장된 스냅샷(또는 0)으로 표시합니다. 잠시 후 새로고침해 주세요.';
+    } else {
+      warn.classList.add('hidden');
+    }
+
+    render(today, days);
+    var t = new Date(Date.now() + 9 * 3600e3).toISOString().slice(11, 16);
+    document.getElementById('updated').textContent = '마지막 업데이트 ' + today + ' ' + t + ' KST';
+  }
+
+  function kpi(label, value, sub) {
+    return '<div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">' +
+      '<div class="text-xs text-slate-500 dark:text-slate-400">' + label + '</div>' +
+      '<div class="text-2xl font-bold mt-1 tabular-nums">' + value + '</div>' +
+      '<div class="text-xs text-slate-500 dark:text-slate-400 mt-1">' + sub + '</div></div>';
+  }
+
+  function render(today, days) {
+    var elapsed = Math.max(1, diffDays(START, today) + 1);
+    var total = days.reduce(function (a, d) { return a + (values[d] || 0); }, 0);
+    var avgDay = total / elapsed;
+    var todayV = values[today] || 0;
+    var yest = ymdAdd(today, -1);
+    var yestV = values[yest] || 0;
+
+    // 이번 주(월~오늘) / 이번 달 합계
+    var ws = weekStart(today);
+    var weekSum = 0, wd = ws;
+    while (wd <= today) { weekSum += (values[wd] || 0); wd = ymdAdd(wd, 1); }
+    var ym = today.slice(0, 7);
+    var monSum = days.filter(function (d) { return d.slice(0, 7) === ym; })
+                     .reduce(function (a, d) { return a + (values[d] || 0); }, 0);
+
+    var diff = yestV ? Math.round((todayV - yestV) / yestV * 100) : null;
+    var diffTxt = yestV ? ('어제 대비 ' + (diff >= 0 ? '+' : '') + diff + '%') : '어제 데이터 없음';
+
+    document.getElementById('kpis').innerHTML =
+      kpi('오늘 (진행 중)', num(todayV), diffTxt) +
+      kpi('어제', num(yestV), md(yest)) +
+      kpi('일평균', avgDay.toFixed(1), '집계 ' + elapsed + '일간 · 누적 ' + num(total)) +
+      kpi('누적 방문자', num(total), START + ' ~ ' + today) +
+      kpi('이번 주 (월~오늘)', num(weekSum), md(ws) + ' ~ ' + md(today)) +
+      kpi('주간 평균', num(Math.round(avgDay * 7)), '일평균 × 7') +
+      kpi('이번 달', num(monSum), today.slice(0, 7)) +
+      kpi('월간 평균(예상)', num(Math.round(avgDay * 30.4)), '일평균 × 30.4');
+
+    renderChart(days.slice(-30));
+    renderWeekly(today);
+    renderMonthly(today, days);
+    renderDaily(days.slice(-14).reverse());
+  }
+
+  function renderChart(days) {
+    var max = Math.max.apply(null, days.map(function (d) { return values[d] || 0; }).concat([1]));
+    var n = days.length, W = 700, H = 150, gap = 3;
+    // 데이터가 30일보다 적어도 막대가 과하게 넓어지지 않도록 30칸 기준으로 계산한다.
+    var slots = Math.max(30, n), bw = (W - gap * (slots - 1)) / slots;
+    var offset = slots - n;
+    var bars = '', labels = '';
+    days.forEach(function (d, i) {
+      var v = values[d] || 0;
+      var h = Math.max(2, Math.round((v / max) * (H - 30)));
+      var x = (i + offset) * (bw + gap);
+      var y = H - 20 - h;
+      var isToday = (i === days.length - 1);
+      bars += '<rect x="' + x.toFixed(1) + '" y="' + y + '" width="' + bw.toFixed(1) + '" height="' + h +
+              '" rx="2" fill="' + (isToday ? '#1e4fd8' : '#8fb0ff') + '"><title>' + d + ': ' + v + '</title></rect>';
+      if (v > 0) {
+        bars += '<text x="' + (x + bw / 2).toFixed(1) + '" y="' + (y - 3) + '" font-size="9" text-anchor="middle" fill="#64748b">' + v + '</text>';
+      }
+      if (i === 0 || i === n - 1 || i % 5 === 0) {
+        labels += '<text x="' + (x + bw / 2).toFixed(1) + '" y="' + (H - 6) + '" font-size="9" text-anchor="middle" fill="#94a3b8">' + md(d) + '</text>';
+      }
+    });
+    document.getElementById('chart').innerHTML =
+      '<svg viewBox="0 0 ' + W + ' ' + H + '" class="w-full" style="height:170px" preserveAspectRatio="none">' +
+      '<line x1="0" y1="' + (H - 20) + '" x2="' + W + '" y2="' + (H - 20) + '" stroke="#e2e8f0" stroke-width="1"/>' +
+      bars + labels + '</svg>' +
+      '<div class="text-xs text-slate-400 mt-1">최대 ' + max + '명 · 마지막 막대가 오늘</div>';
+  }
+
+  function table(head, rows) {
+    var h = '<div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr class="text-left text-xs text-slate-500 dark:text-slate-400">' +
+      head.map(function (x) { return '<th class="py-1.5 pr-4">' + x + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      rows.map(function (r) {
+        return '<tr class="border-t border-slate-100 dark:border-slate-800">' +
+          r.map(function (c) { return '<td class="py-1.5 pr-4 tabular-nums">' + c + '</td>'; }).join('') + '</tr>';
+      }).join('') + '</tbody></table></div>';
+    return h;
+  }
+
+  function renderWeekly(today) {
+    var rows = [];
+    for (var i = 0; i < 8; i++) {
+      var ws = ymdAdd(weekStart(today), -7 * i);
+      var we = ymdAdd(ws, 6);
+      var end = (we > today) ? today : we;
+      // 집계 시작일 이전은 분모에서 제외한다(0으로 나눠 평균이 희석되는 것 방지).
+      var sum = 0, cnt = 0, d = ws;
+      while (d <= end) { sum += (values[d] || 0); if (d >= START) cnt++; d = ymdAdd(d, 1); }
+      rows.push([md(ws) + ' ~ ' + md(end), num(sum), num(Math.round(sum / Math.max(1, cnt))) + ' /일', cnt + '일']);
+    }
+    document.getElementById('weekly').innerHTML = table(['기간', '합계', '평균', '집계일수'], rows);
+  }
+
+  function renderMonthly(today, days) {
+    var months = [];
+    var p = today.slice(0, 7).split('-').map(Number);
+    for (var i = 0; i < 6; i++) {
+      var dt = new Date(Date.UTC(p[0], p[1] - 1 - i, 1));
+      months.push(dt.toISOString().slice(0, 7));
+    }
+    var rows = months.map(function (m) {
+      var ds = days.filter(function (d) { return d.slice(0, 7) === m; });
+      var sum = ds.reduce(function (a, d) { return a + (values[d] || 0); }, 0);
+      var avg = ds.length ? sum / ds.length : 0;
+      return [m, num(sum), num(Math.round(avg)) + ' /일', ds.length + '일'];
+    });
+    document.getElementById('monthly').innerHTML = table(['월', '합계', '일평균', '집계일수'], rows);
+  }
+
+  function renderDaily(days) {
+    var rows = days.map(function (d) {
+      var v = values[d] || 0;
+      var bar = '<span style="display:inline-block;width:' + Math.min(100, v * 4) + 'px;height:8px;background:#8fb0ff;border-radius:2px"></span>';
+      return [md(d), num(v), bar];
+    });
+    document.getElementById('daily').innerHTML = table(['날짜', '방문자', ''], rows);
+  }
+
+  document.getElementById('refresh').addEventListener('click', function () {
+    document.getElementById('chart').textContent = '불러오는 중…';
+    load();
+  });
+
+  load();
+  setInterval(load, 300000); // 5분마다 자동 갱신
+})();
+</script>
+</body>
+</html>
