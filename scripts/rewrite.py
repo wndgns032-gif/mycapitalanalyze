@@ -11,11 +11,9 @@ import json, os, re, sys, time, datetime, urllib.request, urllib.error
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG = json.load(open(os.path.join(BASE, 'config.json'), encoding='utf-8'))
 SRC = json.load(open(os.path.join(BASE, 'config_sources.json'), encoding='utf-8'))
-PROVIDER = CONFIG.get('provider', 'deepseek')
-PROV = CONFIG[PROVIDER]
-API_KEY = PROV['api_key']
-BASE_URL = PROV['base_url'].rstrip('/')
-MODEL = PROV['model']
+# LLM 호출은 scripts/llm.py 에 위임한다 (Flash 전용 + 제공자 자동 폴백)
+sys.path.insert(0, os.path.join(BASE, 'scripts'))
+import llm  # noqa: E402
 CHAR_MIN = CONFIG.get('char_min', SRC.get('min_chars', 3000))
 CHAR_MAX = CONFIG.get('char_max', SRC.get('max_chars', 5000))
 
@@ -44,32 +42,15 @@ def extract_json(text):
 
 
 def call_llm(messages):
-    body = {
-        'model': MODEL,
-        'messages': messages,
-        'max_tokens': 16384,
-        'temperature': 0.6,
-        'response_format': {'type': 'json_object'},
-    }
-    if PROVIDER == 'deepseek':
-        body['thinking'] = {'type': 'disabled'}
-    req = urllib.request.Request(
-        BASE_URL + '/chat/completions',
-        data=json.dumps(body).encode('utf-8'),
-        headers={'Content-Type': 'application/json', 'Authorization': 'Bearer ' + API_KEY},
+    """Flash 모델로 호출. (content, provider) 중 content만 반환."""
+    content, provider = llm.chat(
+        messages,
+        max_tokens=16384,
+        temperature=0.6,
+        response_format={'type': 'json_object'},
+        timeout=180,
     )
-    for attempt in range(3):
-        try:
-            resp = urllib.request.urlopen(req, timeout=180)
-            data = json.loads(resp.read().decode('utf-8'))
-            return data['choices'][0]['message']['content']
-        except urllib.error.HTTPError as e:
-            print(f'  HTTP {e.code}: {e.read().decode("utf-8")[:200]}')
-            raise
-        except (urllib.error.URLError, TimeoutError, ConnectionError):
-            print(f'  네트워크 오류({attempt+1}/3), 재시도...')
-            time.sleep(3)
-    raise RuntimeError('network fail')
+    return content
 
 def iso_to_date(s):
     if not s:

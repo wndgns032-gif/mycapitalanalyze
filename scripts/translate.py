@@ -26,11 +26,9 @@ def print(*a, **k):  # noqa: A001
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG = json.load(open(os.path.join(BASE, 'config.json'), encoding='utf-8'))
 
-PROVIDER = CONFIG.get('provider', 'deepseek')
-PROV = CONFIG[PROVIDER]
-API_KEY = PROV['api_key']
-BASE_URL = PROV['base_url'].rstrip('/')
-MODEL = PROV['model']
+# LLM 호출은 scripts/llm.py 에 위임한다 (Flash 전용 + 제공자 자동 폴백)
+sys.path.insert(0, os.path.join(BASE, 'scripts'))
+import llm  # noqa: E402
 LANGS = CONFIG.get('translate_languages') or CONFIG['languages']
 CHAR_MIN = CONFIG['char_min']
 CHAR_MAX = CONFIG['char_max']
@@ -135,39 +133,16 @@ def extract_json(text):
 
 
 def call_llm(messages, json_mode=False, net_retries=3):
-    body = {
-        'model': MODEL,
-        'messages': messages,
-        # 추론형 모델은 reasoning 토큰을 많이 쓰므로 출력 예산을 넉넉히 준다
-        'max_tokens': 16384,
-        'temperature': 0.5,
-    }
-    if PROVIDER == 'deepseek':
-        body['thinking'] = {'type': 'disabled'}
-    if json_mode:
-        body['response_format'] = {'type': 'json_object'}
-    req = urllib.request.Request(
-        BASE_URL + '/chat/completions',
-        data=json.dumps(body).encode('utf-8'),
-        headers={
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + API_KEY,
-        },
+    """Flash 모델로 호출. (content, provider) 중 content만 반환."""
+    content, _provider = llm.chat(
+        messages,
+        max_tokens=16384,
+        temperature=0.5,
+        response_format={'type': 'json_object'} if json_mode else None,
+        timeout=180,
+        retries=max(1, net_retries - 1),
     )
-    last_err = None
-    for attempt in range(net_retries):
-        try:
-            resp = urllib.request.urlopen(req, timeout=180)
-            data = json.loads(resp.read().decode('utf-8'))
-            return data['choices'][0]['message']['content']
-        except urllib.error.HTTPError as e:
-            print(f'  HTTP {e.code}: {e.read().decode("utf-8")[:300]}')
-            raise
-        except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
-            last_err = e
-            print(f'  네트워크 오류({attempt+1}/{net_retries}), 재시도...')
-            time.sleep(3)
-    raise last_err
+    return content
 
 # ---------- 번역 ----------
 def translate_post(slug, lang, lang_name, title, desc, body):
