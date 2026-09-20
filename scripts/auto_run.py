@@ -74,6 +74,10 @@ def git_sync():
         if r.returncode != 0:
             return False, "fetch 실패: " + (r.stderr or "").strip()[:100]
         git(["update-ref", "refs/remotes/origin/main", "FETCH_HEAD"])
+        # 이전 실행이 죽어서 변경분이 남아 있으면 rebase 가 거부되므로 먼저 커밋한다
+        if git(["diff", "--quiet"]).returncode != 0 or git(["diff", "--cached", "--quiet"]).returncode != 0:
+            git(["add", "-A"])
+            git(["commit", "-m", "auto: 이전 실행 잔여 변경분"])
         rb = git(["rebase", "FETCH_HEAD"], timeout=300)
         if rb.returncode != 0:
             git(["rebase", "--abort"])
