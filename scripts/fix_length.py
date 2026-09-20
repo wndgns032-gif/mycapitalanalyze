@@ -4,7 +4,12 @@
 content/translations/{lang}/*.json 중 1500-2300자 범위 밖인 본문만
 확장/축약 전용 프롬프트로 재처리해 범위 안으로 보정한다.
 
-사용법: python scripts/fix_length.py [--lang zh,fr]
+사용법: python scripts/fix_length.py [--lang zh,fr] [--limit 12] [--deadline 780]
+
+- --limit    : 1회 실행에서 보정할 파일 최대 개수 (기본 12). 매일 전부 돌리면
+               비용/시간이 폭발하므로 예산을 걸어 둔다. 남은 건 다음 실행에서 처리.
+- --deadline : 전체 실행 제한 초 (기본 780). 넘으면 남은 파일은 다음 실행으로 미룬다.
+- 처리 순서는 최신 글 우선(mtime 내림차순) — 오래된 글보다 새 글이 먼저 정상화된다.
 """
 import json, os, re, sys, time, glob, urllib.request, urllib.error
 
@@ -31,7 +36,7 @@ CHAR_MIN = CONFIG['char_min']
 CHAR_MAX = CONFIG['char_max']
 TRANS_DIR = os.path.join(BASE, 'content', 'translations')
 
-MAX_RETRY = 4
+MAX_RETRY = 3  # 한 파일당 최대 재시도. 실패해도 마지막 결과를 저장해 다음 실행에서 이어간다.
 
 def call_deepseek(messages):
     """Flash 모델로 호출 (함수명은 호환을 위해 유지)."""
@@ -117,27 +122,65 @@ def main():
     if '--lang' in args:
         only_langs = set(args[args.index('--lang') + 1].split(','))
 
-    total = 0
+    def _opt(name, default):
+        if name in args:
+            try:
+                return int(args[args.index(name) + 1])
+            except (ValueError, IndexError):
+                return default
+        return default
+
+    limit = _opt('--limit', int(os.environ.get('FIX_LENGTH_LIMIT', '12')))
+    deadline = _opt('--deadline', int(os.environ.get('FIX_LENGTH_DEADLINE', '780')))
+    t_start = time.time()
+    pending = 0
+
+    # 보정 대상 목록을 먼저 모은다 (최신 글 우선: mtime 내림차순)
+    targets = []
     for lang, lang_name in LANGS.items():
         if only_langs and lang not in only_langs:
             continue
-        for path in sorted(glob.glob(os.path.join(TRANS_DIR, lang, '*.json'))):
-            d = json.load(open(path, encoding='utf-8'))
-            n = len(d['body'])
+        for path in glob.glob(os.path.join(TRANS_DIR, lang, '*.json')):
+            try:
+                d = json.load(open(path, encoding='utf-8'))
+                n = len(d['body'])
+            except Exception:
+                continue
             if CHAR_MIN <= n <= CHAR_MAX:
                 continue
-            total += 1
-            slug = d['slug']
-            print(f'[{slug} / {lang}] {n}자 보정')
             try:
-                new_body = fix_length(lang, lang_name, d['body'], n)
-            except Exception as e:
-                print(f'  !! {slug}/{lang} 보정 중단: {type(e).__name__}: {e}')
-                continue
-            d['body'] = new_body
-            json.dump(d, open(path, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
-            time.sleep(0.3)
-    print(f'보정 완료: {total}개 파일 처리')
+                mt = os.path.getmtime(path)
+            except OSError:
+                mt = 0
+            targets.append((mt, path, lang, lang_name, n))
+    targets.sort(key=lambda x: -x[0])
+    pending = len(targets)
+    if pending > limit:
+        print(f'보정 대상 {pending}개 → 이번 실행에서는 최신 {limit}개만 처리 (예산)')
+    else:
+        print(f'보정 대상 {pending}개')
+
+    total = 0
+    for mt, path, lang, lang_name, n in targets:
+        if total >= limit:
+            print(f'  예산 {limit}개 도달 — 나머지 {pending - total}개는 다음 실행으로 미룸')
+            break
+        if time.time() - t_start > deadline:
+            print(f'  데드라인 {deadline}s 도달 — 나머지 {pending - total}개는 다음 실행으로 미룸')
+            break
+        d = json.load(open(path, encoding='utf-8'))
+        slug = d['slug']
+        print(f'[{slug} / {lang}] {n}자 보정')
+        try:
+            new_body = fix_length(lang, lang_name, d['body'], n)
+        except Exception as e:
+            print(f'  !! {slug}/{lang} 보정 중단: {type(e).__name__}: {e}')
+            continue
+        d['body'] = new_body
+        json.dump(d, open(path, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
+        total += 1
+        time.sleep(0.3)
+    print(f'보정 완료: {total}개 파일 처리 (대상 {pending}개)')
 
 
 if __name__ == '__main__':

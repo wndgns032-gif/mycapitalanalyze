@@ -41,9 +41,10 @@ def step(name, fn):
     return ok
 
 
-def run_py(rel, timeout=900):
+def run_py(rel, timeout=900, args=None):
     def _f():
-        r = subprocess.run([PY, os.path.join(BASE, "scripts", rel)],
+        cmd = [PY, os.path.join(BASE, "scripts", rel)] + (args or [])
+        r = subprocess.run(cmd,
                            cwd=BASE, capture_output=True, text=True,
                            encoding="utf-8", errors="ignore", timeout=timeout)
         tail = (r.stdout or "").strip().splitlines()[-1:] + (r.stderr or "").strip().splitlines()[-1:]
@@ -129,7 +130,10 @@ def main():
     step("크롤링", run_py("crawler.py", 600))
     step("원문 재가공", run_py("rewrite.py", 900))
     step("번역", run_py("translate.py", 2400))
-    step("글자수 보정", run_py("fix_length.py", 1200))
+    # 글자수 보정은 대상이 수백 개라 매일 전부 돌리면 비용/시간이 폭발한다.
+    # 1회 실행 예산(최신 12개 / 12분)만 쓰고 나머지는 다음 실행으로 넘긴다.
+    step("글자수 보정", run_py("fix_length.py", 900,
+                               ["--limit", "8", "--deadline", "600"]))
     step("HTML 빌드", run_py("build.py", 600))
     step("Vercel 배포", deploy())
     step("IndexNow 제출", run_py("submit_index.py", 600))
