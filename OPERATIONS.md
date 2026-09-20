@@ -44,7 +44,10 @@ scripts/build.py     → index.html / post/*.html / {lang}/** / sitemap.xml / fe
 
 | Secret 이름 | 값 | 필수 |
 |---|---|---|
-| `GLM_API_KEY` | `***REMOVED***` | ✅ |
+| `GLM_API_KEY` | `<BigModel 콘솔에서 발급한 키를 여기에 입력>` | ✅ |
+
+> ⚠️ API 키를 이 문서에 적지 마세요. 이 저장소는 **공개(public)** 입니다.
+> 값은 반드시 GitHub Actions Secrets / 로컬 `config.json`(git 제외)에만 둡니다.
 
 `GH_PAT`은 더 이상 필요 없다 — 워크플로가 기본 `GITHUB_TOKEN`(`permissions: contents: write`)으로 푸시한다.
 `DEEPSEEK_API_KEY`는 선택(provider를 deepseek으로 바꿀 때만).
