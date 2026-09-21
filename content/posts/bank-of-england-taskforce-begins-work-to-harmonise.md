@@ -6,6 +6,7 @@ category: "Central Banking"
 date: "2026-09-19"
 sourceName: "Bank of England"
 sourceUrl: "https://www.bankofengland.co.uk/minutes/2026/july/minutes-of-the-transaction-and-post-trade-reporting-harmonisation-taskforce-july-2026"
+enriched: "2026-09-22"
 ---
 
 The Bank of England has published the minutes of the inaugural meeting of its Transaction and Post-trade Reporting Harmonisation Taskforce, marking the formal launch of a joint project with the Financial Conduct Authority (FCA) to simplify how market participants report transactions in the UK. The document, released on 18 September 2026, records the first gathering on 3 July 2026 and sets out the structure the initiative will take. Technical as it may sound, the exercise targets one of the most persistent irritants in UK markets: three overlapping reporting regimes that make firms submit broadly similar data under separate rulebooks.
@@ -23,7 +24,7 @@ Reporting harmonisation addresses a long-standing cost problem. MiFIR governs tr
 
 A coherent underlying architecture — the remit of the Architecture Working Group — could allow data to be collected once and reused across regimes, an approach supervisors have long advocated. The Policy and Strategy groups appear tasked with defining what harmonisation should achieve and how quickly, which suggests the Bank and FCA want the substance settled before committing to any build.
 
-For markets, the payoff is indirect but real. Dealers and asset managers treat reporting as a fixed overhead; trimming it can, over time, feed through into tighter trading costs. Cleaner, more consistent data also improves supervisors' visibility of leverage and funding flows — a lesson underlined by the repo-market turbulence of 2019 and the gilt-market stress of 2022, both of which exposed blind spots over leveraged positions.
+For markets, the payoff is indirect but real. Dealers and asset managers treat reporting as a fixed overhead; trimming it can, over time, feed through into tighter trading costs. Cleaner, more consistent data also improves supervisors' visibility of leverage and funding flows — a lesson underlined by the repo-market turbulence of 2019 and the gilt-market stress of 2022, both of which exposed blind spots over leveraged positions. Yet not everyone is convinced the gains will be evenly shared: smaller firms with less complex books may see fewer benefits, while larger dealers with legacy systems could bear a disproportionate share of the build costs.
 
 ## Implications
 
@@ -31,7 +32,7 @@ For banks, brokers and asset managers, the near term means engagement rather tha
 
 For policymakers, the Taskforce is a visible test of post-Brexit regulatory capability. The UK can now design its own regime, and harmonising internally — while staying interoperable with EU and global standards — would show that autonomy can deliver lighter, smarter rules rather than fresh divergence. The outcome will likely influence how future UK market reforms are sequenced.
 
-Investors should track the cadence of working-group outputs over coming quarters. Concrete proposals on data standards, a single-reporting model or transitional timelines would move this from a talking shop to a genuine cost-reduction project, albeit one with multi-year horizons.
+If you report under UK EMIR, the practical question is whether the Taskforce's eventual architecture will accept existing data formats or demand a fresh build. The minutes offer no answer yet, and the working groups have not published a timeline for proposals on data standards or a single-reporting model. Until they do, the project remains a talking shop, albeit one with multi-year horizons.
 
 ## FAQ
 
