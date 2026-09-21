@@ -138,10 +138,15 @@ def main():
     # 1회 실행 예산(최신 12개 / 12분)만 쓰고 나머지는 다음 실행으로 넘긴다.
     step("글자수 보정", run_py("fix_length.py", 900,
                                ["--limit", "8", "--deadline", "600"]))
+    # 본문 구조 보강 (StoryScope 체크리스트). 번역 전에 해야 번역도 새 본문으로 나온다.
+    step("본문 보강(구조)", run_py("enrich_posts.py", 900,
+                                   ["--limit", "2", "--deadline", "600"]))
     step("HTML 빌드", run_py("build.py", 600))
     step("Vercel 배포", deploy())
     step("IndexNow 제출", run_py("submit_index.py", 600))
     step("방문자 스냅샷", run_py("visits_snapshot.py", 600))
+    # 새 URL이 배포된 뒤에 알려야 하므로 제출은 보강/번역/빌드 다음에 한 번 더 돌린다
+    step("IndexNow 재제출", run_py("submit_index.py", 600))
 
     if kst.weekday() == 0:  # 월요일만
         step("주간 사이트 점검", run_py("check_site.py", 900))
