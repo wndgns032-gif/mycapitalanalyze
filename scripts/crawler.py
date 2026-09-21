@@ -6,6 +6,7 @@ RSS 크롤러 — 매크로/경제 뉴스 피드에서 새 글을 수집해 원�
 사용법: python scripts/crawler.py
 출력: content/raw/{slug}.json (원문 메타 + 본문), content/processed.json (처리 이력)
 """
+import glob
 import json, os, re, sys, time, hashlib, datetime, urllib.request, urllib.error
 import xml.etree.ElementTree as ET
 from email.utils import parsedate_to_datetime
@@ -14,6 +15,7 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = json.load(open(os.path.join(BASE, 'config_sources.json'), encoding='utf-8'))
 RAW_DIR = os.path.join(BASE, 'content', 'raw')
 PROCESSED_PATH = os.path.join(BASE, 'content', 'processed.json')
+POSTS_DIR = os.path.join(BASE, 'content', 'posts')
 os.makedirs(RAW_DIR, exist_ok=True)
 
 MAX_NEW = SRC.get('max_new_per_run', 3)
@@ -106,10 +108,33 @@ def parse_date(s):
         except ValueError:
             return datetime.datetime.min.replace(tzinfo=datetime.timezone.utc)
 
+def existing_source_urls():
+    """이미 발행된 포스트의 원문 URL 집합.
+
+    processed.json 은 git 동기화(git reset --hard)로 되돌려질 수 있어
+    같은 원문이 새 슬러그로 재수집되는 사고가 발생했다(2026-09-22, BoE 원문 4중 중복).
+    발행본(content/posts/*.md)의 sourceUrl 을 기준으로 한 번 더 막는다.
+    """
+    urls = set()
+    for path in glob.glob(os.path.join(POSTS_DIR, '*.md')):
+        try:
+            text = open(path, encoding='utf-8').read()
+        except OSError:
+            continue
+        m = re.search(r'^sourceUrl:\s*["\']?([^"\'\n]+)["\']?\s*$', text, re.M)
+        if m:
+            urls.add(m.group(1).strip())
+    return urls
+
+
 def main():
     processed = {}
     if os.path.exists(PROCESSED_PATH):
         processed = json.load(open(PROCESSED_PATH, encoding='utf-8'))
+
+    published_urls = existing_source_urls()
+    if published_urls:
+        print(f'기발행 원문 {len(published_urls)}개 (중복 수집 차단)')
 
     # 1) 모든 피드의 새 항목 수집 (피드 정보 포함)
     candidates = []
@@ -122,7 +147,7 @@ def main():
         items = parse_feed(xml_bytes)
         print(f'  항목 {len(items)}개')
         for it in items:
-            if it['link'] in processed:
+            if it['link'] in processed or it['link'] in published_urls:
                 continue
             candidates.append((it, feed, name))
 
