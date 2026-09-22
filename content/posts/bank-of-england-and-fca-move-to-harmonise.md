@@ -6,9 +6,10 @@ category: "Central Banking"
 date: "2026-09-18"
 sourceName: "Bank of England"
 sourceUrl: "https://www.bankofengland.co.uk/minutes/2026/july/minutes-of-the-transaction-and-post-trade-reporting-harmonisation-taskforce-july-2026"
+enriched: "2026-09-23"
 ---
 
-The Bank of England has published the minutes of the inaugural meeting of its Transaction and Post-trade Reporting Harmonisation Taskforce, a joint initiative with the Financial Conduct Authority that opens a multi-year effort to streamline how UK financial firms report their transactions. Released on 18 September 2026, the document offers the first public window into how the two regulators intend to consolidate three overlapping reporting regimes into one coherent framework — a project with meaningful consequences for market participants and the City's competitiveness.
+The Bank of England has published the minutes of the inaugural meeting of its Transaction and Post-trade Reporting Harmonisation Taskforce, a joint initiative with the Financial Conduct Authority that opens a multi-year effort to streamline how UK financial firms report their transactions. Released on 18 September 2026, the document offers the first public window into how the two regulators intend to consolidate three overlapping reporting regimes into one coherent framework.
 
 ## Key Facts
 
@@ -23,7 +24,9 @@ The three regimes trace their origins to EU legislation replicated onshore after
 
 For compliance budgets, the duplication is costly. Reporting teams must maintain parallel data pipelines, reconcile inconsistencies between regimes, and absorb remediation spend when definitions drift apart. A harmonised framework, once delivered, would let a single report satisfy multiple rulebooks, cutting fixed costs and freeing resources for higher-value risk work.
 
-Supervisors, though, stand to gain more. Fragmented reporting degrades the data on which the Bank and FCA depend to monitor systemic risk, especially in opaque corners of the market such as securities financing. Consistent architecture across regimes would give policymakers a fuller, timelier picture of leverage and liquidity linkages — a lesson underlined by past episodes of risk building up in poorly reported market segments.
+Supervisors, though, stand to gain more. Fragmented reporting degrades the data on which the Bank and FCA depend to monitor systemic risk, especially in opaque corners of the market such as securities financing. Consistent architecture across regimes would give policymakers a fuller, timelier picture of leverage and liquidity linkages.
+
+If you report under UK EMIR, the practical question is how many of your current data fields survive the Architecture Working Group's design — and whether the Bank and FCA will phase migrations or require a single cutover. The minutes do not settle that. Nor do they resolve whether harmonisation will extend to the granularity of identifiers, where industry views have historically diverged.
 
 ## Implications
 

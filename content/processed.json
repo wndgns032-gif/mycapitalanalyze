@@ -94,5 +94,13 @@
   "https://www.bankofengland.co.uk/news/2026/september/mpc-dates-for-2027": {
     "slug": "bank-of-england-dd33b1f46c",
     "at": "2026-09-21T23:11:29.420277Z"
+  },
+  "https://www.federalreserve.gov/newsevents/pressreleases/orders20260922a.htm": {
+    "slug": "federal-reserve-board-bb3326ddb2",
+    "at": "2026-09-22T23:02:50.069875Z"
+  },
+  "https://www.cbo.gov/publication/62787": {
+    "slug": "cbo-d317ff4248",
+    "at": "2026-09-22T23:02:51.571402Z"
   }
 }
