@@ -136,10 +136,36 @@ def clean_body(s):
     return '\n'.join(lines).strip()
 
 
+def published_map():
+    """발행본(content/posts/*.md)의 {slug: sourceUrl} 맵.
+
+    재가공기는 원본 해시 슬러그(bank-of-england-XXXX)로 이미 처리됐는지 판단했는데,
+    실제 발행 슬러그는 모델이 만든 키워드 슬러그라 해시 슬러그가 절대 매칭되지 않았다.
+    그 결과 같은 원문이 매일 새 슬러그로 재발행되는 중복 사고가 발생(2026-09-22, 09-23).
+    → 원문 URL(sourceUrl)을 기준으로 판단해야 한다. processed.json 은 git 동기화로
+    되돌려질 수 있으므로 발행본이 정답(source of truth)이다.
+    """
+    out = {}
+    for fn in os.listdir(POSTS_DIR):
+        if not fn.endswith('.md'):
+            continue
+        try:
+            text = open(os.path.join(POSTS_DIR, fn), encoding='utf-8').read(4000)
+        except OSError:
+            continue
+        m = re.search(r'^sourceUrl:\s*["\']?([^"\'\n]+)["\']?\s*$', text, re.M)
+        out[os.path.splitext(fn)[0]] = m.group(1).strip() if m else ''
+    return out
+
+
 def main():
     raws = sorted([f for f in os.listdir(RAW_DIR) if f.endswith('.json')])
     # 이미 posts로 변환된 slug 제외
     existing = set(os.path.splitext(f)[0] for f in os.listdir(POSTS_DIR) if f.endswith('.md'))
+    pub_map = published_map()
+    pub_urls = {u for u in pub_map.values() if u}
+    if pub_urls:
+        print(f'기발행 원문 {len(pub_urls)}개 (중복 재가공 차단)')
     # 하루 발행량 상한 — 대량 자동 생성은 구글 '스케일드 콘텐츠 어뷰즈' 리스크
     cap = int(CONFIG.get('max_new_posts_per_run', 3))
     done = 0
@@ -151,6 +177,10 @@ def main():
         slug = raw['slug']
         if slug in existing:
             continue
+        src = (raw.get('source_url') or '').strip()
+        if src and src in pub_urls:
+            print(f'  [{slug}] 원문 이미 발행됨 — 스킵 (중복 방지)')
+            continue
         print(f'[{slug}] 재가공')
         obj = rewrite(raw)
         body = clean_body(obj.get('body', ''))
@@ -160,8 +190,15 @@ def main():
             continue
         date = iso_to_date(raw.get('pubDate'))
         # SEO 친화적 키워드 슬러그 (모델 생성 → 실패 시 원본 해시 슬러그 유지)
-        taken = set(os.path.splitext(f)[0] for f in os.listdir(POSTS_DIR) if f.endswith('.md'))
-        nice = make_slug(slug, obj.get('title', ''), taken)
+        # 슬러그가 이미 있으면 "같은 원문"이면 중복이므로 발행하지 않고,
+        # 다른 원문이면 해시 접미사를 붙여 구분한다. (무조건 접미사 → 중복 양산)
+        nice = make_slug(slug, obj.get('title', ''), set())
+        if nice and nice in pub_map:
+            if src and pub_map[nice] == src:
+                print(f'  [{slug}] 동일 원문이 이미 "{nice}" 로 발행됨 — 스킵 (중복 방지)')
+                continue
+            nice = nice + '-' + str(slug)[-6:]
+            print(f'  [{slug}] 슬러그 충돌(다른 원문) → {nice}')
         if nice:
             print(f'  slug: {slug} -> {nice}')
             slug = nice
@@ -178,6 +215,15 @@ sourceUrl: "{raw.get('source_url', '')}"
 """
         out_path = os.path.join(POSTS_DIR, slug + '.md')
         open(out_path, 'w', encoding='utf-8').write(fm + body.strip() + '\n')
+        # 발행된 원문은 즉시 차단 목록에 반영 + raw 파일 제거(재처리 원천 차단)
+        pub_map[slug] = src
+        if src:
+            pub_urls.add(src)
+        existing.add(slug)
+        try:
+            os.remove(os.path.join(RAW_DIR, fn))
+        except OSError:
+            pass
         done += 1
         time.sleep(0.3)
     print(f'재가공 완료: {done}개')
