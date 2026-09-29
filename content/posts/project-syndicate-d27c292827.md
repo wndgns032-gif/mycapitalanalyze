@@ -6,6 +6,7 @@ category: "Global Macro"
 date: "2026-08-29"
 sourceName: "Project Syndicate"
 sourceUrl: "https://www.project-syndicate.org/commentary/sanctions-low-civilian-toll-an-illusion-that-is-no-longer-defensible-by-jamal-ibrahim-haidar-and-seyed-mohammad-karimi-2026-08"
+enriched: "2026-09-29"
 ---
 
 Financial sanctions have become a favored tool of statecraft, yet their track record suggests a troubling gap between intent and outcome. While proponents argue that economic pain can compel governments to change course, evidence from Russia and Iran indicates that civilian hardship seldom translates into political transformation.
@@ -25,3 +26,23 @@ Additionally, sanctions can have unintended consequences in the global economy. 
 Policymakers must recalibrate expectations. Sanctions are not a surgical tool but a blunt instrument with unpredictable side effects. Their humanitarian costs are real and often disproportionately borne by vulnerable populations, yet they rarely achieve their stated political objectives. For markets, this means sustained geopolitical risk and potential supply disruptions, especially in energy and critical minerals. Investors should factor in the persistence of sanctions regimes and the possibility of retaliatory measures that could affect global trade.
 
 A more effective approach might combine targeted sanctions on elites with diplomatic engagement and support for civil society, rather than broad-based measures that unify populations behind their governments. As the global order becomes more multipolar, the reliance on sanctions as a primary coercive tool demands critical reassessment.
+
+## FAQ
+
+### What are the main costs of sanctions on Russia and Iran?
+Sanctions have restricted access to global markets, frozen assets, and diminished purchasing power for ordinary citizens in both countries.
+
+### Have sanctions changed the policies of Russia or Iran?
+No. Despite severe economic strain, Russia's leadership has maintained its course, and Iran has weathered sanctions without conceding on key issues, often using them to rally nationalist sentiment.
+
+### Why do sanctions often fail to achieve political change?
+The assumption that popular suffering breeds political change relies on a flawed causal chain. In authoritarian systems, the state can suppress dissent and control the narrative, and sanctions often benefit regime insiders who profit from black markets and smuggling.
+
+### What are the unintended consequences of sanctions for the global economy?
+They disrupt supply chains, contribute to commodity price volatility, and create incentives for alternative payment systems that bypass the dollar, potentially reducing the long-term effectiveness of sanctions.
+
+### How should investors respond to sanctions regimes?
+Investors should factor in the persistence of sanctions regimes and the possibility of retaliatory measures that could affect global trade, especially in energy and critical minerals.
+
+### What alternative approaches might be more effective than broad-based sanctions?
+A more effective approach might combine targeted sanctions on elites with diplomatic engagement and support for civil society, rather than broad-based measures that unify populations behind their governments.
