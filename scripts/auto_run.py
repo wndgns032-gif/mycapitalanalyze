@@ -133,14 +133,18 @@ def main():
     step("git 동기화", git_sync())
     step("크롤링", run_py("crawler.py", 600))
     step("원문 재가공", run_py("rewrite.py", 900))
-    step("번역", run_py("translate.py", 2400))
     # 글자수 보정은 대상이 수백 개라 매일 전부 돌리면 비용/시간이 폭발한다.
     # 1회 실행 예산(최신 12개 / 12분)만 쓰고 나머지는 다음 실행으로 넘긴다.
     step("글자수 보정", run_py("fix_length.py", 900,
                                ["--limit", "8", "--deadline", "600"]))
     # 본문 구조 보강 (StoryScope 체크리스트). 번역 전에 해야 번역도 새 본문으로 나온다.
+    # ⚠️ enrich_posts.py는 본문을 바꾸면 해당 글의 번역을 삭제(drop_translations)한다.
+    #    번역 뒤에 두면 번역이 지워진 채 배포돼 영어 페이지만 남는다 (2026-09-29 실제 발생).
     step("본문 보강(구조)", run_py("enrich_posts.py", 900,
                                    ["--limit", "2", "--deadline", "600"]))
+    step("번역", run_py("translate.py", 2400))
+    # 보강 단계가 번역을 지웠을 경우를 대비한 보충 실행 (없으면 '번역할 대상 없음'으로 바로 끝난다)
+    step("번역 보충", run_py("translate.py", 900))
     step("HTML 빌드", run_py("build.py", 600))
     step("Vercel 배포", deploy())
     step("IndexNow 제출", run_py("submit_index.py", 600))

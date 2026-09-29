@@ -6,3 +6,21 @@
 [16:52:57] OK   글자수 보정 (191s) rc=0 보정 완료: 8개 파일 처리 (대상 64개)
 [16:53:29] OK   본문 보강(구조) (32s) rc=0 보강 완료: 2건 (대상 20건)
 [16:53:30] OK   HTML 빌드 (0s) rc=0 빌드 완료: 포스트 페이지 119개 + 홈 13개 + disclosure.html 13개, sitemap.xml, feed.xml OK
+[16:53:48] OK   Vercel 배포 (19s) readyState: INITIALIZING
+[16:53:55] OK   IndexNow 제출 (7s) rc=0 [done] 상태 기록 완료 (누적 제출 164개)
+[16:53:59] OK   방문자 스냅샷 (4s) rc=0 스냅샷 저장: D:\workbuddy\blog\mycapitalanalyze.com\data\visits.json (읽기 성공 11일, 누적 250명)
+[16:54:00] OK   IndexNow 재제출 (0s) rc=0 [done] 새로 제출할 URL이 없다 (이미 모두 알림 완료)
+[16:54:05] OK   커밋/푸시 (6s) 푸시 완료
+[16:54:05] === 요약: 12/12 성공 ===
+[16:54:05]   OK  git 동기화          동기화 완료
+[16:54:05]   OK  크롤링              rc=0 수집 완료: 2개 새 글 (최신 우선순위) |   'fetched_at': datetime.datetime.utcnow().isoformat() + 'Z',
+[16:54:05]   OK  원문 재가공           rc=0 재가공 완료: 1개
+[16:54:05]   OK  번역               rc=0 번역 완료: 4/4 성공
+[16:54:05]   OK  글자수 보정           rc=0 보정 완료: 8개 파일 처리 (대상 64개)
+[16:54:05]   OK  본문 보강(구조)        rc=0 보강 완료: 2건 (대상 20건)
+[16:54:05]   OK  HTML 빌드          rc=0 빌드 완료: 포스트 페이지 119개 + 홈 13개 + disclosure.html 13개, sitemap.xml, feed.xml OK
+[16:54:05]   OK  Vercel 배포        readyState: INITIALIZING
+[16:54:05]   OK  IndexNow 제출      rc=0 [done] 상태 기록 완료 (누적 제출 164개)
+[16:54:05]   OK  방문자 스냅샷          rc=0 스냅샷 저장: D:\workbuddy\blog\mycapitalanalyze.com\data\visits.json (읽기 성공 11일, 누적 250명)
+[16:54:05]   OK  IndexNow 재제출     rc=0 [done] 새로 제출할 URL이 없다 (이미 모두 알림 완료)
+[16:54:05]   OK  커밋/푸시            푸시 완료
