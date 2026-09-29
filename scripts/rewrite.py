@@ -166,6 +166,24 @@ def main():
     pub_urls = {u for u in pub_map.values() if u}
     if pub_urls:
         print(f'기발행 원문 {len(pub_urls)}개 (중복 재가공 차단)')
+    # 큐 정리: 이미 발행된 원문의 raw는 남겨두면 매 실행마다 스킵만 반복되고 큐가 무한히 부풀어
+    # 신규 원문이 캡(3개/실행)에 밀려 처리되지 못한다. 발행본이 남아있으므로 삭제해도 안전하다.
+    pruned = 0
+    for fn in list(raws):
+        try:
+            d = json.load(open(os.path.join(RAW_DIR, fn), encoding='utf-8'))
+        except Exception:
+            continue
+        u = (d.get('source_url') or '').strip()
+        if u and u in pub_urls:
+            try:
+                os.remove(os.path.join(RAW_DIR, fn))
+                raws.remove(fn)
+                pruned += 1
+            except OSError:
+                pass
+    if pruned:
+        print(f'  기발행 원문 raw {pruned}개 큐에서 정리 (남은 대기 {len(raws)}개)')
     # 하루 발행량 상한 — 대량 자동 생성은 구글 '스케일드 콘텐츠 어뷰즈' 리스크
     cap = int(CONFIG.get('max_new_posts_per_run', 3))
     done = 0
