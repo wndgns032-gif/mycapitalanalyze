@@ -425,28 +425,49 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--dry', action='store_true', help='수집만 확인(생성 없음)')
     ap.add_argument('--force', action='store_true', help='당일 발행 기록 무시')
+    ap.add_argument('--url', help='직접 지정한 위챗(mp.weixin.qq.com) 기사 URL — 游创工坊 등')
     args = ap.parse_args()
 
     today_cn = cn_today()
     today_str = today_cn.isoformat()
     seen = load_seen()
 
-    if not args.force and seen['dates'].get(today_str):
+    # 로이가 직접 준 링크 (1순위) — 날짜 무관 강제 대상.
+    art = None
+    if args.url:
+        print('[0] 지정된 위챗 링크 시도…')
+        art = fetch_wechat_article(args.url)
+        if not art:
+            print('    지정 링크 파싱 실패')
+            return 1
+        print('    선정: %s / %s / %s' % (art['title'][:40], art.get('author'), art.get('date')))
+        if art['url'] in seen.get('urls', {}):
+            print('    이미 처리한 기사 → 종료')
+            return 0
+        try:
+            d = datetime.date.fromisoformat(art.get('date', '') or today_str)
+            age = (today_cn - d).days
+            if age > 2:
+                print('    ⚠ %d일 전 기사입니다 (구형 데이터 주의)' % age)
+        except ValueError:
+            pass
+    elif not args.force and seen['dates'].get(today_str):
         print('[%s] 오늘 이미 발행 완료 (%s) → 종료' % (today_str, seen['dates'][today_str]))
         return 0
 
-    # 1순위 游创工坊 → 2순위 游戏日报
-    print('[1] %s (Sogou 위챗) 시도…' % GONGFANG)
-    art = fetch_gongfang(today_cn)
-    if art:
-        print('    선정: %s / %s' % (art['title'][:40], art['date']))
-    else:
-        print('[2] %s (공식 사이트) 시도…' % YXRB_NAME)
-        art = fetch_yxrb(today_cn)
-        if not art:
-            print('    가용 기사 없음 → 종료 (재시도 필요)')
-            return 1
-        print('    선정: %s / %s / %s' % (art['title'][:40], art.get('author'), art['date']))
+    if not art:
+        # 1순위 游创工坊 → 2순위 游戏日报
+        print('[1] %s (Sogou 위챗) 시도…' % GONGFANG)
+        art = fetch_gongfang(today_cn)
+        if art:
+            print('    선정: %s / %s' % (art['title'][:40], art['date']))
+        else:
+            print('[2] %s (공식 사이트) 시도…' % YXRB_NAME)
+            art = fetch_yxrb(today_cn)
+            if not art:
+                print('    가용 기사 없음 → 종료 (재시도 필요)')
+                return 1
+            print('    선정: %s / %s / %s' % (art['title'][:40], art.get('author'), art['date']))
 
     if art['url'] in seen.get('urls', {}):
         print('    이미 처리한 기사 (%s) → 종료' % seen['urls'][art['url']])
