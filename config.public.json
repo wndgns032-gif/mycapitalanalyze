@@ -10,8 +10,8 @@
     "bing_site_verification": "20CF9709C950EA226C24CDFC8B014EB1"
   },
   "adsense": {
-    "enabled": false,
-    "_enabled_note": "false=사이트가 아직 애드센스에 승인되지 않음. 승인 후 true로 바꾸면 광고 코드가 렌더링된다. 승인 전에 광고 코드를 넣으면 빈 박스만 보이고 정책 리스크가 있다.",
+    "enabled": true,
+    "_enabled_note": "2026-09-30 제네시스가 true로 전환. 애드센스 승인 절차는 코드가 삽입된 상태에서 크롤러가 검토하는 구조이므로, 승인 대기 중 삽입이 오히려 정상. 미승인 계정은 광고가 서빙되지 않아 빈 박스도 발생하지 않는다.",
     "client": "ca-pub-9243770518153989",
     "_slots_note": "myappanalyze.com 계정의 광고 단위를 재사용. 애드센스 > 사이트에서 mycapitalanalyze.com이 승인되어야 광고가 실제로 게재된다.",
     "slots": {
