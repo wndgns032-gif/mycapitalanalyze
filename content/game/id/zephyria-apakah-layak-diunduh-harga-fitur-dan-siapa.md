@@ -1,6 +1,6 @@
 ---
 slug: zephyria-apakah-layak-diunduh-harga-fitur-dan-siapa
-title: "Zephyria — Apakah layak diunduh? Harga, fitur, dan siapa yang sebaiknya melewatkannya"
+title: "Zephyria — harga, fitur dan siapa yang tidak"
 description: "Zephyria adalah game petualangan dan role-playing bergaya MMORPG fantasi 3D multipemain dari pengembang Andrew Fell, dan saat ini gratis di App Store. Versi 1.0 ini dirancang khusus untuk iPad dan memerlukan koneksi internet. Lewatkan dulu jika Anda hanya memakai iPhone, ingin konten berbahasa Indonesia, atau tidak sabar mengunduh aset dunia berukuran besar."
 category: "Apps & Games"
 date: "2026-09-30"
@@ -15,7 +15,6 @@ developer: "Andrew Fell"
 genre: "Games, Adventure, Role-Playing"
 upcoming: "false"
 ---
-
 ![Zephyria](/assets/img/apps/app-82e0ab9bea.jpg)
 
 Zephyria adalah game fantasi multipemain bergaya MMORPG yang berjalan di dunia 3D bersama, dengan pertarungan bergaya tabletop klasik, misi, reputasi, dan pemain lain di jalan yang sama. Game ini gratis di App Store, dikembangkan oleh Andrew Fell, dan berada di kategori Games dengan genre Games, Adventure, serta Role-Playing. Versi yang tersedia saat ini adalah 1.0, sudah dirilis pada 10 Agustus 2026, dan hanya berjalan di iPad. Karena gratis, tidak ada risiko besar untuk mencobanya sekarang; yang perlu Anda siapkan justru waktu, ruang penyimpanan, dan koneksi internet yang stabil.

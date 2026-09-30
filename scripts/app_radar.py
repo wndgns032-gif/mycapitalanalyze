@@ -526,28 +526,109 @@ TITLE_MAX = {'en': 70, 'ko': 55, 'ja': 55, 'zh': 42, 'hi': 55,
 RELEASED_MAX = {'en': 85, 'ko': 60, 'ja': 60, 'zh': 45, 'hi': 65}
 TITLE_DEFAULT = 70
 
-# 언어별 localized 제목 구조 — {app} 만 앱 이름으로 치환한다.
+# 제목 초과 시 쓰는 안전 템플릿 — {app} 만 앱 이름으로 치환한다.
+# 앱 이름이 30자 안팎이어도 언어별 상한을 넘지 않도록 접미사를 짧게 유지한다.
 TITLE_LOCALIZED = {
-    'en': '{app} — Is It Worth Buying? Price, Features and Who Should Skip',
-    'ko': '{app} — 살 만한가요? 가격, 기능, 그리고 이런 분은 건너뛰세요',
-    'es': '{app} — ¿merece la pena comprarlo? Precio, funciones y quién debería evitarlo',
-    'de': '{app} — Lohnt sich der Kauf? Preis, Funktionen und wer es lieber lässt',
-    'pt': '{app} — Vale a pena comprar? Preço, funções e quem deve evitar',
-    'ru': '{app} — Стоит ли покупать? Цена, функции и кому не стоит',
-    'id': '{app} — Apakah layak dibeli? Harga, fitur, dan siapa yang sebaiknya menghindarinya',
-    'ar': '{app} — هل يستحق الشراء؟ السعر، الميزات، ومن يجب أن يتجنبه',
-    'bn': '{app} — কেনা কি সঠিক? দাম, ফিচার এবং কারা এড়িয়ে যাবেন',
-    'ja': '{app} — 買う価値はある？価格・機能・向いていない人',
-    'zh': '{app} — 值得买吗？价格、功能，以及哪些人不适合',
-    'hi': '{app} — क्या खरीदना सही है? कीमत, फीचर्स और किन्हें बचना चाहिए',
-    'es': '{app} — ¿vale la pena comprarlo? Precio, funciones y quién debería evitarlo',
-    'de': '{app} — Ist der Kauf sinnvoll? Preis, Funktionen und wer es lieber lassen sollte',
-    'fr': "{app} — Est-ce que ça vaut l'achat ? Prix, fonctionnalités et qui devrait éviter",
-    'pt': '{app} — Vale a pena comprar? Preço, recursos e quem deve evitar',
-    'ru': '{app} — Стоит ли покупать? Цена, функции и кому это не подойдёт',
-    'id': '{app} — Apakah layak dibeli? Harga, fitur, dan siapa yang sebaiknya melewatkannya',
-    'ar': '{app} — هل تستحق الشراء؟ السعر، المميزات، ومن الأفضل أن يتجنبها',
+    'en': '{app} — Price, Features and Who Should Skip',
+    'ko': '{app} — 살 만한가요? 가격·기능·건너뛸 사람',
+    'ja': '{app} — 買う価値はある？価格・機能・向かない人',
+    'zh': '{app} — 值得买吗？价格、功能与不适合的人',
+    'es': '{app} — precio, funciones y a quién no',
+    'de': '{app} — Preis, Funktionen, für wen nicht',
+    'fr': '{app} — prix, fonctions et qui doit éviter',
+    'pt': '{app} — preço, funções e quem deve evitar',
+    'ru': '{app} — цена, функции и кому не стоит',
+    'id': '{app} — harga, fitur dan siapa yang tidak',
+    'ar': '{app} — السعر، الميزات، ومن يتجنبها',
+    'bn': '{app} — দাম, ফিচার এবং কারা না',
+    'hi': '{app} — कीमत, फीचर्स और किन्हें नहीं',
 }
+
+# 언어 불일치 감지용 문자 체계 — 모델이 소스(스토어 설명) 언어를 따라가
+# 엉뚱한 언어로 글을 쓰는 것을 막는다. (예: pt 섹션에 스페인어 글)
+SCRIPT_RANGES = {
+    'ko': [(0xAC00, 0xD7A3), (0x1100, 0x11FF)],
+    'ja': [(0x3040, 0x30FF)],
+    'zh': [(0x4E00, 0x9FFF)],
+    'ru': [(0x0400, 0x04FF)],
+    'ar': [(0x0600, 0x06FF)],
+    'hi': [(0x0900, 0x097F)],
+    'bn': [(0x0980, 0x09FF)],
+}
+
+
+# 라틴 문자 언어끼리는 문자 체계로 구분이 안 된다 → 기능어(stopword) 점수로 판정한다.
+LATIN_MARKERS = {
+    'en': ['the', 'and', 'with', 'this', 'for', 'that', 'you', 'are', 'price', 'features'],
+    'es': ['el', 'la', 'los', 'las', 'que', 'para', 'con', 'precio', 'una', 'pero', 'más'],
+    'pt': ['para', 'com', 'não', 'você', 'uma', 'preço', 'isso', 'está', 'mais', 'como'],
+    'id': ['yang', 'tidak', 'dengan', 'untuk', 'ini', 'aplikasi', 'harga', 'ada', 'bisa'],
+    'de': ['und', 'der', 'die', 'das', 'mit', 'für', 'nicht', 'ist', 'ein', 'sind', 'wird'],
+    'fr': ['le', 'la', 'les', 'que', 'pour', 'avec', 'est', 'un', 'vous', 'dans', 'sont'],
+    'it': ['il', 'la', 'che', 'per', 'con', 'non', 'una', 'sono', 'anche'],
+}
+
+
+# 제목 단축용 구분자 — 제목이 길 때 뒤쪽 절부터 떼어 정보량을 최대한 남긴다.
+TITLE_TRIM_SEPS = [' — ', '—', ' · ', '、', '，', ', ', ',', ' | ']
+
+
+def trim_title(title, lim):
+    """상한을 넘는 제목을 구분자 단위로 잘라 되돌린다. 실패하면 ''."""
+    if len(title) <= lim:
+        return title
+    best = ''
+    for sep in TITLE_TRIM_SEPS:
+        parts = title.split(sep)
+        while len(parts) > 1:
+            parts = parts[:-1]
+            cand = sep.join(parts).rstrip(' ,、，:：-—·')
+            if len(cand) <= lim and len(cand) > len(best):
+                best = cand
+    if not best and ' ' in title:
+        parts = title.split(' ')
+        while len(parts) > 1:
+            parts = parts[:-1]
+            cand = ' '.join(parts).rstrip(' ,-—·')
+            if len(cand) <= lim and len(cand) >= lim * 0.6:
+                best = cand
+                break
+    return best
+
+
+def latin_lang_score(text):
+    low = (text or '').lower()
+    return {k: sum(len(re.findall(r'\b%s\b' % re.escape(w), low)) for w in ws)
+            for k, ws in LATIN_MARKERS.items()}
+
+
+def script_ok(lang, text):
+    """생성된 글이 대상 언어로 쓰였는지 확인한다.
+
+    비라틴(한/일/중/러/아/힌/벵)은 문자 체계로, 라틴 계열은 기능어 점수로 판정한다.
+    모델이 스토어 설명의 언어를 그대로 따라가 옆 나라 언어로 써버리는 것을 막는다.
+    """
+    letters = [c for c in (text or '') if c.isalpha()]
+    if len(letters) < 100:
+        return True
+    hit = lambda rng: sum(1 for c in letters
+                          if any(lo <= ord(c) <= hi for lo, hi in rng))
+    own = SCRIPT_RANGES.get(lang)
+    if own:
+        if hit(own) / len(letters) < 0.15:
+            return False
+        # 중국어 글에 일본어 가나가 섞이면 일본어다
+        if lang == 'zh' and hit([(0x3040, 0x30FF)]) / len(letters) > 0.02:
+            return False
+        return True
+    # 라틴 계열: 다른 문자 체계가 섞이면 실패
+    foreign = sum(hit(r) for r in SCRIPT_RANGES.values())
+    if foreign / len(letters) >= 0.10:
+        return False
+    score = latin_lang_score(text)
+    best = max(score, key=score.get)
+    # 판정 언어가 1위가 아니거나, 기능어가 거의 안 보이면 의심
+    return best == lang and score.get(lang, 0) >= 5
 
 # FAQ 3문항 — 반드시 이 언어 표기를 그대로 쓴다 (로이 확정).
 # 출시 전: 언제 출시 / 무료 여부 / 어떻게 예약
@@ -598,15 +679,6 @@ RETRY_HINT = (
     "(c) if the title was over the limit, shorten the last phrase only and keep the app name; "
     "(d) never use the words review, hands-on, tested or played."
 )
-
-
-def strip_code_fences(text):
-    """모델이 ```json ... ``` 로 감싸 보내도 JSON 만 남긴다."""
-    t = (text or '').strip()
-    if t.startswith('```'):
-        t = re.sub(r'^```[a-zA-Z]*\s*', '', t)
-        t = re.sub(r'```\s*$', '', t).strip()
-    return t
 
 
 def title_max(lang, released=False):
@@ -1057,10 +1129,13 @@ def main():
             print('   [%d] %s 본문 %d자 / 제목 %d자 / 설명 %d자'
                   % (attempt, provider, n, tlen, dlen))
             ok = (accept_lo <= n <= hi and obj.get('title')
-                  and tlen <= tmax_eff and 280 <= dlen <= desc_max)
+                  and tlen <= tmax_eff and 280 <= dlen <= desc_max
+                  and script_ok(lang, body))
             if ok:
                 break
-            if n < accept_lo:
+            if not script_ok(lang, body):
+                why = '언어 불일치(%s 아님)' % lang
+            elif n < accept_lo:
                 why = '본문 너무 짧음'
             elif n > hi:
                 why = '본문 너무 김'
@@ -1075,8 +1150,28 @@ def main():
         if not obj.get('title') or not body:
             print('   생성 실패 → 다음 실행에서 재시도')
             continue
+        # 잘못된 언어로 쓰인 글은 그 언어 섹션에 실릴 수 없다 → 버리고 다음 실행에 새로 뽑는다.
+        if not script_ok(lang, body):
+            print('   언어 불일치(%s) → 폐기, 다음 실행에서 다시 시도' % lang)
+            continue
 
         title = re.sub(r'"', "'", obj['title']).strip()
+        # 제목이 언어별 상한을 넘으면 검색 결과에서 잘린다 →
+        # 1) 원래 제목에서 뒤쪽 절을 떼어 살리고, 2) 안 되면 안전 템플릿으로 교체.
+        if len(title) > tmax_eff:
+            trimmed = trim_title(title, tmax_eff)
+            if trimmed:
+                title = trimmed
+            else:
+                tpl = TITLE_LOCALIZED.get(lang, TITLE_LOCALIZED['en'])
+                cand = tpl.replace('{app}', (disp_name or 'app').strip())
+                if len(cand) <= tmax_eff:
+                    title = cand
+                else:
+                    app_nm = (disp_name or 'app').strip()
+                    title = (app_nm if len(app_nm) <= tmax_eff
+                             else app_nm[:tmax_eff - 1].rstrip() + '…')
+            print('   제목 초과 → %d자로 교체: %s' % (len(title), title))
         # SEO 설명: 300자 이상(로이 지시) ~ desc_max 이하. 넘으면 잘라내지 않고 재시도 대상으로 본다.
         desc = re.sub(r'"', "'", (obj.get('description') or '').strip())
         slug = slugify(title, item['key'], taken)
