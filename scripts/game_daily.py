@@ -145,12 +145,18 @@ def fetch_gamelook_article(url, today_cn):
     if len(text) < 500:
         return None
     # 본문 첫 이미지 → 없으면 og:image
+    # ⚠️ GameLook 은 지연로딩(lazy) 사이트: src 는 항상 lazy.png 플레이스홀더이고
+    #    실제 이미지는 data-original 에 있다(2026-09-30 실측). 우선순위:
+    #    data-original > data-src > src(placeholder 제외) > og:image
     img = ''
-    im = re.search(r'<img[^>]+src="([^"]+\.(?:jpg|jpeg|png|webp)[^"]*)"',
-                   cm.group(1) if cm else html, re.I)
-    if im:
-        img = im.group(1)
-    else:
+    body_html = cm.group(1) if cm else html
+    for attr in ('data-original', 'data-src', 'src'):
+        im = re.search(r'<img[^>]+%s="([^"]+\.(?:jpg|jpeg|png|webp)[^"]*)"' % attr,
+                       body_html, re.I)
+        if im and 'lazy' not in im.group(1).lower():
+            img = im.group(1)
+            break
+    if not img:
         im = re.search(r'og:image" content="([^"]+)"', html)
         if im:
             img = im.group(1)
