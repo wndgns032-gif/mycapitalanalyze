@@ -12,6 +12,7 @@ releaseDate: "2027-02-11"
 price: "무료"
 developer: "AMALIYA RUSTAMOVA"
 genre: "건강 및 피트니스"
+kind: "app"
 upcoming: "true"
 ---
 

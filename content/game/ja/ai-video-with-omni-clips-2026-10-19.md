@@ -12,6 +12,7 @@ releaseDate: "2026-10-19"
 price: "無料"
 developer: "GEDIMEX, UAB"
 genre: "写真／ビデオ, ユーティリティ"
+kind: "app"
 upcoming: "true"
 ---
 ![AI Video with Omni Clips](/assets/img/apps/app-25655065f9.jpg)

@@ -12,6 +12,7 @@ releaseDate: "2026-10-09"
 price: "免费"
 developer: "UBI Soft Pvt Ltd"
 genre: "游戏, 模拟, 体育, 益智解谜"
+kind: "game"
 upcoming: "true"
 ---
 ![Tap Tap Arrow Defense Escape](/assets/img/apps/app-9128b113c4.jpg)

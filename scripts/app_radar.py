@@ -689,6 +689,21 @@ def title_max(lang, released=False):
     return base
 
 
+# 앱 vs 게임 분류 — 스토어 장르 문자열이 여러 언어로 오므로 다 잡는다.
+# Apple: "Games, Adventure" / "Spiele, Rollenspiel" / "游戏, 模拟" ...
+# Play : applicationCategory "GAME_STRATEGY" 같은 GAME_ 접두.
+GAME_KIND_PAT = re.compile(
+    r'(^|\s|/|，|、)(games?|spiele|juegos|jeux|jogos|игры)'
+    r'|(^|\s)(游戏|ゲーム|게임)'
+    r'|GAME_[A-Z]+', re.I)
+
+
+def kind_of(genre, category=''):
+    """"game" or "app" — 앱/게임 분류. 근거는 스토어가 준 장르 문자열뿐."""
+    s = '%s %s' % (genre or '', category or '')
+    return 'game' if GAME_KIND_PAT.search(s) else 'app'
+
+
 def strip_code_fences(text):
     """모델이 코드펜스(```json ... ```)로 감싸 보내도 JSON 만 남긴다."""
     t = (text or '').strip()
@@ -1201,6 +1216,7 @@ def main():
               'price: "%s"\n'
               'developer: "%s"\n'
               'genre: "%s"\n'
+              'kind: "%s"\n'
               'upcoming: "%s"\n'
               '---\n\n') % (slug, title, desc,
                             datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d'),
@@ -1211,6 +1227,7 @@ def main():
                             price.replace('"', "'"),
                             (m_dev.group(1).strip().replace('"', "'") if m_dev else ''),
                             (m_gen.group(1).strip().replace('"', "'") if m_gen else ''),
+                            kind_of(m_gen.group(1) if m_gen else '', item.get('category') or ''),
                             'false' if released else 'true')
         open(os.path.join(outdir, slug + '.md'), 'w', encoding='utf-8').write(
             fm + img_md + body + '\n')

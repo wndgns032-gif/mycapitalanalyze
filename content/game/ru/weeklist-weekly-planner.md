@@ -13,6 +13,7 @@ releaseDate: "2026-09-28"
 price: "Бесплатно"
 developer: "THE DIGITAL MINIMALIST PTE. LTD."
 genre: "Производительность, Утилиты"
+kind: "app"
 upcoming: "false"
 ---
 ![Weeklist: Weekly Planner](/assets/img/apps/app-4da7ee1d2e.jpg)

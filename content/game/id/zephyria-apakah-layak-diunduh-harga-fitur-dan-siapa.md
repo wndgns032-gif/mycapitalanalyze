@@ -13,6 +13,7 @@ releaseDate: "2026-08-10"
 price: "Free"
 developer: "Andrew Fell"
 genre: "Games, Adventure, Role-Playing"
+kind: "game"
 upcoming: "false"
 ---
 ![Zephyria](/assets/img/apps/app-82e0ab9bea.jpg)

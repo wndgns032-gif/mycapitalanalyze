@@ -13,6 +13,7 @@ releaseDate: "2026-09-24"
 price: "Free"
 developer: "Nathan Anthony"
 genre: "Weather"
+kind: "app"
 upcoming: "false"
 ---
 ![Scribble Weather](/assets/img/apps/app-d44885c184.jpg)

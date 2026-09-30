@@ -63,6 +63,70 @@ TRANS_DIR = os.path.join(BASE, 'content', 'translations')
 GAME_DIR = os.path.join(BASE, 'content', 'game')
 GAME_CATEGORY = 'Apps & Games'
 
+# 앱/게임 구분 — app_radar 가 찍은 kind 우선, 없으면 장르 문자열로 판정(백필 호환).
+GAME_KIND_PAT = re.compile(
+    r'(^|\s|/|，|、)(games?|spiele|juegos|jeux|jogos|игры)'
+    r'|(^|\s)(游戏|ゲーム|게임)'
+    r'|GAME_[A-Z]+', re.I)
+
+
+def game_kind(fm):
+    k = (fm.get('kind') or '').strip()
+    if k in ('game', 'app'):
+        return k
+    return 'game' if GAME_KIND_PAT.search(fm.get('genre', '') or '') else 'app'
+
+
+# 레거시 앱 글 3개(기존 /post/ URL 유지)의 앱/게임 구분 — 장르 정보가 없어 고정 매핑.
+LEGACY_KIND = {
+    'tideward-upcoming-idle-rpg-release-date-and-features': 'game',
+    'mendazzle-release-date-features-and-price-of-the': 'game',
+    'followers-tracker-for-insta-review-features-price-release': 'app',
+}
+
+# 상단 메뉴 + 섹션 탭 문구 (전체 / 앱 / 게임) — 13개 언어.
+TAB_STR = {
+    'en': ('All', 'Apps', 'Games'), 'ko': ('전체', '앱', '게임'),
+    'zh': ('全部', '应用', '游戏'), 'ja': ('すべて', 'アプリ', 'ゲーム'),
+    'es': ('Todo', 'Apps', 'Juegos'), 'de': ('Alle', 'Apps', 'Spiele'),
+    'fr': ('Tout', 'Apps', 'Jeux'), 'pt': ('Tudo', 'Apps', 'Jogos'),
+    'ru': ('Все', 'Приложения', 'Игры'), 'id': ('Semua', 'Aplikasi', 'Game'),
+    'hi': ('सभी', 'ऐप्स', 'गेम्स'), 'ar': ('الكل', 'تطبيقات', 'ألعاب'),
+    'bn': ('সব', 'অ্যাপ', 'গেম'),
+}
+DEFAULT_TAB = TAB_STR['en']
+
+# 홈 화면 위젯 문구 (달력 / 국가별 방문자).
+WIDGET_STR = {
+    'en': ('Daily posts', 'No posts were published on this day.',
+           'Visitors by country — last 7 days', 'Collecting…', 'posts'),
+    'ko': ('일별 발행', '이 날에 올라온 글이 없습니다.',
+           '국가별 방문자 — 최근 7일', '집계 중…', '편'),
+    'zh': ('每日发布', '这一天没有发布文章。',
+           '各国访客 — 最近 7 天', '统计中…', '篇'),
+    'ja': ('日別の発行', 'この日に公開された記事はありません。',
+           '国別訪問者 — 直近7日', '集計中…', '件'),
+    'es': ('Publicaciones diarias', 'No se publicaron artículos ese día.',
+           'Visitantes por país — últimos 7 días', 'Recopilando…', 'artículos'),
+    'de': ('Tägliche Beiträge', 'An diesem Tag wurden keine Beiträge veröffentlicht.',
+           'Besucher nach Land — letzte 7 Tage', 'Wird erfasst…', 'Beiträge'),
+    'fr': ('Publications quotidiennes', 'Aucun article publié ce jour-là.',
+           'Visiteurs par pays — 7 derniers jours', 'Collecte…', 'articles'),
+    'pt': ('Publicações diárias', 'Nenhum artigo publicado neste dia.',
+           'Visitantes por país — últimos 7 dias', 'Coletando…', 'artigos'),
+    'ru': ('Публикации по дням', 'В этот день статей не публиковалось.',
+           'Посетители по странам — за 7 дней', 'Сбор данных…', 'статей'),
+    'id': ('Kiriman harian', 'Tidak ada artikel yang terbit pada hari ini.',
+           'Pengunjung per negara — 7 hari terakhir', 'Mengumpulkan…', 'artikel'),
+    'hi': ('दैनिक पोस्ट', 'इस दिन कोई लेख प्रकाशित नहीं हुआ।',
+           'देश अनुसार आगंतुक — अंतिम 7 दिन', 'एकत्र किया जा रहा है…', 'लेख'),
+    'ar': ('منشورات يومية', 'لم تُنشر مقالات في هذا اليوم.',
+           'الزوار حسب الدولة — آخر 7 أيام', 'جارٍ التجميع…', 'مقالات'),
+    'bn': ('দৈনিক পোস্ট', 'এই দিনে কোনো নিবন্ধ প্রকাশিত হয়নি।',
+           'দেশ অনুযায়ী দর্শক — শেষ ৭ দিন', 'সংগ্রহ চলছে…', 'টি'),
+}
+DEFAULT_WIDGET = WIDGET_STR['en']
+
 GA4_ID = ((CONFIG.get('analytics') or {}).get('ga4_id') or '').strip()
 # Google Search Console HTML 태그 방식 인증 값 (없으면 메타 태그 미삽입)
 GSC_VERIFY = ((CONFIG.get('analytics') or {}).get('google_site_verification') or '').strip()
@@ -445,7 +509,8 @@ def header_html(current):
       <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="{home}">{SITE_NAME}</a>
       <nav class="flex items-center gap-4 text-sm">
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{home}">Home</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{game_home_path(current)}">{htmllib.escape(GAME_STR.get(current, DEFAULT_GAME)[0])}</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{game_home_for(current, 'app')}">{htmllib.escape(TAB_STR.get(current, DEFAULT_TAB)[1])}</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{game_home_for(current, 'game')}">{htmllib.escape(TAB_STR.get(current, DEFAULT_TAB)[2])}</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
@@ -1031,13 +1096,45 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     return out_path
 
 
-def build_index(lang, posts, available):
+def homepage_widgets(lang, posts, game_list):
+    """메인 화면 오른쪽/아래에 다는 2개 위젯 — 일별 발행 달력 + 국가별 방문자 표.
+
+    렌더링은 assets/js/main.js 가 한다. 여기선 데이터(전체 글 목록)와 마운트만 심는다.
+    """
+    w = WIDGET_STR.get(lang, DEFAULT_WIDGET)
+    data = []
+    for p in posts:
+        data.append({'t': p['title'], 'd': p['date'], 'h': post_href(lang, p['slug']), 'k': 'econ'})
+    for p in game_list:
+        data.append({'t': p['title'], 'd': p['date'],
+                     'h': p.get('href') or game_post_href(lang, p['slug']),
+                     'k': p.get('kind', 'app')})
+    payload = json.dumps(data, ensure_ascii=False).replace('</', '<\\/')
+    attrs = (f'data-locale="{lang}" data-str-none="{htmllib.escape(w[1], quote=True)}" '
+             f'data-str-wait="{htmllib.escape(w[3], quote=True)}" data-str-unit="{htmllib.escape(w[4], quote=True)}"')
+    return f'''
+<section class="mt-10 grid gap-6 lg:grid-cols-2 items-start">
+  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
+    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(w[0])}</h2>
+    <div id="mca-cal" {attrs}></div>
+    <div id="mca-cal-out" class="mt-3 text-sm"></div>
+  </div>
+  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
+    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(w[2])}</h2>
+    <div id="mca-geo" data-locale="{lang}" data-str-wait="{htmllib.escape(w[3], quote=True)}"></div>
+  </div>
+</section>
+<script>window.__POSTS__={payload};</script>'''
+
+
+def build_index(lang, posts, available, game_list=None):
     s = strs(lang)
     card_list = [card_html(lang, p['slug'], p['title'], p['desc'], p['category'], p['date']) for p in posts]
     half = max(1, len(card_list) // 2)
     cards = '\n'.join(card_list[:half])
     cards2 = '\n'.join(card_list[half:])
     infeed = ad_unit('index_infeed', wrap_class='sm:col-span-2 my-6 text-center')
+    widgets = homepage_widgets(lang, posts, game_list or [])
     content = f'''<div class="space-y-6">
   <div>
     <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">{htmllib.escape(s[2])}</h1>
@@ -1048,6 +1145,7 @@ def build_index(lang, posts, available):
   {infeed}
 {cards2}
   </div>
+  {widgets}
   {ad_unit('index')}
 </div>'''
     canonical = DOMAIN + home_path(lang)
@@ -1060,29 +1158,55 @@ def build_index(lang, posts, available):
     return out_path
 
 
-def build_game_index(lang, plist, available):
-    """/game/ (앱·게임 섹션) 인덱스. 경제 메인과 완전히 분리된 별도 페이지."""
+def game_tabs(lang, active):
+    """섹션 상단 탭 — 전체/앱/게임. active: ''|'app'|'game'."""
+    t = TAB_STR.get(lang, DEFAULT_TAB)
+    base = game_home_path(lang)
+    items = [('', base, t[0]), ('app', base + 'apps/', t[1]), ('game', base + 'games/', t[2])]
+    cls = ('px-3 py-1.5 rounded-full text-sm border transition-colors')
+    out = []
+    for key, href, label in items:
+        on = (key == active)
+        style = ('bg-brand-600 text-white border-brand-600' if on
+                 else 'border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400')
+        out.append(f'<a class="{cls} {style}" href="{href}">{htmllib.escape(label)}</a>')
+    return '<div class="flex items-center gap-2 flex-wrap">' + ''.join(out) + '</div>'
+
+
+def game_home_for(lang, kind):
+    """/game/ (전체) 또는 /game/apps/ · /game/games/ 경로."""
+    base = game_home_path(lang)
+    return base if not kind else base + ('apps/' if kind == 'app' else 'games/')
+
+
+def build_game_index(lang, plist, available, kind=''):
+    """/game/ (전체·앱·게임) 인덱스. 기존 /game/ URL 은 그대로 두고 apps/ games/ 를 추가."""
     g = GAME_STR.get(lang, DEFAULT_GAME)
-    cards = '\n'.join(game_card_html(lang, p) for p in plist)
+    shown = [p for p in plist if not kind or p.get('kind') == kind] if kind else plist
+    cards = '\n'.join(game_card_html(lang, p) for p in shown)
     infeed = ad_unit('index_infeed', wrap_class='sm:col-span-2 my-6 text-center')
+    empty = (f'<p class="text-sm text-slate-500 dark:text-slate-400 py-8 text-center">'
+             f'{htmllib.escape(TAB_STR.get(lang, DEFAULT_TAB)[0])} — 0</p>')
     content = f'''<div class="space-y-6">
   <div>
     <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">{htmllib.escape(g[1])}</h1>
     <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{htmllib.escape(g[2])}</p>
   </div>
+  {game_tabs(lang, kind)}
   <div class="grid gap-4 sm:grid-cols-2">
-{cards}
+{cards if shown else empty}
   {infeed}
   </div>
   {ad_unit('index')}
 </div>'''
-    canonical = DOMAIN + game_home_path(lang)
+    canonical = DOMAIN + game_home_for(lang, kind)
     title = f'{g[1]} — {SITE_NAME}'
     html_doc = layout(lang, title, g[2], canonical, content, 'website',
-                      [website_ld(lang, DOMAIN + game_home_path(lang))],
+                      [website_ld(lang, canonical)],
                       slug=None, available=available, section='game')
-    out_path = (os.path.join(BASE, 'game', 'index.html') if lang == 'en'
-                else os.path.join(BASE, lang, 'game', 'index.html'))
+    rel = 'index.html' if not kind else ('apps/index.html' if kind == 'app' else 'games/index.html')
+    out_path = (os.path.join(BASE, 'game', rel) if lang == 'en'
+                else os.path.join(BASE, lang, 'game', rel))
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     open(out_path, 'w', encoding='utf-8').write(html_doc)
     return out_path
@@ -1137,6 +1261,9 @@ def build_sitemap(posts, avail_by_slug, langs_with_home, game=None):
             g_alts.append(('x-default', DOMAIN + '/game/'))
         for c in game_langs:
             emit(DOMAIN + game_home_path(c), g_alts)
+            # 앱/게임 분리 인덱스 (신규 URL — 기존 URL 은 건드리지 않는다)
+            emit(DOMAIN + game_home_path(c) + 'apps/', [(c, DOMAIN + game_home_path(c) + 'apps/')])
+            emit(DOMAIN + game_home_path(c) + 'games/', [(c, DOMAIN + game_home_path(c) + 'games/')])
             for p in game[c]:
                 emit(p['url'], [(c, p['url'])])
 
@@ -1203,6 +1330,7 @@ def main():
                           'body': body,
                           'facts': game_facts(fm, body),
                           'genre': fm.get('genre', ''),
+                          'kind': game_kind(fm),
                           'href': game_post_href(lang, slug),
                           'url': game_post_url(lang, slug)})
         if items:
@@ -1216,6 +1344,7 @@ def main():
                        'sourceName': p['sourceName'], 'sourceUrl': p['sourceUrl'],
                        'href': post_href('en', p['slug']),
                        'url': post_url('en', p['slug']), 'legacy': True,
+                       'kind': LEGACY_KIND.get(p['slug'], 'app'),
                        'facts': game_facts({}, p['body'])})
         game_posts['en'].sort(key=lambda p: p['date'], reverse=True)
 
@@ -1278,7 +1407,7 @@ def main():
                            t['body'], src['sourceName'], src['sourceUrl'], plist,
                            avail_by_slug[p['slug']])
             total += 1
-        build_index(lang, plist, home_available)
+        build_index(lang, plist, home_available, game_posts.get(lang, []))
         build_disclosure(lang, home_available)
 
     # 앱·게임 섹션(/game/) — 언어별 네이티브 글. 번역이 아니라 각 스토어에서 직접 수집한 글.
@@ -1295,6 +1424,8 @@ def main():
                        section='game', facts=p.get('facts'))
             game_total += 1
         build_game_index(lang, plist, set(game_langs))
+        build_game_index(lang, plist, set(game_langs), 'app')
+        build_game_index(lang, plist, set(game_langs), 'game')
 
     build_sitemap(macro_posts, avail_by_slug, langs_with_home, game_posts)
     build_feed(macro_posts)

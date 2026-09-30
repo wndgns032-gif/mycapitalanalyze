@@ -13,6 +13,7 @@ releaseDate: "2026-09-24"
 price: "Gratuit"
 developer: "LION BROTHERS P.C."
 genre: "Divertissement"
+kind: "app"
 upcoming: "false"
 ---
 ![AirStream Plus‎](/assets/img/apps/app-32306f47a3.jpg)

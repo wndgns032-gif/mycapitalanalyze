@@ -13,6 +13,7 @@ releaseDate: "2026-09-24"
 price: "Free"
 developer: "Nishiura Ryohei"
 genre: "Games, Entertainment, Trivia, Adventure"
+kind: "game"
 upcoming: "false"
 ---
 

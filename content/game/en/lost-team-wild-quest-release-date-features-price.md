@@ -12,6 +12,7 @@ releaseDate: "2026-12-05"
 price: "Free"
 developer: "Muhammad Nouman"
 genre: "Games, Roleplaying, Sports"
+kind: "game"
 upcoming: "true"
 ---
 

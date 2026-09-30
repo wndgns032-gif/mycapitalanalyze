@@ -13,6 +13,7 @@ releaseDate: ""
 price: "Free"
 developer: "Yostar Limited."
 genre: "GAME_STRATEGY"
+kind: "game"
 upcoming: "false"
 ---
 ![Arknights - Google Play তে অ্যাপ](/assets/img/apps/app-d432296d37.jpg)

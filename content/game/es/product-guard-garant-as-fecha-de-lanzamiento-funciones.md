@@ -12,6 +12,7 @@ releaseDate: "2026-09-30"
 price: "Gratis"
 developer: "Shabab H Siddique"
 genre: "Utilidades, Productividad"
+kind: "app"
 upcoming: "true"
 ---
 

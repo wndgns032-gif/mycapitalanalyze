@@ -13,6 +13,7 @@ releaseDate: "2026-10-01"
 price: "Grátis"
 developer: "Lucas Albornoz"
 genre: "Utilidades"
+kind: "app"
 upcoming: "true"
 ---
 ![Cudo- Protección de envios](/assets/img/apps/app-58b606cbd0.jpg)

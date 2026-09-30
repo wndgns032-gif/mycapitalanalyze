@@ -6,6 +6,7 @@ category: "Apps & Games"
 date: "2026-09-30"
 sourceName: "App Store"
 sourceUrl: "https://apps.apple.com/us/app/mendazzle/id6805037328?uo=4"
+enriched: "2026-09-30"
 ---
 
 ![Mendazzle](/assets/img/apps/app-a5af4b5c.jpg)
