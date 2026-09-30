@@ -6,6 +6,15 @@ on:
     # 구글 '스케일드 콘텐츠 어뷰즈' 판정을 받는다. 하루 1회만 돈다.
     - cron: '17 6 * * *'
   workflow_dispatch:
+    inputs:
+      per_lang:
+        description: '언어당 발행 수 (기본 1)'
+        required: false
+        default: '1'
+      apps_only:
+        description: '앱/게임 레이더만 실행'
+        required: false
+        default: 'true'
 
 permissions:
   contents: write
@@ -13,7 +22,8 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # 언어 13개 × 레이더 수집(HTTP) + LLM 재시도 → 여유 있게 준다.
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -87,6 +97,8 @@ jobs:
             "char_min": 3000,
             "char_max": 5000,
             "max_new_posts_per_run": 1,
+            # 앱·게임 레이더: 모든 언어에 하루 1건씩 (로이 지시).
+            "apps_per_lang_per_day": 1,
             "analytics": {"ga4_id": ga4, "google_site_verification": gsc},
             "affiliates": aff_cfg
           }
@@ -94,8 +106,15 @@ jobs:
           print('provider =', provider)
           PY
 
-      - name: Run publish pipeline
+      - name: Run publish pipeline (크롤링→번역→앱레이더→빌드→색인)
+        if: github.event_name == 'schedule' || inputs.apps_only != 'true'
         run: python scripts/publish.py
+
+      - name: 앱/게임 레이더만 실행 (수동 백필용)
+        if: github.event_name == 'workflow_dispatch' && inputs.apps_only == 'true'
+        run: |
+          python scripts/app_radar.py --per-lang ${{ inputs.per_lang }}
+          python scripts/build.py
 
       - name: Commit and push
         env:

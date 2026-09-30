@@ -1,5 +1,5 @@
 ---
-slug: the-apocalypsnake-release-features-vorschau
+slug: "the-apocalypsnake-release-features-vorschau"
 title: "The Apocalypsnake: Release, Features & Vorschau"
 description: "The Apocalypsnake ist ein kommendes Wellen-Roguelite-RPG von Lud Dynamics, in dem du als Schlange Gegner verschlingst und Magiesteine absorbierst."
 category: "Apps & Games"
@@ -7,6 +7,11 @@ date: "2026-09-30"
 sourceName: "App Store"
 sourceUrl: "https://apps.apple.com/de/app/the-apocalypsnake/id6782791720?uo=2"
 lang: "de"
+image: "/assets/img/apps/app-0b738f6ed1.jpg"
+releaseDate: "2026-10-31"
+developer: "Lud Dynamics Co., Ltd."
+genre: "Spiele, Rollenspiel, Gelegenheits­spiele"
+upcoming: "true"
 ---
 
 ![The Apocalypsnake](/assets/img/apps/app-0b738f6ed1.jpg)

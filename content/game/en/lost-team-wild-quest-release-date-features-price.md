@@ -1,5 +1,5 @@
 ---
-slug: lost-team-wild-quest-release-date-features-price
+slug: "lost-team-wild-quest-release-date-features-price"
 title: "Lost Team: Wild Quest — Release Date, Features & Price"
 description: "Lost Team: Wild Quest is an upcoming roleplaying and sports game where a coach guides a trapped team home through a tribal forest."
 category: "Apps & Games"
@@ -7,6 +7,12 @@ date: "2026-09-30"
 sourceName: "App Store"
 sourceUrl: "https://apps.apple.com/us/app/lost-team-wild-quest/id6794827742?uo=2"
 lang: "en"
+image: "/assets/img/apps/app-450ead53cf.jpg"
+releaseDate: "2026-12-05"
+price: "Free"
+developer: "Muhammad Nouman"
+genre: "Games, Roleplaying, Sports"
+upcoming: "true"
 ---
 
 ![Lost Team: Wild Quest](/assets/img/apps/app-450ead53cf.jpg)

@@ -1,5 +1,5 @@
 ---
-slug: tap-tap-arrow-defense-escape-2026-10
+slug: "tap-tap-arrow-defense-escape-2026-10"
 title: "Tap Tap Arrow Defense Escape：2026年10月9日上线，玩法与价格一览"
 description: "Tap Tap Arrow Defense Escape 是一款即将于 2026 年 10 月 9 日推出的免费益智游戏，玩家需在恰当时机点击，引导彩色箭头穿过不断变化的迷宫路线。"
 category: "Apps & Games"
@@ -7,6 +7,12 @@ date: "2026-09-30"
 sourceName: "App Store"
 sourceUrl: "https://apps.apple.com/cn/app/tap-tap-arrow-defense-escape/id6793505556?uo=2"
 lang: "zh"
+image: "/assets/img/apps/app-9128b113c4.jpg"
+releaseDate: "2026-10-09"
+price: "免费"
+developer: "UBI Soft Pvt Ltd"
+genre: "游戏, 模拟, 体育, 益智解谜"
+upcoming: "true"
 ---
 
 ![Tap Tap Arrow Defense Escape](/assets/img/apps/app-9128b113c4.jpg)

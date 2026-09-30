@@ -67,6 +67,7 @@ LOCALES = [
 LOCALE_BY_CODE = {c[0]: c for c in LOCALES}
 # 비라틴 표기 언어 — 같은 정보량이 더 적은 글자로 표현된다 (글자수 기준 완화 대상)
 NON_LATIN = {'ko', 'ja', 'zh', 'ar', 'hi', 'bn', 'ru'}
+CJK = {'ko', 'ja', 'zh'}
 
 # 구글플레이 사전등록(출시예정) 표기 — 언어권별 버튼/배지 문구
 PREORDER_MARKERS = [
@@ -137,6 +138,23 @@ def load_seen(path):
 def save_seen(path, ids):
     save_json(path, sorted(ids)[-3000:])
 
+
+def today_count(d, today_str):
+    """해당 언어 디렉터리에 '오늘' 발행된 글 수 (프론트매터 date 기준)."""
+    n = 0
+    if not os.path.isdir(d):
+        return 0
+    for fn in os.listdir(d):
+        if not fn.endswith('.md'):
+            continue
+        try:
+            head = open(os.path.join(d, fn), encoding='utf-8').read(2500)
+        except Exception:
+            continue
+        m = re.search(r'^date:\s*"?([0-9]{4}-[0-9]{2}-[0-9]{2})"?', head, re.M)
+        if m and m.group(1) == today_str:
+            n += 1
+    return n
 
 def published_meta(dirs):
     """이미 발행된 글의 (sourceUrl 집합, slug 집합, 스토어 식별자 집합).
@@ -488,53 +506,357 @@ def build_material(item, cc, hl, gl, today):
     return '\n'.join(lines), upcoming, d.get('image', ''), d.get('name')
 
 
-SYSTEM_APP = (
-    "You write practical, search-friendly app and game introductions for an international "
-    "audience. Your writing is plain, concrete and free of hype. You never invent features, "
-    "prices or dates: every fact must come from the source material."
+SYSTEM_APP = """You are a native-level writer for the apps and games section of an international website.
+You write in the target language the way a local writer for that market would, never like a translation.
+Your tone is plain, concrete and free of hype.
+
+FACT DISCIPLINE (highest priority): every price, date, feature, platform, device, region, rating, download count and sales figure must come only
+from the source material you are given. If the source material does not contain a fact, say so honestly in one short sentence instead of filling the gap.
+You never claim to have played, tested, reviewed or measured the product.
+
+OUTPUT DISCIPLINE (second highest priority): you reply with one single raw JSON object and nothing else.
+No markdown code fence, no commentary before or after, no trailing comma.
+Inside string values, write every line break as \\n and escape every double quote, so the JSON can always be parsed by a machine."""
+
+
+# 제목 글자 수 상한 — 로이 확정. 라틴/키릴 70자, 한국어·일본어·힌디어 55자, 중국어 42자.
+TITLE_MAX = {'en': 70, 'ko': 55, 'ja': 55, 'zh': 42, 'hi': 55,
+             'es': 70, 'de': 70, 'fr': 70, 'pt': 70, 'ru': 70, 'id': 70, 'ar': 70}
+# 출시 완료작은 후기 의도어를 붙이므로 조금 더 허용
+RELEASED_MAX = {'en': 85, 'ko': 60, 'ja': 60, 'zh': 45, 'hi': 65}
+TITLE_DEFAULT = 70
+
+# 언어별 localized 제목 구조 — {app} 만 앱 이름으로 치환한다.
+TITLE_LOCALIZED = {
+    'en': '{app} — Is It Worth Buying? Price, Features and Who Should Skip',
+    'ko': '{app} — 살 만한가요? 가격, 기능, 그리고 이런 분은 건너뛰세요',
+    'es': '{app} — ¿merece la pena comprarlo? Precio, funciones y quién debería evitarlo',
+    'de': '{app} — Lohnt sich der Kauf? Preis, Funktionen und wer es lieber lässt',
+    'pt': '{app} — Vale a pena comprar? Preço, funções e quem deve evitar',
+    'ru': '{app} — Стоит ли покупать? Цена, функции и кому не стоит',
+    'id': '{app} — Apakah layak dibeli? Harga, fitur, dan siapa yang sebaiknya menghindarinya',
+    'ar': '{app} — هل يستحق الشراء؟ السعر، الميزات، ومن يجب أن يتجنبه',
+    'bn': '{app} — কেনা কি সঠিক? দাম, ফিচার এবং কারা এড়িয়ে যাবেন',
+    'ja': '{app} — 買う価値はある？価格・機能・向いていない人',
+    'zh': '{app} — 值得买吗？价格、功能，以及哪些人不适合',
+    'hi': '{app} — क्या खरीदना सही है? कीमत, फीचर्स और किन्हें बचना चाहिए',
+    'es': '{app} — ¿vale la pena comprarlo? Precio, funciones y quién debería evitarlo',
+    'de': '{app} — Ist der Kauf sinnvoll? Preis, Funktionen und wer es lieber lassen sollte',
+    'fr': "{app} — Est-ce que ça vaut l'achat ? Prix, fonctionnalités et qui devrait éviter",
+    'pt': '{app} — Vale a pena comprar? Preço, recursos e quem deve evitar',
+    'ru': '{app} — Стоит ли покупать? Цена, функции и кому это не подойдёт',
+    'id': '{app} — Apakah layak dibeli? Harga, fitur, dan siapa yang sebaiknya melewatkannya',
+    'ar': '{app} — هل تستحق الشراء؟ السعر، المميزات، ومن الأفضل أن يتجنبها',
+}
+
+# FAQ 3문항 — 반드시 이 언어 표기를 그대로 쓴다 (로이 확정).
+# 출시 전: 언제 출시 / 무료 여부 / 어떻게 예약
+# 출시 후: 어떤 앱 / 무료 여부 / 어떻게 예약
+FAQ_LOCALIZED = {
+    'en': {'pre': ['When does it come out?', 'Is it free?', 'How do I pre-order it?'],
+           'post': ['What kind of app is it?', 'Is it free?', 'How do I pre-order it?']},
+    'ko': {'pre': ['언제 출시되나요?', '무료인가요?', '어떻게 예약하나요?'],
+           'post': ['어떤 앱인가요?', '무료인가요?', '어떻게 예약하나요?']},
+    'ja': {'pre': ['いつ配信されますか？', '無料ですか？', 'どうやって予約しますか？'],
+           'post': ['どんなアプリですか？', '無料ですか？', 'どうやって予約しますか？']},
+    'zh': {'pre': ['什么时候上线？', '免费吗？', '怎么预约？'],
+           'post': ['这是一款什么应用？', '免费吗？', '怎么预约？']},
+    'hi': {'pre': ['यह कब लॉन्च होगा?', 'क्या यह फ्री है?', 'इसे कैसे बुक करें?'],
+           'post': ['यह कैसा ऐप है?', 'क्या यह फ्री है?', 'इसे कैसे बुक करें?']},
+    'es': {'pre': ['¿Cuándo se lanza?', '¿Es gratis?', '¿Cómo se reserva?'],
+           'post': ['¿Qué tipo de app es?', '¿Es gratis?', '¿Cómo se reserva?']},
+    'de': {'pre': ['Wann erscheint es?', 'Ist es kostenlos?', 'Wie kann ich es vorbestellen?'],
+           'post': ['Was für eine App ist das?', 'Ist es kostenlos?', 'Wie kann ich es vorbestellen?']},
+    'fr': {'pre': ['Quand sort-il ?', 'Est-ce gratuit ?', 'Comment le précommander ?'],
+           'post': ['Quel type d’application est-ce ?', 'Est-ce gratuit ?', 'Comment le précommander ?']},
+    'pt': {'pre': ['Quando será lançado?', 'É gratuito?', 'Como reservar?'],
+           'post': ['Que tipo de app é?', 'É gratuito?', 'Como reservar?']},
+    'ru': {'pre': ['Когда выйдет?', 'Это бесплатно?', 'Как оформить предзаказ?'],
+           'post': ['Что это за приложение?', 'Это бесплатно?', 'Как оформить предзаказ?']},
+    'id': {'pre': ['Kapan rilisnya?', 'Apakah gratis?', 'Bagaimana cara memesannya?'],
+           'post': ['Aplikasi apa ini?', 'Apakah gratis?', 'Bagaimana cara memesannya?']},
+    'ar': {'pre': ['متى يصدر؟', 'هل هو مجاني؟', 'كيف أحجزه مسبقًا؟'],
+           'post': ['ما نوع هذا التطبيق؟', 'هل هو مجاني؟', 'كيف أحجزه مسبقًا؟']},
+    'bn': {'pre': ['এটি কখন প্রকাশিত হবে?', 'এটি কি ফ্রি?', 'কীভাবে প্রি-অর্ডার করব?'],
+           'post': ['এটি কী ধরনের অ্যাপ?', 'এটি কি ফ্রি?', 'কীভাবে প্রি-অর্ডার করব?']},
+}
+FAQ_DEFAULT = FAQ_LOCALIZED['en']
+
+LANG_NATIVE = {'en': 'English', 'ko': 'Korean', 'ja': 'Japanese', 'zh': 'Chinese',
+               'hi': 'Hindi', 'es': 'Spanish', 'de': 'German', 'fr': 'French',
+               'pt': 'Portuguese', 'ru': 'Russian', 'id': 'Indonesian', 'ar': 'Arabic'}
+
+SEO_DESC_MIN = 300   # 로이 지시: SEO 설명은 300자 이상
+SEO_DESC_MAX = 480   # 상한(한/일/중 320자 내외, 영문 320자 권장)
+
+# 재시도 시 붙이는 보강 지시 — 분량 미달을 "군더더기"로 채우지 않게 막는다.
+RETRY_HINT = (
+    "Your previous draft was rejected. Fix it without inventing anything: "
+    "(a) if it was too short, add one concrete sentence drawn from the SOURCE MATERIAL to each "
+    "H2 section and to each FAQ answer instead of padding with generalities; "
+    "(b) if it was too long, delete the least specific sentence in each section; "
+    "(c) if the title was over the limit, shorten the last phrase only and keep the app name; "
+    "(d) never use the words review, hands-on, tested or played."
 )
 
 
-def user_prompt(lang_name, mat, upcoming, app_name, cmin, cmax):
-    if upcoming:
-        structure = ('"## What We Know So Far", "## Expected Release Date", "## Key Features", '
-                     '"## Who It Is For", "## Pricing", "## FAQ"')
-        angle = ("The title is NOT released yet. Frame it as an upcoming launch and say clearly "
-                 "that details may change before release.")
-    else:
-        structure = ('"## What {APP} Is", "## Key Features", "## Who It Is For", '
-                     '"## Pricing and Availability", "## Early Impressions", "## FAQ"')
-        angle = ("Introduce it as a freshly released title. If there is little user feedback yet, "
-                 "say so plainly instead of pretending there is consensus.")
-    structure = structure.replace('{APP}', app_name)
+def strip_code_fences(text):
+    """모델이 ```json ... ``` 로 감싸 보내도 JSON 만 남긴다."""
+    t = (text or '').strip()
+    if t.startswith('```'):
+        t = re.sub(r'^```[a-zA-Z]*\s*', '', t)
+        t = re.sub(r'```\s*$', '', t).strip()
+    return t
+
+
+def title_max(lang, released=False):
+    """제목 글자 수 상한 — 초과 글이 버려지므로 생성 단계에서 다시 시도시킨다."""
+    base = TITLE_MAX.get(lang, TITLE_DEFAULT)
+    if released:
+        base = max(base, RELEASED_MAX.get(lang, base))
+    return base
+
+
+def strip_code_fences(text):
+    """모델이 코드펜스(```json ... ```)로 감싸 보내도 JSON 만 남긴다."""
+    t = (text or '').strip()
+    if t.startswith('```'):
+        t = re.sub(r'^```[a-zA-Z]*\s*', '', t)
+        t = re.sub(r'```\s*$', '', t).strip()
+    return t
+
+
+def released_facts(item, cc, hl, gl):
+    """출시 완료작 전용 자료 — 후기·평점·설치수까지 포함한 실제 리뷰형 리포트용."""
+    if item['store'] == 'apple':
+        detail = apple_lookup(item['ident'], cc)
+        if not detail:
+            return None
+        revs = apple_reviews(item['ident'], cc)
+        rel = item['released'] or parse_iso(detail.get('releaseDate'))
+        lines = [
+            'APP NAME: %s' % (detail.get('trackName') or item['name']),
+            'DEVELOPER: %s' % (detail.get('artistName') or item.get('artist', '')),
+            'STORE CATEGORY: %s' % (detail.get('primaryGenreName') or item.get('category', '')),
+            'GENRES: %s' % ', '.join(detail.get('genres') or []),
+            'PRICE: %s' % (detail.get('formattedPrice') or 'not disclosed'),
+            'IN-APP PURCHASES: %s' % ('yes' if detail.get('description')
+                                      and 'In-App Purchase' in detail['description'] else 'not disclosed'),
+            'VERSION: %s' % (detail.get('version') or 'not disclosed'),
+            'RATING: %.1f out of 5 from %s ratings' % (float(detail.get('averageUserRating') or 0),
+                                                       detail.get('userRatingCount') or 0),
+            'CONTENT RATING: %s' % (detail.get('contentAdvisoryRating') or 'not disclosed'),
+            'LAST UPDATED: %s' % (parse_iso(detail.get('currentVersionReleaseDate')).strftime('%Y-%m-%d')
+                                  if parse_iso(detail.get('currentVersionReleaseDate')) else 'not disclosed'),
+            'SUPPORTED DEVICES: %s' % ', '.join(detail.get('supportedDevices') or []) or 'not disclosed',
+            'LANGUAGES: %s' % (detail.get('languageCodesISO2A') or 'not disclosed'),
+            'STATUS: RELEASED (available now, release date %s)' % (
+                rel.strftime('%Y-%m-%d') if rel else 'not disclosed'),
+            'LISTING URL: %s' % (detail.get('trackViewUrl') or item['url']),
+        ]
+        if detail.get('releaseNotes'):
+            lines += ['', "WHAT'S NEW: %s" % clip(detail['releaseNotes'], 400)]
+        lines += ['', 'OFFICIAL DESCRIPTION:', clip(detail.get('description') or '', 2600)]
+        if revs:
+            lines += ['', 'USER REVIEWS FROM THE STORE LISTING '
+                          '(opinions of real users, not our own testing):']
+            for r in revs[:6]:
+                lines.append('- %d/5 "%s": %s' % (int(float(r.get('rating') or 0)),
+                                                  clip(r['title'], 90), clip(r['body'], 200)))
+        return '\n'.join(lines)
+
+    d = play_details(item['ident'], hl, gl)
+    if not d or not d.get('description'):
+        return None
+    lines = [
+        'APP NAME: %s' % d.get('name'),
+        'DEVELOPER: %s' % (d.get('developer') or 'not disclosed'),
+        'STORE CATEGORY: %s' % d.get('category'),
+        'PRICE: %s' % ('Free' if d.get('free') else ('%s (paid)' % (d.get('price') or 'paid'))),
+        'IN-APP PURCHASES: not disclosed',
+        'RATING: %.1f out of 5 from %s ratings' % (float(d.get('rating') or 0),
+                                                   d.get('rating_count') or 0),
+        'INSTALL COUNT: %s' % (d.get('installs') or 'not disclosed'),
+        'LAST UPDATED: %s' % (d.get('updated') or 'not disclosed'),
+        'STATUS: RELEASED (available now)',
+        'LISTING URL: %s' % d.get('url'),
+    ]
+    lines += ['', 'OFFICIAL DESCRIPTION:', clip(d.get('description') or '', 2600)]
+    return '\n'.join(lines)
+
+
+def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, desc_max,
+                store_url):
+    """출시예정(사전예약 가이드) / 출시완료(실제 후기형 리포트) 공통 프롬프트.
+
+    공통 금지 규칙: 리뷰·테스트·체험 표현 금지, 허위 사실 금지, SEO 300자 이상 description 금지.
+    """
+    tmax = RELEASED_MAX.get(lang, TITLE_MAX.get(lang, TITLE_DEFAULT)) if released \
+        else TITLE_MAX.get(lang, TITLE_DEFAULT)
+    title_struct = (TITLE_LOCALIZED.get(lang, TITLE_LOCALIZED['en'])
+                    .replace('{app}', app_name).replace('<APP NAME>', app_name))
+    status = ('It is NOT available yet.' if not released
+              else 'It is ALREADY released and downloadable.')
+    report = ('BUY-OR-SKIP GUIDE for a title that is not released yet'
+              if not released else
+              'BUY-OR-SKIP REPORT for a title that is already released')
+    structure = ('"## What <APP NAME> Is", "## Release Date and Pre-Order", "## Key Features", '
+                 '"## Who It Is For and Who Should Skip", "## Is It Worth Pre-Ordering", '
+                 '"## Pricing and What Is Still Unclear", "## FAQ"' if not released else
+                 '"## What <APP NAME> Is", "## Key Features", '
+                 '"## Who It Is For and Who Should Skip", "## Pricing and Availability", '
+                 '"## What to Expect", "## FAQ"')
+    angle = ("The title is NOT released yet. Frame it as an upcoming launch and say clearly that "
+             "details may change before release. Be explicit that pre-ordering is free and "
+             "reversible only if the store listing actually says so." if not released else
+             "The title is already released and downloadable. You may discuss the experience, but "
+             "ONLY by attributing it to the official store listing or to store reviewers, and "
+             "never by claiming you used it.")
+    extra = ("UPCOMING-SPECIFIC RULES\n"
+             "- Never promise a release date the store has not confirmed, never promise pre-order "
+             "rewards, and never write a review.\n\n" if not released else
+             "RELEASED-SPECIFIC RULES\n"
+             "- Use the confirmed facts in the material whenever they help the reader decide: "
+             "version, rating and rating count, install count, content rating, last updated date, "
+             "and what's new.\n"
+             "- Treat store reviews as user opinions: attribute them with the natural wording of "
+             + lang_name + " and never average anything yourself.\n"
+             "- \"## What to Expect\" describes what the official listing suggests about the "
+             "experience, always framed as expectation, never as something you tried or "
+             "measured.\n\n")
+    faq_tbl = FAQ_LOCALIZED.get(lang, FAQ_DEFAULT)
+    faq_q = [q.replace('<APP NAME>', app_name) for q in
+             (faq_tbl['post'] if released else faq_tbl['pre'])]
+
     return (
-        "Write ONE article in {LANG} about the app/game below.\n"
-        "The source material is already in {LANG} (it comes straight from that storefront).\n"
-        "Do NOT translate anything and do NOT switch language: title, description and body must "
-        "all be natural {LANG}.\n\n"
-        "SOURCE MATERIAL (facts come only from here):\n"
-        "----------------\n{material}\n----------------\n\n"
-        "RULES\n"
-        "1. Output ONLY JSON: {{\"title\":..., \"description\":..., \"category\":..., \"body\":...}}\n"
-        "2. title: keep the exact app name; add intent words (release date / features / price / "
-        "review) only if they fit naturally in {LANG}; max 70 characters.\n"
-        "3. description: one sentence, 140-160 characters.\n"
-        "4. category: always \"Apps & Games\".\n"
-        "5. body: Markdown, {cmin}-{cmax} characters. Start with 1-2 short paragraphs (no heading "
-        "above them).\n"
-        "6. Use exactly these \"##\" sections, in this order — but write the heading text in "
-        "{LANG} (translate the heading wording, keep the order and the number of sections): "
-        "{structure}.\n"
-        "7. The FAQ must hold exactly 3 questions as \"###\" headings, each answered in 1-3 "
-        "sentences.\n"
-        "8. Never use \"#\" H1 and never insert images or markdown image syntax.\n"
-        "9. Put the app name in the first sentence. Link the official store listing once.\n"
-        "10. Do NOT claim you tested or played it. Do not invent download counts or sales "
-        "figures. If the material lacks something, write one honest sentence about the gap.\n"
-        "11. {angle}\n"
-        "12. No marketing superlatives like \"revolutionary\". No bullet-point walls.\n"
-    ).format(LANG=lang_name, material=mat, cmin=cmin, cmax=cmax,
-             structure=structure, angle=angle)
+        "You are writing one " + report + ".\n\n"
+        "THE ANGLE YOU ARE WRITING\n"
+        "The reader has just discovered this app or game and wants one thing: a practical "
+        "buy-or-skip answer they can act on now. They are not looking for news, and they are not "
+        "looking for a full review, because nobody has played or tested this yet. Your job is to "
+        "gather only what the official store listing actually confirms, lay it out clearly, and "
+        "tell them whether it is worth reserving, downloading or skipping, while being honest "
+        "about what is still unknown.\n\n"
+        "THE READER'S QUESTIONS (answer all of these across the article)\n"
+        "1. What is this?\n"
+        "2. What does it cost?\n"
+        "3. When can I get it?\n"
+        "4. Is it worth pre-ordering (or downloading) now?\n"
+        "5. What will I actually get for my money?\n"
+        "6. Who should skip this?\n"
+        "7. What is the single most important flaw or limitation?\n"
+        "8. Is there a better alternative?\n"
+        "9. What is the catch?\n"
+        "10. What do I do next?\n\n"
+        "LANGUAGE: write natively in " + lang_name + ". You MUST use the exact words from the "
+        "localizations in this prompt. They are the words real users of " + lang_name + " type "
+        "into a search box. Do not translate them, do not paraphrase them, and do not invent your "
+        "own variant. If a heading word appears in the localization table, use it exactly as "
+        "written.\n\n"
+        "STATUS: " + status + "\n"
+        "APP NAME: " + app_name + "\n"
+        "OFFICIAL STORE URL: " + store_url + "\n\n"
+        "TITLE FORMULAS — choose ONE structure and fill it in. Do NOT invent your own structure.\n"
+        "1. <APP NAME> — is it worth buying? Price, features and who should skip\n"
+        "2. <APP NAME> — what you get for the price: features, limits and who should skip\n"
+        "3. <APP NAME> — is it worth pre-ordering? Price, features and who should skip\n"
+        "4. <APP NAME> — what you get for free: features, upgrade cost and who should skip\n"
+        "5. <APP NAME> — is it worth switching? Price, features and who should skip\n"
+        "6. <APP NAME> — what you get on day one: price, features and who should skip\n"
+        "7. <APP NAME> — our honest verdict: is it worth buying? Price, features and who should skip\n"
+        "8. <APP NAME> — is it worth downloading? Price, features and who should skip\n"
+        "9. <APP NAME> — the honest catch: what you get, what it costs and who should skip\n\n"
+        "LOCALIZED TITLE RULES\n"
+        "Use the localized title structure provided in this prompt (or, if none is provided, "
+        "translate formula 1 above by hand into " + lang_name + "). Keep the exact app name and "
+        "the exact localized intent words — those words are the search terms real users of "
+        + lang_name + " type, so they must appear verbatim. If the localized structure contains a "
+        "question word, keep the question form. Do NOT insert any words that are not in the "
+        "provided localization. Do NOT translate the app name. Do NOT add any other words. If the "
+        "localized structure uses a bracketed app-name slot, put the app name there and nothing "
+        "else.\n"
+        "HARD LIMIT: the finished title MUST NOT exceed " + str(tmax) + " characters. Titles longer "
+        "than this are rejected by the site builder and the article is thrown away. Shorten it "
+        "yourself: drop the weakest of the three trailing phrases or shorten the ending. Keep the "
+        "app name and the strongest intent word and the who-should-skip phrase whenever "
+        "possible.\n\n"
+        "LOCALIZED TITLE STRUCTURE FOR " + lang_name + ": " + title_struct + "\n\n"
+        "DESCRIPTION\n"
+        "One or two sentences, at least " + str(desc_min) + " characters and no more than "
+        + str(desc_max) + " characters, that a searcher would read as a direct answer: name the "
+        "app, say what it is, state the price model, and state who should skip.\n\n"
+        "STRUCTURE (write them in this order, and write them in " + lang_name + "):\n"
+        + structure + "\n\n"
+        "WRITING ORDER (write them in this order, do not reorder, do not merge, do not split)\n"
+        "1. Opening section (no h1 heading, no h2 heading): 2 to 5 sentences. State what the app or "
+        "game is, name the price model, name who it is for, and give a direct answer to \"is it "
+        "worth it?\". No preamble, no greeting, no rhetorical question, no heading of any kind "
+        "above it.\n"
+        "2. Quick verdict block (no heading): a dash list of 3 to 5 items, each 1 to 2 sentences, "
+        "each beginning with a dash. Order: what it is, what it costs, what is confirmed, what is "
+        "unclear, who should skip.\n"
+        "3. The body sections above, in the order given.\n"
+        "4. FAQ: exactly 3 questions. Each question MUST be written as a \"###\" heading (three "
+        "hash marks), answered in 2 to 4 sentences directly underneath it, with the direct answer "
+        "in the first sentence. Use exactly these localized questions, in this order, verbatim: "
+        + " | ".join(faq_q) + "\n\n"
+        "SECTION RULES\n"
+        "- \"## Pricing and Availability\" (or \"## Pricing and What Is Still Unclear\"): always "
+        "state the price model, and always state whether there are in-app purchases, a "
+        "subscription, or a trial. If the store page says nothing about the price, say so in one "
+        "honest sentence instead of guessing.\n"
+        "- \"## Who It Is For and Who Should Skip\": name at least one concrete type of user who "
+        "should skip it, based only on the features the listing actually shows.\n"
+        "- \"## Key Features\": turn the store text into 4 to 6 short items, each starting with a "
+        "concrete noun or verb.\n"
+        "- \"## Cons and Limitations\" (or \"## What to Expect\"): name at least one honest "
+        "limitation or uncertainty.\n\n"
+        + extra +
+        "CONTENT LENGTH\n"
+        "- The H2 body must be between " + str(cmin) + " and " + str(cmax) + " characters of plain "
+        "text. The H2 body means all H2 sections and all sentences under them, and all FAQ bodies, "
+        "but NOT the opening section and NOT the quick verdict block. Counting is done after "
+        "Markdown is removed.\n"
+        "- Do not count the opening section or the quick verdict list toward this limit; they are "
+        "extra and short.\n"
+        "- Do not stop early. If you are under the limit, keep expanding with evidence from the "
+        "store listing.\n"
+        "- Do not pad with filler sentences. Every added sentence must carry a fact or a "
+        "judgment.\n\n"
+        "CURRENCY AND SPECIFICITY RULES\n"
+        "- Use the exact price shown in the store listing. Never round it, never convert it, and "
+        "never invent a price.\n"
+        "- Use the exact version, rating, rating count, install count, content rating and update "
+        "date when the source material provides them.\n"
+        "- Do not invent a release date, a discount, a launch window, a feature, a platform, a "
+        "region, or a supported-device list. If the source does not say it, say it does not say.\n"
+        "- Never promise a future update, a future price, or a future platform.\n\n"
+        "HARD RULES — BREAKING ANY OF THESE IS AN AUTOMATIC REJECT\n"
+        "1. Never use \"review\" or \"hands-on\" or \"tested\" or \"played\" or \"our experience\" "
+        "anywhere in the H1, the title, or any H2/FAQ heading. You have not played it.\n"
+        "2. Never use the phrase \"is it worth it\" or \"worth buying\" or \"worth downloading\" or "
+        "\"verdict\" anywhere except the title and the FAQ heading. The body must answer the "
+        "question without repeating those words.\n"
+        "3. Never write \"In this article\" or \"In this guide\" or \"Let's dive in\" or any "
+        "meta-introduction.\n"
+        "4. Never invent a rating, a score, a percentage, or a star value.\n"
+        "5. Never invent a comparison price, a discount, or a competitor's price.\n"
+        "6. Never use a colon in the title. Never use a question mark in the title unless the "
+        "localized structure contains one.\n"
+        "7. Never exceed " + str(tmax) + " characters in the title.\n"
+        "8. Never promise a release date, a pre-order reward, or a future update.\n"
+        "9. Never open with a question or a greeting.\n"
+        "10. Never mention the source name or the phrase \"store listing\" more than once.\n\n"
+        "SOURCE MATERIAL\n"
+        "----------------\n" + mat + "\n----------------\n\n"
+        "OUTPUT\n"
+        "Return raw JSON and nothing else. No markdown fences, no commentary, no keys other than "
+        "these four:\n"
+        "title, description, category, body\n"
+        "body holds the opening section, the quick verdict block, the H2 sections and the FAQ.\n"
+        "Use \"\\n\" for newlines inside strings.\n"
+        "category must always be exactly \"Apps & Games\".\n"
+    )
 
 
 def extract_json(text):
@@ -600,8 +922,13 @@ def save_image(url, assets_dir, ident):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--limit', type=int, default=0, help='생성할 글 수 (기본 3)')
+    ap.add_argument('--per-lang', type=int, default=0,
+                    help='언어당 하루 발행 수 (기본 1)')
+    ap.add_argument('--limit', type=int, default=0,
+                    help='이번 실행 전체 상한 (0=제한 없음)')
     ap.add_argument('--locale', default='', help='특정 언어만 (예: ko)')
+    ap.add_argument('--force', action='store_true',
+                    help='오늘 이미 발행한 언어도 무시하고 추가 생성')
     ap.add_argument('--dry', action='store_true')
     ap.add_argument('--no-play', action='store_true', help='구글플레이 소스 제외')
     ap.add_argument('--base', default=BASE)
@@ -611,10 +938,10 @@ def main():
     game_dir = os.path.join(base, 'content', 'game')
     assets_dir = os.path.join(base, 'assets', 'img', 'apps')
     seen_file = os.path.join(base, 'content', 'app_radar_seen.json')
-    cursor_file = os.path.join(base, 'content', 'app_radar_rotate.json')
 
     cfg = load_json(os.path.join(base, 'config.json'), {})
-    target = args.limit or int(cfg.get('apps_per_day', 3))
+    # 로이 지시: 모든 언어에 하루 1개씩.
+    per_lang = args.per_lang or int(cfg.get('apps_per_lang_per_day', 1))
     cmin = int(cfg.get('app_char_min', cfg.get('char_min', 3000)))
     cmax = int(cfg.get('app_char_max', cfg.get('char_max', 5000)))
 
@@ -627,22 +954,38 @@ def main():
 
     today = datetime.datetime.now(datetime.timezone.utc).replace(
         hour=0, minute=0, second=0, microsecond=0, tzinfo=None)
+    today_str = today.strftime('%Y-%m-%d')
 
     if args.locale:
         if args.locale not in LOCALE_BY_CODE:
             print('알 수 없는 locale: %s' % args.locale)
             return 1
-        order = [LOCALE_BY_CODE[args.locale]]
+        wanted = [LOCALE_BY_CODE[args.locale]]
     else:
-        cursor = int(load_json(cursor_file, {'cursor': 0}).get('cursor', 0) or 0)
-        order = [LOCALES[(cursor + i) % len(LOCALES)] for i in range(len(LOCALES))]
+        wanted = list(LOCALES)
+
+    # 오늘 이미 발행한 언어는 건수만큼 차감 → 하루 1개 원칙이 깨지지 않는다.
+    order = []
+    quota = {}
+    for row in wanted:
+        lang = row[0]
+        have = 0 if args.force else today_count(os.path.join(game_dir, lang), today_str)
+        need = max(0, per_lang - have)
+        quota[lang] = need
+        order.extend([row] * need)
+        if have and need == 0:
+            print('[%s] 오늘 %d건 이미 발행 → 건너뜀' % (lang, have))
+    if args.limit and len(order) > args.limit:
+        order = order[:args.limit]
+    target = len(order)
 
     seen = load_seen(seen_file)
     pub_urls, taken, pub_ids = published_meta(
         [game_dir, os.path.join(base, 'content', 'posts')])
 
-    print('App Radar v2 — 목표 %d건 / 언어 순서: %s'
-          % (target, ' > '.join(c[0] for c in order[:max(target, 1)])))
+    print('App Radar v3 — 오늘 %s / 총 %d건 (%s)'
+          % (today_str, target,
+             ', '.join('%s×%d' % (r[0], order.count(r)) for r in wanted) if order else '0건'))
 
     done = 0
     tried = 0
@@ -679,37 +1022,75 @@ def main():
         if rel:
             img_md = '![%s](%s)\n\n' % ((disp_name or 'app').replace('[', ''), rel)
 
-        # 비라틴 언어(한/중/일/아랍/힌디/벵골/러시아)는 같은 분량이 더 적은 글자로 나온다.
-        # 영어 기준 글자수를 그대로 강요하면 불필요한 재시도만 늘어난다 → 60% 기준을 쓴다.
-        if lang in NON_LATIN:
-            lo, hi = max(1200, int(cmin * 0.6)), int(cmax * 0.6)
+        released = not upcoming
+        # CJK 는 "글자당 정보량이 많다"고 분량을 줄이면 글이 짧아진다(한국어 2313자 사건) →
+        # 반대로 하한을 3200 으로 올린다. 그 외 언어는 사이트 기본값(cmin~cmax).
+        if lang in CJK:
+            lo, hi = 3200, max(cmax, 5000)
         else:
             lo, hi = cmin, cmax
+        if released:
+            lo += 400          # 출시 완료작은 다룰 확인 사실이 더 많다
+        accept_lo = lo - 400   # 경계에서 살짝 짧게 나온 것까지는 허용
+        desc_min, desc_max = SEO_DESC_MIN, SEO_DESC_MAX
 
+        # 출시 완료작은 후기·평점·설치수가 들어간 확장 자료를 쓴다(실제 후기형 리포트).
+        material = mat
+        if released:
+            material = released_facts(item, cc, hl, gl) or mat
+
+        tmax_eff = title_max(lang, released)
         obj, body = {}, ''
         for attempt in range(1, 4):
-            got, provider = llm.chat(
-                [{'role': 'system', 'content': SYSTEM_APP},
-                 {'role': 'user', 'content': user_prompt(
-                     lang_name, mat, upcoming, disp_name or 'app', cmin, cmax)}],
-                purpose='write')
-            obj = extract_json(got)
+            msgs = [{'role': 'system', 'content': SYSTEM_APP},
+                    {'role': 'user', 'content': user_prompt(
+                        lang, material, disp_name or 'app', lang_name, released,
+                        lo, hi, desc_min, desc_max, item['url'])}]
+            if attempt >= 2:
+                msgs.append({'role': 'user', 'content': RETRY_HINT})
+            got, provider = llm.chat(msgs, purpose='write')
+            obj = extract_json(strip_code_fences(got))
             body = (obj.get('body') or '').strip()
             n = len(body)
-            print('   [%d] %s 응답 %d자' % (attempt, provider, n))
-            if lo <= n <= hi and obj.get('title'):
+            tlen = len(obj.get('title') or '')
+            dlen = len(obj.get('description') or '')
+            print('   [%d] %s 본문 %d자 / 제목 %d자 / 설명 %d자'
+                  % (attempt, provider, n, tlen, dlen))
+            ok = (accept_lo <= n <= hi and obj.get('title')
+                  and tlen <= tmax_eff and 280 <= dlen <= desc_max)
+            if ok:
                 break
-            print('      재시도: %s' % ('너무 짧음' if n < lo else '너무 김'))
+            if n < accept_lo:
+                why = '본문 너무 짧음'
+            elif n > hi:
+                why = '본문 너무 김'
+            elif tlen > tmax_eff:
+                why = '제목 초과(%d>%d)' % (tlen, tmax_eff)
+            elif dlen > desc_max:
+                why = '설명 초과(%d>%d)' % (dlen, desc_max)
+            else:
+                why = '설명 부족(%d<300)' % dlen
+            print('      재시도: %s' % why)
             time.sleep(0.4)
         if not obj.get('title') or not body:
             print('   생성 실패 → 다음 실행에서 재시도')
             continue
 
         title = re.sub(r'"', "'", obj['title']).strip()
-        desc = re.sub(r'"', "'", clip(obj.get('description') or '', 200))
+        # SEO 설명: 300자 이상(로이 지시) ~ desc_max 이하. 넘으면 잘라내지 않고 재시도 대상으로 본다.
+        desc = re.sub(r'"', "'", (obj.get('description') or '').strip())
         slug = slugify(title, item['key'], taken)
         taken.add(slug)
         src_name = 'Google Play' if item['store'] == 'play' else 'App Store'
+        # 팩트박스(출시일·가격·개발사)용 — 전부 스토어 상세에서 그대로 뽑은 값만 쓴다.
+        m_price = re.search(r'^PRICE:\s*(.+)$', material, re.M)
+        m_dev = re.search(r'^DEVELOPER:\s*(.+)$', material, re.M)
+        m_rel = re.search(r'(20\d\d-\d\d-\d\d)', material)
+        m_gen = (re.search(r'^GENRES?:\s*(.+)$', material, re.M | re.I)
+                 or re.search(r'^STORE CATEGORY:\s*(.+)$', material, re.M))
+        price = (m_price.group(1).strip() if m_price else '')
+        if price.lower() in ('not disclosed', 'n/a', ''):
+            price = ''
         fm = ('---\n'
               'slug: %s\n'
               'title: "%s"\n'
@@ -719,9 +1100,23 @@ def main():
               'sourceName: "%s"\n'
               'sourceUrl: "%s"\n'
               'lang: "%s"\n'
+              'status: "%s"\n'
+              'image: "%s"\n'
+              'releaseDate: "%s"\n'
+              'price: "%s"\n'
+              'developer: "%s"\n'
+              'genre: "%s"\n'
+              'upcoming: "%s"\n'
               '---\n\n') % (slug, title, desc,
                             datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d'),
-                            src_name, item['url'], lang)
+                            src_name, item['url'], lang,
+                            'released' if released else 'upcoming',
+                            rel or '',
+                            (m_rel.group(1) if m_rel else ''),
+                            price.replace('"', "'"),
+                            (m_dev.group(1).strip().replace('"', "'") if m_dev else ''),
+                            (m_gen.group(1).strip().replace('"', "'") if m_gen else ''),
+                            'false' if released else 'true')
         open(os.path.join(outdir, slug + '.md'), 'w', encoding='utf-8').write(
             fm + img_md + body + '\n')
         seen.add(item['key'])
@@ -730,11 +1125,7 @@ def main():
         done += 1
         time.sleep(0.3)
 
-    if not args.locale and not args.dry:
-        cur = int(load_json(cursor_file, {'cursor': 0}).get('cursor', 0) or 0)
-        save_json(cursor_file, {'cursor': (cur + max(tried, 1)) % len(LOCALES)})
-
-    print('\nApp Radar 완료: %d건' % done)
+    print('\nApp Radar 완료: %d건 (오늘 %s)' % (done, today_str))
     return 0
 
 

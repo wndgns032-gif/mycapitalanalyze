@@ -1,5 +1,5 @@
 ---
-slug: wellnessfit-kinetra
+slug: "wellnessfit-kinetra"
 title: "WellnessFit-Kinetra: 출시일, 기능, 가격 안내"
 description: "WellnessFit-Kinetra는 일상의 작은 움직임을 기록하고 시각적 경로와 주간 인사이트로 꾸준한 리듬을 만드는 건강 및 피트니스 앱입니다."
 category: "Apps & Games"
@@ -7,6 +7,12 @@ date: "2026-09-30"
 sourceName: "App Store"
 sourceUrl: "https://apps.apple.com/kr/app/wellnessfit-kinetra/id6801174153?uo=2"
 lang: "ko"
+image: "/assets/img/apps/app-0f0b03bc09.jpg"
+releaseDate: "2027-02-11"
+price: "무료"
+developer: "AMALIYA RUSTAMOVA"
+genre: "건강 및 피트니스"
+upcoming: "true"
 ---
 
 ![WellnessFit-Kinetra](/assets/img/apps/app-0f0b03bc09.jpg)

@@ -1,0 +1,265 @@
+SYSTEM_APP = """You are a native-level writer for the apps and games section of an international website.
+You write in the target language the way a local writer for that market would, never like a translation.
+Your tone is plain, concrete and free of hype.
+
+FACT DISCIPLINE (highest priority): every price, date, feature, platform, device, region, rating, download count and sales figure must come only
+from the source material you are given. If the source material does not contain a fact, say so honestly in one short sentence instead of filling the gap.
+You never claim to have played, tested, reviewed or measured the product.
+
+OUTPUT DISCIPLINE (second highest priority): you reply with one single raw JSON object and nothing else.
+No markdown code fence, no commentary before or after, no trailing comma.
+Inside string values, write every line break as \\n and escape every double quote, so the JSON can always be parsed by a machine."""
+
+
+# 제목 글자 수 상한 — 로이 확정. 라틴/키릴 70자, 한국어·일본어·힌디어 55자, 중국어 42자.
+TITLE_MAX = {'en': 70, 'ko': 55, 'ja': 55, 'zh': 42, 'hi': 55,
+             'es': 70, 'de': 70, 'fr': 70, 'pt': 70, 'ru': 70, 'id': 70, 'ar': 70}
+# 출시 완료작은 후기 의도어를 붙이므로 조금 더 허용
+RELEASED_MAX = {'en': 85, 'ko': 60, 'ja': 60, 'zh': 45, 'hi': 65}
+TITLE_DEFAULT = 70
+
+# 언어별 localized 제목 구조 — {app} 만 앱 이름으로 치환한다.
+TITLE_LOCALIZED = {
+    'en': '{app} — Is It Worth Buying? Price, Features and Who Should Skip',
+    'ko': '{app} — 살 만한가요? 가격, 기능, 그리고 이런 분은 건너뛰세요',
+    'ja': '{app} — 買う価値はある？価格・機能・向いていない人',
+    'zh': '{app} — 值得买吗？价格、功能，以及哪些人不适合',
+    'hi': '{app} — क्या खरीदना सही है? कीमत, फीचर्स और किन्हें बचना चाहिए',
+    'es': '{app} — ¿vale la pena comprarlo? Precio, funciones y quién debería evitarlo',
+    'de': '{app} — Ist der Kauf sinnvoll? Preis, Funktionen und wer es lieber lassen sollte',
+    'fr': "{app} — Est-ce que ça vaut l'achat ? Prix, fonctionnalités et qui devrait éviter",
+    'pt': '{app} — Vale a pena comprar? Preço, recursos e quem deve evitar',
+    'ru': '{app} — Стоит ли покупать? Цена, функции и кому это не подойдёт',
+    'id': '{app} — Apakah layak dibeli? Harga, fitur, dan siapa yang sebaiknya melewatkannya',
+    'ar': '{app} — هل تستحق الشراء؟ السعر، المميزات، ومن الأفضل أن يتجنبها',
+}
+
+LANG_NATIVE = {'en': 'English', 'ko': 'Korean', 'ja': 'Japanese', 'zh': 'Chinese',
+               'hi': 'Hindi', 'es': 'Spanish', 'de': 'German', 'fr': 'French',
+               'pt': 'Portuguese', 'ru': 'Russian', 'id': 'Indonesian', 'ar': 'Arabic'}
+
+SEO_DESC_MAX = 480
+
+
+def released_facts(item, cc, hl, gl):
+    """출시 완료작 전용 자료 — 후기·평점·설치수까지 포함한 실제 리뷰형 리포트용."""
+    if item['store'] == 'apple':
+        detail = apple_lookup(item['ident'], cc)
+        if not detail:
+            return None
+        revs = apple_reviews(item['ident'], cc)
+        rel = item['released'] or parse_iso(detail.get('releaseDate'))
+        lines = [
+            'APP NAME: %s' % (detail.get('trackName') or item['name']),
+            'DEVELOPER: %s' % (detail.get('artistName') or item.get('artist', '')),
+            'STORE CATEGORY: %s' % (detail.get('primaryGenreName') or item.get('category', '')),
+            'GENRES: %s' % ', '.join(detail.get('genres') or []),
+            'PRICE: %s' % (detail.get('formattedPrice') or 'not disclosed'),
+            'IN-APP PURCHASES: %s' % ('yes' if detail.get('description')
+                                      and 'In-App Purchase' in detail['description'] else 'not disclosed'),
+            'VERSION: %s' % (detail.get('version') or 'not disclosed'),
+            'RATING: %.1f out of 5 from %s ratings' % (float(detail.get('averageUserRating') or 0),
+                                                       detail.get('userRatingCount') or 0),
+            'CONTENT RATING: %s' % (detail.get('contentAdvisoryRating') or 'not disclosed'),
+            'LAST UPDATED: %s' % (parse_iso(detail.get('currentVersionReleaseDate')).strftime('%Y-%m-%d')
+                                  if parse_iso(detail.get('currentVersionReleaseDate')) else 'not disclosed'),
+            'SUPPORTED DEVICES: %s' % ', '.join(detail.get('supportedDevices') or []) or 'not disclosed',
+            'LANGUAGES: %s' % (detail.get('languageCodesISO2A') or 'not disclosed'),
+            'STATUS: RELEASED (available now, release date %s)' % (
+                rel.strftime('%Y-%m-%d') if rel else 'not disclosed'),
+            'LISTING URL: %s' % (detail.get('trackViewUrl') or item['url']),
+        ]
+        if detail.get('releaseNotes'):
+            lines += ['', "WHAT'S NEW: %s" % clip(detail['releaseNotes'], 400)]
+        lines += ['', 'OFFICIAL DESCRIPTION:', clip(detail.get('description') or '', 2600)]
+        if revs:
+            lines += ['', 'USER REVIEWS FROM THE STORE LISTING '
+                          '(opinions of real users, not our own testing):']
+            for r in revs[:6]:
+                lines.append('- %d/5 "%s": %s' % (int(float(r.get('rating') or 0)),
+                                                  clip(r['title'], 90), clip(r['body'], 200)))
+        return '\n'.join(lines)
+
+    d = play_details(item['ident'], hl, gl)
+    if not d or not d.get('description'):
+        return None
+    lines = [
+        'APP NAME: %s' % d.get('name'),
+        'DEVELOPER: %s' % (d.get('developer') or 'not disclosed'),
+        'STORE CATEGORY: %s' % d.get('category'),
+        'PRICE: %s' % ('Free' if d.get('free') else ('%s (paid)' % (d.get('price') or 'paid'))),
+        'IN-APP PURCHASES: not disclosed',
+        'RATING: %.1f out of 5 from %s ratings' % (float(d.get('rating') or 0),
+                                                   d.get('rating_count') or 0),
+        'INSTALL COUNT: %s' % (d.get('installs') or 'not disclosed'),
+        'LAST UPDATED: %s' % (d.get('updated') or 'not disclosed'),
+        'STATUS: RELEASED (available now)',
+        'LISTING URL: %s' % d.get('url'),
+    ]
+    lines += ['', 'OFFICIAL DESCRIPTION:', clip(d.get('description') or '', 2600)]
+    return '\n'.join(lines)
+
+
+def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_max, store_url):
+    """출시예정(사전예약 가이드) / 출시완료(실제 후기형 리포트) 공통 프롬프트.
+
+    공통 금지 규칙: 리뷰·테스트·체험 표현 금지, 허위 사실 금지, SEO 300자 이상 description 금지.
+    """
+    tmax = RELEASED_MAX.get(lang, TITLE_MAX.get(lang, TITLE_DEFAULT)) if released \
+        else TITLE_MAX.get(lang, TITLE_DEFAULT)
+    title_struct = TITLE_LOCALIZED.get(lang, TITLE_LOCALIZED['en'])
+    status = ('It is NOT available yet.' if not released
+              else 'It is ALREADY released and downloadable.')
+    report = ('BUY-OR-SKIP GUIDE for a title that is not released yet'
+              if not released else
+              'BUY-OR-SKIP REPORT for a title that is already released')
+    structure = ('"## What <APP NAME> Is", "## Release Date and Pre-Order", "## Key Features", '
+                 '"## Who It Is For and Who Should Skip", "## Is It Worth Pre-Ordering", '
+                 '"## Pricing and What Is Still Unclear", "## FAQ"' if not released else
+                 '"## What <APP NAME> Is", "## Key Features", '
+                 '"## Who It Is For and Who Should Skip", "## Pricing and Availability", '
+                 '"## What to Expect", "## FAQ"')
+    angle = ("The title is NOT released yet. Frame it as an upcoming launch and say clearly that "
+             "details may change before release. Be explicit that pre-ordering is free and "
+             "reversible only if the store listing actually says so." if not released else
+             "The title is already released and downloadable. You may discuss the experience, but "
+             "ONLY by attributing it to the official store listing or to store reviewers, and "
+             "never by claiming you used it.")
+    extra = ("UPCOMING-SPECIFIC RULES\n"
+             "- Never promise a release date the store has not confirmed, never promise pre-order "
+             "rewards, and never write a review.\n\n" if not released else
+             "RELEASED-SPECIFIC RULES\n"
+             "- Use the confirmed facts in the material whenever they help the reader decide: "
+             "version, rating and rating count, install count, content rating, last updated date, "
+             "and what's new.\n"
+             "- Treat store reviews as user opinions: attribute them with the natural wording of "
+             + lang_name + " and never average anything yourself.\n"
+             "- \"## What to Expect\" describes what the official listing suggests about the "
+             "experience, always framed as expectation, never as something you tried or "
+             "measured.\n\n")
+    return (
+        "You are writing one " + report + ".\n\n"
+        "THE ANGLE YOU ARE WRITING\n"
+        "The reader has just discovered this app or game and wants one thing: a practical "
+        "buy-or-skip answer they can act on now. They are not looking for news, and they are not "
+        "looking for a full review, because nobody has played or tested this yet. Your job is to "
+        "gather only what the official store listing actually confirms, lay it out clearly, and "
+        "tell them whether it is worth reserving, downloading or skipping, while being honest "
+        "about what is still unknown.\n\n"
+        "THE READER'S QUESTIONS (answer all of these across the article)\n"
+        "1. What is this?\n"
+        "2. What does it cost?\n"
+        "3. When can I get it?\n"
+        "4. Is it worth pre-ordering (or downloading) now?\n"
+        "5. What will I actually get for my money?\n"
+        "6. Who should skip this?\n"
+        "7. What is the single most important flaw or limitation?\n"
+        "8. Is there a better alternative?\n"
+        "9. What is the catch?\n"
+        "10. What do I do next?\n\n"
+        "LANGUAGE: write natively in " + lang_name + ". You MUST use the exact words from the "
+        "localizations in this prompt. They are the words real users of " + lang_name + " type "
+        "into a search box. Do not translate them, do not paraphrase them, and do not invent your "
+        "own variant. If a heading word appears in the localization table, use it exactly as "
+        "written.\n\n"
+        "STATUS: " + status + "\n"
+        "APP NAME: " + app_name + "\n"
+        "OFFICIAL STORE URL: " + store_url + "\n\n"
+        "TITLE FORMULAS — choose ONE structure and fill it in. Do NOT invent your own structure.\n"
+        "1. <APP NAME> — is it worth buying? Price, features and who should skip\n"
+        "2. <APP NAME> — what you get for the price: features, limits and who should skip\n"
+        "3. <APP NAME> — is it worth pre-ordering? Price, features and who should skip\n"
+        "4. <APP NAME> — what you get for free: features, upgrade cost and who should skip\n"
+        "5. <APP NAME> — is it worth switching? Price, features and who should skip\n"
+        "6. <APP NAME> — what you get on day one: price, features and who should skip\n"
+        "7. <APP NAME> — our honest verdict: is it worth buying? Price, features and who should skip\n"
+        "8. <APP NAME> — is it worth downloading? Price, features and who should skip\n"
+        "9. <APP NAME> — the honest catch: what you get, what it costs and who should skip\n\n"
+        "LOCALIZED TITLE RULES\n"
+        "Use the localized title structure provided in this prompt (or, if none is provided, "
+        "translate formula 1 above by hand into " + lang_name + "). Keep the exact app name and "
+        "the exact localized intent words — those words are the search terms real users of "
+        + lang_name + " type, so they must appear verbatim. If the localized structure contains a "
+        "question word, keep the question form. Do NOT insert any words that are not in the "
+        "provided localization. Do NOT translate the app name. Do NOT add any other words. If the "
+        "localized structure uses a bracketed app-name slot, put the app name there and nothing "
+        "else.\n"
+        "HARD LIMIT: the finished title MUST NOT exceed " + str(tmax) + " characters. Titles longer "
+        "than this are rejected by the site builder and the article is thrown away. Shorten it "
+        "yourself: drop the weakest of the three trailing phrases or shorten the ending. Keep the "
+        "app name and the strongest intent word and the who-should-skip phrase whenever "
+        "possible.\n\n"
+        "LOCALIZED TITLE STRUCTURE FOR " + lang_name + ": " + title_struct + "\n\n"
+        "DESCRIPTION\n"
+        "One or two sentences, no more than " + str(desc_max) + " characters, that a searcher would "
+        "read as a direct answer: name the app, say what it is, state the price model, and state "
+        "who should skip.\n\n"
+        "STRUCTURE (write them in this order, and write them in " + lang_name + "):\n"
+        + structure + "\n\n"
+        "WRITING ORDER (write them in this order, do not reorder, do not merge, do not split)\n"
+        "1. Opening section (no h1 heading, no h2 heading): 2 to 5 sentences. State what the app or "
+        "game is, name the price model, name who it is for, and give a direct answer to \"is it "
+        "worth it?\". No preamble, no greeting, no rhetorical question, no heading of any kind "
+        "above it.\n"
+        "2. Quick verdict block (no heading): a dash list of 3 to 5 items, each 1 to 2 sentences, "
+        "each beginning with a dash. Order: what it is, what it costs, what is confirmed, what is "
+        "unclear, who should skip.\n"
+        "3. The body sections above, in the order given.\n"
+        "4. FAQ: exactly 3 questions, each as a heading.\n\n"
+        "SECTION RULES\n"
+        "- \"## Pricing and Availability\" (or \"## Pricing and What Is Still Unclear\"): always "
+        "state the price model, and always state whether there are in-app purchases, a "
+        "subscription, or a trial. If the store page says nothing about the price, say so in one "
+        "honest sentence instead of guessing.\n"
+        "- \"## Who It Is For and Who Should Skip\": name at least one concrete type of user who "
+        "should skip it, based only on the features the listing actually shows.\n"
+        "- \"## Key Features\": turn the store text into 4 to 6 short items, each starting with a "
+        "concrete noun or verb.\n"
+        "- \"## Cons and Limitations\" (or \"## What to Expect\"): name at least one honest "
+        "limitation or uncertainty.\n\n"
+        + extra +
+        "CONTENT LENGTH\n"
+        "- The H2 body must be between " + str(cmin) + " and " + str(cmax) + " characters of plain "
+        "text. The H2 body means all H2 sections and all sentences under them, and all FAQ bodies, "
+        "but NOT the opening section and NOT the quick verdict block. Counting is done after "
+        "Markdown is removed.\n"
+        "- Do not count the opening section or the quick verdict list toward this limit; they are "
+        "extra and short.\n"
+        "- Do not stop early. If you are under the limit, keep expanding with evidence from the "
+        "store listing.\n"
+        "- Do not pad with filler sentences. Every added sentence must carry a fact or a "
+        "judgment.\n\n"
+        "CURRENCY AND SPECIFICITY RULES\n"
+        "- Use the exact price shown in the store listing. Never round it, never convert it, and "
+        "never invent a price.\n"
+        "- Use the exact version, rating, rating count, install count, content rating and update "
+        "date when the source material provides them.\n"
+        "- Do not invent a release date, a discount, a launch window, a feature, a platform, a "
+        "region, or a supported-device list. If the source does not say it, say it does not say.\n"
+        "- Never promise a future update, a future price, or a future platform.\n\n"
+        "HARD RULES — BREAKING ANY OF THESE IS AN AUTOMATIC REJECT\n"
+        "1. Never use \"review\" or \"hands-on\" or \"tested\" or \"played\" or \"our experience\" "
+        "anywhere in the H1, the title, or any H2/FAQ heading. You have not played it.\n"
+        "2. Never use the phrase \"is it worth it\" or \"worth buying\" or \"worth downloading\" or "
+        "\"verdict\" anywhere except the title and the FAQ heading. The body must answer the "
+        "question without repeating those words.\n"
+        "3. Never write \"In this article\" or \"In this guide\" or \"Let's dive in\" or any "
+        "meta-introduction.\n"
+        "4. Never invent a rating, a score, a percentage, or a star value.\n"
+        "5. Never invent a comparison price, a discount, or a competitor's price.\n"
+        "6. Never use a colon in the title. Never use a question mark in the title unless the "
+        "localized structure contains one.\n"
+        "7. Never exceed " + str(tmax) + " characters in the title.\n"
+        "8. Never promise a release date, a pre-order reward, or a future update.\n"
+        "9. Never open with a question or a greeting.\n"
+        "10. Never mention the source name or the phrase \"store listing\" more than once.\n\n"
+        "SOURCE MATERIAL\n"
+        "----------------\n" + mat + "\n----------------\n\n"
+        "OUTPUT\n"
+        "Return raw JSON and nothing else. No markdown fences, no commentary, no keys other than "
+        "these four:\n"
+        "title, description, category, body\n"
+        "body holds the opening section, the quick verdict block, the H2 sections and the FAQ.\n"
+        "Use \"\\n\" for newlines inside strings.\n"
+        "category must always be exactly \"Apps & Games\".\n"
+    )

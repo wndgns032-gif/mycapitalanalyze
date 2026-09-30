@@ -254,6 +254,55 @@ GAME_STR = {
 }
 DEFAULT_GAME = GAME_STR['en']
 
+# 앱·게임 글 전용 UI 문자열:
+# [박스제목, 출시일, 가격, 플랫폼, 개발사, 상태, 확인일, 출시예정값, 출시됨값, 목차, 스토어CTA, CTA부가설명]
+FACT_STR = {
+    'en': ('At a glance', 'Release date', 'Price', 'Platform', 'Developer', 'Status',
+           'Store listing checked', 'Upcoming (pre-order)', 'Released', 'On this page',
+           'View on the store', 'Final price and availability are shown on the store listing.'),
+    'ko': ('한눈에 보기', '출시일', '가격', '플랫폼', '개발사', '상태', '스토어 정보 확인일',
+           '출시 예정(사전예약)', '출시됨', '이 글의 목차', '스토어에서 자세히 보기',
+           '최종 가격과 출시 여부는 스토어 페이지가 기준입니다.'),
+    'ja': ('ひと目でわかる', '配信日', '価格', 'プラットフォーム', '開発元', 'ステータス',
+           'ストア情報の確認日', '配信予定（事前登録）', '配信中', 'この記事の目次',
+           'ストアで詳しく見る', '最終的な価格と配信状況はストアの記載が最新です。'),
+    'zh': ('速览', '上线时间', '价格', '平台', '开发商', '状态', '商店信息核对日期',
+           '即将上线（可预约）', '已上线', '本文目录', '前往商店查看',
+           '最终价格与上架状态以商店页面为准。'),
+    'es': ('De un vistazo', 'Fecha de lanzamiento', 'Precio', 'Plataforma', 'Desarrollador',
+           'Estado', 'Información de la tienda verificada', 'Próximo (prerregistro)',
+           'Ya disponible', 'En esta página', 'Ver en la tienda',
+           'El precio y la disponibilidad definitivos se muestran en la tienda.'),
+    'de': ('Auf einen Blick', 'Release-Datum', 'Preis', 'Plattform', 'Entwickler', 'Status',
+           'Store-Informationen geprüft am', 'Demnächst (Vorbestellung)', 'Veröffentlicht',
+           'Auf dieser Seite', 'Im Store ansehen',
+           'Endgültiger Preis und Verfügbarkeit stehen im Store-Eintrag.'),
+    'fr': ('En un coup d’œil', 'Date de sortie', 'Prix', 'Plateforme', 'Développeur', 'Statut',
+           'Infos boutique vérifiées le', 'Prochainement (précommande)', 'Disponible',
+           'Sur cette page', 'Voir sur le store',
+           'Le prix et la disponibilité définitifs sont indiqués sur la boutique.'),
+    'pt': ('Em resumo', 'Data de lançamento', 'Preço', 'Plataforma', 'Desenvolvedor', 'Status',
+           'Informação da loja verificada em', 'Em breve (pré-registro)', 'Lançado',
+           'Nesta página', 'Ver na loja', 'O preço e a disponibilidade finais constam na loja.'),
+    'ru': ('Кратко', 'Дата выхода', 'Цена', 'Платформа', 'Разработчик', 'Статус',
+           'Данные магазина проверены', 'Скоро (предзаказ)', 'Выпущено',
+           'На этой странице', 'Смотреть в магазине',
+           'Итоговая цена и доступность указаны в магазине.'),
+    'hi': ('संक्षेप में', 'रिलीज़ तिथि', 'कीमत', 'प्लेटफ़ॉर्म', 'डेवलपर', 'स्थिति',
+           'स्टोर जानकारी जाँची गई', 'जल्द ही (प्री-ऑर्डर)', 'जारी', 'इस पृष्ठ पर',
+           'स्टोर पर देखें', 'अंतिम कीमत और उपलब्धता स्टोर पृष्ठ पर ही दिखाई गई है।'),
+    'id': ('Sekilas', 'Tanggal rilis', 'Harga', 'Platform', 'Pengembang', 'Status',
+           'Info toko diperiksa', 'Segera (pre-order)', 'Dirilis', 'Di halaman ini',
+           'Lihat di toko', 'Harga dan ketersediaan final ada di halaman toko.'),
+    'ar': ('نظرة سريعة', 'تاريخ الإصدار', 'السعر', 'المنصة', 'المطور', 'الحالة',
+           'آخر تحقق من بيانات المتجر', 'قريبًا (طلب مسبق)', 'تم الإصدار', 'في هذه الصفحة',
+           'عرض في المتجر', 'السعر والتوفر النهائيان معروضان في صفحة المتجر.'),
+    'bn': ('এক নজরে', 'প্রকাশের তারিখ', 'মূল্য', 'প্ল্যাটফর্ম', 'ডেভেলপার', 'অবস্থা',
+           'স্টোর তথ্য যাচাই', 'শীঘ্রই (প্রি-অর্ডার)', 'প্রকাশিত', 'এই পাতায়',
+           'স্টোরে দেখুন', 'চূড়ান্ত মূল্য ও প্রাপ্যতা স্টোর পাতায় দেখানো হয়।'),
+}
+DEFAULT_FACT = FACT_STR['en']
+
 CATEGORY_GRADIENT = {
     'Monetary Policy': 'from-brand-700 to-brand-500',
     'Inflation': 'from-slate-700 to-slate-500',
@@ -614,8 +663,14 @@ def alternates_html(slug, available, section=None):
 
 
 def layout(lang, title, description, canonical, content_html, og_type='website',
-           jsonld_blocks=None, slug=None, available=None, switcher_slug=None, section=None):
+           jsonld_blocks=None, slug=None, available=None, switcher_slug=None, section=None,
+           image=None):
     dir_ = LANG_META[lang][1]
+    og_img = ''
+    if image:
+        abs_url = image if image.startswith('http') else DOMAIN + image
+        og_img = (f'  <meta property="og:image" content="{htmllib.escape(abs_url)}" />\n'
+                  f'  <meta name="twitter:image" content="{htmllib.escape(abs_url)}" />\n')
     head_extra = alternates_html(slug, available or {lang}, section)
     ld = '\n'.join('  <script type="application/ld+json">' + json.dumps(b, ensure_ascii=False) + '</script>'
                    for b in (jsonld_blocks or []))
@@ -636,6 +691,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
   <meta property="og:url" content="{canonical}" />
   <meta property="og:site_name" content="{SITE_NAME}" />
   <meta name="twitter:card" content="summary_large_image" />
+{og_img}
 {adsense_script_html()}
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config = {{ {TAILWIND_CONFIG} }};</script>
@@ -661,8 +717,36 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
 
 
 # ---------- JSON-LD ----------
+def software_app_ld(lang, slug, title, desc, f, source_url, url_fn=None):
+    """앱·게임 글용 스키마 — 검색 결과에 가격·개발사·썸네일이 붙으면 CTR 이 올라간다."""
+    fn = url_fn or post_url
+    genre = (f.get('genre') or '').lower()
+    obj = {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        'name': title,
+        'description': desc,
+        'inLanguage': lang,
+        'url': fn(lang, slug),
+        'applicationCategory': 'GameApplication' if 'game' in genre else 'MobileApplication',
+        'operatingSystem': 'iOS' if (f.get('platform') or '') == 'App Store' else 'Android',
+    }
+    if f.get('image'):
+        obj['image'] = DOMAIN + f['image'] if f['image'].startswith('/') else f['image']
+    if f.get('developer'):
+        obj['author'] = {'@type': 'Organization', 'name': f['developer']}
+    # 무료로 확인된 경우만 0 으로 명시한다. 통화가 불확실한 유료 가격은 넣지 않는다(추정 금지).
+    price = (f.get('price') or '').strip()
+    if price and re.match(r'^(0|free|무료|gratis|gratuit|gratis|kostenlos|бесплатно|免费|無料|免费)$',
+                          price, re.I):
+        obj['offers'] = {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}
+    if source_url:
+        obj['sameAs'] = source_url
+    return obj
+
+
 def news_article_ld(lang, slug, title, desc, date, body_text, source_name, source_url,
-                    url_fn=None):
+                    url_fn=None, article_section=None, image=None):
     fn = url_fn or post_url
     art = {
         '@context': 'https://schema.org',
@@ -675,9 +759,11 @@ def news_article_ld(lang, slug, title, desc, date, body_text, source_name, sourc
         'mainEntityOfPage': {'@type': 'WebPage', '@id': fn(lang, slug)},
         'author': {'@type': 'Organization', 'name': SITE_NAME, 'url': DOMAIN + '/'},
         'publisher': {'@type': 'Organization', 'name': SITE_NAME, 'url': DOMAIN + '/'},
-        'articleSection': 'Macroeconomics',
+        'articleSection': article_section or 'Macroeconomics',
         'wordCount': len(body_text.split()),
     }
+    if image:
+        art['image'] = DOMAIN + image if image.startswith('/') else image
     if source_url:
         art['isBasedOn'] = {'@type': 'CreativeWork', 'name': source_name or 'Source', 'url': source_url}
     return art
@@ -727,6 +813,124 @@ def website_ld(lang, url=None):
     }
 
 
+# ---------- 앱·게임 전용 컴포넌트 (CTR · 체류시간 개선) ----------
+
+def first_image(md):
+    """본문 첫 이미지 경로 (app_radar 가 넣은 스토어 대표 이미지)."""
+    m = re.search(r'!\[[^\]]*\]\(([^)]+)\)', md or '')
+    return m.group(1).strip() if m else ''
+
+
+def game_facts(fm, md=''):
+    """프론트매터 → 팩트박스용 값. 없는 값은 빈 문자열(행 생략)."""
+    rel = (fm.get('releaseDate') or '').strip()
+    if not rel:
+        m = re.search(r'(20\d\d-\d\d-\d\d)', md or '')
+        rel = m.group(1) if m else ''
+    upcoming = str(fm.get('upcoming', '')).strip().lower() in ('1', 'true', 'yes', 'y')
+    return {
+        'releaseDate': rel,
+        'price': (fm.get('price') or '').strip(),
+        'platform': (fm.get('sourceName') or '').strip(),
+        'developer': (fm.get('developer') or '').strip(),
+        'genre': (fm.get('genre') or '').strip(),
+        'upcoming': upcoming,
+        'checked': (fm.get('date') or '').strip(),
+        'image': (fm.get('image') or '').strip() or first_image(md),
+    }
+
+
+def fact_box_html(lang, f):
+    """첫 화면 팩트박스 — 출시일·가격·상태를 먼저 보여줘 이탈을 줄인다."""
+    t = FACT_STR.get(lang, DEFAULT_FACT)
+    status = t[7] if f['upcoming'] else (t[8] if f['releaseDate'] else '')
+    rows = [(t[1], f['releaseDate']), (t[2], f['price']), (t[5], status),
+            (t[3], f['platform']), (t[4], f['developer']), (t[6], f['checked'])]
+    body = '\n'.join(
+        '    <div class="flex justify-between gap-4 py-1.5 border-b border-slate-100 '
+        'dark:border-slate-800 last:border-0">'
+        '<dt class="text-slate-500 dark:text-slate-400 shrink-0">%s</dt>'
+        '<dd class="text-right font-medium text-slate-900 dark:text-slate-100">%s</dd></div>'
+        % (htmllib.escape(k), htmllib.escape(v))
+        for k, v in rows if v)
+    if not body:
+        return ''
+    return ('<section class="mb-6 rounded-lg border border-fuchsia-200 dark:border-fuchsia-900 '
+            'bg-fuchsia-50/50 dark:bg-fuchsia-950/20 p-4">'
+            '<h2 class="text-sm font-semibold uppercase tracking-wide text-fuchsia-800 '
+            'dark:text-fuchsia-300 mb-2">%s</h2>'
+            '<dl class="text-sm">\n%s\n</dl></section>'
+            % (htmllib.escape(t[0]), body))
+
+
+def toc_html(body_html, lang):
+    """본문 h2 → 목차. (모바일은 details 로 접힘, 데스크톱은 펼친 상태)"""
+    t = FACT_STR.get(lang, DEFAULT_FACT)
+    items = re.findall(r'<h2 id="(h-\d+)">(.*?)</h2>', body_html or '')
+    if len(items) < 3:
+        return ''
+    lis = '\n'.join(
+        '    <li><a class="block py-0.5 hover:text-fuchsia-700 dark:hover:text-fuchsia-300" '
+        'href="#%s">%s</a></li>' % (i, re.sub(r'<[^>]+>', '', txt)) for i, txt in items)
+    return ('<details class="mb-6 rounded-lg border border-slate-200 dark:border-slate-800 p-4" open>'
+            '<summary class="text-sm font-semibold cursor-pointer text-slate-900 '
+            'dark:text-slate-100">%s</summary>'
+            '<ul class="mt-3 text-sm text-slate-600 dark:text-slate-400 space-y-1">\n%s\n</ul>'
+            '</details>' % (htmllib.escape(t[9]), lis))
+
+
+def store_cta_html(lang, url, store_name):
+    """앱·게임 글 하단 = 스토어로 가는 카드 (경제용 제휴 박스 대체)."""
+    t = FACT_STR.get(lang, DEFAULT_FACT)
+    if not url:
+        return ''
+    label = ('%s · %s' % (store_name, t[10])) if store_name else t[10]
+    return ('<aside class="mt-10 rounded-lg border border-fuchsia-200 dark:border-fuchsia-900 '
+            'bg-fuchsia-50/60 dark:bg-fuchsia-950/30 p-5 text-center">'
+            '<a class="inline-block px-5 py-2.5 rounded-md bg-fuchsia-700 hover:bg-fuchsia-800 '
+            'text-white text-sm font-semibold" rel="nofollow noopener" target="_blank" '
+            'href="%s">%s</a>'
+            '<p class="mt-2 text-xs text-slate-500 dark:text-slate-400">%s</p></aside>'
+            % (htmllib.escape(url), htmllib.escape(label), htmllib.escape(t[11])))
+
+
+def game_card_html(lang, p):
+    """목록 카드: 스토어 실제 이미지 + 상태/가격 뱃지 + 출시일·가격 한 줄."""
+    f = p.get('facts') or game_facts({}, p.get('body', ''))
+    t = FACT_STR.get(lang, DEFAULT_FACT)
+    img = f.get('image') or ''
+    if img:
+        thumb = ('<img src="%s" alt="" loading="lazy" decoding="async" '
+                 'class="w-full h-full object-cover object-top" />' % htmllib.escape(img))
+    else:
+        thumb = ('<span class="text-white/90 text-sm font-semibold uppercase tracking-widest px-4 '
+                 'text-center">%s</span>' % htmllib.escape(p.get('category', '')))
+    badge = ''
+    if f.get('upcoming'):
+        badge = ('<span class="absolute top-2 right-2 text-[11px] font-semibold px-2 py-0.5 '
+                 'rounded bg-fuchsia-700 text-white">%s</span>' % htmllib.escape(t[7]))
+    elif f.get('price'):
+        badge = ('<span class="absolute top-2 right-2 text-[11px] font-semibold px-2 py-0.5 '
+                 'rounded bg-slate-800/90 text-white">%s</span>' % htmllib.escape(f['price']))
+    bits = [b for b in (f.get('releaseDate'), f.get('price'), f.get('platform')) if b]
+    meta = ('<p class="mt-1 text-xs text-fuchsia-700 dark:text-fuchsia-300 font-medium">%s</p>'
+            % htmllib.escape(' · '.join(bits))) if bits else ''
+    return f'''<article class="border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden hover:shadow-md transition-shadow bg-white dark:bg-slate-900 flex flex-col">
+  <a class="relative block aspect-[16/10] overflow-hidden bg-gradient-to-br from-fuchsia-800 to-fuchsia-600" href="{p.get('href')}" aria-label="{htmllib.escape(p.get('title', ''))}">
+    {thumb}{badge}
+  </a>
+  <div class="p-5">
+    <div class="flex items-center gap-2 text-xs text-slate-500 mb-1">
+      <span class="bg-fuchsia-50 text-fuchsia-700 px-2 py-0.5 rounded uppercase tracking-wide">{htmllib.escape(p.get('category', ''))}</span>
+      <time datetime="{p.get('date', '')}">{p.get('date', '')}</time>
+    </div>
+    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-1 leading-snug"><a class="hover:text-fuchsia-700" href="{p.get('href')}">{htmllib.escape(p.get('title', ''))}</a></h2>
+    {meta}
+    <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 line-clamp-3">{htmllib.escape(p.get('desc', ''))}</p>
+  </div>
+</article>'''
+
+
 # ---------- 카드 ----------
 def card_html(lang, slug, title, desc, category, date, href_fn=None, href=None):
     grad = CATEGORY_GRADIENT.get(category, DEFAULT_GRADIENT)
@@ -763,7 +967,7 @@ def related_html(lang, slug, posts_in_lang, label, href_fn=None):
 
 
 def build_post(lang, slug, title, desc, category, date, body_md, source_name, source_url,
-               posts_in_lang, available, section='post'):
+               posts_in_lang, available, section='post', facts=None):
     """section='post' → /post/{slug}.html (경제), section='game' → /game/post/{slug}.html"""
     is_game = (section == 'game')
     url_fn = game_post_url if is_game else post_url
@@ -771,40 +975,52 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     body_html = md_to_html(body_md)
     canonical = url_fn(lang, slug)
     s = strs(lang)
+    f = facts or (game_facts({}, body_md) if is_game else {})
     src = ''
     if source_url:
         src = (f'\n    <p class="mt-4 text-xs text-slate-500">{htmllib.escape(s[4])}: '
                f'<a class="underline hover:text-brand-600" rel="nofollow noopener" target="_blank" '
                f'href="{htmllib.escape(source_url)}">{htmllib.escape(source_name or source_url)}</a></p>')
+    # 앱·게임 글: 첫 화면에 팩트박스 + 목차를 먼저 보여주고 광고는 그 아래로 내린다.
+    box = fact_box_html(lang, f) if is_game else ''
+    toc = toc_html(body_html, lang) if is_game else ''
+    top_ad = '' if is_game else ad_unit('post_top')
+    bottom = store_cta_html(lang, source_url, source_name) if is_game else affiliate_box(lang, category)
     content = f'''<article class="max-w-3xl mx-auto">
-  <header class="mb-8">
+  <header class="mb-6">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
-      <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">{htmllib.escape(category)}</span>
+      <span class="{"bg-fuchsia-50 text-fuchsia-700" if is_game else "bg-brand-50 text-brand-700"} px-2 py-0.5 rounded uppercase tracking-wide">{htmllib.escape(category)}</span>
       <time datetime="{date}">{htmllib.escape(s[3])}: {date}</time>
       <span class="text-slate-400">&middot;</span>
-      <span>Independent Analysis</span>
+      <span>{"Store Listing Summary" if is_game else "Independent Analysis"}</span>
     </div>
     <h1 class="text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 mb-4">{htmllib.escape(title)}</h1>
     <p class="text-slate-600 dark:text-slate-400">{htmllib.escape(desc)}</p>{src}
   </header>
-  {ad_unit('post_top')}
+  {box}
+  {toc}
+  {top_ad}
   <div class="prose prose-slate dark:prose-invert max-w-none">{body_html}</div>
   {ad_unit('post_bottom')}
-  {affiliate_box(lang, category)}
+  {bottom}
   {related_html(lang, slug, posts_in_lang, s[5], href_fn)}
 </article>'''
 
     gnav = GAME_STR.get(lang, DEFAULT_GAME)[0] if is_game else None
-    blocks = [news_article_ld(lang, slug, title, desc, date, body_md, source_name, source_url,
-                              url_fn),
-              breadcrumb_ld(lang, slug, title, url_fn, gnav)]
+    art_ld = news_article_ld(lang, slug, title, desc, date, body_md, source_name, source_url,
+                             url_fn,
+                             article_section=(GAME_CATEGORY if is_game else None),
+                             image=(f.get('image') or None))
+    blocks = [art_ld, breadcrumb_ld(lang, slug, title, url_fn, gnav)]
+    if is_game:
+        blocks.append(software_app_ld(lang, slug, title, desc, f, source_url, url_fn))
     faq = extract_faq(body_md)
     if faq:
         blocks.append(faq_ld(faq, lang, slug))
 
     html_doc = layout(lang, title + ' — ' + SITE_NAME, desc, canonical, content, 'article',
                       blocks, slug=slug, available=available, switcher_slug=slug,
-                      section=section)
+                      section=section, image=(f.get('image') or None))
     if is_game:
         out_path = (os.path.join(BASE, 'game', 'post', slug + '.html') if lang == 'en'
                     else os.path.join(BASE, lang, 'game', 'post', slug + '.html'))
@@ -847,8 +1063,7 @@ def build_index(lang, posts, available):
 def build_game_index(lang, plist, available):
     """/game/ (앱·게임 섹션) 인덱스. 경제 메인과 완전히 분리된 별도 페이지."""
     g = GAME_STR.get(lang, DEFAULT_GAME)
-    cards = '\n'.join(card_html(lang, p['slug'], p['title'], p['desc'], p['category'],
-                                p['date'], href=p.get('href')) for p in plist)
+    cards = '\n'.join(game_card_html(lang, p) for p in plist)
     infeed = ad_unit('index_infeed', wrap_class='sm:col-span-2 my-6 text-center')
     content = f'''<div class="space-y-6">
   <div>
@@ -986,6 +1201,8 @@ def main():
                           'sourceName': fm.get('sourceName', ''),
                           'sourceUrl': fm.get('sourceUrl', ''),
                           'body': body,
+                          'facts': game_facts(fm, body),
+                          'genre': fm.get('genre', ''),
                           'href': game_post_href(lang, slug),
                           'url': game_post_url(lang, slug)})
         if items:
@@ -998,7 +1215,8 @@ def main():
                        'category': p['category'], 'date': p['date'], 'body': p['body'],
                        'sourceName': p['sourceName'], 'sourceUrl': p['sourceUrl'],
                        'href': post_href('en', p['slug']),
-                       'url': post_url('en', p['slug']), 'legacy': True})
+                       'url': post_url('en', p['slug']), 'legacy': True,
+                       'facts': game_facts({}, p['body'])})
         game_posts['en'].sort(key=lambda p: p['date'], reverse=True)
 
     # 번역 로드: {slug: {lang: {...}}}
@@ -1074,7 +1292,7 @@ def main():
                 continue  # 옛 영문 앱 글은 기존 URL(/post/) 유지
             build_post(lang, p['slug'], p['title'], p['desc'], p['category'], p['date'],
                        p['body'], p['sourceName'], p['sourceUrl'], plist, {lang},
-                       section='game')
+                       section='game', facts=p.get('facts'))
             game_total += 1
         build_game_index(lang, plist, set(game_langs))
 

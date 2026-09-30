@@ -9,13 +9,21 @@ import subprocess, sys, os
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-def run(script):
+def run(script, args=None, soft=False):
+    """soft=True 면 실패해도 파이프라인을 중단하지 않는다 (SEO 제출 등 부가 단계)."""
     print(f'\n===== {script} =====')
-    r = subprocess.run([sys.executable, os.path.join(BASE, 'scripts', script)],
-                       cwd=BASE)
+    cmd = [sys.executable, os.path.join(BASE, 'scripts', script)]
+    if args:
+        cmd += args
+    r = subprocess.run(cmd, cwd=BASE)
     if r.returncode != 0:
-        print(f'!! {script} 실패 (exit {r.returncode})')
+        msg = f'!! {script} 실패 (exit {r.returncode})'
+        if soft:
+            print(msg + ' → 계속 진행')
+            return
+        print(msg)
         sys.exit(1)
+
 
 def main():
     # 1. 크롤링
@@ -26,10 +34,14 @@ def main():
     run('translate.py')
     # 4. 글자수 보정
     run('fix_length.py')
-    # 5. HTML 빌드
+    # 5. 앱·게임 레이더 — 모든 언어에 하루 1건씩 (언어별 네이티브 수집, 번역 안 함)
+    run('app_radar.py')
+    # 6. HTML 빌드 (레이더 글까지 포함해야 하므로 레이더 다음에 둔다)
     run('build.py')
+    # 7. 새 URL 색인 요청 (실패해도 배포에는 지장 없음)
+    run('submit_index.py', soft=True)
 
-    # 6. 커밋 (변경사항 있을 때만)
+    # 8. 커밋 (변경사항 있을 때만)
     subprocess.run(['git', 'add', '-A'], cwd=BASE)
     diff = subprocess.run(['git', 'diff', '--cached', '--quiet'], cwd=BASE)
     if diff.returncode != 0:
