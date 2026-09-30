@@ -134,5 +134,13 @@
   "https://www.ecb.europa.eu//press/key/date/2026/html/ecb.sp260930~d495288355.en.html": {
     "slug": "ecb-03ee9f9a0a",
     "at": "2026-09-30T10:49:06.918720Z"
+  },
+  "https://www.cbo.gov/publication/62821": {
+    "slug": "cbo-cc7ec973e5",
+    "at": "2026-09-30T12:36:21.745579Z"
+  },
+  "https://www.cbo.gov/publication/62822": {
+    "slug": "cbo-60ebbed703",
+    "at": "2026-09-30T12:36:22.096944Z"
   }
 }
