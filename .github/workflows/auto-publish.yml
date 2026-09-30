@@ -68,7 +68,8 @@ jobs:
             "deepseek": {
               "api_key": ds,
               "base_url": "https://api.deepseek.com",
-              "model": "deepseek-v4-flash"
+              # ⚠️ flash 전용. 'deepseek-v4-flash' 는 없는 모델(404).
+              "model": "deepseek-flash"
             },
             "languages": {
               "zh": "Chinese (Mandarin)", "hi": "Hindi", "es": "Spanish",

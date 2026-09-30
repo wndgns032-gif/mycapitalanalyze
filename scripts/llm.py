@@ -38,8 +38,12 @@ PURPOSE_MODEL = {
 }
 
 # 제공자별 flash 모델 기본값 (config에 flash 모델이 없을 때 사용)
+# ⚠️ 로이 지시(2026-09-30): DeepSeek 은 반드시 flash 로만 호출한다.
+#    실측(api.deepseek.com/models, 2026-09-30) 결과 DeepSeek 가 제공하는 모델은
+#    'deepseek-flash'(DeepSeek-V4.1-Flash) 와 'deepseek-v4-pro' 두 개뿐이다.
+#    'deepseek-v4-flash' 는 존재하지 않는 이름이라 404 가 난다. 절대 쓰지 말 것.
 DEFAULT_FLASH = {
-    'deepseek': 'deepseek-v4-flash',
+    'deepseek': 'deepseek-flash',
     'glm': 'glm-5.3-flash',
 }
 
@@ -78,6 +82,15 @@ def chain(purpose='write'):
             continue
         out.append((name, sec['base_url'].rstrip('/'), sec['api_key'].strip(), model))
     return out
+
+
+# 하드 가드: 어떤 경로로도 flash 가 아닌 모델이 호출되면 즉시 중단.
+# (config 오타로 pro/추론 모델이 나가 비용이 폭주하는 것을 원천 차단)
+for _p in PURPOSE_ORDER:
+    for _row in chain(_p):
+        if not _is_flash(_row[3]):
+            raise SystemExit('[llm] flash 전용 정책 위반: purpose=%s provider=%s model=%s'
+                             % (_p, _row[0], _row[3]))
 
 
 def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,

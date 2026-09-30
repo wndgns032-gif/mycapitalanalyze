@@ -1,41 +1,45 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-App Radar — 신규/출시예정 앱·게임 자동 발행기 (mycapitalanalyze.com)
+App Radar v2 — 언어권별 스토어에서 신작/출시예정 앱·게임 자동 발행
 
-Apple App Store 공개 피드에서 신규 앱·게임과 사전예약(출시 예정) 앱을 수집해
-영문 포스트를 content/posts/ 에 직접 생성한다. 이후 기존 파이프라인이 그대로 처리한다.
+로이 지시(2026-09-30) 반영:
+  * **각 언어권 스토어에서 직접 수집한다.** 영어권 글을 번역해 다른 언어로 올리지 않는다.
+    → 한국 스토어 신작은 한국어로, 일본 스토어 신작은 일본어로 쓴다. (번역 단계 없음)
+  * Apple App Store(스토어프론트 cc) + 구글플레이(hl/gl) 를 언어권별로 함께 훑는다.
+  * 결과는 content/game/{lang}/ 에 저장 → build.py 가 /game/, /{lang}/game/ 로 빌드한다.
 
-    python scripts/crawler.py 를 쓰지 않는 이유:
-    App Radar 는 원문 기사 재가공이 아니라 "앱 소개"라 프롬프트·구조가 다르다.
-    rewrite.py 를 거치지 않고 여기서 완성본 md 를 만들면 rewrite.py 수정이 불필요하다.
+데이터 소스 (전부 무료 · 키 불필요):
+  Apple  https://itunes.apple.com/{cc}/rss/newapplications/limit=100/json
+         https://itunes.apple.com/{cc}/rss/newapplications/limit=100/genre=6014/json   (게임)
+         https://itunes.apple.com/{cc}/rss/newfreeapplications/limit=100/json
+         https://itunes.apple.com/lookup?id={id}&country={cc}              상세·설명·평점
+         https://itunes.apple.com/{cc}/rss/customerreviews/page=1/id={id}/json
+  Play   https://play.google.com/store/apps/collection/topselling_new_free?hl={hl}&gl={gl}
+         https://play.google.com/store/apps/collection/topselling_new_free_game?hl=..&gl=..
+         https://play.google.com/store/apps/details?id={pkg}&hl={hl}&gl={gl}  상세·설명·평점
 
-데이터 소스 (전부 무료 · 키 불필요 · 실측 200 OK):
-    https://itunes.apple.com/{cc}/rss/newapplications/limit=100/json          신규 앱 전체
-    https://itunes.apple.com/{cc}/rss/newapplications/limit=100/genre=6014/json   신규 게임
-    https://itunes.apple.com/lookup?id={id}&country={cc}                      상세 설명·평점·출시일
-    https://itunes.apple.com/{cc}/rss/customerreviews/page=1/id={id}/json     리뷰 발췌 (best effort)
-
-주의: 구글플레이(play.google.com)는 중국 IP에서 차단된다. `--play` 를 주면 시도만 하고
-실패하면 조용히 건너뛴다. GitHub Actions(해외 네트워크)에서 돌리면 플레이스토어도 수집된다.
+선정 규칙: 출시예정(사전예약/사전등록) 우선 → 게임 → 앱. 하루 3건(기본)을
+서로 다른 언어권에서 1건씩 뽑아 모든 언어가 고르게 채워지게 한다(로테이션 커서).
 
 LLM 호출은 scripts/llm.py 에 위임 (Flash 전용 + 제공자 자동 폴백). 본 스크립트에 키 없음.
 
 사용법:
-    python scripts/app_radar.py                    # 기본 3개 수집·발행
-    python scripts/app_radar.py --limit 1          # 1개만
-    python scripts/app_radar.py --dry              # 후보/자료 확인만 (LLM 호출·파일 쓰기 없음)
-    python scripts/app_radar.py --posts-dir DIR --assets-dir DIR   # 출력 경로 지정 (테스트용)
+    python scripts/app_radar.py                     # 기본 3건 (서로 다른 언어 3개)
+    python scripts/app_radar.py --limit 6           # 6건
+    python scripts/app_radar.py --locale ko         # 한국어권만
+    python scripts/app_radar.py --dry               # 후보/자료만 확인 (LLM 호출·쓰기 없음)
+    python scripts/app_radar.py --base DIR          # 출력 기준 디렉터리 (테스트용)
 """
 import argparse
 import datetime
 import hashlib
+import html as htmlmod
 import json
 import os
 import re
 import sys
 import time
-import urllib.error
 import urllib.request
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -44,13 +48,40 @@ BASE = os.path.dirname(_HERE)
 UA = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '
       '(KHTML, like Gecko) Chrome/122.0 Safari/537.36')
 
-STOREFRONT = os.environ.get('APPSTORE_CC', 'us')
-
-FEEDS = [
-    'https://itunes.apple.com/%s/rss/newapplications/limit=100/json' % STOREFRONT,
-    'https://itunes.apple.com/%s/rss/newapplications/limit=100/genre=6014/json' % STOREFRONT,
-    'https://itunes.apple.com/%s/rss/newfreeapplications/limit=100/json' % STOREFRONT,
+# (언어코드, Apple 스토어프론트, Play hl, Play gl, 프롬프트용 언어명)
+LOCALES = [
+    ('en', 'us', 'en',    'us', 'English'),
+    ('ko', 'kr', 'ko',    'kr', 'Korean'),
+    ('ja', 'jp', 'ja',    'jp', 'Japanese'),
+    ('zh', 'cn', 'zh-CN', 'tw', 'Simplified Chinese'),
+    ('es', 'es', 'es',    'es', 'Spanish'),
+    ('de', 'de', 'de',    'de', 'German'),
+    ('fr', 'fr', 'fr',    'fr', 'French'),
+    ('pt', 'br', 'pt-BR', 'br', 'Portuguese (Brazil)'),
+    ('id', 'id', 'id',    'id', 'Indonesian'),
+    ('ru', 'ru', 'ru',    'ru', 'Russian'),
+    ('hi', 'in', 'hi',    'in', 'Hindi'),
+    ('ar', 'sa', 'ar',    'sa', 'Arabic'),
+    ('bn', 'bd', 'bn',    'bd', 'Bengali'),
 ]
+LOCALE_BY_CODE = {c[0]: c for c in LOCALES}
+# 비라틴 표기 언어 — 같은 정보량이 더 적은 글자로 표현된다 (글자수 기준 완화 대상)
+NON_LATIN = {'ko', 'ja', 'zh', 'ar', 'hi', 'bn', 'ru'}
+
+# 구글플레이 사전등록(출시예정) 표기 — 언어권별 버튼/배지 문구
+PREORDER_MARKERS = [
+    '사전 등록', '사전등록', '출시 예정', '출시예정',
+    '事前登録', '配信予定', '予約注文', 'リリース予定',
+    'Pre-register', 'Pre-registration', 'Coming soon', 'Early access',
+    '預先註冊', '預註冊', '即將推出', '即将推出', '即将上市',
+    'Vorregistrierung', 'pré-inscription', 'Pré-inscription',
+    'предрегистрация', 'Предзаказ', 'Pra-pendaftaran', 'Segera hadir',
+]
+
+PKG_BLOCK_RE = re.compile(r'\[((?:"[A-Za-z][A-Za-z0-9_]*(?:\.[A-Za-z0-9_]+)+"\s*,?\s*){2,})\]')
+PKG_TOKEN_RE = re.compile(r'^[A-Za-z][A-Za-z0-9_]*(?:\.[A-Za-z0-9_]+)+$')
+BAD_SEGMENTS = ('google', 'gstatic', 'googleusercontent', 'android', 'w3', 'schema',
+                'youtube', 'gvt1', 'ggpht', 'blogspot', 'github', 'example')
 
 
 # ---------------------------------------------------------------- http utils
@@ -62,99 +93,139 @@ def get_json(url, timeout=25):
         return json.loads(r.read().decode('utf-8', 'replace'))
 
 
+def get_text(url, timeout=30):
+    req = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept-Language': '*'})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return r.read().decode('utf-8', 'replace')
+
+
 def get_bytes(url, timeout=30):
     req = urllib.request.Request(url, headers={'User-Agent': UA})
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return r.read()
 
 
-# ---------------------------------------------------------------- 디스크 상태
-
-def load_seen(path):
+def unescape(s):
     try:
-        return set(json.load(open(path, encoding='utf-8')))
+        return htmlmod.unescape(s or '')
     except Exception:
-        return set()
+        return s or ''
 
 
-def save_seen(path, ids):
+# ---------------------------------------------------------------- 상태 파일
+
+def load_json(path, default):
+    try:
+        return json.load(open(path, encoding='utf-8'))
+    except Exception:
+        return default
+
+
+def save_json(path, obj):
     try:
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        json.dump(sorted(ids)[-2000:], open(path, 'w', encoding='utf-8'))
+        json.dump(obj, open(path, 'w', encoding='utf-8'), ensure_ascii=False)
     except Exception:
         pass
 
 
-def published_urls(posts_dir):
-    """이미 발행된 포스트의 sourceUrl 목록 (중복 방지 1차 가드)."""
-    out = set()
-    if not os.path.isdir(posts_dir):
-        return out
-    for fn in os.listdir(posts_dir):
-        if not fn.endswith('.md'):
+def load_seen(path):
+    v = load_json(path, [])
+    return set(v) if isinstance(v, list) else set()
+
+
+def save_seen(path, ids):
+    save_json(path, sorted(ids)[-3000:])
+
+
+def published_meta(dirs):
+    """이미 발행된 글의 (sourceUrl 집합, slug 집합, 스토어 식별자 집합).
+
+    식별자(Apple app id / Play 패키지명)까지 뽑는 이유:
+    같은 앱이 스토어프론트만 다르게(us/kr/jp…) 다시 수집되는 것을 막기 위함.
+    """
+    urls, slugs, ids = set(), set(), set()
+    for d in dirs:
+        if not os.path.isdir(d):
             continue
-        try:
-            head = open(os.path.join(posts_dir, fn), encoding='utf-8').read(4000)
-        except Exception:
-            continue
-        m = re.search(r'^sourceUrl:\s*"?([^"\n]+)"?\s*$', head, re.M)
-        if m:
-            out.add(m.group(1).strip())
-    return out
+        for root, _dirs, files in os.walk(d):
+            for fn in files:
+                if not fn.endswith('.md'):
+                    continue
+                slugs.add(fn[:-3])
+                try:
+                    head = open(os.path.join(root, fn), encoding='utf-8').read(4000)
+                except Exception:
+                    continue
+                m = re.search(r'^sourceUrl:\s*"?([^"\n]+)"?\s*$', head, re.M)
+                if not m:
+                    continue
+                u = m.group(1).strip()
+                urls.add(u)
+                a = re.search(r'/id(\d+)', u)
+                if a:
+                    ids.add('apple:%s' % a.group(1))
+                p = re.search(r'[?&]id=([A-Za-z0-9_.\-]+)', u)
+                if p:
+                    ids.add('play:%s' % p.group(1))
+    return urls, slugs, ids
 
 
-def existing_slugs(posts_dir):
-    out = set()
-    if not os.path.isdir(posts_dir):
-        return out
-    for fn in os.listdir(posts_dir):
-        if fn.endswith('.md'):
-            out.add(fn[:-3])
-    return out
+# ---------------------------------------------------------------- Apple
 
+def apple_feeds(cc):
+    return [
+        'https://itunes.apple.com/%s/rss/newapplications/limit=100/json' % cc,
+        'https://itunes.apple.com/%s/rss/newapplications/limit=100/genre=6014/json' % cc,
+        'https://itunes.apple.com/%s/rss/newfreeapplications/limit=100/json' % cc,
+    ]
 
-# ---------------------------------------------------------------- 피드 파싱
 
 def parse_iso(s):
+    """ISO 문자열 → tz 없는(naive) UTC datetime. 비교 시 offset 충돌을 없애기 위함."""
     if not s:
         return None
     try:
-        return datetime.datetime.fromisoformat(str(s).replace('Z', '+00:00'))
+        dt = datetime.datetime.fromisoformat(str(s).replace('Z', '+00:00'))
     except Exception:
         return None
+    if dt.tzinfo is not None:
+        dt = (dt - dt.utcoffset()).replace(tzinfo=None)
+    return dt
 
 
-def parse_feed(data):
-    """RSS JSON -> [{app_id, name, artist, category, released, url, icon}]"""
+def parse_apple_feed(data, cc):
     out = []
     entries = (data or {}).get('feed', {}).get('entry') or []
     if isinstance(entries, dict):
         entries = [entries]
     for e in entries:
         try:
-            app_id = e['id']['attributes']['im:id']
+            app_id = str(e['id']['attributes']['im:id'])
             name = e['im:name']['label']
         except Exception:
             continue
         imgs = e.get('im:image') or []
-        icon = imgs[-1]['label'] if imgs else ''
         out.append({
-            'app_id': str(app_id),
+            'store': 'apple',
+            # key 에 스토어프론트를 넣지 않는다: 같은 앱은 언어권이 달라도 1번만 발행한다.
+            # (한국 스토어에 뜬 앱을 영어로 한 번 썼으면 한국어로 또 쓰지 않는다)
+            'key': 'apple:%s' % app_id,
+            'ident': app_id,
             'name': name,
             'artist': (e.get('im:artist') or {}).get('label', ''),
             'category': ((e.get('category') or {}).get('attributes') or {}).get('label', ''),
             'released': parse_iso((e.get('im:releaseDate') or {}).get('label')),
             'url': ((e.get('link') or {}).get('attributes') or {}).get('href', '')
-                   or 'https://apps.apple.com/us/app/id%s' % app_id,
-            'icon': icon,
+                   or 'https://apps.apple.com/%s/app/id%s' % (cc, app_id),
+            'icon': imgs[-1]['label'] if imgs else '',
         })
     return out
 
 
-def lookup(app_id):
-    """상세 정보 (설명·평점·출시일·가격). 실패 시 빈 dict."""
+def apple_lookup(app_id, cc):
     try:
-        d = get_json('https://itunes.apple.com/lookup?id=%s&country=%s' % (app_id, STOREFRONT))
+        d = get_json('https://itunes.apple.com/lookup?id=%s&country=%s' % (app_id, cc))
         res = (d or {}).get('results') or []
         return res[0] if res else {}
     except Exception as ex:
@@ -162,25 +233,22 @@ def lookup(app_id):
         return {}
 
 
-def reviews(app_id, limit=3):
-    """고객 리뷰 발췌 (best effort — 없으면 빈 리스트)."""
+def apple_reviews(app_id, cc, limit=3):
     try:
         d = get_json('https://itunes.apple.com/%s/rss/customerreviews/page=1/id=%s/'
-                     'sortby=mosthelpful/json' % (STOREFRONT, app_id))
+                     'sortby=mosthelpful/json' % (cc, app_id))
         entries = (d or {}).get('feed', {}).get('entry') or []
         if isinstance(entries, dict):
             entries = [entries]
         out = []
         for e in entries[:limit + 1]:
             try:
-                title = e['title']['label']
-                body = e['content']['label']
-                rating = ((e.get('im:rating') or {}).get('label'))
+                title, body = e['title']['label'], e['content']['label']
             except Exception:
                 continue
-            # 첫 entry는 앱 자체 정보인 경우가 있어 제목/본문이 같으면 제외
             if title and body and title != body:
-                out.append({'title': title, 'body': body[:400], 'rating': rating})
+                out.append({'title': title, 'body': body[:400],
+                            'rating': (e.get('im:rating') or {}).get('label')})
             if len(out) >= limit:
                 break
         return out
@@ -188,173 +256,285 @@ def reviews(app_id, limit=3):
         return []
 
 
-def fetch_play_candidates(limit=20):
-    """구글플레이 신규/사전예약 후보. 중국 IP에서는 실패 → 빈 리스트."""
-    try:
-        html = get_bytes('https://play.google.com/store/apps?hl=en&gl=US').decode('utf-8', 'replace')
-        ids = re.findall(r'/store/apps/details\?id=([A-Za-z0-9_.-]+)', html)
-        seen, out = set(), []
-        for pkg in ids:
-            if pkg in seen:
+# ---------------------------------------------------------------- 구글플레이
+
+def play_collections(hl, gl):
+    return [
+        ('https://play.google.com/store/apps/collection/topselling_new_free?hl=%s&gl=%s'
+         % (hl, gl), 'App'),
+        ('https://play.google.com/store/apps/collection/topselling_new_free_game?hl=%s&gl=%s'
+         % (hl, gl), 'Game'),
+    ]
+
+
+def play_pkg_ids(html_text, limit=24):
+    """클러스터 페이지에서 패키지 ID 목록을 뽑는다 (JS 렌더 전 JSON 블록)."""
+    out, seen = [], set()
+    for block in PKG_BLOCK_RE.findall(html_text or ''):
+        for tok in re.findall(r'"([^"]+)"', block):
+            tok = tok.strip()
+            if not PKG_TOKEN_RE.match(tok) or tok.count('.') < 2:
                 continue
-            seen.add(pkg)
-            out.append({'play_id': pkg})
+            if len(tok) > 64 or len(tok) < 6:
+                continue
+            low = tok.lower()
+            if any(b in low for b in BAD_SEGMENTS):
+                continue
+            if low.endswith(('.png', '.jpg', '.jpeg', '.js', '.css', '.svg', '.html',
+                             '.json', '.webp', '.gif')):
+                continue
+            if tok in seen:
+                continue
+            seen.add(tok)
+            out.append(tok)
             if len(out) >= limit:
-                break
-        return out
-    except Exception:
-        return []
+                return out
+    return out
 
 
-# ---------------------------------------------------------------- 후보 선정
+def play_details(pkg, hl, gl):
+    """상세 페이지 파싱: 이름·개발자·설명·평점·가격·이미지·사전등록 여부."""
+    url = 'https://play.google.com/store/apps/details?id=%s&hl=%s&gl=%s' % (pkg, hl, gl)
+    try:
+        page = get_text(url)
+    except Exception as ex:
+        print('   play 상세 실패(%s): %s' % (pkg, str(ex)[:60]))
+        return {}
+    if pkg not in page:
+        return {}
 
-def collect_candidates(use_play=False):
-    pool = {}
-    for url in FEEDS:
+    def meta(prop):
+        m = re.search(r'property="og:%s"\s+content="([^"]*)"' % prop, page)
+        return (m.group(1) if m else '').strip()
+
+    name = meta('title') or ''
+    name = re.sub(r'\s*-\s*(Apps on Google Play|Google Play\s*(앱|アプリ|应用|응용 프로그램)).*$',
+                  '', name).strip()
+
+    img = meta('image') or ''
+    long_desc = ''
+    i = page.find('itemprop="description"')
+    if i > 0:
+        gt = page.find('>', i)
+        end = page.find('</div>', gt)
+        seg = page[gt + 1:end] if end > gt else page[gt + 1:gt + 8000]
+        long_desc = re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', ' ', seg))).strip()
+
+    short = ''
+    m = re.search(r'"description":"((?:[^"\\]|\\.)*)"', page)
+    if m:
+        short = unescape(m.group(1))
+
+    dev = ''
+    m = re.search(r'"author":\{"@type":"[^"]+","name":"((?:[^"\\]|\\.)*)"', page)
+    if m:
+        dev = unescape(m.group(1))
+
+    cat = ''
+    m = re.search(r'"applicationCategory":"([^"]+)"', page)
+    if m:
+        cat = m.group(1)
+
+    rating = rating_cnt = None
+    m = re.search(r'"ratingValue":"?([\d.]+)"?', page)
+    if m:
+        rating = float(m.group(1))
+    m = re.search(r'"ratingCount":"?(\d+)"?', page)
+    if m:
+        rating_cnt = int(m.group(1))
+
+    price = ''
+    m = re.search(r'"offers":\[\{"@type":"Offer","price":"([^"]*)"', page)
+    if m:
+        price = m.group(1)
+
+    avail = ''
+    m = re.search(r'"availability":"([^"]+)"', page)
+    if m:
+        avail = m.group(1)
+    upcoming = ('PreOrder' in avail) or any(k in page for k in PREORDER_MARKERS)
+
+    updated = ''
+    m = re.search(r'(\d{4})[.\-년]\s*(\d{1,2})[.\-월]\s*(\d{1,2})', page)
+    if m:
+        updated = '%s-%02d-%02d' % (m.group(1), int(m.group(2)), int(m.group(3)))
+
+    return {
+        'store': 'play', 'pkg': pkg, 'name': name or pkg, 'developer': dev,
+        'description': long_desc or short, 'category': cat or 'App',
+        'rating': rating, 'rating_count': rating_cnt, 'price': price,
+        'free': price in ('0', '0.0', '0.00', ''), 'upcoming': upcoming,
+        'image': img, 'updated': updated,
+        'url': 'https://play.google.com/store/apps/details?id=%s&hl=%s&gl=%s' % (pkg, hl, gl),
+    }
+
+
+# ---------------------------------------------------------------- 후보 수집
+
+def collect(cc, hl, gl, use_play=True):
+    """언어권 1개의 후보 풀(Apple + Play)."""
+    pool = []
+    for url in apple_feeds(cc):
         try:
-            for app in parse_feed(get_json(url)):
-                pool.setdefault(app['app_id'], app)
+            pool.extend(parse_apple_feed(get_json(url), cc))
         except Exception as ex:
-            print('  피드 실패: %s (%s)' % (url.split('/')[-1], str(ex)[:60]))
+            print('   [apple %s] 피드 실패: %s' % (cc, str(ex)[:50]))
     if use_play:
-        got = fetch_play_candidates()
-        if got:
-            print('  구글플레이 후보 %d개 (상세 조회는 플레이 정책상 생략)' % len(got))
-    return list(pool.values())
+        for url, kind in play_collections(hl, gl):
+            try:
+                ids = play_pkg_ids(get_text(url))
+            except Exception as ex:
+                print('   [play %s] 수집 실패: %s' % (gl, str(ex)[:50]))
+                continue
+            for pkg in ids:
+                pool.append({'store': 'play', 'key': 'play:%s' % pkg, 'ident': pkg,
+                             'name': pkg, 'category': kind, 'released': None,
+                             'url': 'https://play.google.com/store/apps/details?id=%s&hl=%s&gl=%s'
+                                    % (pkg, hl, gl)})
+    uniq, seen = [], set()
+    for it in pool:
+        if it['key'] in seen:
+            continue
+        seen.add(it['key'])
+        uniq.append(it)
+    return uniq
 
 
-def pick(cands, seen_ids, pub_urls, target, today):
-    """하루치 선정: 출시예정 우선 1건 + 신규 앱/게임 골고루."""
+def pick_one(cands, seen, pub_urls, pub_ids, today, rotate_idx):
+    """출시예정 → 게임 → 앱 순으로 1건. rotate_idx로 소스 순서를 섞는다."""
     fresh = [c for c in cands
-             if c['app_id'] not in seen_ids
-             and c['url'] not in pub_urls
-             and not any(c['url'].split('?')[0].rstrip('/').split('/')[-1].lstrip('id')
-                         and c['url'] in u for u in pub_urls)]
-    # URL 중복은 apps.apple.com/us/app/xxx/idNNN 형태라 pub_urls 비교만으로 충분하지만
-    # id 기반 추가 검사로 안전성을 높인다.
-    fresh = [c for c in fresh
-             if ('/id%s' % c['app_id']) not in ' '.join(pub_urls)
-             and c['app_id'] not in seen_ids]
+             if c['key'] not in seen and c['key'] not in pub_ids and c['url'] not in pub_urls]
+    if not fresh:
+        return None
 
-    upcoming = [c for c in fresh if c['released'] and c['released'].replace(tzinfo=None) > today]
-    released = [c for c in fresh if c not in upcoming]
-    games = [c for c in released if (c['category'] or '').lower().startswith('game')]
-    apps = [c for c in released if c not in games]
+    def is_game(c):
+        return 'game' in (c.get('category') or '').lower()
 
-    # 최신순 정렬
-    for lst in (upcoming, games, apps):
-        lst.sort(key=lambda c: c['released'] or datetime.datetime.min, reverse=True)
+    games = [c for c in fresh if is_game(c)]
+    apps = [c for c in fresh if not is_game(c)]
+    upcoming = [c for c in fresh
+                if c.get('released') and c['released'].replace(tzinfo=None) > today]
 
-    picked, queues = [], [upcoming, games, apps, released]
-    idx = 0
-    while len(picked) < target and idx < 40:
-        q = queues[idx % 3]
+    queues = [upcoming, games, apps]
+    for k in range(3):
+        q = queues[(rotate_idx + k) % 3]
         if q:
-            item = q.pop(0)
-            if item not in picked:
-                picked.append(item)
-        idx += 1
-    if len(picked) < target:
-        for c in released:
-            if c not in picked:
-                picked.append(c)
-            if len(picked) >= target:
-                break
-    return picked[:target]
+            q.sort(key=lambda c: c.get('released') or datetime.datetime.min, reverse=True)
+            return q[0]
+    return fresh[0]
 
 
-# ---------------------------------------------------------------- 원문 자료
+# ---------------------------------------------------------------- 자료/프롬프트
 
 def clip(s, n):
     s = re.sub(r'\s+', ' ', (s or '')).strip()
     return s if len(s) <= n else s[:n] + '...'
 
 
-def material(app, detail, revs, today):
-    rel = app['released']
-    if rel:
-        upcoming = rel.replace(tzinfo=None) > today
-        rel_txt = rel.strftime('%Y-%m-%d')
-    else:
-        upcoming, rel_txt = False, 'unknown'
+def build_material(item, cc, hl, gl, today):
+    """Apple/Play 상세를 LLM용 원문 자료로 변환 → (자료, upcoming, 이미지URL, 표시명)"""
+    if item['store'] == 'apple':
+        detail = apple_lookup(item['ident'], cc)
+        if not detail:
+            return None, False, '', ''
+        revs = apple_reviews(item['ident'], cc)
+        rel = item['released'] or parse_iso(detail.get('releaseDate'))
+        upcoming = bool(rel and rel.replace(tzinfo=None) > today)
+        lines = [
+            'APP NAME: %s' % (detail.get('trackName') or item['name']),
+            'DEVELOPER: %s' % (detail.get('artistName') or item.get('artist', '')),
+            'STORE CATEGORY: %s' % (detail.get('primaryGenreName') or item.get('category', '')),
+            'GENRES: %s' % ', '.join(detail.get('genres') or []),
+            'PRICE: %s' % (detail.get('formattedPrice') or 'not disclosed'),
+            'VERSION: %s' % (detail.get('version') or 'n/a'),
+            'STATUS: %s' % (('UPCOMING / PRE-ORDER (release date: %s)' % rel.strftime('%Y-%m-%d'))
+                            if upcoming else
+                            ('RELEASED (%s)' % rel.strftime('%Y-%m-%d') if rel else 'RELEASED')),
+            'LISTING URL: %s' % (detail.get('trackViewUrl') or item['url']),
+        ]
+        if detail.get('averageUserRating') and detail.get('userRatingCount'):
+            lines.append('RATING: %.1f (%s ratings)' % (float(detail['averageUserRating']),
+                                                        detail['userRatingCount']))
+        lines += ['', 'OFFICIAL DESCRIPTION:',
+                  clip(detail.get('description') or '', 2600) or '(none provided)']
+        if detail.get('releaseNotes'):
+            lines += ['', "WHAT'S NEW: %s" % clip(detail['releaseNotes'], 400)]
+        if revs:
+            lines += ['', 'EARLY USER FEEDBACK (quotes from the store listing):']
+            for r in revs:
+                lines.append('- "%s" (%s/5): %s' % (clip(r['title'], 90), r.get('rating') or '?',
+                                                    clip(r['body'], 200)))
+        img = detail.get('artworkUrl512') or detail.get('artworkUrl100') or item.get('icon', '')
+        return '\n'.join(lines), upcoming, img, (detail.get('trackName') or item['name'])
 
+    d = play_details(item['ident'], hl, gl)
+    if not d or not d.get('description'):
+        return None, False, '', ''
+    upcoming = bool(d.get('upcoming'))
+    price_txt = 'Free' if d.get('free') else ('%s (paid)' % (d.get('price') or 'paid'))
     lines = [
-        'APP NAME: %s' % detail.get('trackName') or app['name'],
-        'DEVELOPER: %s' % (detail.get('artistName') or app['artist']),
-        'STORE CATEGORY: %s' % (detail.get('primaryGenreName') or app['category']),
-        'GENRES: %s' % ', '.join(detail.get('genres') or []),
-        'PRICE: %s' % (detail.get('formattedPrice') or 'not disclosed'),
-        'VERSION: %s' % (detail.get('version') or 'n/a'),
-        'STATUS: %s' % ('UPCOMING / PRE-ORDER (release date: %s)' % rel_txt if upcoming
-                        else 'RELEASED (%s)' % rel_txt),
-        'LISTING URL: %s' % (detail.get('trackViewUrl') or app['url']),
+        'APP NAME: %s' % d.get('name'),
+        'DEVELOPER: %s' % (d.get('developer') or 'not disclosed'),
+        'STORE CATEGORY: %s' % d.get('category'),
+        'PRICE: %s' % price_txt,
+        'LAST UPDATE: %s' % (d.get('updated') or 'n/a'),
+        'STATUS: %s' % ('UPCOMING / PRE-REGISTRATION (not released yet)' if upcoming
+                        else 'RELEASED (available now)'),
+        'LISTING URL: %s' % d.get('url'),
     ]
-    rating = detail.get('averageUserRating')
-    cnt = detail.get('userRatingCount')
-    if rating and cnt:
-        lines.append('RATING: %.1f (%s ratings)' % (float(rating), cnt))
-    lines.append('')
-    lines.append('OFFICIAL DESCRIPTION:')
-    lines.append(clip(detail.get('description') or '', 2500) or '(none provided)')
-    notes = detail.get('releaseNotes')
-    if notes:
-        lines.append('')
-        lines.append("WHAT'S NEW: %s" % clip(notes, 500))
-    if revs:
-        lines.append('')
-        lines.append('EARLY USER FEEDBACK (may be sparse; quotes from the store listing):')
-        for r in revs:
-            lines.append('- "%s" (%s/5): %s' % (clip(r['title'], 90), r.get('rating') or '?',
-                                                clip(r['body'], 220)))
-    return '\n'.join(lines), upcoming
+    if d.get('rating') and d.get('rating_count'):
+        lines.append('RATING: %.1f (%s ratings)' % (d['rating'], d['rating_count']))
+    lines += ['', 'OFFICIAL DESCRIPTION:', clip(d.get('description') or '', 2600)]
+    return '\n'.join(lines), upcoming, d.get('image', ''), d.get('name')
 
-
-# ---------------------------------------------------------------- LLM 프롬프트
 
 SYSTEM_APP = (
     "You write practical, search-friendly app and game introductions for an international "
-    "tech audience. Your English is plain, concrete and free of hype. You never invent "
-    "features, prices or dates: everything you state must come from the source material."
+    "audience. Your writing is plain, concrete and free of hype. You never invent features, "
+    "prices or dates: every fact must come from the source material."
 )
 
 
-def user_prompt(app, mat, upcoming, cmin, cmax):
+def user_prompt(lang_name, mat, upcoming, app_name, cmin, cmax):
     if upcoming:
-        structure = (
-            '"## What We Know So Far", "## Expected Release Date", "## Key Features", '
-            '"## Who It Is For", "## Pricing", "## FAQ"'
-        )
-        angle = ("The app is NOT released yet. Frame it as an upcoming launch and be explicit "
+        structure = ('"## What We Know So Far", "## Expected Release Date", "## Key Features", '
+                     '"## Who It Is For", "## Pricing", "## FAQ"')
+        angle = ("The title is NOT released yet. Frame it as an upcoming launch and say clearly "
                  "that details may change before release.")
     else:
-        structure = (
-            '"## What {APP} Is", "## Key Features", "## Who It Is For", '
-            '"## Pricing and Availability", "## Early Impressions", "## FAQ"'
-        ).replace('{APP}', app['name'])
+        structure = ('"## What {APP} Is", "## Key Features", "## Who It Is For", '
+                     '"## Pricing and Availability", "## Early Impressions", "## FAQ"')
         angle = ("Introduce it as a freshly released title. If there is little user feedback yet, "
                  "say so plainly instead of pretending there is consensus.")
-    structure = structure.replace('{APP}', app['name'])
+    structure = structure.replace('{APP}', app_name)
     return (
-        "Write one English article about the app below.\n\n"
+        "Write ONE article in {LANG} about the app/game below.\n"
+        "The source material is already in {LANG} (it comes straight from that storefront).\n"
+        "Do NOT translate anything and do NOT switch language: title, description and body must "
+        "all be natural {LANG}.\n\n"
         "SOURCE MATERIAL (facts come only from here):\n"
-        "----------------\n%s\n----------------\n\n"
+        "----------------\n{material}\n----------------\n\n"
         "RULES\n"
-        "1. Output ONLY JSON: {\"title\":..., \"description\":..., \"category\":..., \"body\":...}\n"
-        "2. title: include the exact app name; add intent words (Release Date / Features / Price / "
-        "Review) only if they fit naturally; max 70 characters.\n"
-        "3. description: one sentence, 140-160 characters, useful in a search result.\n"
+        "1. Output ONLY JSON: {{\"title\":..., \"description\":..., \"category\":..., \"body\":...}}\n"
+        "2. title: keep the exact app name; add intent words (release date / features / price / "
+        "review) only if they fit naturally in {LANG}; max 70 characters.\n"
+        "3. description: one sentence, 140-160 characters.\n"
         "4. category: always \"Apps & Games\".\n"
-        "5. body: Markdown, %d-%d characters. Start with 1-2 short paragraphs (no heading above them).\n"
-        "6. Use exactly these \"##\" sections, in this order: %s.\n"
-        "7. The FAQ must hold exactly 3 questions as \"###\" headings, each answered in 1-3 sentences.\n"
+        "5. body: Markdown, {cmin}-{cmax} characters. Start with 1-2 short paragraphs (no heading "
+        "above them).\n"
+        "6. Use exactly these \"##\" sections, in this order — but write the heading text in "
+        "{LANG} (translate the heading wording, keep the order and the number of sections): "
+        "{structure}.\n"
+        "7. The FAQ must hold exactly 3 questions as \"###\" headings, each answered in 1-3 "
+        "sentences.\n"
         "8. Never use \"#\" H1 and never insert images or markdown image syntax.\n"
-        "9. Put the app name in the first sentence. Include the official store listing URL once as a "
-        "markdown link labelled \"App Store\".\n"
-        "10. Do NOT claim you tested or played it. Do not invent phone specs, download counts or\n"
-        "    sales figures. If the material lacks something, write one honest sentence about the gap.\n"
-        "11. %s\n"
-        "12. No em-dash lists, no bullet-point walls, no marketing superlatives like \"revolutionary\".\n"
-    ) % (mat, cmin, cmax, structure, angle)
+        "9. Put the app name in the first sentence. Link the official store listing once.\n"
+        "10. Do NOT claim you tested or played it. Do not invent download counts or sales "
+        "figures. If the material lacks something, write one honest sentence about the gap.\n"
+        "11. {angle}\n"
+        "12. No marketing superlatives like \"revolutionary\". No bullet-point walls.\n"
+    ).format(LANG=lang_name, material=mat, cmin=cmin, cmax=cmax,
+             structure=structure, angle=angle)
 
 
 def extract_json(text):
@@ -381,43 +561,60 @@ def extract_json(text):
     return {}
 
 
-def slugify(title, taken, fallback_hash):
-    s = title.lower()
-    s = re.sub(r"[^a-z0-9]+", '-', s).strip('-')
-    words = [w for w in s.split('-') if w][:8]
-    slug = '-'.join(words) or 'app'
+def slugify(title, ident, taken):
+    """라틴 문자가 있으면 그대로, 전부 비라틴(한/중/일/아랍 등)이면 식별자 기반 slug."""
+    s = re.sub(r'[^a-z0-9]+', '-', title.lower()).strip('-')
+    words = [w for w in s.split('-') if len(w) > 1][:8]
+    if len(words) >= 2:
+        slug = '-'.join(words)
+    else:
+        slug = re.sub(r'[^a-z0-9]+', '-', ident.lower()).strip('-') or 'app'
     if len(slug) < 6:
         slug = 'app-' + slug
     if slug not in taken:
         return slug
-    return slug + '-' + fallback_hash
+    return slug + '-' + hashlib.sha1(ident.encode('utf-8')).hexdigest()[:6]
+
+
+def save_image(url, assets_dir, ident):
+    if not url:
+        return ''
+    ext = '.jpg'
+    m = re.search(r'\.(png|jpe?g|webp)(?:\?|$)', url.lower())
+    if m:
+        g = m.group(1)
+        ext = '.' + ('jpg' if g.startswith('jp') else g)
+    fn = 'app-%s%s' % (hashlib.sha1(ident.encode('utf-8')).hexdigest()[:10], ext)
+    dest = os.path.join(assets_dir, fn)
+    try:
+        if not os.path.exists(dest):
+            os.makedirs(assets_dir, exist_ok=True)
+            open(dest, 'wb').write(get_bytes(url))
+        return '/assets/img/apps/%s' % fn
+    except Exception as ex:
+        print('   이미지 저장 실패: %s' % str(ex)[:60])
+        return ''
 
 
 # ---------------------------------------------------------------- 메인
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--limit', type=int, default=0, help='생성할 글 수 (기본 config 또는 3)')
-    ap.add_argument('--dry', action='store_true', help='LLM 호출·파일 쓰기 없이 후보와 자료만 확인')
-    ap.add_argument('--play', action='store_true', help='구글플레이 소스도 시도(해외 네트워크 필요)')
-    ap.add_argument('--posts-dir', default=None)
-    ap.add_argument('--assets-dir', default=None)
-    ap.add_argument('--seen-file', default=None)
+    ap.add_argument('--limit', type=int, default=0, help='생성할 글 수 (기본 3)')
+    ap.add_argument('--locale', default='', help='특정 언어만 (예: ko)')
+    ap.add_argument('--dry', action='store_true')
+    ap.add_argument('--no-play', action='store_true', help='구글플레이 소스 제외')
     ap.add_argument('--base', default=BASE)
     args = ap.parse_args()
 
     base = os.path.abspath(args.base)
-    posts_dir = args.posts_dir or os.path.join(base, 'content', 'posts')
-    assets_dir = args.assets_dir or os.path.join(base, 'assets', 'img', 'apps')
-    seen_file = args.seen_file or os.path.join(base, 'content', 'app_radar_seen.json')
+    game_dir = os.path.join(base, 'content', 'game')
+    assets_dir = os.path.join(base, 'assets', 'img', 'apps')
+    seen_file = os.path.join(base, 'content', 'app_radar_seen.json')
+    cursor_file = os.path.join(base, 'content', 'app_radar_rotate.json')
 
-    cfg = {}
-    try:
-        cfg = json.load(open(os.path.join(base, 'config.json'), encoding='utf-8'))
-    except Exception:
-        pass
+    cfg = load_json(os.path.join(base, 'config.json'), {})
     target = args.limit or int(cfg.get('apps_per_day', 3))
-    # 길이 기준: config.json 의 app_char_min/max 가 우선, 없으면 사이트 표준(char_min/max)을 따른다.
     cmin = int(cfg.get('app_char_min', cfg.get('char_min', 3000)))
     cmax = int(cfg.get('app_char_max', cfg.get('char_max', 5000)))
 
@@ -425,96 +622,117 @@ def main():
     try:
         import llm  # noqa: E402
     except Exception:
-        print('scripts/llm.py 를 불러올 수 없습니다. (python scripts/app_radar.py 로 실행하세요)')
+        print('scripts/llm.py 를 불러올 수 없습니다.')
         return 1
 
     today = datetime.datetime.now(datetime.timezone.utc).replace(
         hour=0, minute=0, second=0, microsecond=0, tzinfo=None)
+
+    if args.locale:
+        if args.locale not in LOCALE_BY_CODE:
+            print('알 수 없는 locale: %s' % args.locale)
+            return 1
+        order = [LOCALE_BY_CODE[args.locale]]
+    else:
+        cursor = int(load_json(cursor_file, {'cursor': 0}).get('cursor', 0) or 0)
+        order = [LOCALES[(cursor + i) % len(LOCALES)] for i in range(len(LOCALES))]
+
     seen = load_seen(seen_file)
-    pub_urls = published_urls(posts_dir)
-    taken = existing_slugs(posts_dir)
+    pub_urls, taken, pub_ids = published_meta(
+        [game_dir, os.path.join(base, 'content', 'posts')])
 
-    print('App Radar — 대상 %d건 / 스토어=%s' % (target, STOREFRONT))
-    cands = collect_candidates(use_play=args.play)
-    print('후보 풀: %d개 (신규+사전예약)' % len(cands))
-    picked = pick(cands, seen, pub_urls, target, today)
-    print('선정: %d개\n' % len(picked))
+    print('App Radar v2 — 목표 %d건 / 언어 순서: %s'
+          % (target, ' > '.join(c[0] for c in order[:max(target, 1)])))
 
-    os.makedirs(posts_dir, exist_ok=True)
     done = 0
-    for app in picked:
-        print('[%s] %s — %s' % (app['app_id'], app['name'], app['category'] or 'App'))
-        detail = lookup(app['app_id'])
-        if not detail:
+    tried = 0
+    reserved = set()   # 이번 실행에서 이미 뽑은 앱 (다른 언어가 같은 앱을 또 쓰지 않도록)
+    for lang, cc, hl, gl, lang_name in order:
+        if done >= target:
+            break
+        tried += 1
+        outdir = os.path.join(game_dir, lang)
+        os.makedirs(outdir, exist_ok=True)
+        print('\n[%s] apple=%s / play=%s-%s' % (lang, cc, gl, hl))
+        cands = collect(cc, hl, gl, use_play=not args.no_play)
+        print('   후보 %d개' % len(cands))
+        item = pick_one(cands, seen | reserved, pub_urls, pub_ids, today, tried)
+        if not item:
+            print('   신규 후보 없음 → 다음 언어')
+            continue
+        reserved.add(item['key'])
+        print('   선정: %s (%s)' % (item.get('name'), item['store']))
+
+        mat, upcoming, img_url, disp_name = build_material(item, cc, hl, gl, today)
+        if not mat:
             print('   상세 조회 실패 → 건너뜀')
+            seen.add(item['key'])
+            save_seen(seen_file, seen)
             continue
-        revs = reviews(app['app_id'])
-        mat, upcoming = material(app, detail, revs, today)
         if args.dry:
-            print('   출시예정=%s / 리뷰 %d건 / 자료 %d자' % (upcoming, len(revs), len(mat)))
-            print('   URL: %s' % (detail.get('trackViewUrl') or app['url']))
-            print('   --- 자료 미리보기 ---')
-            print('\n'.join('   ' + l for l in mat.split('\n')[:8]))
+            print('   출시예정=%s / 자료 %d자 / 표시명=%s' % (upcoming, len(mat), disp_name))
+            print('\n'.join('   ' + l for l in mat.split('\n')[:10]))
             continue
 
-        art = detail.get('artworkUrl512') or app['icon']
         img_md = ''
-        if art:
-            slug_hint = hashlib.sha1(app['app_id'].encode()).hexdigest()[:8]
-            fn = 'app-%s.jpg' % slug_hint
-            dest = os.path.join(assets_dir, fn)
-            try:
-                if not os.path.exists(dest):
-                    os.makedirs(assets_dir, exist_ok=True)
-                    data = get_bytes(art)
-                    open(dest, 'wb').write(data)
-                img_md = '![%s](/assets/img/apps/%s)\n\n' % (app['name'].replace('[', ''), fn)
-            except Exception as ex:
-                print('   이미지 저장 실패: %s' % str(ex)[:60])
+        rel = save_image(img_url, assets_dir, item['key'])
+        if rel:
+            img_md = '![%s](%s)\n\n' % ((disp_name or 'app').replace('[', ''), rel)
 
-        body_txt = None
-        obj = {}
+        # 비라틴 언어(한/중/일/아랍/힌디/벵골/러시아)는 같은 분량이 더 적은 글자로 나온다.
+        # 영어 기준 글자수를 그대로 강요하면 불필요한 재시도만 늘어난다 → 60% 기준을 쓴다.
+        if lang in NON_LATIN:
+            lo, hi = max(1200, int(cmin * 0.6)), int(cmax * 0.6)
+        else:
+            lo, hi = cmin, cmax
+
+        obj, body = {}, ''
         for attempt in range(1, 4):
             got, provider = llm.chat(
                 [{'role': 'system', 'content': SYSTEM_APP},
-                 {'role': 'user', 'content': user_prompt(app, mat, upcoming, cmin, cmax)}],
+                 {'role': 'user', 'content': user_prompt(
+                     lang_name, mat, upcoming, disp_name or 'app', cmin, cmax)}],
                 purpose='write')
             obj = extract_json(got)
-            body_txt = (obj.get('body') or '').strip()
-            n = len(body_txt)
+            body = (obj.get('body') or '').strip()
+            n = len(body)
             print('   [%d] %s 응답 %d자' % (attempt, provider, n))
-            if cmin <= n <= cmax and obj.get('title'):
+            if lo <= n <= hi and obj.get('title'):
                 break
-            hint = ('Too short (%d). Expand with more concrete detail from the material.' % n
-                    if n < cmin else 'Too long (%d). Trim redundant sentences.' % n)
-            print('      재시도: %s' % hint)
+            print('      재시도: %s' % ('너무 짧음' if n < lo else '너무 김'))
             time.sleep(0.4)
-        if not obj.get('title') or not body_txt:
-            print('   생성 실패 → 다음 실행에서 다시 시도됩니다')
+        if not obj.get('title') or not body:
+            print('   생성 실패 → 다음 실행에서 재시도')
             continue
 
-        title = re.sub(r'"', "'", obj.get('title') or app['name'])
+        title = re.sub(r'"', "'", obj['title']).strip()
         desc = re.sub(r'"', "'", clip(obj.get('description') or '', 200))
-        slug = slugify(title, taken, hashlib.sha1(app['app_id'].encode()).hexdigest()[:6])
+        slug = slugify(title, item['key'], taken)
         taken.add(slug)
-        url = detail.get('trackViewUrl') or app['url']
+        src_name = 'Google Play' if item['store'] == 'play' else 'App Store'
         fm = ('---\n'
               'slug: %s\n'
               'title: "%s"\n'
               'description: "%s"\n'
               'category: "Apps & Games"\n'
               'date: "%s"\n'
-              'sourceName: "App Store"\n'
+              'sourceName: "%s"\n'
               'sourceUrl: "%s"\n'
+              'lang: "%s"\n'
               '---\n\n') % (slug, title, desc,
-                            datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d'), url)
-        open(os.path.join(posts_dir, slug + '.md'), 'w', encoding='utf-8').write(
-            fm + img_md + body_txt + '\n')
-        seen.add(app['app_id'])
+                            datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d'),
+                            src_name, item['url'], lang)
+        open(os.path.join(outdir, slug + '.md'), 'w', encoding='utf-8').write(
+            fm + img_md + body + '\n')
+        seen.add(item['key'])
         save_seen(seen_file, seen)
-        print('   발행: %s (%d자)' % (slug, len(body_txt)))
+        print('   발행[%s]: %s (%d자)' % (lang, slug, len(body)))
         done += 1
         time.sleep(0.3)
+
+    if not args.locale and not args.dry:
+        cur = int(load_json(cursor_file, {'cursor': 0}).get('cursor', 0) or 0)
+        save_json(cursor_file, {'cursor': (cur + max(tried, 1)) % len(LOCALES)})
 
     print('\nApp Radar 완료: %d건' % done)
     return 0

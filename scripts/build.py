@@ -58,6 +58,10 @@ SITE_NAME = 'MyCapital Analyze'
 
 POSTS_DIR = os.path.join(BASE, 'content', 'posts')
 TRANS_DIR = os.path.join(BASE, 'content', 'translations')
+# 앱·게임 섹션(/game/). 경제 메인과 섞이지 않도록 별도 디렉터리·별도 URL을 쓴다.
+# content/game/{lang}/*.md 는 "해당 언어 스토어에서 수집한 네이티브 글"이라 번역 단계를 거치지 않는다.
+GAME_DIR = os.path.join(BASE, 'content', 'game')
+GAME_CATEGORY = 'Apps & Games'
 
 GA4_ID = ((CONFIG.get('analytics') or {}).get('ga4_id') or '').strip()
 # Google Search Console HTML 태그 방식 인증 값 (없으면 메타 태그 미삽입)
@@ -219,6 +223,37 @@ AFF_STR = {
 }
 DEFAULT_AFF = AFF_STR['en']
 
+# 앱·게임 섹션(/game/) 문구: [네비 라벨, 섹션 제목, 섹션 설명]
+GAME_STR = {
+    'en': ('Games & Apps', 'New & Upcoming Apps and Games',
+           'Fresh releases and pre-registration titles, picked up from App Store and Google Play listings.'),
+    'ko': ('게임·앱', '신규 · 출시 예정 앱과 게임',
+           '앱스토어와 구글플레이에 막 올라온 신작과 사전예약 타이틀을 소개합니다.'),
+    'zh': ('游戏·应用', '新上架与即将推出的应用和游戏',
+           '来自 App Store 与 Google Play 的新作及预约上线作品介绍。'),
+    'ja': ('ゲーム・アプリ', '新作・配信予定のアプリとゲーム',
+           'App Store と Google Play に登場した新作・事前登録タイトルを紹介します。'),
+    'es': ('Juegos y apps', 'Apps y juegos nuevos y próximos',
+           'Lanzamientos recientes y títulos en prerregistro de App Store y Google Play.'),
+    'de': ('Games & Apps', 'Neue und kommende Apps und Spiele',
+           'Frische Releases und Vorregistrierungs-Titel aus dem App Store und bei Google Play.'),
+    'fr': ('Jeux & apps', 'Nouveautés et sorties à venir',
+           'Nouveaux titres et pré-inscriptions repérés sur l\'App Store et Google Play.'),
+    'pt': ('Jogos e apps', 'Apps e jogos novos e em pré-registro',
+           'Lançamentos recentes e títulos em pré-registro da App Store e do Google Play.'),
+    'ru': ('Игры и приложения', 'Новые и ожидаемые приложения и игры',
+           'Свежие релизы и предварительная регистрация в App Store и Google Play.'),
+    'hi': ('गेम और ऐप', 'नए और आने वाले ऐप व गेम',
+           'App Store और Google Play की नई रिलीज़ और प्री-रजिस्ट्रेशन टाइटल।'),
+    'id': ('Game & aplikasi', 'Aplikasi dan game baru serta yang akan rilis',
+           'Rilisan terbaru dan pra-registrasi dari App Store dan Google Play.'),
+    'ar': ('ألعاب وتطبيقات', 'تطبيقات وألعاب جديدة وقريبة الإصدار',
+           'إصدارات جديدة وعناوين قابلة للتسجيل المسبق من App Store وGoogle Play.'),
+    'bn': ('গেম ও অ্যাপ', 'নতুন ও আসন্ন অ্যাপ এবং গেম',
+           'App Store ও Google Play থেকে নতুন রিলিজ এবং প্রি-রেজিস্ট্রেশন শিরোনাম।'),
+}
+DEFAULT_GAME = GAME_STR['en']
+
 CATEGORY_GRADIENT = {
     'Monetary Policy': 'from-brand-700 to-brand-500',
     'Inflation': 'from-slate-700 to-slate-500',
@@ -229,6 +264,7 @@ CATEGORY_GRADIENT = {
     'US Economy': 'from-indigo-800 to-indigo-600',
     'Central Banking': 'from-cyan-800 to-cyan-600',
     'Economic Research': 'from-amber-800 to-amber-600',
+    'Apps & Games': 'from-fuchsia-800 to-fuchsia-600',
 }
 DEFAULT_GRADIENT = 'from-brand-700 to-brand-500'
 
@@ -243,6 +279,15 @@ def post_url(lang, slug):
 
 def post_href(lang, slug):
     return f'/post/{slug}.html' if lang == 'en' else f'/{lang}/post/{slug}.html'
+
+def game_home_path(lang):
+    return '/game/' if lang == 'en' else f'/{lang}/game/'
+
+def game_post_url(lang, slug):
+    return f'{DOMAIN}/game/post/{slug}.html' if lang == 'en' else f'{DOMAIN}/{lang}/game/post/{slug}.html'
+
+def game_post_href(lang, slug):
+    return f'/game/post/{slug}.html' if lang == 'en' else f'/{lang}/game/post/{slug}.html'
 
 def strs(lang):
     return LANG_STR.get(lang, DEFAULT_STR)
@@ -351,6 +396,7 @@ def header_html(current):
       <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="{home}">{SITE_NAME}</a>
       <nav class="flex items-center gap-4 text-sm">
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{home}">Home</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{game_home_path(current)}">{htmllib.escape(GAME_STR.get(current, DEFAULT_GAME)[0])}</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
@@ -531,40 +577,46 @@ def build_disclosure(lang, available):
     return out_path
 
 
-def lang_switcher(current, slug=None, available=None):
+def lang_switcher(current, slug=None, available=None, section=None):
     """포스트 페이지에서는 해당 글의 번역 URL로, 없으면 홈으로 링크."""
+    is_game = (section == 'game')
+    href_fn = game_post_href if is_game else post_href
+    home_fn = game_home_path if is_game else home_path
     btns = []
     for code, (name, _) in LANG_META.items():
         if slug and available and code in available:
-            href = post_href(code, slug)
+            href = href_fn(code, slug)
         else:
-            href = home_path(code)
+            href = home_fn(code)
         active = 'bg-brand-600 text-white' if code == current else 'text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800'
         btns.append(f'<a href="{href}" class="px-2 py-0.5 rounded text-sm {active}" title="{name}" hreflang="{code}">{code.upper()}</a>')
     return ('<div class="max-w-5xl mx-auto px-4 pt-3 flex flex-wrap items-center gap-1">'
             '<span class="text-slate-500 mr-1 text-sm">Language:</span>' + ''.join(btns) + '</div>')
 
 
-def alternates_html(slug, available):
+def alternates_html(slug, available, section=None):
     """검색엔진용 hreflang 상호 링크 (존재하는 언어만)."""
+    is_game = (section == 'game')
+    url_fn = game_post_url if is_game else post_url
+    home_fn = game_home_path if is_game else home_path
     tags = []
     if slug:
         for code in LANG_META:
             if code in available:
-                tags.append(f'  <link rel="alternate" hreflang="{code}" href="{post_url(code, slug)}" />')
-        tags.append(f'  <link rel="alternate" hreflang="x-default" href="{post_url("en", slug)}" />')
+                tags.append(f'  <link rel="alternate" hreflang="{code}" href="{url_fn(code, slug)}" />')
+        tags.append(f'  <link rel="alternate" hreflang="x-default" href="{url_fn("en", slug)}" />')
     else:
         for code in LANG_META:
             if code in available:
-                tags.append(f'  <link rel="alternate" hreflang="{code}" href="{DOMAIN + home_path(code)}" />')
-        tags.append(f'  <link rel="alternate" hreflang="x-default" href="{DOMAIN}/" />')
+                tags.append(f'  <link rel="alternate" hreflang="{code}" href="{DOMAIN + home_fn(code)}" />')
+        tags.append(f'  <link rel="alternate" hreflang="x-default" href="{DOMAIN + ("/game/" if is_game else "/")}" />')
     return '\n'.join(tags)
 
 
 def layout(lang, title, description, canonical, content_html, og_type='website',
-           jsonld_blocks=None, slug=None, available=None, switcher_slug=None):
+           jsonld_blocks=None, slug=None, available=None, switcher_slug=None, section=None):
     dir_ = LANG_META[lang][1]
-    head_extra = alternates_html(slug, available or {lang})
+    head_extra = alternates_html(slug, available or {lang}, section)
     ld = '\n'.join('  <script type="application/ld+json">' + json.dumps(b, ensure_ascii=False) + '</script>'
                    for b in (jsonld_blocks or []))
     return f'''<!DOCTYPE html>
@@ -594,7 +646,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
 {header_html(lang)}
-{lang_switcher(lang, switcher_slug, available)}
+{lang_switcher(lang, switcher_slug, available, section)}
 
 <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
 {content_html}
@@ -609,7 +661,9 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
 
 
 # ---------- JSON-LD ----------
-def news_article_ld(lang, slug, title, desc, date, body_text, source_name, source_url):
+def news_article_ld(lang, slug, title, desc, date, body_text, source_name, source_url,
+                    url_fn=None):
+    fn = url_fn or post_url
     art = {
         '@context': 'https://schema.org',
         '@type': 'NewsArticle',
@@ -618,7 +672,7 @@ def news_article_ld(lang, slug, title, desc, date, body_text, source_name, sourc
         'inLanguage': lang,
         'datePublished': date,
         'dateModified': date,
-        'mainEntityOfPage': {'@type': 'WebPage', '@id': post_url(lang, slug)},
+        'mainEntityOfPage': {'@type': 'WebPage', '@id': fn(lang, slug)},
         'author': {'@type': 'Organization', 'name': SITE_NAME, 'url': DOMAIN + '/'},
         'publisher': {'@type': 'Organization', 'name': SITE_NAME, 'url': DOMAIN + '/'},
         'articleSection': 'Macroeconomics',
@@ -629,14 +683,22 @@ def news_article_ld(lang, slug, title, desc, date, body_text, source_name, sourc
     return art
 
 
-def breadcrumb_ld(lang, slug, title):
+def breadcrumb_ld(lang, slug, title, url_fn=None, section_home=None):
+    fn = url_fn or post_url
+    items = [{'@type': 'ListItem', 'position': 1, 'name': 'Home',
+              'item': DOMAIN + home_path(lang)}]
+    if section_home:
+        items.append({'@type': 'ListItem', 'position': 2, 'name': section_home,
+                      'item': DOMAIN + game_home_path(lang)})
+        items.append({'@type': 'ListItem', 'position': 3, 'name': title,
+                      'item': fn(lang, slug)})
+    else:
+        items.append({'@type': 'ListItem', 'position': 2, 'name': title,
+                      'item': fn(lang, slug)})
     return {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
-        'itemListElement': [
-            {'@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': DOMAIN + home_path(lang)},
-            {'@type': 'ListItem', 'position': 2, 'name': title, 'item': post_url(lang, slug)},
-        ],
+        'itemListElement': items,
     }
 
 
@@ -650,12 +712,12 @@ def faq_ld(pairs, lang, slug):
     }
 
 
-def website_ld(lang):
+def website_ld(lang, url=None):
     return {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         'name': SITE_NAME,
-        'url': DOMAIN + home_path(lang),
+        'url': url or (DOMAIN + home_path(lang)),
         'inLanguage': lang,
         'potentialAction': {
             '@type': 'SearchAction',
@@ -666,10 +728,11 @@ def website_ld(lang):
 
 
 # ---------- 카드 ----------
-def card_html(lang, slug, title, desc, category, date):
+def card_html(lang, slug, title, desc, category, date, href_fn=None, href=None):
     grad = CATEGORY_GRADIENT.get(category, DEFAULT_GRADIENT)
+    href = href or (href_fn or post_href)(lang, slug)
     return f'''<article class="border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden hover:shadow-md transition-shadow bg-white dark:bg-slate-900 flex flex-col">
-  <a class="block aspect-[16/9] overflow-hidden bg-gradient-to-br {grad} flex items-center justify-center" href="{post_href(lang, slug)}" aria-label="{htmllib.escape(title)}">
+  <a class="block aspect-[16/9] overflow-hidden bg-gradient-to-br {grad} flex items-center justify-center" href="{href}" aria-label="{htmllib.escape(title)}">
     <span class="text-white/90 text-sm font-semibold uppercase tracking-widest px-4 text-center">{htmllib.escape(category)}</span>
   </a>
   <div class="p-5">
@@ -677,18 +740,19 @@ def card_html(lang, slug, title, desc, category, date):
       <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">{htmllib.escape(category)}</span>
       <time datetime="{date}">{date}</time>
     </div>
-    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2 leading-snug"><a class="hover:text-brand-600" href="{post_href(lang, slug)}">{htmllib.escape(title)}</a></h2>
+    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2 leading-snug"><a class="hover:text-brand-600" href="{href}">{htmllib.escape(title)}</a></h2>
     <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-3">{htmllib.escape(desc)}</p>
   </div>
 </article>'''
 
 
-def related_html(lang, slug, posts_in_lang, label):
+def related_html(lang, slug, posts_in_lang, label, href_fn=None):
     others = [p for p in posts_in_lang if p['slug'] != slug][:3]
     if not others:
         return ''
+    fn = href_fn or post_href
     items = '\n'.join(
-        f'    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="{post_href(lang, p["slug"])}">{htmllib.escape(p["title"])}</a></li>'
+        f'    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="{p.get("href") or fn(lang, p["slug"])}">{htmllib.escape(p["title"])}</a></li>'
         for p in others)
     return f'''<nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">{htmllib.escape(label)}</h2>
@@ -699,9 +763,13 @@ def related_html(lang, slug, posts_in_lang, label):
 
 
 def build_post(lang, slug, title, desc, category, date, body_md, source_name, source_url,
-               posts_in_lang, available):
+               posts_in_lang, available, section='post'):
+    """section='post' → /post/{slug}.html (경제), section='game' → /game/post/{slug}.html"""
+    is_game = (section == 'game')
+    url_fn = game_post_url if is_game else post_url
+    href_fn = game_post_href if is_game else post_href
     body_html = md_to_html(body_md)
-    canonical = post_url(lang, slug)
+    canonical = url_fn(lang, slug)
     s = strs(lang)
     src = ''
     if source_url:
@@ -723,18 +791,25 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
   <div class="prose prose-slate dark:prose-invert max-w-none">{body_html}</div>
   {ad_unit('post_bottom')}
   {affiliate_box(lang, category)}
-  {related_html(lang, slug, posts_in_lang, s[5])}
+  {related_html(lang, slug, posts_in_lang, s[5], href_fn)}
 </article>'''
 
-    blocks = [news_article_ld(lang, slug, title, desc, date, body_md, source_name, source_url),
-              breadcrumb_ld(lang, slug, title)]
+    gnav = GAME_STR.get(lang, DEFAULT_GAME)[0] if is_game else None
+    blocks = [news_article_ld(lang, slug, title, desc, date, body_md, source_name, source_url,
+                              url_fn),
+              breadcrumb_ld(lang, slug, title, url_fn, gnav)]
     faq = extract_faq(body_md)
     if faq:
         blocks.append(faq_ld(faq, lang, slug))
 
     html_doc = layout(lang, title + ' — ' + SITE_NAME, desc, canonical, content, 'article',
-                      blocks, slug=slug, available=available, switcher_slug=slug)
-    out_path = os.path.join(BASE, 'post', slug + '.html') if lang == 'en' else os.path.join(BASE, lang, 'post', slug + '.html')
+                      blocks, slug=slug, available=available, switcher_slug=slug,
+                      section=section)
+    if is_game:
+        out_path = (os.path.join(BASE, 'game', 'post', slug + '.html') if lang == 'en'
+                    else os.path.join(BASE, lang, 'game', 'post', slug + '.html'))
+    else:
+        out_path = os.path.join(BASE, 'post', slug + '.html') if lang == 'en' else os.path.join(BASE, lang, 'post', slug + '.html')
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     open(out_path, 'w', encoding='utf-8').write(html_doc)
     return out_path
@@ -769,7 +844,36 @@ def build_index(lang, posts, available):
     return out_path
 
 
-def build_sitemap(posts, avail_by_slug, langs_with_home):
+def build_game_index(lang, plist, available):
+    """/game/ (앱·게임 섹션) 인덱스. 경제 메인과 완전히 분리된 별도 페이지."""
+    g = GAME_STR.get(lang, DEFAULT_GAME)
+    cards = '\n'.join(card_html(lang, p['slug'], p['title'], p['desc'], p['category'],
+                                p['date'], href=p.get('href')) for p in plist)
+    infeed = ad_unit('index_infeed', wrap_class='sm:col-span-2 my-6 text-center')
+    content = f'''<div class="space-y-6">
+  <div>
+    <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">{htmllib.escape(g[1])}</h1>
+    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{htmllib.escape(g[2])}</p>
+  </div>
+  <div class="grid gap-4 sm:grid-cols-2">
+{cards}
+  {infeed}
+  </div>
+  {ad_unit('index')}
+</div>'''
+    canonical = DOMAIN + game_home_path(lang)
+    title = f'{g[1]} — {SITE_NAME}'
+    html_doc = layout(lang, title, g[2], canonical, content, 'website',
+                      [website_ld(lang, DOMAIN + game_home_path(lang))],
+                      slug=None, available=available, section='game')
+    out_path = (os.path.join(BASE, 'game', 'index.html') if lang == 'en'
+                else os.path.join(BASE, lang, 'game', 'index.html'))
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    open(out_path, 'w', encoding='utf-8').write(html_doc)
+    return out_path
+
+
+def build_sitemap(posts, avail_by_slug, langs_with_home, game=None):
     """실제 존재하는 언어 조합만 sitemap에 넣는다 (404 유도 URL 제거)."""
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">']
@@ -810,6 +914,17 @@ def build_sitemap(posts, avail_by_slug, langs_with_home):
             if c in avail:
                 emit(post_url(c, p['slug']), alts)
 
+    # 앱·게임 섹션(/game/) — 언어별 네이티브 글
+    if game:
+        game_langs = [c for c in LANG_META if game.get(c)]
+        g_alts = [(c, DOMAIN + game_home_path(c)) for c in game_langs]
+        if 'en' in game_langs:
+            g_alts.append(('x-default', DOMAIN + '/game/'))
+        for c in game_langs:
+            emit(DOMAIN + game_home_path(c), g_alts)
+            for p in game[c]:
+                emit(p['url'], [(c, p['url'])])
+
     xml.append('</urlset>')
     open(os.path.join(BASE, 'sitemap.xml'), 'w', encoding='utf-8').write('\n'.join(xml) + '\n')
 
@@ -849,6 +964,43 @@ def main():
                       'body': body})
     posts.sort(key=lambda p: p['date'], reverse=True)
 
+    # 앱·게임 섹션 분리: 경제 메인에는 경제 글만 남긴다.
+    # (content/posts 에 옛날에 섞여 들어간 앱 글은 URL 유지 상태로 /game/ 목록에만 노출)
+    macro_posts = [p for p in posts if p['category'] != GAME_CATEGORY]
+    legacy_app = [p for p in posts if p['category'] == GAME_CATEGORY]
+
+    # 앱·게임 네이티브 글: content/game/{lang}/*.md (번역 파이프라인을 타지 않는다)
+    game_posts = {}
+    for lang in LANG_META:
+        gdir = os.path.join(GAME_DIR, lang)
+        if not os.path.isdir(gdir):
+            continue
+        items = []
+        for path in sorted(glob.glob(os.path.join(gdir, '*.md'))):
+            fm, body = parse_md(path)
+            slug = fm.get('slug') or os.path.splitext(os.path.basename(path))[0]
+            items.append({'slug': slug, 'title': fm.get('title', slug),
+                          'desc': fm.get('description', ''),
+                          'category': fm.get('category', GAME_CATEGORY),
+                          'date': fm.get('date', ''),
+                          'sourceName': fm.get('sourceName', ''),
+                          'sourceUrl': fm.get('sourceUrl', ''),
+                          'body': body,
+                          'href': game_post_href(lang, slug),
+                          'url': game_post_url(lang, slug)})
+        if items:
+            items.sort(key=lambda p: p['date'], reverse=True)
+            game_posts[lang] = items
+    if legacy_app:
+        en = game_posts.setdefault('en', [])
+        for p in legacy_app:
+            en.append({'slug': p['slug'], 'title': p['title'], 'desc': p['desc'],
+                       'category': p['category'], 'date': p['date'], 'body': p['body'],
+                       'sourceName': p['sourceName'], 'sourceUrl': p['sourceUrl'],
+                       'href': post_href('en', p['slug']),
+                       'url': post_url('en', p['slug']), 'legacy': True})
+        game_posts['en'].sort(key=lambda p: p['date'], reverse=True)
+
     # 번역 로드: {slug: {lang: {...}}}
     trans = {}
     for lang in LANG_META:
@@ -866,15 +1018,15 @@ def main():
                 continue
             trans.setdefault(slug, {})[lang] = t
 
-    # 언어별로 실제 존재하는 포스트 목록
+    # 언어별로 실제 존재하는 포스트 목록 (경제 글만)
     avail_by_slug = {}
-    for p in posts:
+    for p in macro_posts:
         langs = set(trans.get(p['slug'], {}).keys()) | {'en'}
         avail_by_slug[p['slug']] = langs
 
     def posts_for(lang):
         out = []
-        for p in posts:
+        for p in macro_posts:
             if lang == 'en':
                 out.append({'slug': p['slug'], 'title': p['title'], 'desc': p['desc'],
                             'category': p['category'], 'date': p['date']})
@@ -885,7 +1037,7 @@ def main():
         return out
 
     # 홈이 존재하는 언어 집합
-    langs_with_home = {c for c in LANG_META if any(c in avail_by_slug.get(p['slug'], {'en'}) for p in posts)}
+    langs_with_home = {c for c in LANG_META if any(c in avail_by_slug.get(p['slug'], {'en'}) for p in macro_posts)}
     home_available = langs_with_home | {'en'}
 
     total = 0
@@ -897,13 +1049,13 @@ def main():
         print(f'[{lang}] {len(plist)} posts')
         for p in plist:
             if lang == 'en':
-                src = next(x for x in posts if x['slug'] == p['slug'])
+                src = next(x for x in macro_posts if x['slug'] == p['slug'])
                 build_post(lang, p['slug'], p['title'], p['desc'], p['category'], p['date'],
                            src['body'], src['sourceName'], src['sourceUrl'], plist,
                            avail_by_slug[p['slug']])
             else:
                 t = trans[p['slug']][lang]
-                src = next(x for x in posts if x['slug'] == p['slug'])
+                src = next(x for x in macro_posts if x['slug'] == p['slug'])
                 build_post(lang, p['slug'], t['title'], t['description'], p['category'], p['date'],
                            t['body'], src['sourceName'], src['sourceUrl'], plist,
                            avail_by_slug[p['slug']])
@@ -911,10 +1063,25 @@ def main():
         build_index(lang, plist, home_available)
         build_disclosure(lang, home_available)
 
-    build_sitemap(posts, avail_by_slug, langs_with_home)
-    build_feed(posts)
+    # 앱·게임 섹션(/game/) — 언어별 네이티브 글. 번역이 아니라 각 스토어에서 직접 수집한 글.
+    game_langs = sorted(game_posts.keys())
+    game_total = 0
+    for lang in game_langs:
+        plist = game_posts[lang]
+        print(f'[game/{lang}] {len(plist)} posts')
+        for p in plist:
+            if p.get('legacy'):
+                continue  # 옛 영문 앱 글은 기존 URL(/post/) 유지
+            build_post(lang, p['slug'], p['title'], p['desc'], p['category'], p['date'],
+                       p['body'], p['sourceName'], p['sourceUrl'], plist, {lang},
+                       section='game')
+            game_total += 1
+        build_game_index(lang, plist, set(game_langs))
+
+    build_sitemap(macro_posts, avail_by_slug, langs_with_home, game_posts)
+    build_feed(macro_posts)
     dp = AFF_CFG.get('disclosure_path', 'disclosure.html')
-    print(f'빌드 완료: 포스트 페이지 {total}개 + 홈 {len(LANG_META)}개 + {dp} {len(LANG_META)}개, sitemap.xml, feed.xml OK')
+    print(f'빌드 완료: 경제 포스트 {total}개 + 앱/게임 {game_total}개 + 홈 {len(LANG_META)}개, sitemap.xml, feed.xml OK')
 
 
 if __name__ == '__main__':
