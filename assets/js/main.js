@@ -135,7 +135,7 @@
     }
 
     if (lead) { for (var i = 0; i < lead; i++) { cells += '<div></div>'; col++; } }
-    for (var d = 1; d <= days; d++) { cells += cell(null, d, false); col++; if (col % 7 === 0) { rows += '<div class="grid grid-cols-7 gap-1">' + cells + '</div>'; cells = ''; } }
+    for (var d = 1; d <= days; d++) { cells += cell(d); col++; if (col % 7 === 0) { rows += '<div class="grid grid-cols-7 gap-1">' + cells + '</div>'; cells = ''; } }
     if (cells) rows += '<div class="grid grid-cols-7 gap-1">' + cells + '</div>';
 
     mount.innerHTML =
