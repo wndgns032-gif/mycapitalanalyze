@@ -57,6 +57,9 @@
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
+        <a class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/ar/search/" aria-label="بحث">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+        </a>
         <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
           <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
           <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
@@ -167,8 +170,12 @@
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">الزوار حسب الدولة — آخر 7 أيام</h2>
     <div id="mca-geo" data-locale="ar" data-str-wait="جارٍ التجميع…"></div>
   </div>
+  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
+    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">الأكثر رواجًا هذا الأسبوع</h2>
+    <div id="mca-pop" data-locale="ar" data-str-wait="جارٍ التجميع…" data-str-views="مشاهدات"></div>
+  </div>
 </section>
-<script>window.__POSTS__=[{"t": "انحراف سعر السياسة لدى بنك الاحتياطي الفيدرالي في كانساس سيتي: نافذة على توقعات الأسواق", "d": "2026-09-17", "h": "/ar/post/kansas-city-fed-policy-rate-skew.html", "k": "econ"}, {"t": "تحرك الاحتياطي الفيدرالي القادم: لماذا تسعر الأسواق خفضًا في سبتمبر", "d": "2026-08-26", "h": "/ar/post/fed-rate-outlook-2026.html", "k": "econ"}, {"t": "التضخم العالمي: الميل الأخير هو الأصعب", "d": "2026-08-25", "h": "/ar/post/global-inflation-trend-2026.html", "k": "econ"}, {"t": "تحول النمو في الصين: التحفيز والصادرات وعبء الديون", "d": "2026-08-24", "h": "/ar/post/china-growth-pivot-2026.html", "k": "econ"}, {"t": "انعكاس منحنى العائد: إشارة ركود أم إنذار كاذب؟", "d": "2026-08-22", "h": "/ar/post/yield-curve-2026.html", "k": "econ"}, {"t": "الذكاء الاصطناعي والإنتاجية: هل يمكن للتكنولوجيا إنقاذ أسواق العمل الراكدة؟", "d": "2026-08-20", "h": "/ar/post/ai-productivity-2026.html", "k": "econ"}, {"t": "Escape Room: Rainy Night Hotel — هل تستحق الشراء؟ السعر والمميزات", "d": "2026-09-30", "h": "/ar/game/post/escape-room-rainy-night-hotel.html", "k": "game"}];</script>
+<script>window.__POSTS__=[{"t": "انحراف سعر السياسة لدى بنك الاحتياطي الفيدرالي في كانساس سيتي: نافذة على توقعات الأسواق", "d": "2026-09-17", "h": "/ar/post/kansas-city-fed-policy-rate-skew.html", "k": "econ", "x": "استكشاف استخدام بنك الاحتياطي الفيدرالي في كانساس سيتي لأسعار الخيارات لقياس تصورات المخاطر المالية وانعكاسات ذلك على ديناميكيات الأسواق."}, {"t": "تحرك الاحتياطي الفيدرالي القادم: لماذا تسعر الأسواق خفضًا في سبتمبر", "d": "2026-08-26", "h": "/ar/post/fed-rate-outlook-2026.html", "k": "econ", "x": "تتقارب الأسواق نحو خفض أسعار الفائدة، لكن المسار بعد سبتمبر لا يزال محل خلاف. نستعرض البيانات التي تقود هذا القرار."}, {"t": "التضخم العالمي: الميل الأخير هو الأصعب", "d": "2026-08-25", "h": "/ar/post/global-inflation-trend-2026.html", "k": "econ", "x": "تراجع التضخم الرئيسي، لكن الخدمات الأساسية لا تزال لزجة، ولماذا قد يستغرق الوصول إلى هدف 2% وقتًا أطول مما تتوقعه التوقعات."}, {"t": "تحول النمو في الصين: التحفيز والصادرات وعبء الديون", "d": "2026-08-24", "h": "/ar/post/china-growth-pivot-2026.html", "k": "econ", "x": "تنتقل بكين من النمو القائم على العقارات إلى التصنيع المتقدم. فهل تستطيع الصادرات والتحفيز تعويض ضعف المستهلك البنيوي؟"}, {"t": "انعكاس منحنى العائد: إشارة ركود أم إنذار كاذب؟", "d": "2026-08-22", "h": "/ar/post/yield-curve-2026.html", "k": "econ", "x": "عاد منحنى 2s10s إلى المنطقة الإيجابية بعد انعكاس طويل. التاريخ يقول إن الساعة تبدأ الآن — لكن هذه الدورة قد تكون مختلفة."}, {"t": "الذكاء الاصطناعي والإنتاجية: هل يمكن للتكنولوجيا إنقاذ أسواق العمل الراكدة؟", "d": "2026-08-20", "h": "/ar/post/ai-productivity-2026.html", "k": "econ", "x": "نمو الإنتاجية هو المتغير الأهم لمستويات المعيشة على المدى الطويل. هل يحقق الذكاء الاصطناعي ذلك أخيرًا، أم أنه مجرد دورة ضجيج أخرى؟"}, {"t": "Escape Room: Rainy Night Hotel — هل تستحق الشراء؟ السعر والمميزات", "d": "2026-09-30", "h": "/ar/game/post/escape-room-rainy-night-hotel.html", "k": "game", "x": "Escape Room: Rainy Night Hotel لعبة ألغاز وأدventure من تطوير Nishiura Ryohei، متاحة الآن مجانًا على App Store بإصدار 1.0 وتصنيف عمري 4+. تضعك في فندق مغلق ليلًا وتطلب منك جمع الأدلة وحل الألغاز للخرو"}, {"t": "ميHoYo تطلق نظام «الوحوش النجمية» الدائم في هونكاي: ستار ريل", "d": "2026-09-30", "h": "/ar/game/post/honkai-star-rail-star-pets-permanent-system.html", "k": "game", "x": "أطلقت ميHoYo نظام «الوحوش النجمية» الدائم في هونكاي: ستار ريل مع الإصدار 4.6 في 28 سبتمبر. يجمع النظام بين فتح الصناديق وجمع الوحوش والمعارك الترفيهية، ويضم 17 صندوقاً في دفعته الأولى بين قطط ماوماو ل"}];</script>
   <div class="my-6" data-ad-slot-name="index">
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9243770518153989" data-ad-slot="9628592280" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -183,7 +190,7 @@
       <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ar/disclosure.html">إفصاح الروابط التابعة</a></p>
     </div>
   </footer>
-<script src="/assets/js/main.js?v=2"></script>
+<script src="/assets/js/main.js?v=3"></script>
   <script>
   (function () {
     if (!document.addEventListener) return;
