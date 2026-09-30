@@ -774,7 +774,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
 </main>
 
 {footer_html(lang)}
-<script src="/assets/js/main.js"></script>
+<script src="/assets/js/main.js?v=2"></script>
 {conversion_tracking_js()}
 </body>
 </html>

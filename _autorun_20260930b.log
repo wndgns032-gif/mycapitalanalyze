@@ -5,3 +5,26 @@
 [15:53:44] OK   원문 재가공 (18s) rc=0 재가공 완료: 1개
 [15:56:42] OK   글자수 보정 (179s) rc=0 보정 완료: 8개 파일 처리 (대상 63개)
 [15:57:07] OK   본문 보강(구조) (25s) rc=0 보강 완료: 2건 (대상 23건)
+[15:59:27] OK   번역 (141s) rc=0 번역 완료: 16/16 성공
+[15:59:28] OK   번역 보충 (1s) rc=0 번역할 대상 없음 (모두 최신)
+[15:59:58] OK   HTML 빌드 (30s) rc=0 빌드 완료: 경제 포스트 133개 + 앱/게임 14개 + 홈 13개, sitemap.xml, feed.xml OK
+[16:00:18] OK   Vercel 배포 (20s) readyState: INITIALIZING
+[16:00:22] OK   IndexNow 제출 (4s) rc=0 [done] 상태 기록 완료 (누적 제출 234개)
+[16:00:30] OK   방문자 스냅샷 (8s) rc=0 스냅샷 저장: D:\workbuddy\blog\mycapitalanalyze.com\data\visits.json (읽기 성공 12일, 누적 287명)
+[16:00:31] OK   IndexNow 재제출 (1s) rc=0 [done] 새로 제출할 URL이 없다 (이미 모두 알림 완료)
+[16:00:43] OK   커밋/푸시 (12s) 푸시 완료
+[16:00:43] === 요약: 14/14 성공 ===
+[16:00:43]   OK  git 동기화          rebase 충돌 → 로컬 작업물 우선(reset --soft)
+[16:00:43]   OK  크롤링              rc=0 수집 완료: 2개 새 글 (최신 우선순위) |   'fetched_at': datetime.datetime.utcnow().isoformat() + 'Z',
+[16:00:43]   OK  앱/게임 레이더         rc=0 App Radar 완료: 0건 (오늘 2026-09-30)
+[16:00:43]   OK  원문 재가공           rc=0 재가공 완료: 1개
+[16:00:43]   OK  글자수 보정           rc=0 보정 완료: 8개 파일 처리 (대상 63개)
+[16:00:43]   OK  본문 보강(구조)        rc=0 보강 완료: 2건 (대상 23건)
+[16:00:43]   OK  번역               rc=0 번역 완료: 16/16 성공
+[16:00:43]   OK  번역 보충            rc=0 번역할 대상 없음 (모두 최신)
+[16:00:43]   OK  HTML 빌드          rc=0 빌드 완료: 경제 포스트 133개 + 앱/게임 14개 + 홈 13개, sitemap.xml, feed.xml OK
+[16:00:43]   OK  Vercel 배포        readyState: INITIALIZING
+[16:00:43]   OK  IndexNow 제출      rc=0 [done] 상태 기록 완료 (누적 제출 234개)
+[16:00:43]   OK  방문자 스냅샷          rc=0 스냅샷 저장: D:\workbuddy\blog\mycapitalanalyze.com\data\visits.json (읽기 성공 12일, 누적 287명)
+[16:00:43]   OK  IndexNow 재제출     rc=0 [done] 새로 제출할 URL이 없다 (이미 모두 알림 완료)
+[16:00:43]   OK  커밋/푸시            푸시 완료
