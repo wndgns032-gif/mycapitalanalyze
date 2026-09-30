@@ -1,0 +1,119 @@
+name: Game Daily (WeChat game media)
+
+on:
+  # 매일 UTC 03:00 = 한국 12:00 / 중국 13:00 — 당일 게시글이 올라온 뒤 실행 (로이 지시).
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Connectivity check (China sources)
+        run: |
+          echo "--- news.yxrb.net ---"
+          curl -s -o /dev/null -m 20 -w "%{http_code} %{time_total}s\n" http://news.yxrb.net/ || echo "UNREACHABLE"
+          echo "--- sogou ---"
+          curl -s -o /dev/null -m 20 -w "%{http_code} %{time_total}s\n" "https://weixin.sogou.com/weixin?type=1&query=test" || echo "UNREACHABLE"
+
+      - name: Create config.json (from secrets)
+        env:
+          GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GA4_ID: ${{ secrets.GA4_ID }}
+          GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
+          AFFILIATES_JSON: ${{ secrets.AFFILIATES_JSON }}
+        run: |
+          python - <<'PY'
+          import json, os
+          glm = os.environ.get('GLM_API_KEY', '').strip()
+          ds  = os.environ.get('DEEPSEEK_API_KEY', '').strip()
+          if not (glm or ds):
+              raise SystemExit('GLM_API_KEY 또는 DEEPSEEK_API_KEY 시크릿이 필요합니다')
+          provider = 'glm' if glm else 'deepseek'
+          ga4 = os.environ.get('GA4_ID', '').strip()
+          gsc = os.environ.get('GOOGLE_SITE_VERIFICATION', '').strip()
+          aff_raw = os.environ.get('AFFILIATES_JSON', '').strip()
+          if aff_raw:
+              try:
+                  aff_cfg = json.loads(aff_raw)
+                  aff_cfg.setdefault('enabled', True)
+                  aff_cfg.setdefault('disclosure_path', 'disclosure.html')
+                  aff_cfg['offers'] = [o for o in aff_cfg.get('offers', []) if (o.get('url') or '').strip()]
+              except Exception as e:
+                  print('AFFILIATES_JSON 파싱 실패:', e)
+                  aff_cfg = {'enabled': False, 'offers': []}
+          else:
+              aff_cfg = {'enabled': False, 'offers': []}
+          cfg = {
+            "provider": provider,
+            "glm": {
+              "api_key": glm,
+              "base_url": "https://open.bigmodel.cn/api/paas/v4",
+              "model": "glm-5.3-flash"
+            },
+            "deepseek": {
+              "api_key": ds,
+              "base_url": "https://api.deepseek.com",
+              # flash 전용 (로이 지시). 'deepseek-v4-flash' 는 없는 모델(404).
+              "model": "deepseek-flash"
+            },
+            "languages": {
+              "zh": "Chinese (Mandarin)", "hi": "Hindi", "es": "Spanish",
+              "ar": "Arabic", "fr": "French", "bn": "Bengali",
+              "pt": "Portuguese", "ru": "Russian", "de": "German",
+              "ja": "Japanese", "id": "Indonesian", "ko": "Korean"
+            },
+            "translate_languages": {
+              "ko": "Korean", "zh": "Chinese (Mandarin)",
+              "ja": "Japanese", "es": "Spanish"
+            },
+            "translate_exclude_prefixes": ["project-syndicate-"],
+            "translate_workers": 5,
+            "max_translations_per_run": 40,
+            "char_min": 3000,
+            "char_max": 5000,
+            "max_new_posts_per_run": 1,
+            "apps_per_lang_per_day": 1,
+            "analytics": {"ga4_id": ga4, "google_site_verification": gsc},
+            "affiliates": aff_cfg
+          }
+          json.dump(cfg, open('config.json', 'w'), ensure_ascii=False, indent=2)
+          print('provider =', provider)
+          PY
+
+      - name: Run game daily radar (위챗 게임미디어 → 13개 언어 재각색)
+        run: |
+          # 소스 접근 실패는 커밋 없이 종료(1) → Actions 실패로 기록. 다른 스텝은 계속 안 함.
+          python scripts/game_daily.py || echo "game_daily exited nonzero"
+
+      - name: Build site
+        run: python scripts/build.py
+
+      - name: Commit and push
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "wndgns032-gif"
+          git config user.email "279455992+wndgns032-gif@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "no changes to commit"
+          else
+            git commit -m "auto: game daily $(date -u +%Y%m%d-%H%M)"
+            git remote set-url origin https://x-access-token:${TOKEN}@github.com/wndgns032-gif/mycapitalanalyze.git
+            git push origin main
+          fi

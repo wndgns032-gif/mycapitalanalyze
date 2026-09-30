@@ -356,47 +356,60 @@ DEFAULT_GAME = GAME_STR['en']
 FACT_STR = {
     'en': ('At a glance', 'Release date', 'Price', 'Platform', 'Developer', 'Status',
            'Store listing checked', 'Upcoming (pre-order)', 'Released', 'On this page',
-           'View on the store', 'Final price and availability are shown on the store listing.'),
+           'View on the store', 'Final price and availability are shown on the store listing.',
+           'Read the original article'),
     'ko': ('한눈에 보기', '출시일', '가격', '플랫폼', '개발사', '상태', '스토어 정보 확인일',
            '출시 예정(사전예약)', '출시됨', '이 글의 목차', '스토어에서 자세히 보기',
-           '최종 가격과 출시 여부는 스토어 페이지가 기준입니다.'),
+           '최종 가격과 출시 여부는 스토어 페이지가 기준입니다.',
+           '원문 기사 보기'),
     'ja': ('ひと目でわかる', '配信日', '価格', 'プラットフォーム', '開発元', 'ステータス',
            'ストア情報の確認日', '配信予定（事前登録）', '配信中', 'この記事の目次',
-           'ストアで詳しく見る', '最終的な価格と配信状況はストアの記載が最新です。'),
+           'ストアで詳しく見る', '最終的な価格と配信状況はストアの記載が最新です。',
+           '原文記事を読む'),
     'zh': ('速览', '上线时间', '价格', '平台', '开发商', '状态', '商店信息核对日期',
            '即将上线（可预约）', '已上线', '本文目录', '前往商店查看',
-           '最终价格与上架状态以商店页面为准。'),
+           '最终价格与上架状态以商店页面为准。',
+           '阅读原文报道'),
     'es': ('De un vistazo', 'Fecha de lanzamiento', 'Precio', 'Plataforma', 'Desarrollador',
            'Estado', 'Información de la tienda verificada', 'Próximo (prerregistro)',
            'Ya disponible', 'En esta página', 'Ver en la tienda',
-           'El precio y la disponibilidad definitivos se muestran en la tienda.'),
+           'El precio y la disponibilidad definitivos se muestran en la tienda.',
+           'Leer el artículo original'),
     'de': ('Auf einen Blick', 'Release-Datum', 'Preis', 'Plattform', 'Entwickler', 'Status',
            'Store-Informationen geprüft am', 'Demnächst (Vorbestellung)', 'Veröffentlicht',
            'Auf dieser Seite', 'Im Store ansehen',
-           'Endgültiger Preis und Verfügbarkeit stehen im Store-Eintrag.'),
+           'Endgültiger Preis und Verfügbarkeit stehen im Store-Eintrag.',
+           'Originalartikel lesen'),
     'fr': ('En un coup d’œil', 'Date de sortie', 'Prix', 'Plateforme', 'Développeur', 'Statut',
            'Infos boutique vérifiées le', 'Prochainement (précommande)', 'Disponible',
            'Sur cette page', 'Voir sur le store',
-           'Le prix et la disponibilité définitifs sont indiqués sur la boutique.'),
+           'Le prix et la disponibilité définitifs sont indiqués sur la boutique.',
+           "Lire l'article original"),
     'pt': ('Em resumo', 'Data de lançamento', 'Preço', 'Plataforma', 'Desenvolvedor', 'Status',
            'Informação da loja verificada em', 'Em breve (pré-registro)', 'Lançado',
-           'Nesta página', 'Ver na loja', 'O preço e a disponibilidade finais constam na loja.'),
+           'Nesta página', 'Ver na loja', 'O preço e a disponibilidade finais constam na loja.',
+           'Ler o artigo original'),
     'ru': ('Кратко', 'Дата выхода', 'Цена', 'Платформа', 'Разработчик', 'Статус',
            'Данные магазина проверены', 'Скоро (предзаказ)', 'Выпущено',
            'На этой странице', 'Смотреть в магазине',
-           'Итоговая цена и доступность указаны в магазине.'),
+           'Итоговая цена и доступность указаны в магазине.',
+           'Читать оригинальную статью'),
     'hi': ('संक्षेप में', 'रिलीज़ तिथि', 'कीमत', 'प्लेटफ़ॉर्म', 'डेवलपर', 'स्थिति',
            'स्टोर जानकारी जाँची गई', 'जल्द ही (प्री-ऑर्डर)', 'जारी', 'इस पृष्ठ पर',
-           'स्टोर पर देखें', 'अंतिम कीमत और उपलब्धता स्टोर पृष्ठ पर ही दिखाई गई है।'),
+           'स्टोर पर देखें', 'अंतिम कीमत और उपलब्धता स्टोर पृष्ठ पर ही दिखाई गई है।',
+           'मूल लेख पढ़ें'),
     'id': ('Sekilas', 'Tanggal rilis', 'Harga', 'Platform', 'Pengembang', 'Status',
            'Info toko diperiksa', 'Segera (pre-order)', 'Dirilis', 'Di halaman ini',
-           'Lihat di toko', 'Harga dan ketersediaan final ada di halaman toko.'),
+           'Lihat di toko', 'Harga dan ketersediaan final ada di halaman toko.',
+           'Baca artikel asli'),
     'ar': ('نظرة سريعة', 'تاريخ الإصدار', 'السعر', 'المنصة', 'المطور', 'الحالة',
            'آخر تحقق من بيانات المتجر', 'قريبًا (طلب مسبق)', 'تم الإصدار', 'في هذه الصفحة',
-           'عرض في المتجر', 'السعر والتوفر النهائيان معروضان في صفحة المتجر.'),
+           'عرض في المتجر', 'السعر والتوفر النهائيان معروضان في صفحة المتجر.',
+           'اقرأ المقال الأصلي'),
     'bn': ('এক নজরে', 'প্রকাশের তারিখ', 'মূল্য', 'প্ল্যাটফর্ম', 'ডেভেলপার', 'অবস্থা',
            'স্টোর তথ্য যাচাই', 'শীঘ্রই (প্রি-অর্ডার)', 'প্রকাশিত', 'এই পাতায়',
-           'স্টোরে দেখুন', 'চূড়ান্ত মূল্য ও প্রাপ্যতা স্টোর পাতায় দেখানো হয়।'),
+           'স্টোরে দেখুন', 'চূড়ান্ত মূল্য ও প্রাপ্যতা স্টোর পাতায় দেখানো হয়।',
+           'মূল নিবন্ধটি পড়ুন'),
 }
 DEFAULT_FACT = FACT_STR['en']
 
@@ -937,13 +950,17 @@ def game_facts(fm, md=''):
         'developer': (fm.get('developer') or '').strip(),
         'genre': (fm.get('genre') or '').strip(),
         'upcoming': upcoming,
+        'news': str(fm.get('news', '')).strip().lower() in ('1', 'true', 'yes', 'y'),
         'checked': (fm.get('date') or '').strip(),
         'image': (fm.get('image') or '').strip() or first_image(md),
     }
 
 
 def fact_box_html(lang, f):
-    """첫 화면 팩트박스 — 출시일·가격·상태를 먼저 보여줘 이탈을 줄인다."""
+    """첫 화면 팩트박스 — 출시일·가격·상태를 먼저 보여줘 이탈을 줄인다.
+    뉴스 재각색 글(news=true)은 스토어 상품이 아니므로 박스를 숨긴다."""
+    if f.get('news'):
+        return ''
     t = FACT_STR.get(lang, DEFAULT_FACT)
     status = t[7] if f['upcoming'] else (t[8] if f['releaseDate'] else '')
     rows = [(t[1], f['releaseDate']), (t[2], f['price']), (t[5], status),
@@ -981,11 +998,20 @@ def toc_html(body_html, lang):
             '</details>' % (htmllib.escape(t[9]), lis))
 
 
-def store_cta_html(lang, url, store_name):
-    """앱·게임 글 하단 = 스토어로 가는 카드 (경제용 제휴 박스 대체)."""
+def store_cta_html(lang, url, store_name, news=False):
+    """앱·게임 글 하단 카드 — 스토어 링크(기본) 또는 뉴스 원문 링크."""
     t = FACT_STR.get(lang, DEFAULT_FACT)
     if not url:
         return ''
+    if news:
+        # 뉴스 재각색 글: '스토어에서 보기'가 아니라 '원문 기사 보기'로 안내한다.
+        label = ('%s · %s' % (store_name, t[12])) if store_name else t[12]
+        return ('<aside class="mt-10 rounded-lg border border-fuchsia-200 dark:border-fuchsia-900 '
+                'bg-fuchsia-50/60 dark:bg-fuchsia-950/30 p-5 text-center">'
+                '<a class="inline-block px-5 py-2.5 rounded-md bg-fuchsia-700 hover:bg-fuchsia-800 '
+                'text-white text-sm font-semibold" rel="nofollow noopener" target="_blank" '
+                'href="%s">%s</a></aside>'
+                % (htmllib.escape(url), htmllib.escape(label)))
     label = ('%s · %s' % (store_name, t[10])) if store_name else t[10]
     return ('<aside class="mt-10 rounded-lg border border-fuchsia-200 dark:border-fuchsia-900 '
             'bg-fuchsia-50/60 dark:bg-fuchsia-950/30 p-5 text-center">'
@@ -1092,7 +1118,8 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     box = fact_box_html(lang, f) if is_game else ''
     toc = toc_html(body_html, lang) if is_game else ''
     top_ad = '' if is_game else ad_unit('post_top')
-    bottom = store_cta_html(lang, source_url, source_name) if is_game else affiliate_box(lang, category)
+    bottom = (store_cta_html(lang, source_url, source_name, news=bool(f.get('news')))
+              if is_game else affiliate_box(lang, category))
     # 사전예약 글: 헤더에 D-데이 칩. 공유 버튼 마운트(렌더는 main.js).
     dday_chip = ''
     if is_game and f.get('upcoming'):
