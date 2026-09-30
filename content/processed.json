@@ -126,5 +126,13 @@
   "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20260929a.htm": {
     "slug": "federal-reserve-board-1478a16716",
     "at": "2026-09-30T07:53:24.438522Z"
+  },
+  "https://www.bankofengland.co.uk/financial-policy-committee-record/2026/september-2026": {
+    "slug": "bank-of-england-22ded81bd1",
+    "at": "2026-09-30T10:49:05.770377Z"
+  },
+  "https://www.ecb.europa.eu//press/key/date/2026/html/ecb.sp260930~d495288355.en.html": {
+    "slug": "ecb-03ee9f9a0a",
+    "at": "2026-09-30T10:49:06.918720Z"
   }
 }
