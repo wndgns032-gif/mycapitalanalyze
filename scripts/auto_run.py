@@ -132,6 +132,10 @@ def main():
 
     step("git 동기화", git_sync())
     step("크롤링", run_py("crawler.py", 600))
+    # App Radar — 신규/출시예정 앱·게임 일 3건. rewrite.py 를 거치지 않고
+    # 완성본 md 를 content/posts/ 에 직접 만들므로 원문 파이프라인과 무관하다.
+    # 크롤링 다음에 두는 이유: 번역·빌드 전에 글 파일이 존재해야 하기 때문.
+    step("앱/게임 레이더", run_py("app_radar.py", 900))
     step("원문 재가공", run_py("rewrite.py", 900))
     # 글자수 보정은 대상이 수백 개라 매일 전부 돌리면 비용/시간이 폭발한다.
     # 1회 실행 예산(최신 12개 / 12분)만 쓰고 나머지는 다음 실행으로 넘긴다.

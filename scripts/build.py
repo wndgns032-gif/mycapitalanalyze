@@ -311,6 +311,9 @@ def md_to_html(text):
 
 def inline(s):
     s = htmllib.escape(s)
+    # 이미지 먼저 치환 — 아래 링크 정규식이 이미지의 ](...) 를 잘못 물지 않게 한다
+    s = re.sub(r'!\[(.+?)\]\((.+?)\)',
+               r'<img src="\2" alt="\1" loading="lazy" decoding="async" />', s)
     s = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', s)
     s = re.sub(r'\*(.+?)\*', r'<em>\1</em>', s)
     s = re.sub(r'\[(.+?)\]\((.+?)\)', r'<a href="\2">\1</a>', s)
