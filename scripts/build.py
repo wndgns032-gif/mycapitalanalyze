@@ -14,6 +14,7 @@ SEO: 페이지별 hreflang 상호 링크, NewsArticle/BreadcrumbList/FAQPage JSO
 사용법: python scripts/build.py
 """
 import json, os, re, glob, html as htmllib
+import datetime
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def _load_config():
@@ -126,6 +127,38 @@ WIDGET_STR = {
            'দেশ অনুযায়ী দর্শক — শেষ ৭ দিন', 'সংগ্রহ চলছে…', 'টি'),
 }
 DEFAULT_WIDGET = WIDGET_STR['en']
+
+# 검색/인기글/공유 위젯 문구.
+# (검색 제목, 검색 placeholder, 결과 없음, 결과 단위, 인기글 제목, 조회 단위, 링크 복사, 복사됨)
+UX_STR = {
+    'en': ('Search', 'Search posts…', 'No results found.', 'results',
+           'Popular this week', 'views', 'Copy link', 'Copied!'),
+    'ko': ('검색', '글 검색…', '결과가 없습니다.', '개 결과',
+           '이번 주 인기 글', '회', '링크 복사', '복사됐습니다!'),
+    'zh': ('搜索', '搜索文章…', '没有找到结果。', '条结果',
+           '本周热门文章', '次浏览', '复制链接', '已复制！'),
+    'ja': ('検索', '記事を検索…', '結果が見つかりません。', '件',
+           '今週の人気記事', '回', 'リンクをコピー', 'コピーしました！'),
+    'es': ('Buscar', 'Buscar artículos…', 'No se encontraron resultados.', 'resultados',
+           'Populares de esta semana', 'vistas', 'Copiar enlace', '¡Copiado!'),
+    'de': ('Suche', 'Beiträge suchen…', 'Keine Ergebnisse gefunden.', 'Ergebnisse',
+           'Diese Woche beliebt', 'Aufrufe', 'Link kopieren', 'Kopiert!'),
+    'fr': ('Recherche', 'Rechercher des articles…', 'Aucun résultat trouvé.', 'résultats',
+           'Populaires cette semaine', 'vues', 'Copier le lien', 'Copié !'),
+    'pt': ('Busca', 'Buscar artigos…', 'Nenhum resultado encontrado.', 'resultados',
+           'Populares desta semana', 'visualizações', 'Copiar link', 'Copiado!'),
+    'ru': ('Поиск', 'Поиск статей…', 'Ничего не найдено.', 'результатов',
+           'Популярное за неделю', 'просмотров', 'Копировать ссылку', 'Скопировано!'),
+    'id': ('Pencarian', 'Cari artikel…', 'Tidak ada hasil.', 'hasil',
+           'Populer minggu ini', 'kali dilihat', 'Salin tautan', 'Tersalin!'),
+    'hi': ('खोज', 'लेख खोजें…', 'कोई परिणाम नहीं मिला।', 'परिणाम',
+           'इस सप्ताह लोकप्रिय', 'बार देखा गया', 'लिंक कॉपी करें', 'कॉपी हो गया!'),
+    'ar': ('بحث', 'ابحث في المقالات…', 'لا توجد نتائج.', 'نتائج',
+           'الأكثر رواجًا هذا الأسبوع', 'مشاهدات', 'نسخ الرابط', 'تم النسخ!'),
+    'bn': ('অনুসন্ধান', 'নিবন্ধ খুঁজুন…', 'কোনো ফলাফল পাওয়া যায়নি।', 'টি ফলাফল',
+           'এই সপ্তাহে জনপ্রিয়', 'বার দেখা', 'লিংক কপি করুন', 'কপি হয়েছে!'),
+}
+DEFAULT_UX = UX_STR['en']
 
 GA4_ID = ((CONFIG.get('analytics') or {}).get('ga4_id') or '').strip()
 # Google Search Console HTML 태그 방식 인증 값 (없으면 메타 태그 미삽입)
@@ -514,6 +547,9 @@ def header_html(current):
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
+        <a class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="{search_path(current)}" aria-label="{htmllib.escape(UX_STR.get(current, DEFAULT_UX)[0])}">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+        </a>
         <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
           <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
           <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
@@ -729,7 +765,7 @@ def alternates_html(slug, available, section=None):
 
 def layout(lang, title, description, canonical, content_html, og_type='website',
            jsonld_blocks=None, slug=None, available=None, switcher_slug=None, section=None,
-           image=None):
+           image=None, noindex=False):
     dir_ = LANG_META[lang][1]
     og_img = ''
     if image:
@@ -737,6 +773,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
         og_img = (f'  <meta property="og:image" content="{htmllib.escape(abs_url)}" />\n'
                   f'  <meta name="twitter:image" content="{htmllib.escape(abs_url)}" />\n')
     head_extra = alternates_html(slug, available or {lang}, section)
+    robots = ('  <meta name="robots" content="noindex, follow" />\n' if noindex else '')
     ld = '\n'.join('  <script type="application/ld+json">' + json.dumps(b, ensure_ascii=False) + '</script>'
                    for b in (jsonld_blocks or []))
     return f'''<!DOCTYPE html>
@@ -746,7 +783,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{htmllib.escape(title)}</title>
   <meta name="description" content="{htmllib.escape(description)}" />
-  <link rel="canonical" href="{canonical}" />
+{robots}  <link rel="canonical" href="{canonical}" />
 {verify_html()}
 {head_extra}
   <link rel="alternate" type="application/rss+xml" href="{DOMAIN}/feed.xml" />
@@ -774,7 +811,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
 </main>
 
 {footer_html(lang)}
-<script src="/assets/js/main.js?v=2"></script>
+<script src="/assets/js/main.js?v=3"></script>
 {conversion_tracking_js()}
 </body>
 </html>
@@ -972,11 +1009,16 @@ def game_card_html(lang, p):
                  'text-center">%s</span>' % htmllib.escape(p.get('category', '')))
     badge = ''
     if f.get('upcoming'):
-        badge = ('<span class="absolute top-2 right-2 text-[11px] font-semibold px-2 py-0.5 '
+        badge = ('<span class="text-[11px] font-semibold px-2 py-0.5 '
                  'rounded bg-fuchsia-700 text-white">%s</span>' % htmllib.escape(t[7]))
+        dday = dday_badge_html(f.get('releaseDate', ''))
+        if dday:
+            badge += dday
     elif f.get('price'):
-        badge = ('<span class="absolute top-2 right-2 text-[11px] font-semibold px-2 py-0.5 '
+        badge = ('<span class="text-[11px] font-semibold px-2 py-0.5 '
                  'rounded bg-slate-800/90 text-white">%s</span>' % htmllib.escape(f['price']))
+    if badge:
+        badge = '<span class="absolute top-2 right-2 flex flex-col items-end gap-1">' + badge + '</span>'
     bits = [b for b in (f.get('releaseDate'), f.get('price'), f.get('platform')) if b]
     meta = ('<p class="mt-1 text-xs text-fuchsia-700 dark:text-fuchsia-300 font-medium">%s</p>'
             % htmllib.escape(' · '.join(bits))) if bits else ''
@@ -1051,6 +1093,18 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     toc = toc_html(body_html, lang) if is_game else ''
     top_ad = '' if is_game else ad_unit('post_top')
     bottom = store_cta_html(lang, source_url, source_name) if is_game else affiliate_box(lang, category)
+    # 사전예약 글: 헤더에 D-데이 칩. 공유 버튼 마운트(렌더는 main.js).
+    dday_chip = ''
+    if is_game and f.get('upcoming'):
+        dd = dday_str(f.get('releaseDate', ''))
+        if dd:
+            dday_chip = ('  <span class="bg-amber-500 text-white px-2 py-0.5 rounded '
+                         'text-xs font-semibold tracking-wide">%s</span>' % htmllib.escape(dd))
+    u = UX_STR.get(lang, DEFAULT_UX)
+    share_row = ('\n  <div id="mca-share" data-share-lang="%s" '
+                 'data-str-copy="%s" data-str-copied="%s" '
+                 'class="mt-5 flex flex-wrap items-center gap-2 text-sm"></div>'
+                 % (lang, htmllib.escape(u[6], quote=True), htmllib.escape(u[7], quote=True)))
     content = f'''<article class="max-w-3xl mx-auto">
   <header class="mb-6">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
@@ -1058,7 +1112,7 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
       <time datetime="{date}">{htmllib.escape(s[3])}: {date}</time>
       <span class="text-slate-400">&middot;</span>
       <span>{"Store Listing Summary" if is_game else "Independent Analysis"}</span>
-    </div>
+{dday_chip}    </div>
     <h1 class="text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 mb-4">{htmllib.escape(title)}</h1>
     <p class="text-slate-600 dark:text-slate-400">{htmllib.escape(desc)}</p>{src}
   </header>
@@ -1069,7 +1123,7 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
   {ad_unit('post_bottom')}
   {bottom}
   {related_html(lang, slug, posts_in_lang, s[5], href_fn)}
-</article>'''
+{share_row}</article>'''
 
     gnav = GAME_STR.get(lang, DEFAULT_GAME)[0] if is_game else None
     art_ld = news_article_ld(lang, slug, title, desc, date, body_md, source_name, source_url,
@@ -1096,22 +1150,31 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     return out_path
 
 
+def posts_payload(lang, posts, game_list):
+    """홈/검색 위젯 공용 데이터 — {t:제목, d:날짜, h:링크, k:종류, x:설명}."""
+    data = []
+    for p in posts:
+        data.append({'t': p['title'], 'd': p['date'], 'h': post_href(lang, p['slug']),
+                     'k': 'econ', 'x': (p.get('desc') or '')[:200]})
+    for p in game_list:
+        data.append({'t': p['title'], 'd': p['date'],
+                     'h': p.get('href') or game_post_href(lang, p['slug']),
+                     'k': p.get('kind', 'app'), 'x': (p.get('desc') or '')[:200]})
+    return json.dumps(data, ensure_ascii=False).replace('</', '<\\/')
+
+
 def homepage_widgets(lang, posts, game_list):
-    """메인 화면 오른쪽/아래에 다는 2개 위젯 — 일별 발행 달력 + 국가별 방문자 표.
+    """메인 화면 위젯 3개 — 일별 발행 달력 + 국가별 방문자 표 + 이번 주 인기 글.
 
     렌더링은 assets/js/main.js 가 한다. 여기선 데이터(전체 글 목록)와 마운트만 심는다.
     """
     w = WIDGET_STR.get(lang, DEFAULT_WIDGET)
-    data = []
-    for p in posts:
-        data.append({'t': p['title'], 'd': p['date'], 'h': post_href(lang, p['slug']), 'k': 'econ'})
-    for p in game_list:
-        data.append({'t': p['title'], 'd': p['date'],
-                     'h': p.get('href') or game_post_href(lang, p['slug']),
-                     'k': p.get('kind', 'app')})
-    payload = json.dumps(data, ensure_ascii=False).replace('</', '<\\/')
+    u = UX_STR.get(lang, DEFAULT_UX)
+    payload = posts_payload(lang, posts, game_list)
     attrs = (f'data-locale="{lang}" data-str-none="{htmllib.escape(w[1], quote=True)}" '
              f'data-str-wait="{htmllib.escape(w[3], quote=True)}" data-str-unit="{htmllib.escape(w[4], quote=True)}"')
+    pop_attrs = (f'data-locale="{lang}" data-str-wait="{htmllib.escape(w[3], quote=True)}" '
+                 f'data-str-views="{htmllib.escape(u[5], quote=True)}"')
     return f'''
 <section class="mt-10 grid gap-6 lg:grid-cols-2 items-start">
   <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
@@ -1123,8 +1186,43 @@ def homepage_widgets(lang, posts, game_list):
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(w[2])}</h2>
     <div id="mca-geo" data-locale="{lang}" data-str-wait="{htmllib.escape(w[3], quote=True)}"></div>
   </div>
+  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
+    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(u[4])}</h2>
+    <div id="mca-pop" {pop_attrs}></div>
+  </div>
 </section>
 <script>window.__POSTS__={payload};</script>'''
+
+
+def build_search_page(lang, posts, game_list, available):
+    """사이트 내 검색 — /search/, /{lang}/search/. noindex (검색 결과 페이지는 색인 대상이 아니다)."""
+    u = UX_STR.get(lang, DEFAULT_UX)
+    s = strs(lang)
+    payload = posts_payload(lang, posts, game_list)
+    content = f'''<div class="max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">{htmllib.escape(u[0])}</h1>
+  <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{htmllib.escape(s[1])}</p>
+  <div class="mt-5">
+    <input id="mca-search" type="search" autocomplete="off" autofocus
+           placeholder="{htmllib.escape(u[1], quote=True)}" aria-label="{htmllib.escape(u[0])}"
+           class="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700
+                  bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100
+                  focus:outline-none focus:ring-2 focus:ring-brand-500" />
+  </div>
+  <p id="mca-search-count" class="mt-3 text-sm text-slate-500 dark:text-slate-400"></p>
+  <div id="mca-search-out" class="mt-4 space-y-4"
+       data-str-none="{htmllib.escape(u[2], quote=True)}" data-str-unit="{htmllib.escape(u[3], quote=True)}"></div>
+</div>
+<script>window.__POSTS__={payload};</script>'''
+    canonical = DOMAIN + search_path(lang)
+    title = f'{u[0]} — {SITE_NAME}'
+    html_doc = layout(lang, title, s[1], canonical, content, 'website', [website_ld(lang, canonical)],
+                      slug=None, available=available, switcher_slug=None, noindex=True)
+    out_path = (os.path.join(BASE, 'search', 'index.html') if lang == 'en'
+                else os.path.join(BASE, lang, 'search', 'index.html'))
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    open(out_path, 'w', encoding='utf-8').write(html_doc)
+    return out_path
 
 
 def build_index(lang, posts, available, game_list=None):
@@ -1177,6 +1275,35 @@ def game_home_for(lang, kind):
     """/game/ (전체) 또는 /game/apps/ · /game/games/ 경로."""
     base = game_home_path(lang)
     return base if not kind else base + ('apps/' if kind == 'app' else 'games/')
+
+
+def search_path(lang):
+    """사이트 내 검색 페이지 경로 (noindex — 사이트맵 미포함)."""
+    return '/search/' if lang == 'en' else '/' + lang + '/search/'
+
+
+def dday_str(release_date, today=None):
+    """출시 D-데이 배지 문구. 미래면 'D-23'/오늘이면 'D-Day', 지났거나 무효면 ''."""
+    try:
+        d = datetime.date.fromisoformat((release_date or '').strip()[:10])
+    except ValueError:
+        return ''
+    t = today or datetime.date.today()
+    n = (d - t).days
+    if n > 0:
+        return 'D-%d' % n
+    if n == 0:
+        return 'D-Day'
+    return ''
+
+
+def dday_badge_html(release_date, cls=''):
+    """출시까지 남은 날짜 배지 (사전예약 글 카드/포스트 공용)."""
+    dd = dday_str(release_date)
+    if not dd:
+        return ''
+    return ('<span class="text-[11px] font-semibold px-2 py-0.5 rounded '
+            'bg-amber-500 text-white%s">%s</span>' % (cls, htmllib.escape(dd)))
 
 
 def build_game_index(lang, plist, available, kind=''):
@@ -1408,6 +1535,7 @@ def main():
                            avail_by_slug[p['slug']])
             total += 1
         build_index(lang, plist, home_available, game_posts.get(lang, []))
+        build_search_page(lang, plist, game_posts.get(lang, []), home_available)
         build_disclosure(lang, home_available)
 
     # 앱·게임 섹션(/game/) — 언어별 네이티브 글. 번역이 아니라 각 스토어에서 직접 수집한 글.

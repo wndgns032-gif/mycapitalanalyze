@@ -171,6 +171,187 @@
   render();
 })();
 
+/* ---------- 공용 헬퍼 (위젯 공통) ---------- */
+var MCA_API = 'https://tallywire.cronpulse.workers.dev';
+var MCA_NS = 'mca-visit-7f3q';
+function mcaKstDate(off) {
+  var t = new Date(Date.now() + 9 * 3600 * 1000 - (off || 0) * 864e5);
+  return t.toISOString().slice(0, 10).replace(/-/g, '');
+}
+function mcaPidOf(h) {
+  var m = String(h || '').split('/').pop().replace(/\.html$/, '');
+  return (m || '').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 60);
+}
+
+/* ============================================
+   메인 위젯 3) 글별 인기도 추적 (포스트 페이지)
+   - /post/*.html, /game/post/*.html (+ /{lang}/...) 에서만 동작.
+   - 같은 글은 하루 1회만 카운트 (KST 기준, localStorage).
+   ============================================ */
+(function () {
+  var m = location.pathname.match(/\/post\/([^\/]+)\.html$/);
+  if (!m) return;
+  var pid = m[1].replace(/[^a-zA-Z0-9-]/g, '').slice(0, 60);
+  if (!pid) return;
+  var d = mcaKstDate(0);
+  try { if (localStorage.getItem('mcv-p-' + pid + '-' + d)) return; } catch (e) {}
+  fetch(MCA_API + '/hit/' + MCA_NS + '/p' + d + '-' + pid, { mode: 'cors', cache: 'no-store' })
+    .then(function () { try { localStorage.setItem('mcv-p-' + pid + '-' + d, '1'); } catch (e) {} })
+    .catch(function () {});
+})();
+
+/* ============================================
+   메인 위젯 4) 공유 버튼 (포스트 페이지)
+   - X + WhatsApp + 링크 복사 (공통)
+   - ko=카카오톡, ja=LINE, zh=Weibo, ru=Telegram
+   ============================================ */
+(function () {
+  var mount = document.getElementById('mca-share');
+  if (!mount) return;
+  var lang = mount.dataset.shareLang || 'en';
+  var u = encodeURIComponent(location.href);
+  var t = encodeURIComponent(document.title);
+  var copyLbl = mount.dataset.strCopy || 'Copy link';
+  var copiedLbl = mount.dataset.strCopied || 'Copied!';
+  var chan = {
+    ko: ['\uCE74\uCE74\uC624\uD1A1', 'https://sharer.kakao.com/talk/sharer/link?url=' + u],
+    ja: ['LINE', 'https://social-plugins.line.me/lineit/share?url=' + u],
+    zh: ['\u5FAE\u535A', 'https://service.weibo.com/share/share.php?url=' + u + '&title=' + t],
+    ru: ['Telegram', 'https://t.me/share/url?url=' + u + '&text=' + t]
+  }[lang];
+  var links = [['X', 'https://twitter.com/intent/tweet?url=' + u + '&text=' + t]];
+  if (chan) links.push(chan);
+  links.push(['WhatsApp', 'https://wa.me/?text=' + t + '%20' + u]);
+  var html = links.map(function (l) {
+    return '<a class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border '
+      + 'border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 '
+      + 'hover:border-brand-400 hover:text-brand-600 text-xs font-medium transition-colors" '
+      + 'target="_blank" rel="noopener" href="' + l[1] + '">' + l[0] + '</a>';
+  }).join('');
+  html += '<button type="button" id="mca-share-copy" class="inline-flex items-center gap-1 px-3 py-1.5 '
+    + 'rounded-full border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 '
+    + 'hover:border-brand-400 hover:text-brand-600 text-xs font-medium transition-colors">'
+    + copyLbl + '</button>';
+  mount.innerHTML = html;
+  var btn = document.getElementById('mca-share-copy');
+  btn.onclick = function () {
+    try {
+      navigator.clipboard.writeText(location.href).then(function () {
+        btn.textContent = copiedLbl;
+        setTimeout(function () { btn.textContent = copyLbl; }, 2000);
+      });
+    } catch (e) {}
+  };
+})();
+
+/* ============================================
+   메인 위젯 5) 이번 주 인기 글 (홈)
+   - 최근 7일 KST × 이 언어의 글 최대 30개 조회 히트를 합산해 TOP 5.
+   - 1시간 로컬 캐시. 데이터가 없으면 안내 문구만.
+   ============================================ */
+(function () {
+  var mount = document.getElementById('mca-pop');
+  if (!mount || !window.__POSTS__) return;
+  var wait = mount.dataset.strWait || '…';
+  var views = mount.dataset.strViews || 'views';
+  var posts = window.__POSTS__.slice(0, 30);
+
+  function tagOf(k) {
+    var c = k === 'game' ? 'bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-900/40 dark:text-fuchsia-300'
+                         : k === 'app' ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300'
+                                       : '';
+    return k && k !== 'econ' ? '<span class="ml-1 px-1.5 py-0.5 rounded text-[10px] ' + c + '">' + k.toUpperCase() + '</span>' : '';
+  }
+
+  function render(rows) {
+    if (!rows.length) {
+      mount.innerHTML = '<p class="text-sm text-slate-500 dark:text-slate-400 py-4">' + wait + '</p>';
+      return;
+    }
+    mount.innerHTML = '<ol class="space-y-2">' + rows.map(function (r, i) {
+      return '<li class="flex items-baseline gap-2.5 text-sm">'
+        + '<span class="w-5 h-5 shrink-0 rounded-full bg-brand-600 text-white text-[11px] font-bold flex items-center justify-center">' + (i + 1) + '</span>'
+        + '<a class="truncate hover:underline text-slate-800 dark:text-slate-200" href="' + r.p.h + '">'
+        + String(r.p.t).replace(/</g, '&lt;') + '</a>' + tagOf(r.p.k)
+        + '<span class="ml-auto shrink-0 text-xs text-slate-500 tabular-nums">' + r.n + ' ' + views + '</span></li>';
+    }).join('') + '</ol>';
+  }
+
+  var cached = null;
+  try { cached = JSON.parse(localStorage.getItem('mcv-popstats') || 'null'); } catch (e) {}
+  if (cached && Date.now() - cached.t < 3600 * 1000) { render(cached.r); return; }
+  mount.innerHTML = '<p class="text-sm text-slate-500 dark:text-slate-400 py-4">' + wait + '</p>';
+
+  var days = [mcaKstDate(0), mcaKstDate(1), mcaKstDate(2), mcaKstDate(3),
+              mcaKstDate(4), mcaKstDate(5), mcaKstDate(6)];
+  Promise.all(posts.map(function (p) {
+    var pid = mcaPidOf(p.h);
+    if (!pid) return Promise.resolve(null);
+    return Promise.all(days.map(function (d) {
+      return fetch(MCA_API + '/get/' + MCA_NS + '/p' + d + '-' + pid, { mode: 'cors', cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (j) { return (j && j.count) || 0; })
+        .catch(function () { return 0; });
+    })).then(function (arr) {
+      return arr.reduce(function (a, b) { return a + b; }, 0);
+    }).then(function (n) { return n > 0 ? { p: p, n: n } : null; });
+  })).then(function (res) {
+    var rows = res.filter(Boolean).sort(function (a, b) { return b.n - a.n; }).slice(0, 5);
+    render(rows);
+    try { localStorage.setItem('mcv-popstats', JSON.stringify({ t: Date.now(), r: rows })); } catch (e) {}
+  }).catch(function () {});
+})();
+
+/* ============================================
+   메인 위젯 6) 사이트 내 검색 (/search/)
+   - 제목 + 설명 실시간 필터. window.__POSTS__ 사용 (요청 0건).
+   ============================================ */
+(function () {
+  var input = document.getElementById('mca-search');
+  var out = document.getElementById('mca-search-out');
+  var cnt = document.getElementById('mca-search-count');
+  if (!input || !out || !window.__POSTS__) return;
+  var none = out.dataset.strNone || 'No results found.';
+  var unit = out.dataset.strUnit || 'results';
+  var posts = window.__POSTS__;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function tagOf(k) {
+    var c = k === 'game' ? 'bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-900/40 dark:text-fuchsia-300'
+                         : k === 'app' ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300'
+                                       : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300';
+    return '<span class="shrink-0 px-1.5 py-0.5 rounded text-[10px] ' + c + '">' + (k === 'econ' ? 'ECON' : k.toUpperCase()) + '</span>';
+  }
+
+  function render() {
+    var q = input.value.trim().toLowerCase();
+    var list = q
+      ? posts.filter(function (p) { return (p.t + ' ' + (p.x || '')).toLowerCase().indexOf(q) !== -1; })
+      : posts;
+    cnt.textContent = list.length + ' ' + unit;
+    if (!list.length) {
+      out.innerHTML = '<p class="text-sm text-slate-500 dark:text-slate-400 py-8 text-center">' + esc(none) + '</p>';
+      return;
+    }
+    out.innerHTML = list.map(function (p) {
+      return '<article class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">'
+        + '<div class="flex items-center gap-2 text-xs text-slate-500 mb-1"><time>' + esc(p.d) + '</time>' + tagOf(p.k) + '</div>'
+        + '<h2 class="text-base font-semibold leading-snug"><a class="text-brand-600 dark:text-brand-400 hover:underline" href="' + esc(p.h) + '">' + esc(p.t) + '</a></h2>'
+        + (p.x ? '<p class="mt-1 text-sm text-slate-600 dark:text-slate-400 line-clamp-2">' + esc(p.x) + '</p>' : '')
+        + '</article>';
+    }).join('');
+  }
+  var tm = null;
+  input.addEventListener('input', function () {
+    clearTimeout(tm); tm = setTimeout(render, 120);
+  });
+  render();
+})();
+
 /* ============================================
    메인 위젯 2) 국가별 방문자 표 (최근 7일, tallywire)
    ============================================ */
