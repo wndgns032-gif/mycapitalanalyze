@@ -24,7 +24,9 @@ jobs:
 
       - name: Connectivity check (China sources)
         run: |
-          echo "--- news.yxrb.net ---"
+          echo "--- gamelook.com.cn (1순위) ---"
+          curl -s -o /dev/null -m 20 -w "%{http_code} %{time_total}s\n" http://www.gamelook.com.cn/ || echo "UNREACHABLE"
+          echo "--- news.yxrb.net (2순위) ---"
           curl -s -o /dev/null -m 20 -w "%{http_code} %{time_total}s\n" http://news.yxrb.net/ || echo "UNREACHABLE"
           echo "--- sogou ---"
           curl -s -o /dev/null -m 20 -w "%{http_code} %{time_total}s\n" "https://weixin.sogou.com/weixin?type=1&query=test" || echo "UNREACHABLE"

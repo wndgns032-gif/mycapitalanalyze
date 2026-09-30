@@ -37,7 +37,9 @@ SEEN_FILE = os.path.join(BASE, 'content', 'game_daily_seen.json')
 UA = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
       '(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36')
 
-GONGFANG = '游创工坊'   # 1순위 위챗 채널
+GONGFANG = '游创工坊'   # --url 수동 링크 전용 — Sogou 미색인으로 자동 발견 불가 (로이 2026-09-30)
+GAMELOOK_NAME = 'GameLook'  # 1순위 자동 소스 (공식 사이트 gamelook.com.cn, 로이 지정)
+GAMELOOK_HOME = 'http://www.gamelook.com.cn/'
 YXRB_NAME = '游戏日报'   # 2순위 위챗 채널 (공식 사이트 미러)
 YXRB_HOME = 'http://news.yxrb.net/'
 
@@ -97,7 +99,74 @@ def strip_tags(fragment):
     return htmlmod.unescape(txt)
 
 
-# ---------------------------------------------------------------- 소스 1) 游创工坊 (Sogou → 위챗)
+# ---------------------------------------------------------------- 소스 1) GameLook (공식 사이트)
+def fetch_gamelook(today_cn):
+    """gamelook.com.cn 에서 당일(중국 시간) 최신 기사 1개. 없으면 48시간 이내."""
+    try:
+        home = get(GAMELOOK_HOME)
+    except Exception as e:
+        print('   gamelook 홈 조회 실패: %s' % e)
+        return None
+    links = re.findall(r'href="(https?://www\.gamelook\.com\.cn/\d{4}/\d{2}/\d+/)"', home)
+    uniq = []
+    for l in links:
+        l = l.replace('https:', 'http:')
+        if l not in uniq:
+            uniq.append(l)
+    uniq.sort(reverse=True)   # URL 날짜 내림차순 = 최신 우선
+    for url in uniq[:6]:
+        art = fetch_gamelook_article(url, today_cn)
+        if art:
+            return art
+    print('   gamelook에서 가용 기사 없음')
+    return None
+
+
+def fetch_gamelook_article(url, today_cn):
+    try:
+        html = get(url)
+    except Exception:
+        return None
+    tm = re.search(r'<title>(.*?)</title>', html, re.S)
+    dm = re.search(r'(\d{4}-\d{2}-\d{2})', html)
+    if not (tm and dm):
+        return None
+    date = dm.group(1)
+    if not same_day_window(date, today_cn, 48):
+        return None
+    title = htmlmod.unescape(tm.group(1)).strip()
+    title = re.sub(r'\s*\|\s*游戏大观\s*\|.*$', '', title).strip()
+    cm = (re.search(r'<div class="entry-content[^"]*">(.*?)</div>\s*<(?:div|footer|section)',
+                    html, re.S)
+          or re.search(r'<div class="entry-content[^"]*">(.*)', html, re.S))
+    text = strip_tags(cm.group(1)).strip() if cm else ''
+    # 「GameLook专稿，禁止转载！」 표기는 원문 고지일 뿐 — 재각색 자료에서는 제거
+    text = re.sub(r'【[^】]*专稿[^】]*】', '', text).strip()
+    if len(text) < 500:
+        return None
+    # 본문 첫 이미지 → 없으면 og:image
+    img = ''
+    im = re.search(r'<img[^>]+src="([^"]+\.(?:jpg|jpeg|png|webp)[^"]*)"',
+                   cm.group(1) if cm else html, re.I)
+    if im:
+        img = im.group(1)
+    else:
+        im = re.search(r'og:image" content="([^"]+)"', html)
+        if im:
+            img = im.group(1)
+    return {
+        'title': title,
+        'author': GAMELOOK_NAME,
+        'date': date,
+        'url': url,
+        'text': text[:SRC_CAP],
+        'image': img,
+        'account': GAMELOOK_NAME,
+    }
+
+
+# -------------------------------------------------- 소스 보류) 游创工坊 (Sogou — 자동 발견 불가)
+# 2026-09-30 실측: 미인증 계정이라 Sogou 색인에 없음. --url 수동 링크 경로로만 사용.
 def fetch_gongfang(today_cn):
     """Sogou 위챗 기사 검색에서 游创工坊 계정의 최근 기사 1개를 가져온다.
 
@@ -456,9 +525,9 @@ def main():
         return 0
 
     if not art:
-        # 1순위 游创工坊 → 2순위 游戏日报
-        print('[1] %s (Sogou 위챗) 시도…' % GONGFANG)
-        art = fetch_gongfang(today_cn)
+        # 1순위 GameLook → 2순위 游戏日报 (로이 2026-09-30 지정)
+        print('[1] GameLook (공식 사이트) 시도…')
+        art = fetch_gamelook(today_cn)
         if art:
             print('    선정: %s / %s' % (art['title'][:40], art['date']))
         else:
