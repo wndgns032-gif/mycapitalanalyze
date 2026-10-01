@@ -13,7 +13,7 @@
     "enabled": true,
     "_enabled_note": "2026-09-30 제네시스가 true로 전환. 애드센스 승인 절차는 코드가 삽입된 상태에서 크롤러가 검토하는 구조이므로, 승인 대기 중 삽입이 오히려 정상. 미승인 계정은 광고가 서빙되지 않아 빈 박스도 발생하지 않는다.",
     "client": "ca-pub-9243770518153989",
-    "_slots_note": "2026-10-01 애드센스 승인 후 신규 광고단위(또끼-*)로 교체. post_top=디스플레이수직 / post_mid=인아티클(본문 중간) / post_bottom=멀티플렉스수평 / index_infeed=인피드 / index_bottom=멀티플렉스수직. index=기존 디스플레이 유지.",
+    "_slots_note": "2026-10-01 애드센스 승인 후 신규 광고단위(또끼-*). 글 페이지 4단위: 상단 디스플레이(post_top) → 본문 중간 인아티클(post_mid) → 본문 끝 멀티플렉스수평(post_bottom) → 관련 글 아래 멀티플렉스수직(post_related). 목록 3단위: 인피드(index_infeed) → 디스플레이(index) → 하단 멀티플렉스수직(index_bottom).",
     "slots": {
       "post_top": {
         "id": "5049933469",
@@ -39,6 +39,10 @@
         "layout_key": "-63+ca+8-3b+jw"
       },
       "index_bottom": {
+        "id": "8579367514",
+        "format": "autorelaxed"
+      },
+      "post_related": {
         "id": "8579367514",
         "format": "autorelaxed"
       }

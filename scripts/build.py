@@ -1127,7 +1127,8 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     mid_ad = ad_unit('post_mid')
     if mid_ad:
         parts = body_html.split('</p>')
-        if len(parts) >= 7:
+        # 글 분량이 3000자 이내로 줄어 문단 기준을 7→5 로 완화(2026-10-02)
+        if len(parts) >= 5:
             half = max(3, len(parts) // 2)
             body_html = ('</p>'.join(parts[:half]) + '</p>\n' + mid_ad + '\n'
                          + '</p>'.join(parts[half:]))
@@ -1163,6 +1164,7 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
   {ad_unit('post_bottom')}
   {bottom}
   {related_html(lang, slug, posts_in_lang, s[5], href_fn)}
+  {ad_unit('post_related', wrap_class='mt-8')}
 {share_row}</article>'''
 
     gnav = GAME_STR.get(lang, DEFAULT_GAME)[0] if is_game else None

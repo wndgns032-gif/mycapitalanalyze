@@ -25,12 +25,12 @@ FLASH_ONLY = bool(CONFIG.get('flash_only', True))
 
 # 용도별 제공자 우선순위 (로이 정책: 글쓰기=GLM / 점검=DeepSeek)
 PURPOSE_ORDER = {
-    # 게시글 작성·번역·길이보정
+    # 게시글 작성·번역·길이보정 — 무료 제공자 우선, 유료 DeepSeek 는 폴백
     'write': [p.strip().lower() for p in (CONFIG.get('write_provider_order')
-                                          or [(CONFIG.get('provider') or 'glm'), 'deepseek'])],
+                                          or DEFAULT_WRITE_ORDER)],
     # 사이트 점검·보고
     'check': [p.strip().lower() for p in (CONFIG.get('check_provider_order')
-                                          or [(CONFIG.get('check_provider') or 'deepseek'), 'glm'])],
+                                          or DEFAULT_CHECK_ORDER)],
 }
 PURPOSE_MODEL = {
     'write': (CONFIG.get('write_model') or '').strip(),
@@ -45,7 +45,20 @@ PURPOSE_MODEL = {
 DEFAULT_FLASH = {
     'deepseek': 'deepseek-flash',
     'glm': 'glm-5.3-flash',
+    # 무료 제공자 기본 모델 (2026-10-02 로이 지시: 무료 API 우선 → 실패 시 DeepSeek)
+    'gemini': 'gemini-flash-latest',        # Google AI Studio 무료 티어 (별칭이라 항상 최신 flash)
+    'groq': 'openai/gpt-oss-20b',           # Groq 무료 개발자 티어 (30 RPM / 1,000 RPD)
+    'openrouter': 'openrouter/free',        # OpenRouter 무료 모델 라우터 (하루 50회)
+    'nvidia': 'nvidia/deepseek-v4-flash',   # NVIDIA NIM 무료 티어 (일일 토큰 상한 없음)
 }
+
+# 무료 제공자 — 비용이 0원이므로 flash 전용 정책(비용 통제 목적)을 적용하지 않는다.
+# config 의 섹션에 "free": true 로 표시하거나 이름이 이 목록에 있으면 예외 처리한다.
+FREE_PROVIDERS = {'gemini', 'groq', 'openrouter', 'nvidia', 'cloudflare', 'mistral', 'cohere'}
+
+# config 에 순서가 없을 때의 기본 사슬 — 무료 → GLM → DeepSeek(유료 폴백)
+DEFAULT_WRITE_ORDER = ['gemini', 'groq', 'openrouter', 'nvidia', 'glm', 'deepseek']
+DEFAULT_CHECK_ORDER = ['groq', 'gemini', 'openrouter', 'deepseek']
 
 
 def _is_flash(model):
@@ -67,7 +80,10 @@ def _flash_model(name, sec, override=''):
 
 
 def chain(purpose='write'):
-    """사용 가능한 (name, base_url, api_key, model) 목록을 용도별 우선순위대로."""
+    """사용 가능한 (name, base_url, api_key, model) 목록을 용도별 우선순위대로.
+
+    무료 제공자(비용 0원)는 flash 전용 정책의 예외다 — 정책 목적이 비용 통제이기 때문.
+    """
     order = PURPOSE_ORDER.get(purpose) or PURPOSE_ORDER['write']
     override = PURPOSE_MODEL.get(purpose, '')
     out = []
@@ -78,17 +94,18 @@ def chain(purpose='write'):
         model = _flash_model(name, sec, override if name == order[0] else '')
         if not model:
             continue
-        if FLASH_ONLY and not _is_flash(model):
+        is_free = bool(sec.get('free')) or name in FREE_PROVIDERS
+        if FLASH_ONLY and not is_free and not _is_flash(model):
             continue
-        out.append((name, sec['base_url'].rstrip('/'), sec['api_key'].strip(), model))
+        out.append((name, sec['base_url'].rstrip('/'), sec['api_key'].strip(), model, is_free))
     return out
 
 
-# 하드 가드: 어떤 경로로도 flash 가 아닌 모델이 호출되면 즉시 중단.
+# 하드 가드: 어떤 경로로도 flash 가 아닌 유료 모델이 호출되면 즉시 중단.
 # (config 오타로 pro/추론 모델이 나가 비용이 폭주하는 것을 원천 차단)
 for _p in PURPOSE_ORDER:
     for _row in chain(_p):
-        if not _is_flash(_row[3]):
+        if not _row[4] and not _is_flash(_row[3]):
             raise SystemExit('[llm] flash 전용 정책 위반: purpose=%s provider=%s model=%s'
                              % (_p, _row[0], _row[3]))
 
@@ -106,7 +123,7 @@ def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,
                            % (purpose, FLASH_ONLY))
 
     last_err = None
-    for name, base_url, api_key, model in providers:
+    for name, base_url, api_key, model, is_free in providers:
         body = {
             'model': model,
             'messages': messages,

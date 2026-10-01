@@ -49,6 +49,9 @@ import app_radar as ar  # noqa: E402
 
 LOCALES = ar.LOCALES
 CJK = ar.CJK
+# 언어별 본문 하한 — 상한(3000자)은 전 언어 공통, 하한만 문자 밀도로 환산(2026-10-02 실측)
+# 실측 분포: 라틴 2400~2700 / ko 2000 / ja 1300 / zh 900~1100
+CJK_LO = {'zh': 1200, 'ja': 1600, 'ko': 1800}
 TITLE_MAX = ar.TITLE_MAX
 TITLE_DEFAULT = ar.TITLE_DEFAULT
 SEO_DESC_MIN = ar.SEO_DESC_MIN
@@ -426,9 +429,16 @@ def user_prompt(lang, lang_name, art, lo, hi, slug_hint='', dmin_prompt=None):
         "STRUCTURE (## headings, in this order, written natively in " + lang_name + "):\n"
         "## What Happened\n"
         "## Why It Matters\n"
-        "## The Bigger Picture\n"
         "## What To Watch Next\n"
-        "## FAQ  (3-4 questions as ### subheadings, each answered in 1-2 sentences)\n\n"
+        "## FAQ  (exactly 3 questions as ### subheadings, each answered in ONE sentence)\n\n"
+        "LENGTH DISCIPLINE — this is the rule most often failed\n"
+        "- The whole body MUST fit in " + str(hi) + " characters. Budget it before you write:\n"
+        "  opening ~120 words, 'What Happened' ~150, 'Why It Matters' ~140, "
+        "'What To Watch Next' ~120, FAQ 3×~35 words.\n"
+        "- Use SHORT paragraphs (2-3 sentences). No bullet lists of more than 4 items.\n"
+        "- Cut background and restatement. Do not repeat the headline in section 1.\n"
+        "- If you are running long, compress 'Why It Matters' first, then drop FAQ to 2 "
+        "questions — never exceed " + str(hi) + " characters.\n\n"
         "CONSTRAINTS\n"
         "- body length: " + str(lo) + " to " + str(hi) + " characters (count the final text).\n"
         "- description (SEO meta): " + str(dmin_prompt) + " to " + str(SEO_DESC_MAX)
@@ -483,8 +493,9 @@ def gen_lang(lang, lang_name, art, lo, hi, slug_hint=''):
                         'add the full FAQ' % (n, lo))
             print('   [%d] 본문 %d자 < 하한 %d' % (attempt, n, lo))
             continue
-        if n > int(hi * 1.4):
-            last_why = 'body was %d characters, maximum is %d' % (n, int(hi * 1.4))
+        # 상한은 10% 여유만 허용 — 3000자 이내 원칙을 지킨다(로이 2026-10-02)
+        if n > int(hi * 1.1):
+            last_why = 'body was %d characters, maximum is %d — cut the weakest sections' % (n, hi)
             print('   [%d] 본문 %d자 > 상한 %d' % (attempt, n, hi))
             continue
         if len(desc) < desc_min - 40:
@@ -592,7 +603,11 @@ def main():
     results = {}
     slug = ''
     for lang, lang_name in order:
-        lo, hi = (3200, 5000) if lang in CJK else (3000, 5000)
+        # 로이 지시(2026-10-02): 게임 뉴스 글은 모든 언어 3000자 이내로.
+        # (이전 CJK 3200~5000 / 라틴 3000~5000 → 실제 5800~6900자까지 나와 너무 길었다)
+        # 하한은 언어별 문자 밀도 환산 (실측: 라틴 2400~2700 / ko 2000 / ja 1300 / zh 900~1100)
+        lo = CJK_LO.get(lang) if lang in CJK else 2000
+        hi = 3000
         print('[%s] 생성 중…' % lang)
         obj = gen_lang(lang, lang_name, art, lo, hi, slug_hint=slug)
         if not obj:

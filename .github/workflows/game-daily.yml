@@ -37,6 +37,10 @@ jobs:
         env:
           GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
           GA4_ID: ${{ secrets.GA4_ID }}
           GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
           AFFILIATES_JSON: ${{ secrets.AFFILIATES_JSON }}
@@ -45,8 +49,13 @@ jobs:
           import json, os
           glm = os.environ.get('GLM_API_KEY', '').strip()
           ds  = os.environ.get('DEEPSEEK_API_KEY', '').strip()
-          if not (glm or ds):
-              raise SystemExit('GLM_API_KEY 또는 DEEPSEEK_API_KEY 시크릿이 필요합니다')
+          free_keys = [os.environ.get(k, '').strip()
+                       for k in ('GEMINI_API_KEY', 'GROQ_API_KEY', 'OPENROUTER_API_KEY',
+                                 'NVIDIA_API_KEY')]
+          # 무료 API 만 등록해도 동작해야 한다(로이 2026-10-02) → 키 하나라도 있으면 진행
+          if not (glm or ds or any(free_keys)):
+              raise SystemExit('GLM/DeepSeek 또는 무료 API(GEMINI/GROQ/OPENROUTER/NVIDIA) '
+                               '시크릿이 하나는 필요합니다')
           provider = 'glm' if glm else 'deepseek'
           ga4 = os.environ.get('GA4_ID', '').strip()
           gsc = os.environ.get('GOOGLE_SITE_VERIFICATION', '').strip()
@@ -62,8 +71,25 @@ jobs:
                   aff_cfg = {'enabled': False, 'offers': []}
           else:
               aff_cfg = {'enabled': False, 'offers': []}
+          # 무료 제공자 — 키가 없으면 llm.py 가 자동으로 건너뛴다.
+          # 우선순위: 무료(gemini/groq/openrouter/nvidia) → GLM → DeepSeek(유료 폴백)
+          def free_sec(key, base, model):
+              return {"api_key": (os.environ.get(key, '') or '').strip(),
+                      "base_url": base, "model": model, "free": True}
+
           cfg = {
             "provider": provider,
+            "gemini": free_sec('GEMINI_API_KEY',
+                               'https://generativelanguage.googleapis.com/v1beta/openai',
+                               'gemini-flash-latest'),
+            "groq": free_sec('GROQ_API_KEY', 'https://api.groq.com/openai/v1',
+                             'openai/gpt-oss-20b'),
+            "openrouter": free_sec('OPENROUTER_API_KEY', 'https://openrouter.ai/api/v1',
+                                   'openrouter/free'),
+            "nvidia": free_sec('NVIDIA_API_KEY', 'https://integrate.api.nvidia.com/v1',
+                               'nvidia/deepseek-v4-flash'),
+            "write_provider_order": ["gemini", "groq", "openrouter", "nvidia", "glm", "deepseek"],
+            "check_provider_order": ["groq", "gemini", "openrouter", "deepseek"],
             "glm": {
               "api_key": glm,
               "base_url": "https://open.bigmodel.cn/api/paas/v4",
