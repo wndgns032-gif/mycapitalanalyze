@@ -419,7 +419,8 @@ def collect(cc, hl, gl, use_play=True):
 
 
 def pick_one(cands, seen, pub_urls, pub_ids, today, rotate_idx):
-    """출시예정 → 게임 → 앱 순으로 1건. rotate_idx로 소스 순서를 섞는다."""
+    """로이 확정 우선순위 (2026-10-01) — 고정 순서, 회전 없음:
+       출시예정 게임 → 신작 게임 → 신작 앱 → (최후 비상용) 출시예정 앱."""
     fresh = [c for c in cands
              if c['key'] not in seen and c['key'] not in pub_ids and c['url'] not in pub_urls]
     if not fresh:
@@ -428,16 +429,25 @@ def pick_one(cands, seen, pub_urls, pub_ids, today, rotate_idx):
     def is_game(c):
         return 'game' in (c.get('category') or '').lower()
 
-    games = [c for c in fresh if is_game(c)]
-    apps = [c for c in fresh if not is_game(c)]
-    upcoming = [c for c in fresh
-                if c.get('released') and c['released'].replace(tzinfo=None) > today]
+    def is_upcoming(c):
+        return bool(c.get('released') and c['released'].replace(tzinfo=None) > today)
 
-    queues = [upcoming, games, apps]
-    for k in range(3):
-        q = queues[(rotate_idx + k) % 3]
+    games_up = [c for c in fresh if is_game(c) and is_upcoming(c)]     # 1순위
+    games_new = [c for c in fresh if is_game(c) and not is_upcoming(c)]  # 2순위
+    apps_new = [c for c in fresh if not is_game(c) and not is_upcoming(c)]  # 3순위
+    apps_up = [c for c in fresh if not is_game(c) and is_upcoming(c)]   # 최후 비상용
+
+    def rel_key(c):
+        return c.get('released') or datetime.datetime.min
+
+    for q, rev, tier in ((games_up, False, '출시예정게임'),
+                         (games_new, True, '신작게임'),
+                         (apps_new, True, '신작앱'),
+                         (apps_up, False, '출시예정앱(비상)')):
         if q:
-            q.sort(key=lambda c: c.get('released') or datetime.datetime.min, reverse=True)
+            # 출시예정은 임박순(오름차순), 나머지는 최신순(내림차순)
+            q.sort(key=rel_key, reverse=rev)
+            q[0]['_tier'] = tier
             return q[0]
     return fresh[0]
 
@@ -513,6 +523,12 @@ Your tone is plain, concrete and free of hype.
 FACT DISCIPLINE (highest priority): every price, date, feature, platform, device, region, rating, download count and sales figure must come only
 from the source material you are given. If the source material does not contain a fact, say so honestly in one short sentence instead of filling the gap.
 You never claim to have played, tested, reviewed or measured the product.
+
+NAME DISCIPLINE (SEO, very high priority): the product name is the single most important search term.
+Use the exact official name given in the material — verbatim, in its original script — in the title, the description, the opening section,
+the verdict block, and naturally at least 5 more times across the body sections and FAQ (aim for 8+ mentions total in a normal article).
+For games, never re-translate, abbreviate or rename the game title; if the store listing gives a localized name, use exactly that name every time.
+Never replace the name with pronouns or generic words like "this app" when the name would fit naturally.
 
 OUTPUT DISCIPLINE (second highest priority): you reply with one single raw JSON object and nothing else.
 No markdown code fence, no commentary before or after, no trailing comma.
@@ -843,6 +859,11 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "STATUS: " + status + "\n"
         "APP NAME: " + app_name + "\n"
         "OFFICIAL STORE URL: " + store_url + "\n\n"
+        "NAME FREQUENCY RULE (SEO-critical): use the exact app/game name \"" + app_name + "\" "
+        "verbatim throughout the article — title, description, opening, verdict block, and "
+        "naturally in every major body section plus at least one FAQ question. Total mentions "
+        "across the article: at least 8. Write \"" + app_name + "\" exactly as given, never "
+        "abbreviated, never re-translated, never swapped for \"this app\" or similar.\n\n"
         "TITLE FORMULAS — choose ONE structure and fill it in. Do NOT invent your own structure.\n"
         "1. <APP NAME> — is it worth buying? Price, features and who should skip\n"
         "2. <APP NAME> — what you get for the price: features, limits and who should skip\n"
@@ -1091,7 +1112,8 @@ def main():
             print('   신규 후보 없음 → 다음 언어')
             continue
         reserved.add(item['key'])
-        print('   선정: %s (%s)' % (item.get('name'), item['store']))
+        print('   선정: %s (%s%s)' % (item.get('name'), item['store'],
+                                       ' / ' + item.get('_tier', '')))
 
         mat, upcoming, img_url, disp_name = build_material(item, cc, hl, gl, today)
         if not mat:
