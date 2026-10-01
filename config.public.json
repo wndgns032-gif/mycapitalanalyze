@@ -13,12 +13,35 @@
     "enabled": true,
     "_enabled_note": "2026-09-30 제네시스가 true로 전환. 애드센스 승인 절차는 코드가 삽입된 상태에서 크롤러가 검토하는 구조이므로, 승인 대기 중 삽입이 오히려 정상. 미승인 계정은 광고가 서빙되지 않아 빈 박스도 발생하지 않는다.",
     "client": "ca-pub-9243770518153989",
-    "_slots_note": "myappanalyze.com 계정의 광고 단위를 재사용. 애드센스 > 사이트에서 mycapitalanalyze.com이 승인되어야 광고가 실제로 게재된다.",
+    "_slots_note": "2026-10-01 애드센스 승인 후 신규 광고단위(또끼-*)로 교체. post_top=디스플레이수직 / post_mid=인아티클(본문 중간) / post_bottom=멀티플렉스수평 / index_infeed=인피드 / index_bottom=멀티플렉스수직. index=기존 디스플레이 유지.",
     "slots": {
-      "post_top": { "id": "9628592280", "format": "auto" },
-      "post_bottom": { "id": "8776397810", "format": "autorelaxed" },
-      "index": { "id": "9628592280", "format": "auto" },
-      "index_infeed": { "id": "6675125886", "format": "fluid", "layout": "in-feed" }
+      "post_top": {
+        "id": "5049933469",
+        "format": "auto"
+      },
+      "post_mid": {
+        "id": "9700877493",
+        "format": "fluid",
+        "layout": "in-article"
+      },
+      "post_bottom": {
+        "id": "3845915588",
+        "format": "autorelaxed"
+      },
+      "index": {
+        "id": "9628592280",
+        "format": "auto"
+      },
+      "index_infeed": {
+        "id": "2664520840",
+        "format": "fluid",
+        "layout": "in-feed",
+        "layout_key": "-63+ca+8-3b+jw"
+      },
+      "index_bottom": {
+        "id": "8579367514",
+        "format": "autorelaxed"
+      }
     }
   },
   "affiliates": {
@@ -30,7 +53,9 @@
         "name": "TradingView",
         "url": "https://www.tradingview.com/?aff_id=1171086",
         "blurb": "Advanced charts, screeners and real-time market data. Free plan available.",
-        "categories": ["*"]
+        "categories": [
+          "*"
+        ]
       }
     ]
   }

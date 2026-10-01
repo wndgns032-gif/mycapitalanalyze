@@ -599,29 +599,33 @@ def ga_html():
 
 def _slot_entry(key):
     """슬롯 설정 파싱. "1234567890" 문자열 또는
-    {"id": "...", "format": "auto|autorelaxed|fluid", "layout": "in-feed"} 객체 지원."""
+    {"id","format","layout","layout_key"} 객체 지원. (layout_key: 인피드 전용)"""
     ent = AD_SLOTS.get(key)
     if isinstance(ent, dict):
         return ((ent.get('id') or '').strip(),
                 (ent.get('format') or 'auto').strip(),
-                (ent.get('layout') or '').strip())
-    return ((ent or '').strip() if isinstance(ent, str) else '', 'auto', '')
+                (ent.get('layout') or '').strip(),
+                (ent.get('layout_key') or '').strip())
+    return ((ent or '').strip() if isinstance(ent, str) else '', 'auto', '', '')
 
 
 def ad_unit(key, wrap_class='my-6'):
-    """AdSense 디스플레이 광고 유닛. 슬롯 ID가 설정되지 않았으면 빈 문자열.
+    """AdSense 광고 유닛. 슬롯 ID가 설정되지 않았으면 빈 문자열.
 
     애드센스는 각 <ins> 마다 한 번의 push가 필요하므로 유닛마다 스크립트를 붙인다.
     """
-    slot, fmt, layout = _slot_entry(key)
+    slot, fmt, layout, layout_key = _slot_entry(key)
     if not slot or not AD_CLIENT:
         return ''
     layout_attr = f' data-ad-layout="{htmllib.escape(layout)}"' if layout else ''
+    lkey_attr = (f' data-ad-layout-key="{htmllib.escape(layout_key)}"' if layout_key else '')
+    # 인아티클은 구글 예시 코드처럼 가운데 정렬을 명시한다
+    style = 'display:block; text-align:center;' if layout == 'in-article' else 'display:block'
     return (
         f'<div class="{wrap_class}" data-ad-slot-name="{htmllib.escape(key)}">\n'
-        f'  <ins class="adsbygoogle" style="display:block" '
+        f'  <ins class="adsbygoogle" style="{style}" '
         f'data-ad-client="{AD_CLIENT}" data-ad-slot="{htmllib.escape(slot)}" '
-        f'data-ad-format="{htmllib.escape(fmt)}" data-full-width-responsive="true"{layout_attr}></ins>\n'
+        f'data-ad-format="{htmllib.escape(fmt)}" data-full-width-responsive="true"{layout_attr}{lkey_attr}></ins>\n'
         '  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>\n'
         '</div>'
     )
@@ -1117,7 +1121,16 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     # 앱·게임 글: 첫 화면에 팩트박스 + 목차를 먼저 보여주고 광고는 그 아래로 내린다.
     box = fact_box_html(lang, f) if is_game else ''
     toc = toc_html(body_html, lang) if is_game else ''
-    top_ad = '' if is_game else ad_unit('post_top')
+    top_ad = ad_unit('post_top')
+    # 인아티클(본문 중간) 광고 — 문단 경계 중간 지점에 끼워 넣는다.
+    # 문단이 7개 미만이면 본문이 짧아 광고를 끼우지 않는다(2026-10-01 로이: 애드센스 승인 후 도입).
+    mid_ad = ad_unit('post_mid')
+    if mid_ad:
+        parts = body_html.split('</p>')
+        if len(parts) >= 7:
+            half = max(3, len(parts) // 2)
+            body_html = ('</p>'.join(parts[:half]) + '</p>\n' + mid_ad + '\n'
+                         + '</p>'.join(parts[half:]))
     bottom = (store_cta_html(lang, source_url, source_name, news=bool(f.get('news')))
               if is_game else affiliate_box(lang, category))
     # 사전예약 글: 헤더에 D-데이 칩. 공유 버튼 마운트(렌더는 main.js).
@@ -1272,6 +1285,7 @@ def build_index(lang, posts, available, game_list=None):
   </div>
   {widgets}
   {ad_unit('index')}
+  {ad_unit('index_bottom')}
 </div>'''
     canonical = DOMAIN + home_path(lang)
     title = f'{SITE_NAME} — {s[0]}'
@@ -1352,6 +1366,7 @@ def build_game_index(lang, plist, available, kind=''):
   {infeed}
   </div>
   {ad_unit('index')}
+  {ad_unit('index_bottom')}
 </div>'''
     canonical = DOMAIN + game_home_for(lang, kind)
     title = f'{g[1]} — {SITE_NAME}'
