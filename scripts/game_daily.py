@@ -335,7 +335,14 @@ def save_image(url, slug):
     if not url:
         return ''
     try:
-        data = get_bytes(url)
+        # img.gamelook.com.cn 은 Referer 없으면 403 (핫링크 차단, 2026-10-01 실측)
+        req = urllib.request.Request(url, headers={
+            'User-Agent': UA,
+            'Referer': GAMELOOK_HOME,
+            'Accept': 'image/avif,image/webp,image/*,*/*;q=0.8',
+        })
+        with urllib.request.urlopen(req, timeout=30) as r:
+            data = r.read()
         if len(data) < 2000:
             return ''
         ext = '.jpg'
@@ -401,8 +408,10 @@ fence, no commentary, no trailing comma. Inside string values, write every line 
 escape every double quote, so the JSON can always be parsed by a machine."""
 
 
-def user_prompt(lang, lang_name, art, lo, hi, slug_hint=''):
+def user_prompt(lang, lang_name, art, lo, hi, slug_hint='', dmin_prompt=None):
     tmax = TITLE_MAX.get(lang, TITLE_DEFAULT)
+    if dmin_prompt is None:
+        dmin_prompt = SEO_DESC_MIN
     slug_part = ('"slug": 5-8 lowercase English words joined by hyphens that describe the story.\n'
                  if not slug_hint else
                  '"slug": EXACTLY "%s" (reuse the given slug, do not change it).\n' % slug_hint)
@@ -422,7 +431,7 @@ def user_prompt(lang, lang_name, art, lo, hi, slug_hint=''):
         "## FAQ  (3-4 questions as ### subheadings, each answered in 1-2 sentences)\n\n"
         "CONSTRAINTS\n"
         "- body length: " + str(lo) + " to " + str(hi) + " characters (count the final text).\n"
-        "- description (SEO meta): " + str(SEO_DESC_MIN) + " to " + str(SEO_DESC_MAX)
+        "- description (SEO meta): " + str(dmin_prompt) + " to " + str(SEO_DESC_MAX)
         + " characters, plain sentences, no clickbait.\n"
         "- title: at most " + str(tmax) + " characters, states the concrete story.\n"
         "- markdown only (##, ###, lists). No HTML, no images.\n\n"
@@ -439,32 +448,49 @@ def user_prompt(lang, lang_name, art, lo, hi, slug_hint=''):
 def gen_lang(lang, lang_name, art, lo, hi, slug_hint=''):
     """1개 언어 생성. 성공 시 dict, 실패 시 None."""
     import llm
+    # 설명 하한 — 로이 SEO 규칙(라틴 300자)을 문자 체계별로 환산.
+    # 한국어·일본어·중국어는 한 글자의 정보량이 라틴의 ~2배라 300자를 요구하면
+    # LLM 이 자연스러운 설명보다 2배 길게 써야 해서 구조적으로 실패한다(2026-10-01 실측:
+    # CJK 7개 언어 전부 설명 180~280자로 3회 재시도 후 탈락). 60% 기준 180자로 환산한다.
+    desc_min = 180 if lang in CJK else SEO_DESC_MIN
+    last_why = ''
     for attempt in range(1, 4):
         msgs = [{'role': 'system', 'content': SYSTEM_GAME},
-                {'role': 'user', 'content': user_prompt(lang, lang_name, art, lo, hi, slug_hint)}]
+                {'role': 'user', 'content': user_prompt(lang, lang_name, art, lo, hi, slug_hint,
+                                                        dmin_prompt=desc_min)}]
         if attempt >= 2:
-            msgs.append({'role': 'user',
-                         'content': 'Your previous answer was rejected by the validator. Re-check: '
-                                    'JSON-only reply, body/description length limits, title limit, '
-                                    'official localized game names, language must be '
-                                    + lang_name + '.'})
+            # 동적 피드백 — 실제 부족분을 숫자로 알려준다(2026-10-01 ko 3연속 짧은 출력 대응)
+            hint = ('Your previous answer was rejected by the validator. '
+                    'The rejection reason was: ' + (last_why or 'length/JSON/name rules') + '. '
+                    'Fix THAT specific problem. Also re-check: JSON-only reply, '
+                    'official localized game names, everything in ' + lang_name + '. '
+                    'LENGTH IS COUNTED IN CHARACTERS OF THE FINAL TEXT — count carefully and '
+                    'err on the LONG side: description at least ' + str(desc_min + 40)
+                    + ' characters, body at least ' + str(lo) + ' characters.')
+            msgs.append({'role': 'user', 'content': hint})
         got, provider = llm.chat(msgs, purpose='write')
         obj = ar.extract_json(ar.strip_code_fences(got))
         body = (obj.get('body') or '').strip()
         title = (obj.get('title') or '').strip()
         desc = (obj.get('description') or '').strip()
         if not (body and title and desc):
+            last_why = 'missing title/description/body fields'
             print('   [%d] 항목 누락' % attempt)
             continue
         n = len(body)
         if n < lo - 400:
+            last_why = ('body was %d characters, minimum is %d — expand every section, '
+                        'add the full FAQ' % (n, lo))
             print('   [%d] 본문 %d자 < 하한 %d' % (attempt, n, lo))
             continue
         if n > int(hi * 1.4):
+            last_why = 'body was %d characters, maximum is %d' % (n, int(hi * 1.4))
             print('   [%d] 본문 %d자 > 상한 %d' % (attempt, n, hi))
             continue
-        if len(desc) < SEO_DESC_MIN - 20:
-            print('   [%d] 설명 %d자 < %d (로이 SEO 규칙: 300자 이상)' % (attempt, len(desc), SEO_DESC_MIN))
+        if len(desc) < desc_min - 40:
+            last_why = ('description was only %d characters, minimum is %d — write %d+ characters, '
+                        '5-6 full sentences' % (len(desc), desc_min, desc_min + 40))
+            print('   [%d] 설명 %d자 < %d (SEO 규칙, 문자체계 환산)' % (attempt, len(desc), desc_min))
             continue
         if not ar.script_ok(lang, title + ' ' + body[:800]):
             print('   [%d] 언어 불일치' % attempt)

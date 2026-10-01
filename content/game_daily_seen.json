@@ -1,8 +1,10 @@
 {
  "dates": {
-  "2026-09-30": "http://news.yxrb.net/2026/0930/7654.html"
+  "2026-09-30": "http://news.yxrb.net/2026/0930/7654.html",
+  "2026-10-01": "http://www.gamelook.com.cn/2026/09/603302/"
  },
  "urls": {
-  "http://news.yxrb.net/2026/0930/7654.html": "2026-09-30"
+  "http://news.yxrb.net/2026/0930/7654.html": "2026-09-30",
+  "http://www.gamelook.com.cn/2026/09/603302/": "2026-10-01"
  }
 }
