@@ -973,12 +973,14 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
     report = ('BUY-OR-SKIP GUIDE for a title that is not released yet'
               if not released else
               'BUY-OR-SKIP REPORT for a title that is already released')
-    structure = ('"## What <APP NAME> Is", "## Release Date and Pre-Order", "## Key Features", '
-                 '"## Who It Is For and Who Should Skip", "## Is It Worth Pre-Ordering", '
-                 '"## Pricing and What Is Still Unclear", "## FAQ"' if not released else
-                 '"## What <APP NAME> Is", "## Key Features", '
-                 '"## Who It Is For and Who Should Skip", "## Pricing and Availability", '
-                 '"## What to Expect", "## FAQ"')
+    # 섹션 라벨은 "무엇을 다루는지"만 전달한다 — 헤딩 문구 자체는 아래 HEADING LANGUAGE RULE 이
+    # 대상 언어로 쓰게 한다. (영어 라벨을 그대로 노출하면 ko/zh/hi 글에 영어 헤딩이 박힌다)
+    structure = ('"## what <APP NAME> is", "## release date and pre-order", "## key features", '
+                 '"## who it is for and who should skip", "## is it worth pre-ordering", '
+                 '"## pricing and what is still unclear", "## FAQ"' if not released else
+                 '"## what <APP NAME> is", "## key features", '
+                 '"## who it is for and who should skip", "## pricing and availability", '
+                 '"## what to expect", "## FAQ"')
     angle = ("The title is NOT released yet. Frame it as an upcoming launch and say clearly that "
              "details may change before release. Be explicit that pre-ordering is free and "
              "reversible only if the store listing actually says so." if not released else
@@ -994,7 +996,7 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
              "and what's new.\n"
              "- Treat store reviews as user opinions: attribute them with the natural wording of "
              + lang_name + " and never average anything yourself.\n"
-             "- \"## What to Expect\" describes what the official listing suggests about the "
+             "- [what to expect] describes what the official listing suggests about the "
              "experience, always framed as expectation, never as something you tried or "
              "measured.\n\n")
     faq_tbl = FAQ_LOCALIZED.get(lang, FAQ_DEFAULT)
@@ -1026,6 +1028,18 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "into a search box. Do not translate them, do not paraphrase them, and do not invent your "
         "own variant. If a heading word appears in the localization table, use it exactly as "
         "written.\n\n"
+        "HEADING LANGUAGE RULE (mandatory, most-violated rule):\n"
+        "- EVERY \"##\" section heading and EVERY \"###\" FAQ question MUST be written in "
+        + lang_name + ". NEVER leave an English heading in the article.\n"
+        "- The section list below uses plain English labels only to tell you what each section "
+        "covers. Keep the meaning, translate the wording into natural " + lang_name + " the way a "
+        "local publication in that market would headline it.\n"
+        "- Example: the label \"## key features\" must become \"## 주요 기능\" in Korean, "
+        "\"## 主な機能\" in Japanese, \"## 主要功能\" in Chinese, \"## Características "
+        "principales\" in Spanish — never \"## Key Features\".\n"
+        "- \"## FAQ\" must also be localized (for example \"## 자주 묻는 질문\", \"## よくある質問\", "
+        "\"## Preguntas frecuentes\"). Leaving it as \"## FAQ\" is a hard failure.\n"
+        "- The only thing that may stay in its original script is the app/game name itself.\n\n"
         "STATUS: " + status + "\n"
         "APP NAME: " + app_name + "\n"
         "OFFICIAL STORE URL: " + store_url + "\n\n"
@@ -1078,16 +1092,17 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "hash marks), answered in 2 to 4 sentences directly underneath it, with the direct answer "
         "in the first sentence. Use exactly these localized questions, in this order, verbatim: "
         + " | ".join(faq_q) + "\n\n"
-        "SECTION RULES\n"
-        "- \"## Pricing and Availability\" (or \"## Pricing and What Is Still Unclear\"): always "
+        "SECTION RULES (the English in brackets only tells you which section is meant — the heading "
+        "you actually print must follow the HEADING LANGUAGE RULE above)\n"
+        "- [pricing / availability] (or [pricing and what is still unclear]): always "
         "state the price model, and always state whether there are in-app purchases, a "
         "subscription, or a trial. If the store page says nothing about the price, say so in one "
         "honest sentence instead of guessing.\n"
-        "- \"## Who It Is For and Who Should Skip\": name at least one concrete type of user who "
+        "- [who it is for and who should skip]: name at least one concrete type of user who "
         "should skip it, based only on the features the listing actually shows.\n"
-        "- \"## Key Features\": turn the store text into 4 to 6 short items, each starting with a "
+        "- [key features]: turn the store text into 4 to 6 short items, each starting with a "
         "concrete noun or verb.\n"
-        "- \"## Cons and Limitations\" (or \"## What to Expect\"): name at least one honest "
+        "- [cons and limitations] (or [what to expect]): name at least one honest "
         "limitation or uncertainty.\n\n"
         + extra +
         "CONTENT LENGTH\n"
