@@ -13,14 +13,43 @@
     "enabled": true,
     "_enabled_note": "2026-09-30 제네시스가 true로 전환. 애드센스 승인 절차는 코드가 삽입된 상태에서 크롤러가 검토하는 구조이므로, 승인 대기 중 삽입이 오히려 정상. 미승인 계정은 광고가 서빙되지 않아 빈 박스도 발생하지 않는다.",
     "client": "ca-pub-9243770518153989",
-    "_slots_note": "myappanalyze.com 계정의 광고 단위를 재사용. 애드센스 > 사이트에서 mycapitalanalyze.com이 승인되어야 광고가 실제로 게재된다.",
+    "_slots_note": "2026-10-01 애드센스 승인 후 신규 광고단위(또끼-*). 글 페이지 4단위: 상단 디스플레이(post_top) → 본문 중간 인아티클(post_mid) → 본문 끝 멀티플렉스수평(post_bottom) → 관련 글 아래 멀티플렉스수직(post_related). 목록 3단위: 인피드(index_infeed) → 디스플레이(index) → 하단 멀티플렉스수직(index_bottom).",
     "slots": {
-      "post_top": { "id": "9628592280", "format": "auto" },
-      "post_bottom": { "id": "8776397810", "format": "autorelaxed" },
-      "index": { "id": "9628592280", "format": "auto" },
-      "index_infeed": { "id": "6675125886", "format": "fluid", "layout": "in-feed" }
+      "post_top": {
+        "id": "5049933469",
+        "format": "auto"
+      },
+      "post_mid": {
+        "id": "9700877493",
+        "format": "fluid",
+        "layout": "in-article"
+      },
+      "post_bottom": {
+        "id": "3845915588",
+        "format": "autorelaxed"
+      },
+      "index": {
+        "id": "9628592280",
+        "format": "auto"
+      },
+      "index_infeed": {
+        "id": "2664520840",
+        "format": "fluid",
+        "layout": "in-feed",
+        "layout_key": "-63+ca+8-3b+jw"
+      },
+      "index_bottom": {
+        "id": "8579367514",
+        "format": "autorelaxed"
+      },
+      "post_related": {
+        "id": "8579367514",
+        "format": "autorelaxed"
+      }
     }
   },
+  "apps_require_lang_support": true,
+  "_apps_require_lang_support_note": "2026-10-02 로이 지시: 해당 언어를 지원하지 않는 앱/게임은 그 언어로 발행하지 않는다. Apple은 스토어 표기 languageCodesISO2A, 구글플레이는 hl 리스팅이 영문과 동일한지로 판정. false로 바꾸면 검증을 건너뛴다(비상용).",
   "affiliates": {
     "enabled": true,
     "_note": "url이 비어 있으면 렌더링되지 않는다. rel=sponsored nofollow로 출력되어 FTC/표시광고법 고지를 만족한다.",
@@ -30,7 +59,9 @@
         "name": "TradingView",
         "url": "https://www.tradingview.com/?aff_id=1171086",
         "blurb": "Advanced charts, screeners and real-time market data. Free plan available.",
-        "categories": ["*"]
+        "categories": [
+          "*"
+        ]
       }
     ]
   }
