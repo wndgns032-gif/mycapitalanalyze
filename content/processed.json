@@ -158,5 +158,13 @@
   "https://www.bankofengland.co.uk/news/2026/october/appointment-of-members-of-the-edmc": {
     "slug": "bank-of-england-ec8f2871a4",
     "at": "2026-10-02T12:36:36.159389Z"
+  },
+  "https://www.federalreserve.gov/newsevents/pressreleases/enforcement20261002a.htm": {
+    "slug": "federal-reserve-board-59322cafa4",
+    "at": "2026-10-02T15:06:59.878975Z"
+  },
+  "https://www.cbo.gov/publication/62794": {
+    "slug": "cbo-531f6ea167",
+    "at": "2026-10-02T15:07:00.539788Z"
   }
 }
