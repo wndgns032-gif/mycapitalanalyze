@@ -22,6 +22,15 @@ App Radar v2 — 언어권별 스토어에서 신작/출시예정 앱·게임 �
 선정 규칙: 출시예정(사전예약/사전등록) 우선 → 게임 → 앱. 하루 3건(기본)을
 서로 다른 언어권에서 1건씩 뽑아 모든 언어가 고르게 채워지게 한다(로테이션 커서).
 
+지원 언어 검증 (로이 지시 2026-10-02):
+  한국어를 지원하지 않는 게임을 한국어로 발행할 필요는 없다.
+  → 우선순위대로 늘어놓은 뒤 앞에서부터 훑어, **그 언어를 실제로 지원하는** 첫 후보를 고른다.
+    Apple : lookup 의 languageCodesISO2A (스토어가 공식 표기하는 지원 언어 목록)
+    Play  : hl={lang} 리스팅 설명이 영문 리스팅과 그대로 같으면 미현지화로 판정
+            (비라틴 언어는 해당 문자군 존재 여부를 먼저 확인)
+  검증을 통과하는 후보가 없으면 그 언어로는 발행하지 않는다(억지로 쓰지 않음).
+  비상 시 config.public.json 의 apps_require_lang_support 를 false 로, 또는 --no-lang-gate.
+
 LLM 호출은 scripts/llm.py 에 위임 (Flash 전용 + 제공자 자동 폴백). 본 스크립트에 키 없음.
 
 사용법:
@@ -68,6 +77,43 @@ LOCALE_BY_CODE = {c[0]: c for c in LOCALES}
 # 비라틴 표기 언어 — 같은 정보량이 더 적은 글자로 표현된다 (글자수 기준 완화 대상)
 NON_LATIN = {'ko', 'ja', 'zh', 'ar', 'hi', 'bn', 'ru'}
 CJK = {'ko', 'ja', 'zh'}
+
+# ---------------------------------------------------------------------------
+# 지원 언어 검증 (로이 지시 2026-10-02)
+#   "한국어를 지원하지 않는 게임을 한국어로 발행할 필요가 없다"
+#   → 발행 전에 스토어 리스팅이 해당 언어를 실제로 지원하는지 확인한다.
+#     Apple : lookup 응답의 languageCodesISO2A (스토어가 공식 표기하는 지원 언어)
+#     Play  : hl={lang} 로 받은 설명이 영문 리스팅과 동일하면 미현지화로 판정
+#             (비라틴 언어는 해당 문자군 존재 여부로 먼저 확인)
+# ---------------------------------------------------------------------------
+APPLE_LANG_CODES = {
+    'en': {'EN'},
+    'ko': {'KO'},
+    'ja': {'JA'},
+    'zh': {'ZH', 'CN'},
+    'es': {'ES'},
+    'de': {'DE'},
+    'fr': {'FR'},
+    'pt': {'PT'},
+    'id': {'ID'},
+    'ru': {'RU'},
+    'hi': {'HI'},
+    'ar': {'AR'},
+    'bn': {'BN'},
+}
+
+SCRIPT_HINT = {
+    'ko': re.compile(r'[\uac00-\ud7af]'),
+    'ja': re.compile(r'[\u3040-\u30ff\uff66-\uff9f]'),
+    'zh': re.compile(r'[\u4e00-\u9fff]'),
+    'ar': re.compile(r'[\u0600-\u06ff]'),
+    'hi': re.compile(r'[\u0900-\u097f]'),
+    'bn': re.compile(r'[\u0980-\u09ff]'),
+    'ru': re.compile(r'[\u0400-\u04ff]'),
+}
+
+# 언어 검증 때문에 후보를 최대 몇 개까지 뒤져볼지 (HTTP 호출 폭주 방지)
+MAX_TRY = 40
 
 # 구글플레이 사전등록(출시예정) 표기 — 언어권별 버튼/배지 문구
 PREORDER_MARKERS = [
@@ -191,10 +237,18 @@ def published_meta(dirs):
 
 # ---------------------------------------------------------------- Apple
 
+# Apple RSS 피드의 카테고리 라벨은 현지어로 온다(게임/ゲーム/游戏/ Games ...).
+# genre=6014 파라미터는 레거시 RSS에서 무시된다(실측: 게임 피드와 일반 피드 결과 동일).
+# → 게임 판정은 1차로 이 현지어 라벨, 2차로 lookup 의 영문 primaryGenreName 으로 한다.
+GAME_WORDS = ('game', 'games', '게임', 'ゲーム', '游戏', '遊戲', 'juegos', 'jeux',
+              'jogos', 'spiele', 'spiel', 'giochi', 'игры', 'игра', 'permainan',
+              'trò chơi', 'गेम', 'গেম', 'ألعاب')
+GAME_WORD_RE = re.compile('|'.join(re.escape(w) for w in GAME_WORDS), re.I)
+
+
 def apple_feeds(cc):
     return [
         'https://itunes.apple.com/%s/rss/newapplications/limit=100/json' % cc,
-        'https://itunes.apple.com/%s/rss/newapplications/limit=100/genre=6014/json' % cc,
         'https://itunes.apple.com/%s/rss/newfreeapplications/limit=100/json' % cc,
     ]
 
@@ -241,14 +295,42 @@ def parse_apple_feed(data, cc):
     return out
 
 
+_CACHE = {}
+
+
 def apple_lookup(app_id, cc):
+    ck = 'apple:%s:%s' % (app_id, cc)
+    if ck in _CACHE:
+        return _CACHE[ck]
     try:
         d = get_json('https://itunes.apple.com/lookup?id=%s&country=%s' % (app_id, cc))
         res = (d or {}).get('results') or []
-        return res[0] if res else {}
+        out = res[0] if res else {}
     except Exception as ex:
         print('   lookup 실패(%s): %s' % (app_id, str(ex)[:80]))
-        return {}
+        out = {}
+    _CACHE[ck] = out
+    return out
+
+
+def apple_lookup_many(app_ids, cc):
+    """Apple lookup 은 id 파라미터를 여러 개 받는다 → 후보 수십 개를 한 번에 조회.
+    지원 언어 검증을 후보 여러 개에 한꺼번에 적용하려고 미리 캐시를 채워둔다."""
+    # 주의: id 파라미터를 반복(id=1&id=2)하면 마지막 것 하나만 돌아온다 → 쉼표로 묶어야 한다.
+    ids = [str(i) for i in app_ids if str(i).isdigit()]
+    for i in range(0, len(ids), 50):
+        chunk = ids[i:i + 50]
+        url = ('https://itunes.apple.com/lookup?id=%s&country=%s'
+               % (','.join(chunk), cc))
+        try:
+            d = get_json(url)
+        except Exception as ex:
+            print('   batch lookup 실패: %s' % str(ex)[:60])
+            continue
+        for r in (d or {}).get('results') or []:
+            tid = str(r.get('trackId') or '')
+            if tid:
+                _CACHE['apple:%s:%s' % (tid, cc)] = r
 
 
 def apple_reviews(app_id, cc, limit=3):
@@ -312,6 +394,15 @@ def play_pkg_ids(html_text, limit=24):
 
 def play_details(pkg, hl, gl):
     """상세 페이지 파싱: 이름·개발자·설명·평점·가격·이미지·사전등록 여부."""
+    ck = 'play:%s:%s:%s' % (pkg, hl, gl)
+    if ck in _CACHE:
+        return _CACHE[ck]
+    out = _play_details_uncached(pkg, hl, gl)
+    _CACHE[ck] = out
+    return out
+
+
+def _play_details_uncached(pkg, hl, gl):
     url = 'https://play.google.com/store/apps/details?id=%s&hl=%s&gl=%s' % (pkg, hl, gl)
     try:
         page = get_text(url)
@@ -418,16 +509,33 @@ def collect(cc, hl, gl, use_play=True):
     return uniq
 
 
-def pick_one(cands, seen, pub_urls, pub_ids, today, rotate_idx):
+def mark_games(cands, cc):
+    """게임 여부를 후보마다 확정한다.
+    Apple 은 lookup 의 영문 primaryGenreName(스토어프론트와 무관하게 영어로 온다)으로,
+    조회 실패 시에만 현지어 카테고리 라벨로 판정한다."""
+    for c in cands:
+        if c.get('store') == 'apple':
+            d = _CACHE.get('apple:%s:%s' % (c['ident'], cc)) or {}
+            if d.get('primaryGenreName'):
+                c['game'] = 'yes' if d['primaryGenreName'] == 'Games' else 'no'
+                continue
+        c['game'] = 'yes' if GAME_WORD_RE.search(c.get('category') or '') else 'no'
+    return cands
+
+
+def rank_candidates(cands, seen, pub_urls, pub_ids, today):
     """로이 확정 우선순위 (2026-10-01) — 고정 순서, 회전 없음:
-       출시예정 게임 → 신작 게임 → 신작 앱 → (최후 비상용) 출시예정 앱."""
+       출시예정 게임 → 신작 게임 → 신작 앱 → (최후 비상용) 출시예정 앱.
+
+    우선순위 전체를 '순서대로 늘어놓은 리스트'로 돌려준다. 호출부가 앞에서부터
+    하나씩 지원 언어를 검증해, 그 언어를 실제로 지원하는 첫 후보를 발행한다."""
     fresh = [c for c in cands
              if c['key'] not in seen and c['key'] not in pub_ids and c['url'] not in pub_urls]
     if not fresh:
-        return None
+        return []
 
     def is_game(c):
-        return 'game' in (c.get('category') or '').lower()
+        return c.get('game') == 'yes'
 
     def is_upcoming(c):
         return bool(c.get('released') and c['released'].replace(tzinfo=None) > today)
@@ -440,16 +548,76 @@ def pick_one(cands, seen, pub_urls, pub_ids, today, rotate_idx):
     def rel_key(c):
         return c.get('released') or datetime.datetime.min
 
+    out = []
     for q, rev, tier in ((games_up, False, '출시예정게임'),
                          (games_new, True, '신작게임'),
                          (apps_new, True, '신작앱'),
                          (apps_up, False, '출시예정앱(비상)')):
-        if q:
-            # 출시예정은 임박순(오름차순), 나머지는 최신순(내림차순)
-            q.sort(key=rel_key, reverse=rev)
-            q[0]['_tier'] = tier
-            return q[0]
-    return fresh[0]
+        # 출시예정은 임박순(오름차순), 나머지는 최신순(내림차순)
+        for c in sorted(q, key=rel_key, reverse=rev):
+            c['_tier'] = tier
+            out.append(c)
+    return out
+
+
+def pick_one(cands, seen, pub_urls, pub_ids, today, rotate_idx=None):
+    """하위 호환용 — 우선순위 1위 후보만 돌려준다."""
+    r = rank_candidates(cands, seen, pub_urls, pub_ids, today)
+    return r[0] if r else None
+
+
+# ---------------------------------------------------------------- 지원 언어 검증
+
+def apple_lang_ok(detail, lang):
+    """Apple 스토어가 표기한 지원 언어(languageCodesISO2A)에 lang 이 있는지.
+    반환 (True/False/None, 이유) — None 은 '스토어가 언어 정보를 주지 않아 판정 보류'."""
+    codes = detail.get('languageCodesISO2A') or []
+    if not codes:
+        return None, '언어 정보 미공개(보류)'
+    want = APPLE_LANG_CODES.get(lang, {lang.upper()})
+    ups = []
+    for c in codes:
+        u = str(c).upper().replace('_', '-')
+        if u not in ups:
+            ups.append(u)
+    for u in ups:
+        for w in want:
+            if u == w or u.startswith(w + '-'):
+                return True, '/'.join(ups[:14])
+    return False, '지원언어=' + '/'.join(sorted(set(ups))[:14])
+
+
+def play_lang_ok(desc_local, pkg, hl, gl):
+    """구글플레이: hl 로 받은 리스팅이 그 언어로 실제 현지화돼 있는지."""
+    base = (hl or 'en').split('-')[0].lower()
+    if base == 'en':
+        return None, '영어는 기본 리스팅(판정 불가)'
+    if not desc_local:
+        return False, '설명 없음'
+    hint = SCRIPT_HINT.get(base)
+    if hint and hint.search(desc_local):
+        return True, '현지 문자 확인'
+    eng = play_details(pkg, 'en', 'us')
+    ed = re.sub(r'\s+', '', (eng or {}).get('description') or '')
+    if not ed:
+        return None, '영문 리스팅 조회 실패(보류)'
+    if re.sub(r'\s+', '', desc_local)[:1000] == ed[:1000]:
+        return False, '영문 리스팅과 동일(미현지화)'
+    return True, '영문 리스팅과 상이'
+
+
+def lang_gate(item, lang, cc, hl, gl):
+    """후보가 이번에 발행하려는 언어를 실제로 지원하는지.
+    (ok, 이유) — ok 가 False 면 그 언어로는 발행하지 않는다."""
+    if item['store'] == 'apple':
+        detail = apple_lookup(item['ident'], cc)
+        if not detail:
+            return False, '상세 조회 실패'
+        return apple_lang_ok(detail, lang)
+    d = play_details(item['ident'], hl, gl)
+    if not d or not d.get('description'):
+        return False, '상세 조회 실패'
+    return play_lang_ok(d.get('description'), item['ident'], hl, gl)
 
 
 # ---------------------------------------------------------------- 자료/프롬프트
@@ -473,6 +641,8 @@ def build_material(item, cc, hl, gl, today):
             'DEVELOPER: %s' % (detail.get('artistName') or item.get('artist', '')),
             'STORE CATEGORY: %s' % (detail.get('primaryGenreName') or item.get('category', '')),
             'GENRES: %s' % ', '.join(detail.get('genres') or []),
+            'SUPPORTED LANGUAGES: %s' % (', '.join(detail.get('languageCodesISO2A') or [])
+                                         or 'not disclosed'),
             'PRICE: %s' % (detail.get('formattedPrice') or 'not disclosed'),
             'VERSION: %s' % (detail.get('version') or 'n/a'),
             'STATUS: %s' % (('UPCOMING / PRE-ORDER (release date: %s)' % rel.strftime('%Y-%m-%d'))
@@ -1039,6 +1209,8 @@ def main():
                     help='오늘 이미 발행한 언어도 무시하고 추가 생성')
     ap.add_argument('--dry', action='store_true')
     ap.add_argument('--no-play', action='store_true', help='구글플레이 소스 제외')
+    ap.add_argument('--no-lang-gate', action='store_true',
+                    help='지원 언어 검증 끄기(비상용: 후보가 없을 때만 사용)')
     ap.add_argument('--base', default=BASE)
     args = ap.parse_args()
 
@@ -1052,6 +1224,10 @@ def main():
     per_lang = args.per_lang or int(cfg.get('apps_per_lang_per_day', 1))
     cmin = int(cfg.get('app_char_min', cfg.get('char_min', 3000)))
     cmax = int(cfg.get('app_char_max', cfg.get('char_max', 5000)))
+    # 로이 지시(2026-10-02): 그 언어를 지원하지 않는 앱/게임은 그 언어로 발행하지 않는다.
+    pubcfg = load_json(os.path.join(base, 'config.public.json'), {})
+    strict_lang = not args.no_lang_gate and bool(
+        pubcfg.get('apps_require_lang_support', cfg.get('apps_require_lang_support', True)))
 
     sys.path.insert(0, os.path.join(base, 'scripts'))
     try:
@@ -1107,20 +1283,44 @@ def main():
         print('\n[%s] apple=%s / play=%s-%s' % (lang, cc, gl, hl))
         cands = collect(cc, hl, gl, use_play=not args.no_play)
         print('   후보 %d개' % len(cands))
-        item = pick_one(cands, seen | reserved, pub_urls, pub_ids, today, tried)
-        if not item:
+
+        # Apple 은 후보 전체를 배치로 한 번에 조회해 캐시를 채운다 →
+        # 지원 언어 검증과 게임 판정을 후보당 HTTP 1회가 아니라 언어권당 2~3회로 끝낸다.
+        # (반드시 순위 계산보다 먼저: 게임 여부가 우선순위를 결정한다)
+        apple_lookup_many([c['ident'] for c in cands if c['store'] == 'apple'], cc)
+        mark_games(cands, cc)
+
+        rank = rank_candidates(cands, seen | reserved, pub_urls, pub_ids, today)
+        if not rank:
             print('   신규 후보 없음 → 다음 언어')
             continue
-        reserved.add(item['key'])
-        print('   선정: %s (%s%s)' % (item.get('name'), item['store'],
-                                       ' / ' + item.get('_tier', '')))
 
-        mat, upcoming, img_url, disp_name = build_material(item, cc, hl, gl, today)
-        if not mat:
-            print('   상세 조회 실패 → 건너뜀')
-            seen.add(item['key'])
-            save_seen(seen_file, seen)
+        # 우선순위 앞에서부터 훑어 "이 언어를 실제로 지원하는" 첫 후보를 고른다.
+        item = None
+        mat = upcoming = img_url = disp_name = None
+        for cand in rank[:MAX_TRY]:
+            cname = cand.get('name') or cand.get('ident')
+            if strict_lang:
+                ok, why = lang_gate(cand, lang, cc, hl, gl)
+                if ok is False:
+                    print('   제외(미지원 언어): %s [%s] — %s'
+                          % (cname, cand.get('_tier', ''), why))
+                    continue
+            m, up, iu, dn = build_material(cand, cc, hl, gl, today)
+            if not m:
+                print('   제외(자료 없음): %s' % cname)
+                seen.add(cand['key'])
+                save_seen(seen_file, seen)
+                continue
+            item, mat, upcoming, img_url, disp_name = cand, m, up, iu, dn
+            break
+
+        if not item:
+            print('   %s 언어를 지원하는 신규 후보 없음 → 다음 언어' % lang)
             continue
+        reserved.add(item['key'])
+        print('   선정: %s (%s / %s)' % (item.get('name'), item['store'],
+                                          item.get('_tier', '')))
         if args.dry:
             print('   출시예정=%s / 자료 %d자 / 표시명=%s' % (upcoming, len(mat), disp_name))
             print('\n'.join('   ' + l for l in mat.split('\n')[:10]))
