@@ -173,6 +173,42 @@ def calc_ok(expr, claimed):
     return ok, f'{expr} = {val:.4g} (주장 {clm})'
 
 
+def _choice_num(s):
+    """선택지 텍스트에서 첫 숫자를 꺼낸다('25%' → 25.0, '약 30명' → 30.0)."""
+    m = re.findall(r'-?\d+(?:\.\d+)?', str(s).replace(',', ''))
+    return float(m[0]) if m else None
+
+
+def fix_psat_answer(p):
+    """calc_value 와 일치하는 선택지를 정답으로 맞춘다(모델이 정답 위치를 잘못 찍은 경우 보정).
+    일치하는 선택지가 아예 없으면 False(폐기)."""
+    cv = _choice_num(p.get('calc_value'))
+    if cv is None:
+        return False
+    ch = p.get('choices') or []
+    a = p.get('answer')
+    # calc_value 가 비율(0.xx)인데 선택지가 퍼센트(xx)인 경우를 커버: cv·cv*100·cv/100 모두 대조
+    cands = [cv]
+    if cv != 0:
+        cands.append(cv * 100)
+        cands.append(cv / 100)
+    tol = max(0.02, abs(cv) * 0.02)
+    if isinstance(a, int) and 0 <= a < len(ch):
+        n = _choice_num(ch[a])
+        for cc in cands:
+            if n is not None and abs(n - cc) <= max(0.02, abs(cc) * 0.02):
+                return True
+    # 정답이 calc 와 안 맞으면 → calc 에 맞는 선택지를 찾아 보정
+    for i, c in enumerate(ch):
+        n = _choice_num(c)
+        for cc in cands:
+            if n is not None and abs(n - cc) <= max(0.02, abs(cc) * 0.02):
+                print(f'    · PSAT 정답 보정: {a} → {i} (calc={cv}, 선택지={c})')
+                p['answer'] = i
+                return True
+    return False
+
+
 # ---------- 트랙별 생성 + 검증 ----------
 def gen_history(topic):
     system = ('당신은 한국사능력검정시험 심화(1~3급) 대비 학습 콘텐츠를 만드는 출제자입니다. '
@@ -272,8 +308,8 @@ def gen_psat(ptype):
  "type_card": {{"name": "{ptype}", "steps": ["풀이 1단계", "2단계", "3단계"],
                 "pitfall": "함정 한 줄", "shortcut": "암기용 요약 공식"}},
  "problems": [{{"title": "표 제목",
-   "table": {{"headers": ["구분", "2024", "2025"], "rows": [["수출액(억 달러)", "120", "150"]]}},
-   "q": "발문", "choices": ["①...", "②...", "③...", "④...", "⑤..."], "answer": 0,
+   "table": {{"headers": ["구분", "2024", "2025"], "rows": [["수출액(억 달러)", "120", "150"], ["수입액(억 달러)", "80", "90"]]}},
+   "q": "발문", "choices": ["20%", "25%", "30%", "35%", "40%"], "answer": 1,
    "solution": "풀이 3~4문장",
    "calc_expr": "150/120-1", "calc_value": "0.25"}}]
 }}
@@ -283,6 +319,10 @@ def gen_psat(ptype):
   파이썬이 다시 계산해 대조하므로 반드시 일치해야 합니다.
 - 표 숫자는 계산이 깔끔하게 떨어지도록 만드세요(예: 120→150).
 - 정답이 "계산 결과"인 문항으로 만드세요(주관식 서술 금지).
+- 정답 선택지에 표시된 숫자가 calc_value 와 같아야 합니다(예: calc_value=0.25 → "25%" 또는 "0.25"인 선택지가 정답).
+- table.rows 는 2~3개 행으로 만드세요(1행만 있으면 계산이 단조로워집니다).
+- 두 문항은 서로 다른 소재와 숫자를 사용하세요(중복 금지).
+- choices 의 각 항목 앞에 ①②③④⑤ 기호를 붙이지 마세요(렌더러가 부착합니다).
 '''
     data = ask(system, user)
     kept = []
@@ -295,7 +335,10 @@ def gen_psat(ptype):
         if not ok:
             print(f'    ✗ 계산 검증 실패 → 제외 ({why})')
             continue
-        print(f'    ✓ 계산 검증 통과: {why}')
+        if not fix_psat_answer(p):
+            print('    ✗ 정답-계산 불일치(보정 불가) → 제외')
+            continue
+        print(f'    ✓ 계산·정답 검증 통과: {why}')
         kept.append(p)
     data['problems'] = kept[:2]
     if not data.get('type_card') and not kept:

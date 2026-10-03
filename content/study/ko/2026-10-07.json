@@ -7,22 +7,22 @@
     {
       "q": "The list of approved suppliers ____ updated every quarter.",
       "choices": [
-        "have been",
-        "were",
+        "are",
         "is",
-        "are"
+        "were",
+        "have been"
       ],
-      "answer": 2,
+      "answer": 1,
       "explain": "주어 'The list'는 단수이므로 단수 동사 'is'가 적절합니다. 'of approved suppliers'는 주어를 수식하는 전치사구로 동사 수일치에 영향을 주지 않습니다.",
       "point": "주어-동사 수일치"
     },
     {
       "q": "Each of the new employees ____ required to attend the safety training.",
       "choices": [
-        "were",
-        "is",
         "have been",
-        "are"
+        "is",
+        "are",
+        "were"
       ],
       "answer": 1,
       "explain": "'Each of + 복수명사'는 단수 취급하므로 단수 동사 'is'가 맞습니다. 'were'나 'have been'은 복수 동사이므로 틀립니다.",
@@ -32,23 +32,23 @@
       "q": "The number of applications ____ significantly since the new policy was implemented.",
       "choices": [
         "have increased",
+        "are increasing",
         "increase",
-        "has increased",
-        "are increasing"
+        "has increased"
       ],
-      "answer": 2,
+      "answer": 3,
       "explain": "'The number of + 복수명사'는 단수 주어로 취급되어 단수 동사 'has increased'가 적절합니다. 'A number of'와 달리 'The number of'는 단수 동사를 씁니다.",
       "point": "주어-동사 수일치"
     },
     {
       "q": "Neither the manager nor the employees ____ satisfied with the new schedule.",
       "choices": [
+        "is",
         "has been",
         "was",
-        "were",
-        "is"
+        "were"
       ],
-      "answer": 2,
+      "answer": 3,
       "explain": "'Neither A nor B' 구문에서는 동사가 B에 수일치합니다. 여기서 B가 'the employees'로 복수이므로 복수 동사 'were'가 맞습니다.",
       "point": "주어-동사 수일치"
     },
@@ -57,8 +57,8 @@
       "choices": [
         "have",
         "has",
-        "were",
-        "are"
+        "are",
+        "were"
       ],
       "answer": 1,
       "explain": "주어 'The company's policy'는 단수이므로 단수 동사 'has'가 필요합니다. 'on remote work'는 전치사구로 주어와 동사의 수일치에 영향을 주지 않습니다.",

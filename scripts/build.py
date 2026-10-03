@@ -1744,11 +1744,22 @@ def study_today_html(item):
             f'text-slate-700 dark:text-slate-300">{htmllib.escape(str(item.get("rest_note", "이번 주 세트를 다시 봅니다.")))}</div>')
 
 
-def study_page_html(item, prev7, prev1):
+def study_page_html(item, prev7, prev1, next_item=None):
     date = item.get('date', '')
     d = datetime.date.fromisoformat(date)
     d7 = (d - datetime.timedelta(days=7)).isoformat()
     d1 = (d - datetime.timedelta(days=1)).isoformat()
+    prev_link = ''
+    next_link = ''
+    pd = item.get('_prev_day')
+    nd = next_item or item.get('_next_day')
+    if pd:
+        prev_link = (f'<a class="underline hover:text-brand-600" href="/ko/study/day/{pd}/">← Day {pd}</a>')
+    if nd:
+        next_link = (f'<a class="underline hover:text-brand-600" href="/ko/study/day/{nd["day"]}/">Day {nd["day"]} →</a>')
+    nav = (f'<nav class="flex items-center justify-between border-t border-slate-200 dark:border-slate-800 pt-4 text-sm">'
+           f'<span>{prev_link or "·"}</span><span>{next_link or "·"}</span></nav>'
+           if (prev_link or next_link) else '')
     return f'''<div data-study-page="{date}" class="space-y-8">
   <div>
     <p class="text-xs font-bold tracking-widest text-brand-600">KO STUDY · 7급 워밍업</p>
@@ -1763,6 +1774,8 @@ def study_page_html(item, prev7, prev1):
     <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">③ 오늘 새 내용 <span class="text-xs font-normal text-slate-500">약 20분</span></h3>
     {study_today_html(item)}
   </section>
+  {nav}
+  <p class="text-xs text-slate-400 dark:text-slate-600">※ 본 학습 문항은 AI가 생성 후 자동 검증(계산 재확인·근거 일치 확인)을 거쳤습니다. 오답이나 오류가 있으면 무시하고 넘어가 주세요.</p>
   {STUDY_JS}
 </div>'''
 
@@ -1774,12 +1787,16 @@ def build_study():
         print('[study] 학습 세트 없음 — 건너뜀')
         return 0
     by_date = {x.get('date'): x for x in items}
+    by_day = {x.get('day'): x for x in items}
     written = 0
     for it in items:
         d = datetime.date.fromisoformat(it['date'])
         prev7 = by_date.get((d - datetime.timedelta(days=7)).isoformat())
         prev1 = by_date.get((d - datetime.timedelta(days=1)).isoformat())
-        content = study_page_html(it, prev7, prev1)
+        dn = it.get('day')
+        it['_prev_day'] = dn - 1 if isinstance(dn, int) and (dn - 1) in by_day else None
+        nxt = by_day.get(dn + 1) if isinstance(dn, int) else None
+        content = study_page_html(it, prev7, prev1, nxt)
         canon = f'{DOMAIN}/ko/study/day/{it["day"]}/'
         title = f'Day {it["day"]} · {it.get("track_title", "")} — KO 학습 | {SITE_NAME}'
         doc = layout('ko', title, f'{it["date"]} 30분 학습 세트 — 복습(7일 전·어제) + 새 내용 20분.',
