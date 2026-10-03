@@ -1,0 +1,126 @@
+{
+  "day": 5,
+  "date": "2026-10-07",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "The list of approved suppliers ____ updated every quarter.",
+      "choices": [
+        "have been",
+        "were",
+        "is",
+        "are"
+      ],
+      "answer": 2,
+      "explain": "주어 'The list'는 단수이므로 단수 동사 'is'가 적절합니다. 'of approved suppliers'는 주어를 수식하는 전치사구로 동사 수일치에 영향을 주지 않습니다.",
+      "point": "주어-동사 수일치"
+    },
+    {
+      "q": "Each of the new employees ____ required to attend the safety training.",
+      "choices": [
+        "were",
+        "is",
+        "have been",
+        "are"
+      ],
+      "answer": 1,
+      "explain": "'Each of + 복수명사'는 단수 취급하므로 단수 동사 'is'가 맞습니다. 'were'나 'have been'은 복수 동사이므로 틀립니다.",
+      "point": "주어-동사 수일치"
+    },
+    {
+      "q": "The number of applications ____ significantly since the new policy was implemented.",
+      "choices": [
+        "have increased",
+        "increase",
+        "has increased",
+        "are increasing"
+      ],
+      "answer": 2,
+      "explain": "'The number of + 복수명사'는 단수 주어로 취급되어 단수 동사 'has increased'가 적절합니다. 'A number of'와 달리 'The number of'는 단수 동사를 씁니다.",
+      "point": "주어-동사 수일치"
+    },
+    {
+      "q": "Neither the manager nor the employees ____ satisfied with the new schedule.",
+      "choices": [
+        "has been",
+        "was",
+        "were",
+        "is"
+      ],
+      "answer": 2,
+      "explain": "'Neither A nor B' 구문에서는 동사가 B에 수일치합니다. 여기서 B가 'the employees'로 복수이므로 복수 동사 'were'가 맞습니다.",
+      "point": "주어-동사 수일치"
+    },
+    {
+      "q": "The company's policy on remote work ____ recently been revised.",
+      "choices": [
+        "have",
+        "has",
+        "were",
+        "are"
+      ],
+      "answer": 1,
+      "explain": "주어 'The company's policy'는 단수이므로 단수 동사 'has'가 필요합니다. 'on remote work'는 전치사구로 주어와 동사의 수일치에 영향을 주지 않습니다.",
+      "point": "주어-동사 수일치"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "Company Picnic Announcement",
+      "body": "Dear Employees,\n\nWe are pleased to announce that the annual company picnic will be held on Saturday, July 15, from 11:00 a.m. to 4:00 p.m. at Riverside Park. This event is a great opportunity for all staff members to relax and socialize outside of the office.\n\nPlease note that the picnic is open to employees and their immediate family members. Each employee may bring up to three guests. To help us plan for food and activities, we kindly ask that you RSVP by Friday, July 7, using the online form on the company intranet.\n\nLunch will be provided, including vegetarian options. If you have any dietary restrictions, please indicate them on the RSVP form. There will also be a variety of games and activities for both adults and children, such as volleyball, face painting, and a treasure hunt.\n\nIn case of rain, the event will be moved indoors to the company cafeteria. We will send out a notification by email on the morning of the event if the location changes.\n\nWe look forward to seeing you there!\n\nBest regards,\nHR Department"
+    },
+    "questions": [
+      {
+        "q": "What is the purpose of the announcement?",
+        "choices": [
+          "To inform employees about a company picnic",
+          "To announce a new company policy",
+          "To invite employees to a training session",
+          "To request volunteers for a charity event"
+        ],
+        "answer": 0,
+        "explain": "공지의 첫 문장에서 연례 회사 피크닉에 대해 알리고 있으므로 목적은 '회사 피크닉에 대해 알리는 것'입니다. 다른 선택지는 지문에 언급되지 않았습니다.",
+        "evidence": "We are pleased to announce that the annual company picnic will be held on Saturday, July 15, from 11:00 a.m. to 4:00 p.m. at Riverside Park."
+      },
+      {
+        "q": "What are employees asked to do by Friday, July 7?",
+        "choices": [
+          "Submit a vacation request",
+          "Complete an online RSVP form",
+          "Bring their own lunch",
+          "Volunteer for games"
+        ],
+        "answer": 1,
+        "explain": "지문에서 7월 7일 금요일까지 온라인 양식으로 RSVP를 해달라고 요청하고 있습니다. 따라서 '온라인 RSVP 양식을 작성하는 것'이 정답입니다.",
+        "evidence": "To help us plan for food and activities, we kindly ask that you RSVP by Friday, July 7, using the online form on the company intranet."
+      },
+      {
+        "q": "What will happen if it rains?",
+        "choices": [
+          "The picnic will be canceled.",
+          "The picnic will be postponed.",
+          "The picnic will be moved to the company cafeteria.",
+          "The picnic will be held online."
+        ],
+        "answer": 2,
+        "explain": "지문에서 비가 올 경우 행사가 회사 카페테리아로 옮겨진다고 명시되어 있습니다. 따라서 '회사 카페테리아로 장소가 변경된다'가 정답입니다.",
+        "evidence": "In case of rain, the event will be moved indoors to the company cafeteria."
+      },
+      {
+        "q": "What is indicated about dietary restrictions?",
+        "choices": [
+          "They must be reported to the HR department.",
+          "They should be noted on the RSVP form.",
+          "They cannot be accommodated.",
+          "They require a separate email."
+        ],
+        "answer": 1,
+        "explain": "지문에서 식이 제한이 있는 경우 RSVP 양식에 표시해 달라고 안내하고 있습니다. 따라서 'RSVP 양식에 기재해야 한다'가 정답입니다.",
+        "evidence": "If you have any dietary restrictions, please indicate them on the RSVP form."
+      }
+    ]
+  },
+  "part5_point": "주어-동사 수일치",
+  "part7_type": "사내 공지"
+}

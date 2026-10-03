@@ -64,6 +64,13 @@ TRANS_DIR = os.path.join(BASE, 'content', 'translations')
 GAME_DIR = os.path.join(BASE, 'content', 'game')
 GAME_CATEGORY = 'Apps & Games'
 
+# KO 전용 학습 섹션(/ko/study/). 로이 개인 학습용 → 색인 제외(noindex), 사이트맵 미포함.
+STUDY_DIR = os.path.join(BASE, 'content', 'study')
+STUDY_LANG = 'ko'
+STUDY_TRACK_TITLE = {'history': '한국사(심화)', 'toeic': 'TOEIC Part5·Part7',
+                     'psat': 'PSAT 자료해석', 'rest': '주간 복습'}
+STUDY_BUDGET = '복습 5분(7일 전) + 복습 5분(어제) + 새 내용 20분 = 30분'
+
 # 앱/게임 구분 — app_radar 가 찍은 kind 우선, 없으면 장르 문자열로 판정(백필 호환).
 GAME_KIND_PAT = re.compile(
     r'(^|\s|/|，|、)(games?|spiele|juegos|jeux|jogos|игры)'
@@ -550,11 +557,15 @@ def extract_faq(body_md):
 def header_html(current):
     s = strs(current)
     home = home_path(current)
+    # KO 전용: 오늘의 학습 바로가기 (로이 학습 섹션 진입점)
+    study_link = ('<a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 font-semibold" '
+                  'href="/ko/study/">오늘의 학습</a>') if current == 'ko' else ''
     return f'''<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-10">
     <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
       <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="{home}">{SITE_NAME}</a>
       <nav class="flex items-center gap-4 text-sm">
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{home}">Home</a>
+        {study_link}
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{game_home_for(current, 'app')}">{htmllib.escape(TAB_STR.get(current, DEFAULT_TAB)[1])}</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{game_home_for(current, 'game')}">{htmllib.escape(TAB_STR.get(current, DEFAULT_TAB)[2])}</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
@@ -782,14 +793,14 @@ def alternates_html(slug, available, section=None):
 
 def layout(lang, title, description, canonical, content_html, og_type='website',
            jsonld_blocks=None, slug=None, available=None, switcher_slug=None, section=None,
-           image=None, noindex=False):
+           image=None, noindex=False, plain=False):
     dir_ = LANG_META[lang][1]
     og_img = ''
     if image:
         abs_url = image if image.startswith('http') else DOMAIN + image
         og_img = (f'  <meta property="og:image" content="{htmllib.escape(abs_url)}" />\n'
                   f'  <meta name="twitter:image" content="{htmllib.escape(abs_url)}" />\n')
-    head_extra = alternates_html(slug, available or {lang}, section)
+    head_extra = '' if plain else alternates_html(slug, available or {lang}, section)
     robots = ('  <meta name="robots" content="noindex, follow" />\n' if noindex else '')
     ld = '\n'.join('  <script type="application/ld+json">' + json.dumps(b, ensure_ascii=False) + '</script>'
                    for b in (jsonld_blocks or []))
@@ -821,7 +832,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
 {header_html(lang)}
-{lang_switcher(lang, switcher_slug, available, section)}
+{'' if plain else lang_switcher(lang, switcher_slug, available, section)}
 
 <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
 {content_html}
@@ -1549,6 +1560,281 @@ def build_feed(posts):
 
 
 # ---------- 메인 ----------
+# ---------- KO 학습 섹션 (/ko/study/) ----------
+STUDY_MARK = '①②③④⑤⑥⑦⑧⑨⑩'
+STUDY_MARK_RE = re.compile(r'^\s*(?:[①②③④⑤⑥⑦⑧⑨⑩]|[A-Ea-e][).、.,]|[0-9][).])\s*')
+
+STUDY_JS = '''<script>
+(function () {
+  var page = document.querySelector('[data-study-page]');
+  if (!page) return;
+  var key = 'study:' + page.getAttribute('data-study-page');
+  function load() { try { return JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) { return {}; } }
+  function paint(box, d) {
+    var k = box.getAttribute('data-mark');
+    box.querySelectorAll('button[data-ok]').forEach(function (b) {
+      var on = (d[k] === b.getAttribute('data-ok'));
+      b.style.backgroundColor = on ? '#dbeafe' : '';
+      b.style.borderColor = on ? '#2563eb' : '';
+    });
+  }
+  function render() {
+    var d = load(), ks = Object.keys(d), ok = ks.filter(function (k) { return d[k] === '1'; }).length;
+    var el = document.getElementById('study-progress');
+    if (el) el.textContent = ks.length
+      ? ('오늘 체크 ' + ks.length + '문항 · 정답 ' + ok + '개 (정답률 ' + Math.round(ok * 100 / Math.max(1, ks.length)) + '%)')
+      : '아직 체크한 문항이 없습니다. 풀고 맞음/틀림을 눌러주세요.';
+  }
+  document.querySelectorAll('[data-mark]').forEach(function (box) {
+    var d0 = load();
+    paint(box, d0);
+    box.querySelectorAll('button[data-ok]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var d = load(), k = box.getAttribute('data-mark'), v = b.getAttribute('data-ok');
+        if (d[k] === v) delete d[k]; else d[k] = v;
+        localStorage.setItem(key, JSON.stringify(d));
+        paint(box, d);
+        render();
+      });
+    });
+  });
+  render();
+})();
+</script>'''
+
+
+def study_load(lang=STUDY_LANG):
+    out = []
+    d = os.path.join(STUDY_DIR, lang)
+    if not os.path.isdir(d):
+        return out
+    for fn in sorted(glob.glob(os.path.join(d, '*.json'))):
+        try:
+            out.append(json.load(open(fn, encoding='utf-8')))
+        except Exception:
+            print(f'  ! 학습 JSON 손상, 건너뜀: {fn}')
+    out.sort(key=lambda x: x.get('date', ''))
+    return out
+
+
+def study_questions(item):
+    """세트에서 (라벨, 문항) 목록을 뽑는다."""
+    out = []
+    for q in item.get('questions') or []:
+        out.append(('한국사', q))
+    for q in item.get('part5') or []:
+        out.append(('TOEIC', q))
+    for q in ((item.get('part7') or {}).get('questions') or []):
+        out.append(('TOEIC', q))
+    for q in item.get('problems') or []:
+        out.append(('PSAT', q))
+    return out
+
+
+def study_q_html(q, idx, key):
+    ch = q.get('choices') or []
+    # 선택지에 ①/A) 같은 표기가 남아 있어도 벗겨내고 ①②③… 를 직접 붙인다
+    # → "정답 ②" 기호가 목록 표기와 항상 일치한다.
+    lis = '\n'.join(
+        f'<li>{STUDY_MARK[min(i, len(STUDY_MARK) - 1)]} {htmllib.escape(STUDY_MARK_RE.sub("", str(c)).strip())}</li>'
+        for i, c in enumerate(ch))
+    a = q.get('answer')
+    sym = STUDY_MARK[a] if isinstance(a, int) and 0 <= a < len(STUDY_MARK) else '?'
+    ev = (f'<p class="mt-1 text-slate-600 dark:text-slate-400"><b>근거</b> “{htmllib.escape(str(q["evidence"]))}”</p>'
+          if q.get('evidence') else '')
+    trap = (f'<p class="mt-1 text-amber-700 dark:text-amber-400"><b>함정</b> {htmllib.escape(str(q["trap"]))}</p>'
+            if q.get('trap') else '')
+    return f'''<div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+  <p class="font-semibold text-slate-900 dark:text-slate-100">{idx}. {htmllib.escape(str(q.get('q', '')))}</p>
+  <ul class="mt-2 space-y-1 text-sm text-slate-700 dark:text-slate-300 list-none">{lis}</ul>
+  <details class="mt-3">
+    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
+      <p><b>정답</b> {sym}</p>
+      <p>{htmllib.escape(str(q.get('explain', '')))}</p>{ev}{trap}
+    </div>
+  </details>
+  <div class="mt-3 flex gap-2 text-xs" data-mark="{key}">
+    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
+    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  </div>
+</div>'''
+
+
+def study_table_html(t):
+    if not t:
+        return ''
+    hs = ''.join('<th class="px-3 py-2 text-left border-b border-slate-300 dark:border-slate-700">'
+                 f'{htmllib.escape(str(h))}</th>' for h in (t.get('headers') or []))
+    rows = ''
+    for r in (t.get('rows') or []):
+        cells = ''.join('<td class="px-3 py-2 border-b border-slate-100 dark:border-slate-800">'
+                        f'{htmllib.escape(str(c))}</td>' for c in r)
+        rows += f'<tr>{cells}</tr>'
+    return ('<div class="overflow-x-auto my-3"><table class="min-w-full text-sm '
+            f'text-slate-800 dark:text-slate-200"><thead><tr>{hs}</tr></thead><tbody>{rows}</tbody></table></div>')
+
+
+def study_review_html(label, mins, item, date_str):
+    head = (f'<h3 class="text-base font-bold text-slate-900 dark:text-slate-100">{label} '
+            f'<span class="text-xs font-normal text-slate-500">약 {mins}분</span></h3>')
+    if not item:
+        return (f'<section class="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 p-4">'
+                f'{head}<p class="mt-2 text-sm text-slate-500">해당 세트 없음({date_str}). '
+                '시작 첫 주에는 비어 있는 게 정상입니다.</p></section>')
+    qs = study_questions(item)
+    body = '\n'.join(study_q_html(q, i + 1, f'{date_str}-{i}') for i, (_, q) in enumerate(qs))
+    topic = item.get('topic') or item.get('psat_type') or item.get('track_title') or ''
+    return (f'<section class="space-y-3">{head}'
+            f'<p class="text-sm text-slate-600 dark:text-slate-400">{htmllib.escape(str(topic))} · '
+            f'{len(qs)}문항 — 문제를 다시 풀고 정답을 확인하세요.</p>'
+            f'<div class="space-y-3">{body}</div></section>')
+
+
+def study_today_html(item):
+    t = item.get('track')
+    date = item.get('date', '')
+    if t == 'history':
+        c = item.get('concept') or {}
+        pts = ''.join(f'<li>{htmllib.escape(str(p))}</li>' for p in (c.get('points') or []))
+        mn = (f'<p class="mt-3 text-sm text-slate-800 dark:text-slate-200"><b>암기</b> '
+              f'{htmllib.escape(str(c.get("mnemonic", "")))}</p>' if c.get('mnemonic') else '')
+        qs = '\n'.join(study_q_html(q, i + 1, f'{date}-h{i}')
+                       for i, q in enumerate(item.get('questions') or []))
+        return (f'<div class="rounded-2xl border-2 border-brand-600/30 bg-slate-50 dark:bg-slate-900 p-5">'
+                f'<h2 class="text-lg font-bold">{htmllib.escape(str(c.get("title") or item.get("topic", "")))}</h2>'
+                f'<ul class="mt-3 space-y-1 text-sm text-slate-700 dark:text-slate-300 list-disc pl-5">{pts}</ul>{mn}'
+                f'</div><div class="mt-4 space-y-3">{qs}</div>')
+    if t == 'toeic':
+        p7 = item.get('part7') or {}
+        psg = p7.get('passage') or {}
+        p5 = '\n'.join(study_q_html(q, i + 1, f'{date}-p5{i}')
+                       for i, q in enumerate(item.get('part5') or []))
+        p7q = '\n'.join(study_q_html(q, i + 1, f'{date}-p7{i}')
+                        for i, q in enumerate(p7.get('questions') or []))
+        return (f'<div class="rounded-2xl border border-slate-200 dark:border-slate-800 p-5">'
+                f'<h2 class="text-lg font-bold">Part 5 — {htmllib.escape(str(item.get("part5_point", "")))}</h2>'
+                f'<div class="mt-3 space-y-3">{p5}</div></div>'
+                f'<div class="rounded-2xl border border-slate-200 dark:border-slate-800 p-5 mt-4">'
+                f'<h2 class="text-lg font-bold">Part 7 — {htmllib.escape(str(item.get("part7_type", "")))}</h2>'
+                f'<p class="mt-2 text-sm font-semibold">{htmllib.escape(str(psg.get("title", "")))}</p>'
+                f'<div class="mt-2 text-sm leading-relaxed whitespace-pre-line text-slate-700 dark:text-slate-300">'
+                f'{htmllib.escape(str(psg.get("body", "")))}</div>'
+                f'<div class="mt-3 space-y-3">{p7q}</div></div>')
+    if t == 'psat':
+        tc = item.get('type_card') or {}
+        steps = ''.join(f'<li>{htmllib.escape(str(s))}</li>' for s in (tc.get('steps') or []))
+        extra = []
+        if tc.get('shortcut'):
+            extra.append(f'<p class="mt-2 text-sm"><b>암기 요약</b> {htmllib.escape(str(tc["shortcut"]))}</p>')
+        if tc.get('pitfall'):
+            extra.append('<p class="mt-1 text-sm text-amber-700 dark:text-amber-400"><b>함정</b> '
+                         f'{htmllib.escape(str(tc["pitfall"]))}</p>')
+        probs = ''
+        for i, p in enumerate(item.get('problems') or []):
+            probs += (f'<div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">'
+                      f'<p class="font-semibold">{htmllib.escape(str(p.get("title", "")))}</p>'
+                      f'{study_table_html(p.get("table"))}'
+                      f'{study_q_html(p, i + 1, f"{date}-s{i}")}</div>')
+        return (f'<div class="rounded-2xl border-2 border-brand-600/30 bg-slate-50 dark:bg-slate-900 p-5">'
+                f'<h2 class="text-lg font-bold">유형 카드 · {htmllib.escape(str(tc.get("name") or item.get("psat_type", "")))}</h2>'
+                f'<ol class="mt-3 space-y-1 text-sm text-slate-700 dark:text-slate-300 list-decimal pl-5">{steps}</ol>'
+                f'{"".join(extra)}</div><div class="mt-4 space-y-3">{probs}</div>')
+    return (f'<div class="rounded-2xl border border-slate-200 dark:border-slate-800 p-5 text-sm '
+            f'text-slate-700 dark:text-slate-300">{htmllib.escape(str(item.get("rest_note", "이번 주 세트를 다시 봅니다.")))}</div>')
+
+
+def study_page_html(item, prev7, prev1):
+    date = item.get('date', '')
+    d = datetime.date.fromisoformat(date)
+    d7 = (d - datetime.timedelta(days=7)).isoformat()
+    d1 = (d - datetime.timedelta(days=1)).isoformat()
+    return f'''<div data-study-page="{date}" class="space-y-8">
+  <div>
+    <p class="text-xs font-bold tracking-widest text-brand-600">KO STUDY · 7급 워밍업</p>
+    <h1 class="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">Day {item.get('day', '')} · {htmllib.escape(str(item.get('track_title', '')))}</h1>
+    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{date} · {STUDY_BUDGET}</p>
+    <p id="study-progress" class="mt-2 text-sm text-slate-500"></p>
+    <p class="mt-3 text-sm"><a class="underline hover:text-brand-600" href="/ko/study/archive/">전체 Day 목록 →</a></p>
+  </div>
+  {study_review_html('① 복습 — 7일 전', 5, prev7, d7)}
+  {study_review_html('② 복습 — 어제', 5, prev1, d1)}
+  <section class="space-y-4">
+    <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">③ 오늘 새 내용 <span class="text-xs font-normal text-slate-500">약 20분</span></h3>
+    {study_today_html(item)}
+  </section>
+  {STUDY_JS}
+</div>'''
+
+
+def build_study():
+    """KO 학습 세트 → /ko/study/ (오늘) + /ko/study/day/{n}/ + /ko/study/archive/."""
+    items = study_load()
+    if not items:
+        print('[study] 학습 세트 없음 — 건너뜀')
+        return 0
+    by_date = {x.get('date'): x for x in items}
+    written = 0
+    for it in items:
+        d = datetime.date.fromisoformat(it['date'])
+        prev7 = by_date.get((d - datetime.timedelta(days=7)).isoformat())
+        prev1 = by_date.get((d - datetime.timedelta(days=1)).isoformat())
+        content = study_page_html(it, prev7, prev1)
+        canon = f'{DOMAIN}/ko/study/day/{it["day"]}/'
+        title = f'Day {it["day"]} · {it.get("track_title", "")} — KO 학습 | {SITE_NAME}'
+        doc = layout('ko', title, f'{it["date"]} 30분 학습 세트 — 복습(7일 전·어제) + 새 내용 20분.',
+                     canon, content, 'website', [], slug=None, available={'ko'},
+                     noindex=True, plain=True)
+        out = os.path.join(BASE, 'ko', 'study', 'day', str(it['day']), 'index.html')
+        os.makedirs(os.path.dirname(out), exist_ok=True)
+        open(out, 'w', encoding='utf-8').write(doc)
+        written += 1
+
+    latest = items[-1]
+    ld = datetime.date.fromisoformat(latest['date'])
+    lp = os.path.join(BASE, 'ko', 'study', 'index.html')
+    os.makedirs(os.path.dirname(lp), exist_ok=True)
+    open(lp, 'w', encoding='utf-8').write(
+        layout('ko', f'오늘의 학습 · Day {latest["day"]} — {SITE_NAME}',
+               '매일 30분 — 복습 10분 + 새 내용 20분.',
+               f'{DOMAIN}/ko/study/',
+               study_page_html(latest,
+                               by_date.get((ld - datetime.timedelta(days=7)).isoformat()),
+                               by_date.get((ld - datetime.timedelta(days=1)).isoformat())),
+               'website', [], slug=None, available={'ko'}, noindex=True, plain=True))
+    written += 1
+
+    rows = ''
+    for it in reversed(items):
+        rows += (f'<tr><td class="px-3 py-2 border-b border-slate-100 dark:border-slate-800">'
+                 f'<a class="text-brand-600 underline" href="/ko/study/day/{it["day"]}/">Day {it["day"]}</a></td>'
+                 f'<td class="px-3 py-2 border-b border-slate-100 dark:border-slate-800">{it.get("date", "")}</td>'
+                 f'<td class="px-3 py-2 border-b border-slate-100 dark:border-slate-800">'
+                 f'{htmllib.escape(str(it.get("track_title", "")))}</td>'
+                 f'<td class="px-3 py-2 border-b border-slate-100 dark:border-slate-800">'
+                 f'{htmllib.escape(str(it.get("topic") or it.get("psat_type") or ""))}</td></tr>')
+    ap = os.path.join(BASE, 'ko', 'study', 'archive', 'index.html')
+    os.makedirs(os.path.dirname(ap), exist_ok=True)
+    open(ap, 'w', encoding='utf-8').write(
+        layout('ko', f'학습 전체 목록 (Day 1~{latest["day"]}) — {SITE_NAME}',
+               '지금까지의 학습 세트 목록.',
+               f'{DOMAIN}/ko/study/archive/',
+               f'''<div class="space-y-4">
+  <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">학습 전체 목록</h1>
+  <p class="text-sm text-slate-600 dark:text-slate-400">누적 {len(items)}일 · 총 {sum(len(study_questions(x)) for x in items)}문항</p>
+  <p class="text-sm"><a class="underline hover:text-brand-600" href="/ko/study/">오늘의 학습으로 →</a></p>
+  <div class="overflow-x-auto"><table class="min-w-full text-sm text-slate-800 dark:text-slate-200">
+    <thead><tr><th class="px-3 py-2 text-left border-b border-slate-300 dark:border-slate-700">Day</th>
+    <th class="px-3 py-2 text-left border-b border-slate-300 dark:border-slate-700">날짜</th>
+    <th class="px-3 py-2 text-left border-b border-slate-300 dark:border-slate-700">트랙</th>
+    <th class="px-3 py-2 text-left border-b border-slate-300 dark:border-slate-700">주제/유형</th></tr></thead>
+    <tbody>{rows}</tbody></table></div>
+</div>''', 'website', [], slug=None, available={'ko'}, noindex=True, plain=True))
+    written += 1
+    print(f'[study] KO 학습 페이지 {written}개 생성 (Day 1~{latest["day"]})')
+    return written
+
+
 def main():
     posts = []
     for path in sorted(glob.glob(os.path.join(POSTS_DIR, '*.md'))):
@@ -1681,6 +1967,7 @@ def main():
         build_game_index(lang, plist, set(game_langs), 'app')
         build_game_index(lang, plist, set(game_langs), 'game')
 
+    build_study()
     build_sitemap(macro_posts, avail_by_slug, langs_with_home, game_posts)
     build_feed(macro_posts)
     dp = AFF_CFG.get('disclosure_path', 'disclosure.html')

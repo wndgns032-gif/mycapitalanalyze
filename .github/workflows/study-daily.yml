@@ -1,0 +1,111 @@
+name: Study Daily (KO 7급 워밍업)
+
+# 매일 21:05 KST (12:05 UTC) — 하루 30분 학습 세트 1개를 만들고 사이트에 반영한다.
+# 경제(06:17 UTC) / 게임(03:13 UTC) / 색인(07:15 UTC) 과 겹치지 않는 시간대.
+on:
+  schedule:
+    - cron: '5 12 * * *'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: '생성할 날짜 (YYYY-MM-DD, 비우면 오늘)'
+        required: false
+        default: ''
+      force:
+        description: '이미 있으면 덮어쓰기 (true/false)'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Create config.json (from secrets)
+        env:
+          GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json, os
+          glm = os.environ.get('GLM_API_KEY', '').strip()
+          ds  = os.environ.get('DEEPSEEK_API_KEY', '').strip()
+          free_keys = [os.environ.get(k, '').strip()
+                       for k in ('GEMINI_API_KEY', 'GROQ_API_KEY', 'OPENROUTER_API_KEY',
+                                 'NVIDIA_API_KEY')]
+          if not (glm or ds or any(free_keys)):
+              raise SystemExit('LLM 시크릿이 하나는 필요합니다')
+
+          def free_sec(key, base, model):
+              return {"api_key": (os.environ.get(key, '') or '').strip(),
+                      "base_url": base, "model": model, "free": True}
+
+          cfg = {
+            "provider": 'glm' if glm else 'deepseek',
+            "gemini": free_sec('GEMINI_API_KEY',
+                               'https://generativelanguage.googleapis.com/v1beta/openai',
+                               'gemini-flash-latest'),
+            "groq": free_sec('GROQ_API_KEY', 'https://api.groq.com/openai/v1',
+                             'openai/gpt-oss-20b'),
+            "openrouter": free_sec('OPENROUTER_API_KEY', 'https://openrouter.ai/api/v1',
+                                   'openrouter/free'),
+            "nvidia": free_sec('NVIDIA_API_KEY', 'https://integrate.api.nvidia.com/v1',
+                               'nvidia/deepseek-v4-flash'),
+            "write_provider_order": ["gemini", "groq", "openrouter", "nvidia", "glm", "deepseek"],
+            "check_provider_order": ["groq", "gemini", "openrouter", "deepseek"],
+            "glm": {
+              "api_key": glm,
+              "base_url": "https://open.bigmodel.cn/api/paas/v4",
+              "model": "glm-5.3-flash"
+            },
+            "deepseek": {
+              "api_key": ds,
+              "base_url": "https://api.deepseek.com",
+              # flash 전용. 'deepseek-v4-flash' 는 없는 모델(404).
+              "model": "deepseek-flash"
+            }
+          }
+          json.dump(cfg, open('config.json', 'w'), ensure_ascii=False, indent=2)
+          print('config.json 준비 완료')
+          PY
+
+      - name: Generate today's study set
+        env:
+          PYTHONIOENCODING: utf-8
+        run: |
+          EXTRA=""
+          if [ -n "${{ inputs.date }}" ]; then EXTRA="--date ${{ inputs.date }}"; fi
+          if [ "${{ inputs.force }}" = "true" ]; then EXTRA="$EXTRA --force"; fi
+          python scripts/study_daily.py $EXTRA
+
+      - name: Rebuild site
+        env:
+          PYTHONIOENCODING: utf-8
+        run: python scripts/build.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "wndgns032-gif"
+          git config user.email "279455992+wndgns032-gif@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "no changes to commit"
+          else
+            git commit -m "study: KO daily set $(date -u +%Y%m%d-%H%M)"
+            git push origin main
+          fi
