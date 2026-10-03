@@ -53,7 +53,48 @@
       "url": "https://blogs.worldbank.org/rss.xml",
       "category": "Global Economy",
       "note": "World Bank (차단 시 자동 스킵)"
+    },
+    {
+      "name": "CNBC Economy",
+      "url": "https://www.cnbc.com/id/15839135/device/rss/rss.html",
+      "category": "US Economy",
+      "note": "CNBC — 미국 대표 경제 뉴스 (본문 수집 정상, 2026-10-03 실측 4308자)"
+    },
+    {
+      "name": "CNBC Finance",
+      "url": "https://www.cnbc.com/id/10000664/device/rss/rss.html",
+      "category": "US Economy",
+      "note": "CNBC — 시장·금융 (본문 수집 정상)"
+    },
+    {
+      "name": "Fortune",
+      "url": "https://fortune.com/feed/",
+      "category": "US Economy",
+      "note": "Fortune — 미국 경제지 (본문 수집 정상, 실측 8000자)"
+    },
+    {
+      "name": "Forbes Business",
+      "url": "https://www.forbes.com/business/feed/",
+      "category": "US Economy",
+      "note": "Forbes — 미국 경제지 (일부 기사 403, 실측 7865자)"
+    },
+    {
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com/news/rssindex",
+      "category": "US Economy",
+      "note": "Yahoo Finance — 미국 금융 뉴스 (본문 수집 정상, 실측 8000자)"
     }
+  ],
+  "_us_newspapers_2026-10-03": [
+    "로이 요청으로 미국 저명 경제 매체 추가. 단, 아래는 **유료벽(401/403) 때문에 본문이 0자로 수집되어 제외**:",
+    "  WSJ (feeds.a.dj.com) — 401 유료 구독",
+    "  New York Times (rss.nytimes.com) — 403",
+    "  Bloomberg (feeds.bloomberg.com) — 403",
+    "  Washington Post — 연결 차단",
+    "  The Economist — 403 유료 구독",
+    "  Politico — 403 / NPR — 타임아웃 / AP — 403 / Reuters — 404",
+    "RSS 피드는 열리지만 본문이 유료벽에 막히면 요약 몇 줄만 긁혀 글이 얇아지므로 추가하지 않았다.",
+    "※ 신문(2차 저작) 재가공은 중앙은행·정부 기관(1차 자료)보다 저작권 리스크가 높다. Project Syndicate 를 2026-09-18 에 제거한 것과 같은 이유."
   ],
   "max_new_per_run": 2,
   "min_chars": 3000,
