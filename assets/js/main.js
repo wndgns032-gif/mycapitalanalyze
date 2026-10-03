@@ -223,12 +223,12 @@ function mcaPidOf(h) {
   if (chan) links.push(chan);
   links.push(['WhatsApp', 'https://wa.me/?text=' + t + '%20' + u]);
   var html = links.map(function (l) {
-    return '<a class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border '
+    return '<a class="tap inline-flex items-center gap-1 px-4 rounded-full border '
       + 'border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 '
       + 'hover:border-brand-400 hover:text-brand-600 text-xs font-medium transition-colors" '
       + 'target="_blank" rel="noopener" href="' + l[1] + '">' + l[0] + '</a>';
   }).join('');
-  html += '<button type="button" id="mca-share-copy" class="inline-flex items-center gap-1 px-3 py-1.5 '
+  html += '<button type="button" id="mca-share-copy" class="tap inline-flex items-center gap-1 px-4 '
     + 'rounded-full border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 '
     + 'hover:border-brand-400 hover:text-brand-600 text-xs font-medium transition-colors">'
     + copyLbl + '</button>';
@@ -428,4 +428,20 @@ function mcaPidOf(h) {
     render(data);
     try { localStorage.setItem(CACHE, JSON.stringify({ t: Date.now(), d: data })); } catch (e) {}
   }).catch(function () {});
+})();
+
+/* ---------- 모바일 헤더 메뉴 ---------- */
+(function () {
+  function closeAll(except) {
+    document.querySelectorAll("details[data-mca-menu][open]").forEach(function (d) {
+      if (d !== except) d.removeAttribute("open");
+    });
+  }
+  document.addEventListener("click", function (e) {
+    var d = e.target.closest ? e.target.closest("details[data-mca-menu]") : null;
+    if (d) { closeAll(d); if (e.target.closest("a")) d.removeAttribute("open"); return; }
+    closeAll(null);
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeAll(null); });
+  window.addEventListener("resize", function () { if (window.innerWidth >= 640) closeAll(null); });
 })();

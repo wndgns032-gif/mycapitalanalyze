@@ -17,7 +17,33 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
   -webkit-font-smoothing: antialiased;
+  /* 가로 스크롤이 생기는 원인(긴 단어·광고)을 잘라낸다.
+     clip 은 스크롤 컨테이너를 만들지 않아 sticky 헤더가 깨지지 않는다. */
+  overflow-x: clip;
 }
+
+/* ---------- 모바일 규격 (2026-10-04) ---------- */
+/* 360~430px 기준: 본문은 16px 이상, 제목은 한 단계 낮춰 한 줄에 더 담기게 한다. */
+.prose { overflow-wrap: anywhere; word-break: keep-all; }
+.prose img { max-width: 100%; height: auto; border-radius: 0.5rem; }
+.prose h2 { font-size: 1.25rem; }
+.prose h3 { font-size: 1.1rem; }
+.prose table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.prose th, .prose td { white-space: nowrap; }
+
+@media (min-width: 640px) {
+  .prose h2 { font-size: 1.5rem; }
+  .prose h3 { font-size: 1.2rem; }
+  .prose table { display: table; }
+  .prose th, .prose td { white-space: normal; }
+}
+
+/* 터치 목표 최소 44px — 버튼·탭·페이지 번호에 공통 적용 */
+.tap { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+
+/* 모바일 메뉴(헤더 details) 안쪽 기본 마커 제거 */
+details > summary.mca-menu-btn { list-style: none; }
+details > summary.mca-menu-btn::-webkit-details-marker { display: none; }
 
 /* 본문 prose 스타일 (개별 포스트) */
 .prose { line-height: 1.75; color: #334155; }

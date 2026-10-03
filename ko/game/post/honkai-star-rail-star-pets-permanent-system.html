@@ -37,30 +37,39 @@
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
-<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-10">
-    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-      <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="/ko/">MyCapital Analyze</a>
-      <nav class="flex items-center gap-4 text-sm">
+<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-20">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
+      <a class="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 truncate tap px-1" href="/ko/">MyCapital Analyze</a>
+
+      <nav class="hidden sm:flex items-center gap-4 text-sm">
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ko/">Home</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 font-semibold" href="/ko/study/">오늘의 학습</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ko/game/apps/">앱</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ko/game/games/">게임</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
-        <a class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/ko/search/" aria-label="검색">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
-        </a>
-        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
-          <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-          <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-        </button>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/contact.html">Contact</a>
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/ko/search/" aria-label="검색"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
       </nav>
+
+      <div class="flex items-center gap-0.5 sm:hidden">
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/ko/search/" aria-label="검색"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <details class="relative" data-mca-menu>
+          <summary class="mca-menu-btn tap w-11 cursor-pointer text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded" aria-label="Menu">
+            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </summary>
+          <div class="absolute right-0 top-12 w-48 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-1.5 z-30">
+            <a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ko/">Home</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ko/study/">오늘의 학습</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ko/game/apps/">앱</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ko/game/games/">게임</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/about.html">About</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/privacy.html">Privacy</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/contact.html">Contact</a>
+          </div>
+        </details>
+      </div>
     </div>
   </header>
-<div class="max-w-5xl mx-auto px-4 pt-3 flex flex-wrap items-center gap-1"><span class="text-slate-500 mr-1 text-sm">Language:</span><a href="/game/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="English" hreflang="en">EN</a><a href="/zh/game/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="中文" hreflang="zh">ZH</a><a href="/hi/game/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="हिन्दी" hreflang="hi">HI</a><a href="/es/game/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Español" hreflang="es">ES</a><a href="/ar/game/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="العربية" hreflang="ar">AR</a><a href="/fr/game/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Français" hreflang="fr">FR</a><a href="/bn/game/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="বাংলা" hreflang="bn">BN</a><a href="/pt/game/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Português" hreflang="pt">PT</a><a href="/ru/game/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Русский" hreflang="ru">RU</a><a href="/de/game/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Deutsch" hreflang="de">DE</a><a href="/ja/game/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="日本語" hreflang="ja">JA</a><a href="/id/game/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Bahasa Indonesia" hreflang="id">ID</a><a href="/ko/game/post/honkai-star-rail-star-pets-permanent-system.html" class="px-2 py-0.5 rounded text-sm bg-brand-600 text-white" title="한국어" hreflang="ko">KO</a></div>
+<div class="max-w-5xl mx-auto px-4 sm:px-6 pt-3 flex flex-wrap items-center gap-1.5"><span class="text-slate-500 mr-1 text-sm">Language:</span><a href="/game/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="English" hreflang="en">EN</a><a href="/zh/game/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="中文" hreflang="zh">ZH</a><a href="/hi/game/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="हिन्दी" hreflang="hi">HI</a><a href="/es/game/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Español" hreflang="es">ES</a><a href="/ar/game/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="العربية" hreflang="ar">AR</a><a href="/fr/game/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Français" hreflang="fr">FR</a><a href="/bn/game/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="বাংলা" hreflang="bn">BN</a><a href="/pt/game/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Português" hreflang="pt">PT</a><a href="/ru/game/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Русский" hreflang="ru">RU</a><a href="/de/game/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Deutsch" hreflang="de">DE</a><a href="/ja/game/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="日本語" hreflang="ja">JA</a><a href="/id/game/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Bahasa Indonesia" hreflang="id">ID</a><a href="/ko/game/post/honkai-star-rail-star-pets-permanent-system.html" class="tap px-2.5 rounded text-sm bg-brand-600 text-white" title="한국어" hreflang="ko">KO</a></div>
 
-<main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
+<main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 <article class="max-w-3xl mx-auto">
   <header class="mb-6">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
@@ -69,16 +78,16 @@
       <span class="text-slate-400">&middot;</span>
       <span>Store Listing Summary</span>
     </div>
-    <h1 class="text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 mb-4">붕괴: 스타레일, 펫 시스템 상시화로 장기 운영 승부수</h1>
+    <h1 class="text-2xl sm:text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 mb-4">붕괴: 스타레일, 펫 시스템 상시화로 장기 운영 승부수</h1>
     <p class="text-slate-600 dark:text-slate-400">2026년 9월 28일 미호요의 붕괴: 스타레일 4.6 버전이 출시되며 성간환수라는 펫 시스템이 상시 콘텐츠로 도입됐다. 17종 블라인드 박스 뽑기와 펫 수집, 친구와의 범퍼 대전을 결합한 이 시스템은 장초기 공백을 메우고 캐주얼 이용자층을 넓히려는 장기 운영 전략이다. 1.6 버전 묘묘고 합성 이벤트와 3.0, 3.2 버전 키메라 이벤트 등 여러 시험을 거쳐 상시화됐으며, 업데이트 후 전 이용자에게 무료 뽑기권 24장이 지급됐다. 다만 아트 스타일과 상업화 모델을 둘러싼 논란도 함께 일고 있다.</p>
-    <p class="mt-4 text-xs text-slate-500">출처: <a class="underline hover:text-brand-600" rel="nofollow noopener" target="_blank" href="http://news.yxrb.net/2026/0930/7654.html">游戏日报</a></p>
+    <p class="mt-4 text-xs text-slate-500">출처: <a class="inline-block py-2 underline hover:text-brand-600" rel="nofollow noopener" target="_blank" href="http://news.yxrb.net/2026/0930/7654.html">游戏日报</a></p>
   </header>
   
-  <details class="mb-6 rounded-lg border border-slate-200 dark:border-slate-800 p-4" open><summary class="text-sm font-semibold cursor-pointer text-slate-900 dark:text-slate-100">이 글의 목차</summary><ul class="mt-3 text-sm text-slate-600 dark:text-slate-400 space-y-1">
-    <li><a class="block py-0.5 hover:text-fuchsia-700 dark:hover:text-fuchsia-300" href="#h-0">What Happened</a></li>
-    <li><a class="block py-0.5 hover:text-fuchsia-700 dark:hover:text-fuchsia-300" href="#h-4">Why It Matters</a></li>
-    <li><a class="block py-0.5 hover:text-fuchsia-700 dark:hover:text-fuchsia-300" href="#h-8">The Bigger Picture</a></li>
-    <li><a class="block py-0.5 hover:text-fuchsia-700 dark:hover:text-fuchsia-300" href="#h-13">What To Watch Next</a></li>
+  <details class="mb-6 rounded-lg border border-slate-200 dark:border-slate-800 p-4" open><summary class="tap px-1 text-sm font-semibold cursor-pointer text-slate-900 dark:text-slate-100">이 글의 목차</summary><ul class="mt-3 text-sm text-slate-600 dark:text-slate-400 space-y-1">
+    <li><a class="block py-2 hover:text-fuchsia-700 dark:hover:text-fuchsia-300" href="#h-0">What Happened</a></li>
+    <li><a class="block py-2 hover:text-fuchsia-700 dark:hover:text-fuchsia-300" href="#h-4">Why It Matters</a></li>
+    <li><a class="block py-2 hover:text-fuchsia-700 dark:hover:text-fuchsia-300" href="#h-8">The Bigger Picture</a></li>
+    <li><a class="block py-2 hover:text-fuchsia-700 dark:hover:text-fuchsia-300" href="#h-13">What To Watch Next</a></li>
 </ul></details>
   <div class="my-6" data-ad-slot-name="post_top">
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9243770518153989" data-ad-slot="5049933469" data-ad-format="auto" data-full-width-responsive="true"></ins>
@@ -111,13 +120,13 @@
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9243770518153989" data-ad-slot="3845915588" data-ad-format="autorelaxed" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
-  <aside class="mt-10 rounded-lg border border-fuchsia-200 dark:border-fuchsia-900 bg-fuchsia-50/60 dark:bg-fuchsia-950/30 p-5 text-center"><a class="inline-block px-5 py-2.5 rounded-md bg-fuchsia-700 hover:bg-fuchsia-800 text-white text-sm font-semibold" rel="nofollow noopener" target="_blank" href="http://news.yxrb.net/2026/0930/7654.html">游戏日报 · 원문 기사 보기</a></aside>
+  <aside class="mt-10 rounded-lg border border-fuchsia-200 dark:border-fuchsia-900 bg-fuchsia-50/60 dark:bg-fuchsia-950/30 p-4 sm:p-5 text-center"><a class="inline-block px-5 py-2.5 rounded-md bg-fuchsia-700 hover:bg-fuchsia-800 text-white text-sm font-semibold tap px-5" rel="nofollow noopener" target="_blank" href="http://news.yxrb.net/2026/0930/7654.html">游戏日报 · 원문 기사 보기</a></aside>
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">관련 분석</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
-    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="/ko/game/post/apple-6777852933.html">거너거너 — 살 만한가요? 가격·기능·건너뛸 사람</a></li>
-    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="/ko/game/post/play-com-devsisters-cba.html">쿠키런: 모험의 탑 — 살 만한가요? 가격·기능·건너뛸 사람</a></li>
-    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="/ko/game/post/apple-6809848644.html">Blocksways — 살 만한가요? 가격·기능·건너뛸 사람</a></li>
+    <li><a class="inline-block py-1.5 hover:text-brand-600 underline-offset-2 hover:underline" href="/ko/game/post/apple-6777852933.html">거너거너 — 살 만한가요? 가격·기능·건너뛸 사람</a></li>
+    <li><a class="inline-block py-1.5 hover:text-brand-600 underline-offset-2 hover:underline" href="/ko/game/post/play-com-devsisters-cba.html">쿠키런: 모험의 탑 — 살 만한가요? 가격·기능·건너뛸 사람</a></li>
+    <li><a class="inline-block py-1.5 hover:text-brand-600 underline-offset-2 hover:underline" href="/ko/game/post/stella-sora.html">Stella Sora — 살 만한가요? 가격·기능·건너뛸 사람</a></li>
   </ul>
 </nav>
   <div class="mt-8" data-ad-slot-name="post_related">
@@ -132,10 +141,10 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">이 블로그의 글은 공개된 거시경제 데이터를 AI가 요약·분석한 것입니다. 정보 제공 목적이며 투자 조언이 아닙니다.</p>
-      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ko/disclosure.html">제휴 수익 고지</a></p>
+      <p class="text-xs pt-2"><a class="inline-block py-2.5 underline hover:text-brand-600" href="/ko/disclosure.html">제휴 수익 고지</a></p>
     </div>
   </footer>
-<script src="/assets/js/main.js?v=3"></script>
+<script src="/assets/js/main.js?v=4"></script>
   <script>
   (function () {
     if (!document.addEventListener) return;

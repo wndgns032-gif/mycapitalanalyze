@@ -35,37 +35,46 @@
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
-<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-10">
-    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-      <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="/ko/">MyCapital Analyze</a>
-      <nav class="flex items-center gap-4 text-sm">
+<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-20">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
+      <a class="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 truncate tap px-1" href="/ko/">MyCapital Analyze</a>
+
+      <nav class="hidden sm:flex items-center gap-4 text-sm">
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ko/">Home</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 font-semibold" href="/ko/study/">오늘의 학습</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ko/game/apps/">앱</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ko/game/games/">게임</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
-        <a class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/ko/search/" aria-label="검색">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
-        </a>
-        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
-          <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-          <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-        </button>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/contact.html">Contact</a>
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/ko/search/" aria-label="검색"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
       </nav>
+
+      <div class="flex items-center gap-0.5 sm:hidden">
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/ko/search/" aria-label="검색"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <details class="relative" data-mca-menu>
+          <summary class="mca-menu-btn tap w-11 cursor-pointer text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded" aria-label="Menu">
+            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </summary>
+          <div class="absolute right-0 top-12 w-48 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-1.5 z-30">
+            <a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ko/">Home</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ko/study/">오늘의 학습</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ko/game/apps/">앱</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ko/game/games/">게임</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/about.html">About</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/privacy.html">Privacy</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/contact.html">Contact</a>
+          </div>
+        </details>
+      </div>
     </div>
   </header>
 
 
-<main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
+<main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 <div data-study-page="2026-10-07" class="space-y-8">
   <div>
     <p class="text-xs font-bold tracking-widest text-brand-600">KO STUDY · 7급 워밍업</p>
     <h1 class="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">Day 5 · TOEIC</h1>
     <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">2026-10-07 · 복습 5분(7일 전) + 복습 5분(어제) + 새 내용 20분 = 30분</p>
     <p id="study-progress" class="mt-2 text-sm text-slate-500"></p>
-    <p class="mt-3 text-sm"><a class="underline hover:text-brand-600" href="/ko/study/">← 학습 목록으로</a></p>
+    <p class="mt-3"><a class="tap px-3 rounded-lg border border-slate-300 dark:border-slate-700 text-sm font-semibold" href="/ko/study/">← 학습 목록으로</a></p>
   </div>
   <section class="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 p-4"><h3 class="text-base font-bold text-slate-900 dark:text-slate-100">① 복습 — 7일 전 <span class="text-xs font-normal text-slate-500">약 5분</span></h3><p class="mt-2 text-sm text-slate-500">해당 세트 없음(2026-09-30). 시작 첫 주에는 비어 있는 게 정상입니다.</p></section>
   <section class="space-y-3"><h3 class="text-base font-bold text-slate-900 dark:text-slate-100">② 복습 — 어제 <span class="text-xs font-normal text-slate-500">약 5분</span></h3><p class="text-sm text-slate-600 dark:text-slate-400">고려의 건국과 정치 변동 · 5문항 — 문제를 다시 풀고 정답을 확인하세요.</p><div class="space-y-3"><div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -76,15 +85,15 @@
 <li>④ 사심관 제도와 기인 제도로 호족을 회유하였다.</li>
 <li>⑤ 훈요 10조를 남겨 후대 왕에게 통치 방향을 제시하였다.</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ①</p>
       <p>사료는 광종의 노비안검법과 과거제 시행을 보여준다. 광종은 왕권 강화를 위해 독자적 연호인 광덕, 준풍을 사용하였다. ②는 경종, ③은 성종, ④와 ⑤는 태조의 정책이다.</p><p class="mt-1 text-amber-700 dark:text-amber-400"><b>함정</b> 광종의 정책과 태조·성종의 정책을 혼동하지 않도록 주의</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-06-0">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-06-0">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -95,15 +104,15 @@
 <li>④ 최씨 무신 정권이 교정도감을 설치하여 국정을 총괄하였다.</li>
 <li>⑤ 삼별초가 진도와 제주도로 옮겨 가며 몽골에 항쟁하였다.</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ③</p>
       <p>제시된 상황은 이자겸의 난(1126)이다. 이자겸의 난 이후 문벌 귀족 사회의 모순이 드러나면서 묘청 등이 서경 천도와 금국 정벌을 주장하며 난을 일으켰다. ①은 공민왕, ②는 무신정변(1170), ④는 최충헌, ⑤는 삼별초 항쟁이다.</p><p class="mt-1 text-amber-700 dark:text-amber-400"><b>함정</b> 이자겸의 난과 묘청의 난을 시기적으로 혼동하지 않도록 주의</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-06-1">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-06-1">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -114,15 +123,15 @@
 <li>④ 사심관 제도를 시행하여 지방 호족을 관리하였다.</li>
 <li>⑤ 광덕, 준풍 등 독자적 연호를 사용하였다.</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ②</p>
       <p>제시된 정책은 성종의 시무 28조 수용이다. 성종은 전시과를 개정하여 관리에게 토지를 지급하고, 12목에 지방관을 파견하는 등 중앙 집권 체제를 강화하였다. ①과 ⑤는 광종, ③과 ④는 태조의 정책이다.</p><p class="mt-1 text-amber-700 dark:text-amber-400"><b>함정</b> 성종과 광종의 왕권 강화 정책을 구분해야 함</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-06-2">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-06-2">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -133,15 +142,15 @@
 <li>④ 묘청이 서경 천도를 주장하며 난을 일으켰다.</li>
 <li>⑤ 최승로가 시무 28조를 올려 통치 체제를 정비하였다.</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ②</p>
       <p>제시된 사건은 무신정변(1170)이다. 무신정변 이후 무신들 간의 권력 투쟁이 이어지다가 최충헌이 집권하여 최씨 무신 정권을 수립하였다. ①은 무신정변으로 문벌 귀족 사회가 붕괴되었으므로 틀리다. ③은 무신정변 이전, ④와 ⑤도 무신정변 이전의 일이다.</p><p class="mt-1 text-amber-700 dark:text-amber-400"><b>함정</b> 무신정변 이후의 권력 변동 과정을 순서대로 이해해야 함</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-06-3">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-06-3">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -152,15 +161,15 @@
 <li>④ 최승로의 시무 28조를 받아들여 유교 정치를 강화하였다.</li>
 <li>⑤ 사심관 제도와 기인 제도로 호족을 통제하였다.</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ①</p>
       <p>제시된 제도는 최충헌이 설치한 교정도감과 도방이다. 최충헌은 과거제를 처음 시행한 광종이 아니라 무신 집권기 인물이다. ①은 광종, ②도 광종, ③은 공민왕, ④는 성종, ⑤는 태조의 정책이다. 따라서 최충헌과 같은 왕의 정책은 ①이 아니라 다른 선지가 되어야 하지만, 문제는 ‘다음 제도를 시행한 왕’을 묻고 있으므로 최충헌의 정책이 아닌 것을 골라야 한다. 그러나 선택지 중 최충헌의 정책은 없으므로, 정답은 광종의 정책인 ①이 아니라, 최충헌과 동시대 인물이 아닌 다른 왕의 정책을 묻는 오류가 있다. 따라서 문제를 수정한다.</p><p class="mt-1 text-amber-700 dark:text-amber-400"><b>함정</b> 교정도감과 도방은 최충헌의 정책임을 기억</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-06-4">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-06-4">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div></div></section>
   <section class="space-y-4">
@@ -172,15 +181,15 @@
 <li>③ is</li>
 <li>④ are</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ③</p>
       <p>주어 &#x27;The list&#x27;는 단수이므로 단수 동사 &#x27;is&#x27;가 적절합니다. &#x27;of approved suppliers&#x27;는 주어를 수식하는 전치사구로 동사 수일치에 영향을 주지 않습니다.</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-07-p50">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-07-p50">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -190,15 +199,15 @@
 <li>③ were</li>
 <li>④ have been</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ②</p>
       <p>&#x27;Each of + 복수명사&#x27;는 단수 취급하므로 단수 동사 &#x27;is&#x27;가 맞습니다. &#x27;were&#x27;나 &#x27;have been&#x27;은 복수 동사이므로 틀립니다.</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-07-p51">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-07-p51">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -208,15 +217,15 @@
 <li>③ are increasing</li>
 <li>④ increase</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ②</p>
       <p>&#x27;The number of + 복수명사&#x27;는 단수 주어로 취급되어 단수 동사 &#x27;has increased&#x27;가 적절합니다. &#x27;A number of&#x27;와 달리 &#x27;The number of&#x27;는 단수 동사를 씁니다.</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-07-p52">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-07-p52">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -226,15 +235,15 @@
 <li>③ has been</li>
 <li>④ was</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ①</p>
       <p>&#x27;Neither A nor B&#x27; 구문에서는 동사가 B에 수일치합니다. 여기서 B가 &#x27;the employees&#x27;로 복수이므로 복수 동사 &#x27;were&#x27;가 맞습니다.</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-07-p53">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-07-p53">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -244,15 +253,15 @@
 <li>③ were</li>
 <li>④ are</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ②</p>
       <p>주어 &#x27;The company&#x27;s policy&#x27;는 단수이므로 단수 동사 &#x27;has&#x27;가 필요합니다. &#x27;on remote work&#x27;는 전치사구로 주어와 동사의 수일치에 영향을 주지 않습니다.</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-07-p54">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-07-p54">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div></div></div><div class="rounded-2xl border border-slate-200 dark:border-slate-800 p-5 mt-4"><h2 class="text-lg font-bold">Part 7 — 사내 공지</h2><p class="mt-2 text-sm font-semibold">Company Picnic Announcement</p><div class="mt-2 text-sm leading-relaxed whitespace-pre-line text-slate-700 dark:text-slate-300">Dear Employees,
 
@@ -274,15 +283,15 @@ HR Department</div><div class="mt-3 space-y-3"><div class="rounded-xl border bor
 <li>③ To invite employees to a training session</li>
 <li>④ To request volunteers for a charity event</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ①</p>
       <p>공지의 첫 문장에서 연례 회사 피크닉에 대해 알리고 있으므로 목적은 &#x27;회사 피크닉에 대해 알리는 것&#x27;입니다. 다른 선택지는 지문에 언급되지 않았습니다.</p><p class="mt-1 text-slate-600 dark:text-slate-400"><b>근거</b> “We are pleased to announce that the annual company picnic will be held on Saturday, July 15, from 11:00 a.m. to 4:00 p.m. at Riverside Park.”</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-07-p70">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-07-p70">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -292,15 +301,15 @@ HR Department</div><div class="mt-3 space-y-3"><div class="rounded-xl border bor
 <li>③ Bring their own lunch</li>
 <li>④ Volunteer for games</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ②</p>
       <p>지문에서 7월 7일 금요일까지 온라인 양식으로 RSVP를 해달라고 요청하고 있습니다. 따라서 &#x27;온라인 RSVP 양식을 작성하는 것&#x27;이 정답입니다.</p><p class="mt-1 text-slate-600 dark:text-slate-400"><b>근거</b> “To help us plan for food and activities, we kindly ask that you RSVP by Friday, July 7, using the online form on the company intranet.”</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-07-p71">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-07-p71">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -310,15 +319,15 @@ HR Department</div><div class="mt-3 space-y-3"><div class="rounded-xl border bor
 <li>③ The picnic will be moved to the company cafeteria.</li>
 <li>④ The picnic will be held online.</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ③</p>
       <p>지문에서 비가 올 경우 행사가 회사 카페테리아로 옮겨진다고 명시되어 있습니다. 따라서 &#x27;회사 카페테리아로 장소가 변경된다&#x27;가 정답입니다.</p><p class="mt-1 text-slate-600 dark:text-slate-400"><b>근거</b> “In case of rain, the event will be moved indoors to the company cafeteria.”</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-07-p72">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-07-p72">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -328,15 +337,15 @@ HR Department</div><div class="mt-3 space-y-3"><div class="rounded-xl border bor
 <li>③ They cannot be accommodated.</li>
 <li>④ They require a separate email.</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ②</p>
       <p>지문에서 식이 제한이 있는 경우 RSVP 양식에 표시해 달라고 안내하고 있습니다. 따라서 &#x27;RSVP 양식에 기재해야 한다&#x27;가 정답입니다.</p><p class="mt-1 text-slate-600 dark:text-slate-400"><b>근거</b> “If you have any dietary restrictions, please indicate them on the RSVP form.”</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-07-p73">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-07-p73">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div></div></div>
   </section>
@@ -346,7 +355,7 @@ HR Department</div><div class="mt-3 space-y-3"><div class="rounded-xl border bor
     <div class="mt-3 rounded-lg bg-slate-50 dark:bg-slate-800 p-3"><p class="text-xs font-bold text-brand-600">헷갈리는 표현</p><p class="mt-1 text-sm text-slate-800 dark:text-slate-200"><span class="font-semibold">economic</span> <span class="text-slate-400">vs</span> <span class="font-semibold">economical</span></p><p class="mt-1 text-xs text-slate-600 dark:text-slate-400">economic = 경제의(economy) / economical = 경제적인·절약하는</p></div>
     <p class="mt-3 text-sm text-slate-700 dark:text-slate-300"><span class="font-bold text-brand-600">암기 팁</span> · 단어는 문장째로 외우기 — 뒤 명사까지 묶어 외우면 Part 7에서 그대로 보입니다.</p>
   </section>
-  <nav class="flex items-center justify-between border-t border-slate-200 dark:border-slate-800 pt-4 text-sm"><span><a class="underline hover:text-brand-600" href="/ko/study/day/4/">← Day 4</a></span><span>·</span></nav>
+  <nav class="flex items-center justify-between border-t border-slate-200 dark:border-slate-800 pt-4 text-sm"><span><a class="tap px-3 rounded-lg border border-slate-300 dark:border-slate-700 hover:border-brand-500" href="/ko/study/day/4/">← Day 4</a></span><span>·</span></nav>
   <p class="text-xs text-slate-400 dark:text-slate-600">※ 본 학습 문항은 AI가 생성 후 자동 검증(계산 재확인·근거 일치 확인)을 거쳤습니다. 오답이나 오류가 있으면 무시하고 넘어가 주세요.</p>
   <script>
 (function () {
@@ -392,10 +401,10 @@ HR Department</div><div class="mt-3 space-y-3"><div class="rounded-xl border bor
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">이 블로그의 글은 공개된 거시경제 데이터를 AI가 요약·분석한 것입니다. 정보 제공 목적이며 투자 조언이 아닙니다.</p>
-      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ko/disclosure.html">제휴 수익 고지</a></p>
+      <p class="text-xs pt-2"><a class="inline-block py-2.5 underline hover:text-brand-600" href="/ko/disclosure.html">제휴 수익 고지</a></p>
     </div>
   </footer>
-<script src="/assets/js/main.js?v=3"></script>
+<script src="/assets/js/main.js?v=4"></script>
   <script>
   (function () {
     if (!document.addEventListener) return;
