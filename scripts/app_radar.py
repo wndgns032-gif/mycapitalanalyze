@@ -245,6 +245,13 @@ GAME_WORDS = ('game', 'games', '게임', 'ゲーム', '游戏', '遊戲', 'juego
               'trò chơi', 'गेम', 'গেম', 'ألعاب')
 GAME_WORD_RE = re.compile('|'.join(re.escape(w) for w in GAME_WORDS), re.I)
 
+# 앱/게임 글 분량 (로이 방침 2026-10-03: "글이 꼭 안 길어도 돼, 적당히 SEO에 걸릴만큼만")
+# 예전엔 하한 3000~3200 / 상한 5000+ 이라 영어가 9000자까지 나왔다.
+# SEO 에 걸릴 최소선만 남기고 상한을 확 낮춘다. CI 는 config.json 을 워크플로에서
+# 하드코딩 생성하므로, 이 기본값이 클라우드 실행에서도 적용된다.
+APP_CHAR_MIN, APP_CHAR_MAX = 1500, 3200          # 라틴 계열 등 기본
+APP_CJK_MIN, APP_CJK_MAX = 1600, 3000            # CJK 는 글자당 정보량이 많아 더 짧아도 충분
+
 
 def apple_feeds(cc):
     return [
@@ -870,6 +877,23 @@ LATIN_MARKERS = {
 TITLE_TRIM_SEPS = [' — ', '—', ' · ', '、', '，', ', ', ',', ' | ']
 
 
+def clip_body(body, limit):
+    """상한을 넘는 본문을 문단 단위로 자른다 (로이 방침: 길게 늘이지 않는다).
+
+    모델이 분량 지시를 무시하고 5000~9000자로 내보내는 일이 반복돼서 넣은 마지막 안전장치.
+    문단 경계에서 자르므로 문장 중간이 잘리지는 않는다.
+    """
+    if len(body) <= limit:
+        return body
+    out, n = [], 0
+    for para in body.split('\n\n'):
+        if n + len(para) > limit:
+            break
+        out.append(para)
+        n += len(para) + 2
+    return '\n\n'.join(out).rstrip()
+
+
 def trim_title(title, lim):
     """상한을 넘는 제목을 구분자 단위로 잘라 되돌린다. 실패하면 ''."""
     if len(title) <= lim:
@@ -1220,8 +1244,8 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "Markdown is removed.\n"
         "- Do not count the opening section or the quick verdict list toward this limit; they are "
         "extra and short.\n"
-        "- Do not stop early. If you are under the limit, keep expanding with evidence from the "
-        "store listing.\n"
+        "- Keep it TIGHT: aim near the LOW end of the range, not the top. This is an app "
+        "introduction, not a full review or a buying encyclopedia.\n"
         "- Do not pad with filler sentences. Every added sentence must carry a fact or a "
         "judgment.\n\n"
         "CURRENCY AND SPECIFICITY RULES\n"
@@ -1345,8 +1369,11 @@ def main():
     cfg = load_json(os.path.join(base, 'config.json'), {})
     # 로이 지시: 모든 언어에 하루 1개씩.
     per_lang = args.per_lang or int(cfg.get('apps_per_lang_per_day', 1))
-    cmin = int(cfg.get('app_char_min', cfg.get('char_min', 3000)))
-    cmax = int(cfg.get('app_char_max', cfg.get('char_max', 5000)))
+    # 로이 방침(2026-10-03): 앱/게임 글은 "적당히 SEO에 걸릴 만큼만" — 길게 늘이지 않는다.
+    # CI 는 config.json 을 워크플로 본문에서 하드코딩 생성하므로, config 값이 없을 때의
+    # 기본값을 여기에 박아 둬야 클라우드에서도 같은 분량으로 나온다.
+    cmin = int(cfg.get('app_char_min', APP_CHAR_MIN))
+    cmax = int(cfg.get('app_char_max', APP_CHAR_MAX))
     # 로이 지시(2026-10-02): 그 언어를 지원하지 않는 앱/게임은 그 언어로 발행하지 않는다.
     pubcfg = load_json(os.path.join(base, 'config.public.json'), {})
     strict_lang = not args.no_lang_gate and bool(
@@ -1457,15 +1484,14 @@ def main():
             img_md = '![%s](%s)\n\n' % ((disp_name or 'app').replace('[', ''), rel)
 
         released = not upcoming
-        # CJK 는 "글자당 정보량이 많다"고 분량을 줄이면 글이 짧아진다(한국어 2313자 사건) →
-        # 반대로 하한을 3200 으로 올린다. 그 외 언어는 사이트 기본값(cmin~cmax).
+        # 로이 방침(2026-10-03): 짧게. 예전엔 CJK 하한 3200 / 상한 5000+ 라
+        # 영어가 9093자까지 나왔다. 이제 전 언어가 1500~3200 선에서 나온다.
+        # 출시 완료작이라고 분량을 더 늘리지 않는다(정보가 많아도 길게 쓸 필요 없다).
         if lang in CJK:
-            lo, hi = 3200, max(cmax, 5000)
+            lo, hi = APP_CJK_MIN, APP_CJK_MAX
         else:
             lo, hi = cmin, cmax
-        if released:
-            lo += 400          # 출시 완료작은 다룰 확인 사실이 더 많다
-        accept_lo = lo - 400   # 경계에서 살짝 짧게 나온 것까지는 허용
+        accept_lo = lo - 300   # 경계에서 살짝 짧게 나온 것까지는 허용
         desc_min, desc_max = SEO_DESC_MIN, SEO_DESC_MAX
 
         # 출시 완료작은 후기·평점·설치수가 들어간 확장 자료를 쓴다(실제 후기형 리포트).
@@ -1509,6 +1535,12 @@ def main():
                 why = '설명 부족(%d<300)' % dlen
             print('      재시도: %s' % why)
             time.sleep(0.4)
+        # 재시도로도 상한을 못 지키면 기계적으로 자른다.
+        # (모델이 "짧게" 지시를 무시하고 5000~9000자를 내보내는 경우가 계속됐다)
+        if n > hi:
+            cut = clip_body(body, hi)
+            print('      본문 초과 → %d자에서 %d자로 절단(상한 %d)' % (n, len(cut), hi))
+            body, n = cut, len(cut)
         if not obj.get('title') or not body:
             print('   생성 실패 → 다음 실행에서 재시도')
             continue
