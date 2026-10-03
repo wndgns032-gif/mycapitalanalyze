@@ -462,18 +462,38 @@ def _play_details_uncached(pkg, hl, gl):
     if m:
         avail = m.group(1)
     upcoming = ('PreOrder' in avail) or any(k in page for k in PREORDER_MARKERS)
+    # 오탐 차단: 이미 출시된 앱도 이벤트/업데이트 예고에 'Coming soon' 같은 문구를 쓴다.
+    # 진짜 사전등록(출시 전) 앱은 리뷰가 없다 → 리뷰가 있으면 출시된 앱으로 본다.
+    # (실측: Blood Strike 2.5주년 페이지가 마커에 걸려 출시예정으로 오탐된 적 있다)
+    if upcoming and 'PreOrder' not in avail and (rating_cnt or 0) > 0:
+        upcoming = False
 
     updated = ''
     m = re.search(r'(\d{4})[.\-년]\s*(\d{1,2})[.\-월]\s*(\d{1,2})', page)
     if m:
         updated = '%s-%02d-%02d' % (m.group(1), int(m.group(2)), int(m.group(3)))
 
+    # 관련/추천 앱 — Play 목록 페이지가 봇에겐 고정이라 후보가 매일 똑같다.
+    # 상세에 노출된 다른 패키지로 후보 풀을 넓혀야 사전등록 앱을 만날 수 있다.
+    rel, rseen = [], set()
+    for m in re.finditer(r'"([A-Za-z][A-Za-z0-9_]*(?:\.[A-Za-z0-9_]+){2,})"', page):
+        p = m.group(1)
+        if p == pkg or p in rseen or len(p) > 64:
+            continue
+        if any(b in p.lower() for b in BAD_SEGMENTS):
+            continue
+        rseen.add(p)
+        rel.append(p)
+        # 앞쪽은 시드와 같은 고정 추천 블록이라 40개까지 받아야 새 앱이 섞인다.
+        if len(rel) >= 40:
+            break
+
     return {
         'store': 'play', 'pkg': pkg, 'name': name or pkg, 'developer': dev,
         'description': long_desc or short, 'category': cat or 'App',
         'rating': rating, 'rating_count': rating_cnt, 'price': price,
         'free': price in ('0', '0.0', '0.00', ''), 'upcoming': upcoming,
-        'image': img, 'updated': updated,
+        'image': img, 'updated': updated, 'related': rel,
         'url': 'https://play.google.com/store/apps/details?id=%s&hl=%s&gl=%s' % (pkg, hl, gl),
     }
 
@@ -509,6 +529,67 @@ def collect(cc, hl, gl, use_play=True):
     return uniq
 
 
+# Play 사전등록 판별 캐시 — 사전등록 여부는 언어와 무관하므로 pkg 기준으로 한 번만 조회한다.
+_PLAY_UP_CACHE = {}
+
+
+def play_upcoming(pkg):
+    """Play 앱의 사전등록(출시 예정) 여부 — 언어 무관 전역 캐시."""
+    if pkg in _PLAY_UP_CACHE:
+        return _PLAY_UP_CACHE[pkg]
+    try:
+        v = bool(play_details(pkg, 'en', 'us').get('upcoming'))
+    except Exception:
+        v = False
+    _PLAY_UP_CACHE[pkg] = v
+    return v
+
+
+def expand_play(cands, hl, gl, seed_limit=6, rel_limit=28):
+    """Play 후보 풀을 넓힌다.
+
+    Play 목록 페이지는 봇에겐 컬렉션·국가·검색어와 무관하게 **같은 고정 목록**을 준다
+    (2026-10-03 실측: 7개 국가·4종 URL 전부 동일 22개).
+    그래서 매일 같은 유명 게임만 후보가 되고 사전등록 앱은 영원히 안 잡힌다.
+    상세 페이지에 노출된 관련 앱으로 시드를 넓혀 다양한 후보를 확보한다.
+    """
+    seeds = [c for c in cands if c.get('store') == 'play'][:seed_limit]
+    if not seeds:
+        return cands
+    have = {c['ident'] for c in cands if c.get('store') == 'play'}
+    added = []
+    for s in seeds:
+        d = play_details(s['ident'], 'en', 'us') or {}
+        for p in (d.get('related') or [])[:rel_limit]:
+            if p in have:
+                continue
+            have.add(p)
+            added.append({'store': 'play', 'key': 'play:%s' % p, 'ident': p, 'name': p,
+                          'category': 'App', 'released': None,
+                          'url': 'https://play.google.com/store/apps/details?id=%s&hl=%s&gl=%s'
+                                 % (p, hl, gl)})
+    if added:
+        print('   Play 관련 앱으로 후보 +%d개 (총 %d)' % (len(added), len(cands) + len(added)))
+    return cands + added
+
+
+def mark_upcoming(cands):
+    """Play 후보의 사전등록 여부를 확정한다.
+
+    collect() 는 Play 후보를 상세 조회 없이 넣기 때문에 released 가 None 이다.
+    그대로 두면 rank 의 is_upcoming 이 Play 후보를 영원히 False 로 처리해서
+    '출시 예정' 큐가 비고 신작만 발행된다 (로이 지적 2026-10-03).
+    """
+    hit = 0
+    for c in cands:
+        if c.get('store') == 'play':
+            c['upcoming'] = play_upcoming(c['ident'])
+            hit += 1 if c['upcoming'] else 0
+    print('   Play 사전등록 확인 %d개 중 %d개 출시예정' % (
+        sum(1 for c in cands if c.get('store') == 'play'), hit))
+    return cands
+
+
 def mark_games(cands, cc):
     """게임 여부를 후보마다 확정한다.
     Apple 은 lookup 의 영문 primaryGenreName(스토어프론트와 무관하게 영어로 온다)으로,
@@ -519,13 +600,28 @@ def mark_games(cands, cc):
             if d.get('primaryGenreName'):
                 c['game'] = 'yes' if d['primaryGenreName'] == 'Games' else 'no'
                 continue
+        if c.get('store') == 'play':
+            # Play 컬렉션 라벨은 믿을 수 없다 — 게임 컬렉션에도 같은 고정 페이지가 와서
+            # 'App' 으로 들어온다. 상세의 applicationCategory 로 판정한다.
+            d = play_details(c['ident'], 'en', 'us') or {}
+            cat = d.get('category') or ''
+            if cat:
+                c['game'] = 'yes' if (cat.upper().startswith('GAME')
+                                      or GAME_WORD_RE.search(cat)) else 'no'
+                continue
         c['game'] = 'yes' if GAME_WORD_RE.search(c.get('category') or '') else 'no'
     return cands
 
 
 def rank_candidates(cands, seen, pub_urls, pub_ids, today):
-    """로이 확정 우선순위 (2026-10-01) — 고정 순서, 회전 없음:
-       출시예정 게임 → 신작 게임 → 신작 앱 → (최후 비상용) 출시예정 앱.
+    """로이 확정 우선순위 (2026-10-03 개정) — 고정 순서, 회전 없음:
+       1 출시예정 게임(Play) → 2 출시예정 앱(Play) → 3 출시예정 게임(Apple)
+       → 4 신작 게임(Play) → 5 신작 게임(Apple) → 6 신작 앱(Play) → 7 신작 앱(Apple)
+       → (최후 비상용) 출시예정 앱(Apple)
+
+    로이 지시 2026-10-03: "앱스토어 출시예정 말고 플레이스토어 출시 예정 게임/앱을 제일 최우선".
+    Play 앱은 사전등록(PreOrder) 상태를 상세에서 확인한 플래그로, Apple 앱은
+    출시일이 미래인지로 판정한다.
 
     우선순위 전체를 '순서대로 늘어놓은 리스트'로 돌려준다. 호출부가 앞에서부터
     하나씩 지원 언어를 검증해, 그 언어를 실제로 지원하는 첫 후보를 발행한다."""
@@ -537,22 +633,37 @@ def rank_candidates(cands, seen, pub_urls, pub_ids, today):
     def is_game(c):
         return c.get('game') == 'yes'
 
+    def is_play(c):
+        return c.get('store') == 'play'
+
     def is_upcoming(c):
+        # Play = 상세에서 확인한 사전등록 플래그 / Apple = 출시일이 미래인지
+        if is_play(c):
+            return bool(c.get('upcoming'))
         return bool(c.get('released') and c['released'].replace(tzinfo=None) > today)
 
-    games_up = [c for c in fresh if is_game(c) and is_upcoming(c)]     # 1순위
-    games_new = [c for c in fresh if is_game(c) and not is_upcoming(c)]  # 2순위
-    apps_new = [c for c in fresh if not is_game(c) and not is_upcoming(c)]  # 3순위
-    apps_up = [c for c in fresh if not is_game(c) and is_upcoming(c)]   # 최후 비상용
+    play_game_up = [c for c in fresh if is_play(c) and is_game(c) and is_upcoming(c)]
+    play_app_up = [c for c in fresh if is_play(c) and not is_game(c) and is_upcoming(c)]
+    apple_game_up = [c for c in fresh if not is_play(c) and is_game(c) and is_upcoming(c)]
+    play_game_new = [c for c in fresh if is_play(c) and is_game(c) and not is_upcoming(c)]
+    apple_game_new = [c for c in fresh if not is_play(c) and is_game(c) and not is_upcoming(c)]
+    play_app_new = [c for c in fresh if is_play(c) and not is_game(c) and not is_upcoming(c)]
+    apple_app_new = [c for c in fresh if not is_play(c) and not is_game(c)
+                     and not is_upcoming(c)]
+    apple_app_up = [c for c in fresh if not is_play(c) and not is_game(c) and is_upcoming(c)]
 
     def rel_key(c):
         return c.get('released') or datetime.datetime.min
 
     out = []
-    for q, rev, tier in ((games_up, False, '출시예정게임'),
-                         (games_new, True, '신작게임'),
-                         (apps_new, True, '신작앱'),
-                         (apps_up, False, '출시예정앱(비상)')):
+    for q, rev, tier in ((play_game_up, False, '출시예정게임(Play)'),
+                         (play_app_up, False, '출시예정앱(Play)'),
+                         (apple_game_up, False, '출시예정게임(Apple)'),
+                         (play_game_new, True, '신작게임(Play)'),
+                         (apple_game_new, True, '신작게임(Apple)'),
+                         (play_app_new, True, '신작앱(Play)'),
+                         (apple_app_new, True, '신작앱(Apple)'),
+                         (apple_app_up, False, '출시예정앱(비상)')):
         # 출시예정은 임박순(오름차순), 나머지는 최신순(내림차순)
         for c in sorted(q, key=rel_key, reverse=rev):
             c['_tier'] = tier
@@ -1302,8 +1413,10 @@ def main():
         # Apple 은 후보 전체를 배치로 한 번에 조회해 캐시를 채운다 →
         # 지원 언어 검증과 게임 판정을 후보당 HTTP 1회가 아니라 언어권당 2~3회로 끝낸다.
         # (반드시 순위 계산보다 먼저: 게임 여부가 우선순위를 결정한다)
+        cands = expand_play(cands, hl, gl)   # Play 고정 목록 우회 → 관련 앱으로 풀 확장
         apple_lookup_many([c['ident'] for c in cands if c['store'] == 'apple'], cc)
         mark_games(cands, cc)
+        mark_upcoming(cands)   # Play 사전등록 판별 → 반드시 순위 계산보다 먼저
 
         rank = rank_candidates(cands, seen | reserved, pub_urls, pub_ids, today)
         if not rank:
