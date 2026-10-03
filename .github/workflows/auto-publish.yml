@@ -113,16 +113,20 @@ jobs:
               "pt": "Portuguese", "ru": "Russian", "de": "German",
               "ja": "Japanese", "id": "Indonesian", "ko": "Korean"
             },
+            # 번역 12개 언어 전체 (2026-10-03 로이 지시: 콘텐츠 볼륨 확대로 검색 노출 기회 확보)
             "translate_languages": {
-              "ko": "Korean", "zh": "Chinese (Mandarin)",
-              "ja": "Japanese", "es": "Spanish"
+              "zh": "Chinese (Mandarin)", "hi": "Hindi", "es": "Spanish",
+              "ar": "Arabic", "fr": "French", "bn": "Bengali",
+              "pt": "Portuguese", "ru": "Russian", "de": "German",
+              "ja": "Japanese", "id": "Indonesian", "ko": "Korean"
             },
             "translate_exclude_prefixes": ["project-syndicate-"],
             "translate_workers": 5,
             "max_translations_per_run": 40,
             "char_min": 3000,
             "char_max": 5000,
-            "max_new_posts_per_run": 1,
+            # 하루 3편 (2026-10-03 로이 지시: 수익 개선 위해 발행량 확대. 미국 소스 5개 추가로 소재 충분)
+            "max_new_posts_per_run": 3,
             # 앱·게임 레이더: 모든 언어에 하루 1건씩 (로이 지시).
             "apps_per_lang_per_day": 1,
             "analytics": {"ga4_id": ga4, "google_site_verification": gsc},
