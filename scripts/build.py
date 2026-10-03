@@ -1806,7 +1806,7 @@ def study_page_html(item, prev7, prev1, next_item=None):
     <h1 class="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">Day {item.get('day', '')} · {htmllib.escape(str(item.get('track_title', '')))}</h1>
     <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{date} · {STUDY_BUDGET}</p>
     <p id="study-progress" class="mt-2 text-sm text-slate-500"></p>
-    <p class="mt-3 text-sm"><a class="underline hover:text-brand-600" href="/ko/study/archive/">전체 Day 목록 →</a></p>
+    <p class="mt-3 text-sm"><a class="underline hover:text-brand-600" href="/ko/study/">← 학습 목록으로</a></p>
   </div>
   {study_review_html('① 복습 — 7일 전', 5, prev7, d7)}
   {study_review_html('② 복습 — 어제', 5, prev1, d1)}
@@ -1821,8 +1821,53 @@ def study_page_html(item, prev7, prev1, next_item=None):
 </div>'''
 
 
+def study_index_html(items, today_str):
+    """학습 진입 페이지 = Day 목록.
+
+    로이 지시 2026-10-03: 학습 메뉴를 누르면 '바로 어떤 Day'가 뜨는 게 아니라
+    목록이 먼저 나오고 거기서 골라 들어가야 한다. (예전엔 최신 Day가 바로 떠서
+    "왜 Day 5지?" 같은 혼란이 생겼다.)
+    """
+    cards = ''
+    for it in items:
+        day = it.get('day')
+        date = it.get('date', '')
+        tt = htmllib.escape(str(it.get('track_title', '')))
+        topic = htmllib.escape(str(it.get('topic') or it.get('psat_type')
+                                   or it.get('part7_type') or ''))
+        nq = len(study_questions(it))
+        badge = ('<span class="ml-2 rounded bg-brand-600 px-1.5 py-0.5 text-xs font-bold '
+                 'text-white">오늘</span>' if date == today_str else '')
+        cards += (
+            f'<a class="block rounded-lg border border-slate-200 dark:border-slate-800 p-4 '
+            f'hover:border-brand-600 hover:bg-slate-50 dark:hover:bg-slate-800" '
+            f'href="/ko/study/day/{day}/">'
+            f'<div class="flex items-baseline justify-between">'
+            f'<span class="font-semibold text-slate-900 dark:text-slate-100">Day {day}</span>'
+            f'<span class="text-xs text-slate-500">{date}{badge}</span></div>'
+            f'<p class="mt-1 text-sm text-slate-700 dark:text-slate-300">{tt}'
+            f' <span class="text-xs text-slate-400">· {nq}문항</span></p>'
+            f'<p class="mt-0.5 text-xs text-slate-500">{topic}</p></a>')
+    total_q = sum(len(study_questions(x)) for x in items)
+    has_today = any(x.get('date') == today_str for x in items)
+    note = ('' if has_today else
+            f'<p class="rounded-lg bg-slate-50 dark:bg-slate-800 p-3 text-sm text-slate-600 '
+            f'dark:text-slate-400">오늘({today_str}) 세트는 아직 없습니다 — 매일 21:05에 '
+            f'자동으로 만들어집니다.</p>')
+    return f'''<div class="space-y-4">
+  <div>
+    <p class="text-xs font-bold tracking-widest text-brand-600">KO STUDY · 7급 워밍업</p>
+    <h1 class="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">학습 목록</h1>
+    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">누적 {len(items)}일 · 총 {total_q}문항 · 하루 30분(복습 10분 + 새 내용 20분)</p>
+  </div>
+  {note}
+  <div class="space-y-2">{cards}</div>
+  <p class="text-sm"><a class="underline hover:text-brand-600" href="/ko/study/archive/">표 형태 전체 목록 →</a></p>
+</div>'''
+
+
 def build_study():
-    """KO 학습 세트 → /ko/study/ (오늘) + /ko/study/day/{n}/ + /ko/study/archive/."""
+    """KO 학습 세트 → /ko/study/ (목록) + /ko/study/day/{n}/ + /ko/study/archive/."""
     items = study_load()
     if not items:
         print('[study] 학습 세트 없음 — 건너뜀')
@@ -1848,17 +1893,16 @@ def build_study():
         open(out, 'w', encoding='utf-8').write(doc)
         written += 1
 
-    latest = items[-1]
-    ld = datetime.date.fromisoformat(latest['date'])
+    # /ko/study/ = 목록(선택 화면). 예전엔 최신 Day를 바로 붙였는데,
+    # 오늘이 Day 1인데 Day 5가 떠서 "왜 Day 5지?" 하는 혼란이 있었다(로이 지적).
+    today_str = datetime.date.today().isoformat()
     lp = os.path.join(BASE, 'ko', 'study', 'index.html')
     os.makedirs(os.path.dirname(lp), exist_ok=True)
     open(lp, 'w', encoding='utf-8').write(
-        layout('ko', f'오늘의 학습 · Day {latest["day"]} — {SITE_NAME}',
-               '매일 30분 — 복습 10분 + 새 내용 20분.',
+        layout('ko', f'학습 목록 (Day 1~{items[-1]["day"]}) — {SITE_NAME}',
+               '원하는 Day를 골라 30분 학습 — 복습 10분 + 새 내용 20분.',
                f'{DOMAIN}/ko/study/',
-               study_page_html(latest,
-                               by_date.get((ld - datetime.timedelta(days=7)).isoformat()),
-                               by_date.get((ld - datetime.timedelta(days=1)).isoformat())),
+               study_index_html(items, today_str),
                'website', [], slug=None, available={'ko'}, noindex=True, plain=True))
     written += 1
 
@@ -1874,7 +1918,7 @@ def build_study():
     ap = os.path.join(BASE, 'ko', 'study', 'archive', 'index.html')
     os.makedirs(os.path.dirname(ap), exist_ok=True)
     open(ap, 'w', encoding='utf-8').write(
-        layout('ko', f'학습 전체 목록 (Day 1~{latest["day"]}) — {SITE_NAME}',
+        layout('ko', f'학습 전체 목록 (Day 1~{items[-1]["day"]}) — {SITE_NAME}',
                '지금까지의 학습 세트 목록.',
                f'{DOMAIN}/ko/study/archive/',
                f'''<div class="space-y-4">
@@ -1889,7 +1933,7 @@ def build_study():
     <tbody>{rows}</tbody></table></div>
 </div>''', 'website', [], slug=None, available={'ko'}, noindex=True, plain=True))
     written += 1
-    print(f'[study] KO 학습 페이지 {written}개 생성 (Day 1~{latest["day"]})')
+    print(f'[study] KO 학습 페이지 {written}개 생성 (Day 1~{items[-1]["day"]})')
     return written
 
 
