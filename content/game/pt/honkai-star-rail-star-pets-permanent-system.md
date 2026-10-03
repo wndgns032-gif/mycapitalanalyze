@@ -51,21 +51,3 @@ A discussão também reflete um dilema do setor: como reter jogadores na entress
 O primeiro passo é observar como a HoYoverse vai responder às críticas visuais: novos modelos de pets podem amenizar a rejeição inicial. Também vale acompanhar se o sistema receberá atualizações frequentes, como novos estilos e modos de batalha, e se os cupons continuarão sendo distribuídos em quantidade suficiente para manter o acesso gratuito.
 
 O ponto mais sensível é a fronteira da monetização: qualquer sinal de que os pets possam ganhar atributos ou vantagens competitivas deve reacender a polêmica. Por fim, é preciso ver se o Star Pets cumprirá o papel de segurar a retenção sem canibalizar a produção do conteúdo principal, um equilíbrio que definirá se o modelo será copiado por outros estúdios.
-
-## FAQ
-
-### O que é o sistema Star Pets?
-
-É um sistema permanente de Honkai: Star Rail que permite colecionar criaturas, trocar repetidos com amigos e participar de batalhas casuais. Ele foi lançado na versão 4.6 com 17 modelos iniciais.
-
-### Os pets afetam o poder de combate?
-
-Segundo a cobertura original, o sistema não oferece bônus numéricos e não está atrelado à força dos personagens. A proposta é puramente cosmética e recreativa.
-
-### É preciso pagar para conseguir os pets?
-
-Não necessariamente. A versão distribuiu 24 cupons gratuitos, o suficiente para garantir um item de raridade especial. Repetidos podem ser reciclados ou trocados, permitindo completar a coleção com o tempo.
-
-### Por que o sistema gerou polêmica?
-
-As críticas se concentram no design antropomórfico dos primeiros pets e no receio de que a monetização por caixas aleatórias se torne mais agressiva no futuro. Ainda não há confirmação oficial sobre mudanças no modelo.

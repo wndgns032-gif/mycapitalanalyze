@@ -65,16 +65,3 @@ It is probably not the right fit for someone looking for realistic sports compet
 The App Store lists Lost Team: Wild Quest as free. That is the only pricing information provided in the source material.
 
 The listing does not state whether the game includes in-app purchases, ads, or any paid content. It also does not mention a subscription. Those details are not available yet, so no assumptions should be made about them. If pricing structure matters to you, check the store page again closer to the December 5, 2026 date, since that is where any changes would appear.
-
-## FAQ
-
-### Is Lost Team: Wild Quest out now?
-No. The listing marks it as upcoming with pre-order status, and the release date shown is December 5, 2026. Details may change before then.
-
-### What kind of game is it?
-It is listed under Games with roleplaying and sports genres. The description combines forest exploration, ball control, obstacle challenges, and a rescue objective where each victory frees another teammate.
-
-### How much does it cost?
-The App Store lists it as free. The listing does not say whether there are in-app purchases or ads, so that information is not available yet.
-
-You can find the official listing here: https://apps.apple.com/us/app/lost-team-wild-quest/id6794827742?uo=4

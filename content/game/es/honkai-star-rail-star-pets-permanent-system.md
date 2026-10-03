@@ -47,21 +47,3 @@ El caso de *Honkai: Star Rail* es un ejemplo de cómo se puede validar una idea 
 El éxito de «Mascotas Estelares» dependerá de varios factores. Primero, si miHoYo logra diversificar los diseños de las mascotas para satisfacer distintos gustos estéticos. Segundo, si mantiene la promesa de no incluir bonificaciones de combate en el sistema, evitando que se convierta en una fuente de ansiedad por poder. Tercero, si el sistema recibe actualizaciones periódicas con nuevos diseños y modos de juego, sin desviar recursos del contenido principal.
 
 También será clave observar si otros estudios adoptan estrategias similares. Si el modelo funciona, es probable que veamos más sistemas permanentes de coleccionables y actividades casuales en otros títulos gacha. La pregunta es si los jugadores aceptarán esta fórmula como un complemento o si la percibirán como un relleno innecesario.
-
-## FAQ
-
-### ¿Qué es «Mascotas Estelares» en Honkai: Star Rail?
-
-Es un sistema permanente introducido en la versión 4.6 que permite coleccionar mascotas mediante cajas sorpresa, intercambiar duplicados y participar en combates casuales. También se pueden llevar hasta tres mascotas mientras se explora.
-
-### ¿Por qué miHoYo convirtió las mascotas en un sistema permanente?
-
-Para llenar los periodos de sequía entre actualizaciones, ofreciendo una actividad diaria ligera que no requiere mucho tiempo ni esfuerzo, y que ayuda a mantener la retención de jugadores.
-
-### ¿El sistema incluye ventajas de combate?
-
-Según la información disponible, no. El sistema está diseñado como contenido casual sin bonificaciones de poder, aunque algunos jugadores temen que eso cambie en el futuro.
-
-### ¿Qué críticas ha recibido el sistema?
-
-Principalmente dos: el diseño visual de algunas mascotas, considerado demasiado antropomórfico, y la preocupación por que el modelo de cajas sorpresa derive en una monetización más agresiva.

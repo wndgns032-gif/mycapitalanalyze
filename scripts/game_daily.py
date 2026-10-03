@@ -430,21 +430,21 @@ def user_prompt(lang, lang_name, art, lo, hi, slug_hint='', dmin_prompt=None):
         "section 1 = what happened\n"
         "section 2 = why it matters\n"
         "section 3 = what to watch next\n"
-        "section 4 = FAQ (exactly 3 questions as ### subheadings, each answered in ONE sentence)\n\n"
+        "- No FAQ section. Keep it tight — just the news, why it matters, what comes next.\n\n"
         "HEADING LANGUAGE RULE (mandatory, most-violated rule):\n"
         "- EVERY \"##\" and \"###\" heading MUST be written in " + lang_name + ".\n"
         "- The English labels above describe the sections only. NEVER keep them as headings.\n"
-        "  Writing \"## What Happened\" or \"## FAQ\" is a hard failure — the article is discarded.\n"
+        "  Writing \"## What Happened\" is a hard failure — the article is discarded.\n"
         "- Write headings the way a local " + lang_name + " publication would, not word-for-word.\n"
         "- Only proper nouns (game/company names) may stay in their original script.\n\n"
         "LENGTH DISCIPLINE — this is the rule most often failed\n"
         "- The whole body MUST fit in " + str(hi) + " characters. Budget it before you write:\n"
         "  opening ~120 words, 'What Happened' ~150, 'Why It Matters' ~140, "
-        "'What To Watch Next' ~120, FAQ 3×~35 words.\n"
+        "'What To Watch Next' ~120.\n"
         "- Use SHORT paragraphs (2-3 sentences). No bullet lists of more than 4 items.\n"
         "- Cut background and restatement. Do not repeat the headline in section 1.\n"
-        "- If you are running long, compress 'Why It Matters' first, then drop FAQ to 2 "
-        "questions — never exceed " + str(hi) + " characters.\n\n"
+        "- If you are running long, compress 'Why It Matters' first — never exceed "
+        + str(hi) + " characters.\n\n"
         "CONSTRAINTS\n"
         "- body length: " + str(lo) + " to " + str(hi) + " characters (count the final text).\n"
         "- description (SEO meta): " + str(dmin_prompt) + " to " + str(SEO_DESC_MAX)
@@ -495,8 +495,8 @@ def gen_lang(lang, lang_name, art, lo, hi, slug_hint=''):
             continue
         n = len(body)
         if n < lo - 400:
-            last_why = ('body was %d characters, minimum is %d — expand every section, '
-                        'add the full FAQ' % (n, lo))
+            last_why = ('body was %d characters, minimum is %d — expand every section '
+                        'with concrete facts' % (n, lo))
             print('   [%d] 본문 %d자 < 하한 %d' % (attempt, n, lo))
             continue
         # 상한은 10% 여유만 허용 — 3000자 이내 원칙을 지킨다(로이 2026-10-02)

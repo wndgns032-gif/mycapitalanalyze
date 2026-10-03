@@ -77,17 +77,3 @@ A progressão por estrelas e a abertura de novas partes do jardim sugerem um inc
 O ponto de incerteza mais relevante é a publicidade. A descrição oficial menciona anúncios entre os níveis, mas não diz quantos são, com que frequência aparecem nem se há opção de removê-los. A atualização 1.0.6 também menciona permissão de rastreamento do iOS antes dos anúncios, o que pode ser um incômodo para parte do público.
 
 Também não está claro se há compras dentro do app. A página não informa esse dado, então qualquer expectativa de conteúdo pago ou de remoção de anúncios por pagamento é especulação. O que se sabe é o que a descrição oficial afirma: jogo grátis, com alguns anúncios entre os níveis, sem conta e com oito idiomas.
-
-## Perguntas frequentes
-
-### Que tipo de app é?
-
-Bramblewick: Puzzle de lógica é um jogo de quebra-cabeça de lógica para iPhone e iPad, da categoria Games, com os gêneros Quebra-cabeça e Casual. A regra é plantar uma amoreira em cada linha, coluna e cor, sem que duas se toquem, nem pelos cantos. A descrição oficial compara a sensação a jogos como sudoku e Star Battle, com solução única encontrada pela lógica.
-
-### É gratuito?
-
-Sim, Bramblewick: Puzzle de lógica é grátis para baixar e jogar. A descrição oficial informa que o jogo é gratuito e tem alguns anúncios entre os níveis, sem necessidade de conta. A página da loja não informa se existem compras dentro do app, assinatura ou período de teste, então esse ponto permanece não confirmado.
-
-### Como reservar?
-
-Não há reserva para Bramblewick: Puzzle de lógica, porque o jogo já foi lançado em 25 de setembro de 2026 e está disponível para download agora. Basta acessar a página na App Store e baixar a versão 1.0.6, atualizada em 30 de setembro de 2026. O download é gratuito e não exige criação de conta.

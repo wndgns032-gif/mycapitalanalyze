@@ -57,17 +57,3 @@ Pre-ordering MindSharp Challenges costs nothing, because the app is listed as fr
 ## Pricing and what is still unclear
 
 The price model for MindSharp Challenges is free, with optional in app purchases confirmed in the listing. Those purchases unlock premium items such as unique visual themes, custom game styles and profile photos, and gems can also be earned through gameplay victories instead of bought. The listing does not state the price of any gem pack, the cost of any individual premium item, or whether a subscription exists, so treat any figure you see elsewhere as unconfirmed. It also does not say whether every mini game is available from the start or whether some modes are gated behind gems. There is no mention of a free trial, because there is nothing to trial in a free app. What is clear is that you can play MindSharp Challenges without paying, and that paying only affects cosmetics and shop items according to the source material.
-
-## FAQ
-
-### When does it come out?
-
-The listing gives a release date of 2026-10-02 for MindSharp Challenges. That is the only date in the source material, and no earlier window or beta period is mentioned. Because the app is still marked as upcoming, the date could change, but nothing in the listing suggests a different one.
-
-### Is it free?
-
-Yes, MindSharp Challenges is listed as free to download. The listing confirms optional in app purchases for premium items such as themes, custom game styles and profile photos. Gems used for those items can also be collected through gameplay victories, so paying is not the only route.
-
-### How do I pre-order it?
-
-Pre-ordering happens through the App Store page for MindSharp Challenges, which is currently listed as upcoming rather than available. The source material does not describe any separate sign up, code or website for reserving it. Since the app is free, a pre-order does not involve a payment.

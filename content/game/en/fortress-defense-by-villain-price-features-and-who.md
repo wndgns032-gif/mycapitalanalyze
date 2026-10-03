@@ -49,13 +49,3 @@ Pre-ordering Fortress Defense by Villain costs nothing and reserves the game for
 
 ## Pricing and What Is Still Unclear
 Fortress Defense by Villain is free to download. The listing states that optional rewarded ads can provide energy and selected skins. A completed speed-unlock ad enables 2x and 3x play for 6 hours, up to 4 unlock ads per day. In-app purchases are implied by the presence of ads and skins, but the listing does not state any specific prices for energy, skins, or other items. There is no mention of a subscription or a trial. The energy system is confirmed: starting a new game uses energy, and energy replenishes at a set time each day. The listing does not say what the energy cap is or how much energy a session costs. Cloud saves work within the same platform and account; iOS requires iCloud sign-in. Guest progress is saved on the device. Account connection is optional. Support is available at studiovillain.app@studiovillain.xyz.
-
-## FAQ
-### When does it come out?
-Fortress Defense by Villain is listed with a release date of 2 October 2026. The App Store page shows it as upcoming and available for pre-order. No other release window is mentioned. If the date changes, the listing would be the place to check.
-
-### Is it free?
-Yes, Fortress Defense by Villain is free to download. The listing also mentions optional rewarded ads that can provide energy and selected skins, and a completed speed-unlock ad enables 2x and 3x play for 6 hours, up to 4 unlock ads per day. In-app purchases are not priced on the listing. There is no subscription or trial mentioned.
-
-### How do I pre-order it?
-You can pre-order Fortress Defense by Villain from its App Store page. The listing shows a pre-order option for the 2 October 2026 release. Pre-ordering reserves the game so it downloads automatically when available. No pre-order rewards are mentioned on the listing.

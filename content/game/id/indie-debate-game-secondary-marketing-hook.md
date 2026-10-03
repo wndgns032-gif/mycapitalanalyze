@@ -45,17 +45,3 @@ Ia menyebut beberapa contoh yang tampak sukses: 《Loot Loop》 terjual 100.000 
 Pertanyaan sesungguhnya dari utas ini adalah: ketika validasi trailer menjadi standar industri dan ide kreatif dianggap "aset tidak dapat diandalkan", apakah game yang lahir tanpa menyenangkan siapa pun masih akan dibuat? Sebagian anggota komunitas sudah menjawab. Seorang amatir menyatakan dengan tegas, "Game pertama saya saya buat untuk diri sendiri, begitu juga game kedua sampai ketujuh."
 
 Apakah validasi data adalah norma baru dan apakah itu akan mematikan proyek passion pribadi, setiap orang punya jawabannya sendiri. Yang jelas, diskusi ini menunjukkan bahwa ketegangan antara seni dan komersial di industri game belum menemukan titik akhir.
-
-## FAQ
-
-### Apakah utas ini dari pengembang terkenal?
-Tidak. Poster asli menggunakan nama samaran Plastic_Study4687 dan mengaku punya pengalaman dari studio AAA hingga proyek solo, tetapi identitasnya tidak diverifikasi. Sumber tidak menyebutkan nama asli atau studio tempat ia bekerja.
-
-### Apakah ada data penjualan resmi yang disebutkan?
-Sumber hanya mengutip angka dari komentar komunitas, bukan laporan resmi penjualan. Angka-angka seperti 7.000 wishlist atau 100.000 kopi terjual adalah ilustrasi dan klaim individual, bukan data terverifikasi dari penerbit.
-
-### Game apa saja yang disebut dalam contoh?
-Sumber menyebut 《Loot Loop》, 《A Game About Feeding A Black Hole》, dan 《BRAZILIAN DRUG DEALER 3》 sebagai contoh game yang tampak sukses tetapi jumlah pemain online-nya rendah. Tidak ada informasi tambahan tentang platform atau tanggal rilis.
-
-### Apa rekomendasi utama dari diskusi ini?
-Tidak ada kesimpulan tunggal. Sebagian menyarankan validasi awal dengan vertical slice, sebagian menekankan pentingnya passion, dan sebagian lagi melihat keduanya perlu berjalan bersama. Sumber tidak memberikan solusi definitif.

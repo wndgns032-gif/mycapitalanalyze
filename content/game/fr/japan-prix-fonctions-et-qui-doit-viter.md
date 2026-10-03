@@ -51,17 +51,3 @@ upcoming: "false"
 ## À quoi s’attendre
 
 D’après la description officielle, 満タンJAPAN mise sur une expérience calme et réfléchie : pas de chronomètre, pas de score, pas de pression apparente. Vous devriez passer du temps à faire tourner des pièces et à tester des agencements, avec la satisfaction de trouver une configuration qui tient. La mise à jour 1.2 indique que le développeur a amélioré la rotation à deux doigts, ce qui suggère que ce geste est central dans le jeu. L’ajustement de l’écran d’accueil iPad montre aussi un souci de présentation. Cependant, la fiche ne dit rien sur la difficulté, la durée de vie, le nombre de niveaux ou la présence d’un tutoriel. Aucun avis d’utilisateur n’est disponible, donc impossible de savoir comment le jeu se comporte en pratique. Il faut donc s’attendre à un puzzle minimaliste, sans fioritures, et accepter de découvrir par soi-même ce que la boîte contient vraiment.
-
-## FAQ
-
-### Quel type d’application est-ce ?
-
-満タンJAPAN est un jeu de puzzle classé dans la catégorie Jeux, avec les genres Casse-tête et Éducation. Il vous demande de faire tenir des pièces en bois représentant les 47 préfectures du Japon dans une boîte. Ce n’est pas une application de cartographie ni un outil d’apprentissage des préfectures.
-
-### Est-ce gratuit ?
-
-Non, 満タンJAPAN n’est pas gratuit : il est affiché au prix de 0,99 € sur l’App Store français. La fiche ne mentionne ni abonnement, ni essai gratuit, ni achats intégrés. Il s’agit donc d’un achat unique, mais le prix peut varier selon la région.
-
-### Comment le précommander ?
-
-満タンJAPAN est déjà disponible : il est sorti le 23 septembre 2026 et peut être téléchargé immédiatement. Il n’y a donc pas de précommande possible. Rendez-vous sur la fiche App Store pour l’acheter au prix de 0,99 €.

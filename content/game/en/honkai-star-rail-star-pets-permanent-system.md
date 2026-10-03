@@ -51,21 +51,3 @@ Star Rail's approach — test small with limited events, then promote what works
 ## What To Watch Next
 
 Whether miHoYo adds stat bonuses to pets is the clearest signal of how far it will push monetization. The pace of new pet styles will show whether the art criticism is being addressed. And the next few version cycles will reveal whether Star Pets actually lifts daily activity during dry spells, or becomes another ignored side panel. The source does not state any specific future content plans.
-
-## FAQ
-
-### What is Star Pets in Honkai: Star Rail?
-
-It is a permanent casual system added in version 4.6 that combines blind-box draws, pet collection, exploration companions and a bumper-style casual match mode.
-
-### Is Star Pets pay-to-win?
-
-According to the source, the system currently offers no stat bonuses, and 24 free tickets at launch match the pity threshold for a treasured pet, so free players can obtain one without paying.
-
-### Why did miHoYo make it permanent?
-
-The source says it is meant to fill the dry spells between version updates, give players a daily reason to log in, and add content at a lower development cost than new dungeons or combat systems.
-
-### What are players unhappy about?
-
-Two things: the human-like design of the Catcat pets, which some find unsettling, and the shift from free event rewards to blind-box monetization.

@@ -47,17 +47,3 @@ Data-minded user Idiberug laid out a sobering scenario: assume 7,000 wishlists (
 ## What To Watch Next
 
 The debate is unlikely to be resolved soon. As the article concludes, the real question is whether data validation is the new normal and whether it will stifle personal passion projects. The community already has an answer from one hobbyist: "My first game was made for myself, and so were my second through seventh." Whether publishers will shift their approach, or whether more developers will abandon the traditional path altogether, remains to be seen.
-
-## FAQ
-
-### Is this a new phenomenon?
-No. Several commenters noted that validating a game's marketability before full production has been the standard path to publisher investment for roughly the past decade.
-
-### Do data-driven games always succeed?
-Not necessarily. One user shared that a studio focused on marketing first achieved huge wishlist numbers but every game barely broke even due to poor sales.
-
-### Can a game succeed without marketing?
-The consensus is that great games still need to be discovered, but marketing a bad game is nearly impossible. Most successful titles balance both art and commerce.
-
-### What do developers advise for passion projects?
-Many suggest making games for the love of the process while accepting that commercial success is not guaranteed, or funding your passion through other work.

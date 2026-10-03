@@ -64,17 +64,3 @@ Berdasarkan deskripsi resminya, pengalaman pertama Anda kemungkinan besar dimula
 Dari sisi kontrol, harapannya adalah pengalaman yang dirancang untuk layar sentuh lanskap: bergerak lewat kontrol di layar, mengetuk untuk berbicara, dan mencubit untuk memperbesar. Deskripsi resminya secara eksplisit menyebut ini bukan port ponsel dan bukan tab peramban, jadi tata letaknya memang dibuat untuk tablet. Namun bagaimana rasanya dalam praktik, termasuk seberapa nyaman pertarungan THAC0 dijalankan lewat sentuhan, tidak bisa dipastikan dari halaman resminya saja.
 
 Satu keterbatasan yang paling penting untuk diingat: belum ada satu pun penilaian pengguna. Rating tercatat 0,0 dari 0 penilaian, sehingga tidak ada sinyal dari pemain lain soal kualitas, kestabilan server, atau pengalaman jangka panjang. Tidak ada juga riwayat pembaruan karena versinya masih 1.0. Ini bukan berarti game-nya buruk, tetapi berarti Anda akan menjadi salah satu pemain paling awal yang mencobanya, tanpa jaminan apa pun dari komunitas.
-
-## FAQ
-
-### Aplikasi apa ini?
-
-Zephyria adalah MMORPG fantasi 3D multipemain dari pengembang Andrew Fell, tersedia di App Store dalam kategori Games dengan genre Adventure dan Role-Playing. Aplikasi ini adalah pendamping native untuk iPad, sementara dunia yang sama juga berjalan di Mac lewat zephyria.live. Versi yang tercatat adalah 1.0, diperbarui 10 Agustus 2026, dengan rating konten 12+ dan bahasa Inggris saja.
-
-### Apakah gratis?
-
-Ya, halaman resminya mencantumkan harga Free. Namun halaman itu tidak menyebutkan apakah ada pembelian dalam aplikasi, langganan, atau masa uji coba, jadi tidak ada kepastian resmi soal biaya tambahan di dalam game. Perlu diingat juga bahwa aset dunia perlu diunduh sekali dengan perkiraan ukuran beberapa gigabyte, dan sebaiknya dilakukan lewat Wi-Fi.
-
-### Bagaimana cara memesannya?
-
-Tidak ada pra-pemesanan karena game ini sudah dirilis dan bisa diunduh sekarang. Anda cukup membuka halaman App Store-nya di https://apps.apple.com/id/app/zephyria/id6789677675?uo=2 dan mengunduhnya langsung ke iPad. Aplikasi ini tidak tersedia untuk iPhone, Apple Watch, Apple TV, atau Vision Pro, dan koneksi internet diperlukan untuk memainkannya.

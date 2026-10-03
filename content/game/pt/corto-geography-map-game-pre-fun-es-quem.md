@@ -68,17 +68,3 @@ A expectativa que a ficha oficial cria é de um jogo simples de aprender e difí
 O ponto de incerteza mais importante é o preço dos pacotes. O material confirma que existem 164 pacotes temáticos e que cada um é compra vitalícia, mas não diz quanto custa nenhum deles, nem se há desconto por conjunto, nem se uma parte fica gratuita além de World Cities e dos dez pacotes de aprendizado iniciais. Sem esses números, qualquer cálculo de custo total seria chute.
 
 Há outras lacunas que valem registrar. A ficha não descreve o tamanho de cada pacote, o número de lugares por pacote, o funcionamento exato do cronômetro, nem se existe modo offline. Também não há informação sobre a frequência de atualizações futuras, e o material não promete nenhuma atualização, então não conte com conteúdo novo em data marcada. Por fim, a nota 0,0 com 0 avaliações não indica qualidade ruim: indica apenas que ainda não há avaliações suficientes para formar uma média.
-
-## FAQ
-
-### Que tipo de app é?
-
-Corto: Geography Map Game é um jogo de geografia da categoria Games, com gêneros Jogos, Educação e Trívia, em que você toca no mapa mundial para indicar onde fica o lugar pedido. A rodada tem dez perguntas e cada uma vale até 1.000 pontos, com 800 por precisão e 200 por velocidade. O catálogo é dividido em pacotes temáticos, e a descrição oficial cita 164 pacotes além do conteúdo inicial gratuito. A classificação indicativa é +4, e o desenvolvedor listado é Xander van Baarsen.
-
-### É gratuito?
-
-O download é grátis, e a descrição oficial afirma que o jogo começa com World Cities e dez pacotes de aprendizado sem custo. O restante do catálogo, os 164 pacotes temáticos, é vendido à parte, cada um como compra vitalícia, segundo o mesmo texto. A ficha do app não informa os preços desses pacotes nem confirma a existência de compras dentro do aplicativo. O que está confirmado é que não há assinaturas e não há anúncios.
-
-### Como reservar?
-
-Não há reserva a fazer: Corto: Geography Map Game já está lançado e disponível para baixar, com data de lançamento e última atualização em 2026-09-27, na versão 1.0. Basta abrir a página do app na App Store e instalar no iPhone ou iPad compatível, já que a lista de dispositivos inclui modelos de iPhone 5s até iPhone 17 e vários iPad. O material não menciona pré-venda, período de teste gratuito nem recompensa de reserva. Depois de instalar, o conteúdo inicial gratuito já permite jogar sem pagar nada.

@@ -53,17 +53,3 @@ Le téléchargement d'AirStream Plus‎ est gratuit. La fiche officielle indique
 ## What to Expect
 
 D'après la description officielle, l'expérience repose sur une interface décrite comme épurée et intuitive, avec une promesse de simplicité pour partager, enseigner et se divertir. On peut donc s'attendre à un parcours court entre le choix du média et l'envoi vers l'écran. Le revers annoncé est le découpage très serré de la version gratuite : chaque fonction a son propre quota quotidien, et le compteur se réinitialise chaque jour. La fiche ne dit pas ce qui se passe une fois le quota atteint, ni si un message invite à passer au Premium. Elle ne précise pas non plus la qualité de diffusion, la latence, ni les formats de fichiers acceptés. Un autre point à garder en tête : la fiche affiche une note de 0,0 sur 5 pour 0 évaluation, ce qui signifie qu'il n'existe aucun retour d'utilisateur à consulter pour le moment. Enfin, la liste des langues n'est pas divulguée, et la compatibilité réelle avec les téléviseurs reste décrite de façon générale.
-
-## FAQ
-
-### Quel type d’application est-ce ?
-
-C'est une application de divertissement, classée dans la catégorie Entertainment et le genre Divertissement. Elle sert à diffuser des photos, des vidéos, de la musique et du contenu web vers un téléviseur compatible, et elle inclut un tableau blanc virtuel. Elle est éditée par LION BROTHERS P.C. et porte la classification 4+.
-
-### Est-ce gratuit ?
-
-Le téléchargement est gratuit, mais l'application contient des achats intégrés et des abonnements à renouvellement automatique. La fiche affiche 4,99 USD pour 1 semaine, 12,99 USD pour 1 mois, 39,99 USD pour 1 an et 59,99 USD pour la formule à vie. La version gratuite est limitée : 3 diffusions de photos et vidéos par jour, 3 diffusions audio par jour, 3 sessions de navigateur par jour, 3 minutes de dessin par jour, un Sleep Timer utilisable une fois et un historique dont seuls les 3 premiers enregistrements sont nets.
-
-### Comment le précommander ?
-
-On ne peut pas la précommander : l'application est déjà publiée et téléchargeable. La fiche indique une version 1.0 avec une date de dernière mise à jour au 24 septembre 2026. Il suffit donc de la télécharger depuis l'App Store, puis de choisir éventuellement une formule Premium parmi celles affichées si les limites de la version gratuite vous gênent.

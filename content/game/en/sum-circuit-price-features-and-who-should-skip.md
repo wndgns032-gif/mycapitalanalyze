@@ -65,17 +65,3 @@ The listing suggests a puzzle game built around restraint rather than spectacle.
 Expect a small, quiet interface. Modes, stage selection and game tools are tucked into Settings to keep the game screen focused, and the tutorial can be replayed without losing your current puzzle. Feedback is configurable: Korean, English and Japanese text, sound effects, haptics, and background music that is off by default. Offline play with no account means progress lives on your device, so there is no cloud profile described in the listing.
 
 Expect ads to be present but avoidable. Hints are free up to a point, then one optional rewarded ad covers the rest for that puzzle; the Daily Circuit bonus is free on completion, or available early via an ad. The listing also states that if a prepared ad is unavailable or cannot load, the requested feature opens for free. What you should not expect, based on the listing, is any confirmed roadmap, future update or additional platform.
-
-## FAQ
-
-### What kind of app is it?
-
-Sum Circuit is a puzzle game for iPhone, iPad and iPod touch, listed under Games and Puzzle. You connect 2–4 neighbouring number tiles to match a target sum, with no diagonals, and cleared tiles let the numbers above fall into place. It includes a 30-stage Journey, a 365-puzzle Expedition, and daily and bonus circuits. Text and feedback are available in Korean, English and Japanese.
-
-### Is it free?
-
-Sum Circuit is free to download, and the listing does not disclose any in-app purchases. Ads exist but are optional: Journey stages 1–2 have free hints and every later puzzle includes free hints, after which one optional rewarded ad unlocks the remaining hints for that puzzle. Completing the Daily Circuit unlocks its bonus for free, or you can watch an ad to play it early. Ads need an internet connection.
-
-### How do I pre-order it?
-
-You cannot pre-order Sum Circuit, because it is already released and downloadable. The listing gives a release date of 2026-10-02 and a last-updated date of 2026-10-02, with version 1.0.0 currently available. Search for Sum Circuit on the App Store and download it directly; no reservation step is involved. The listing does not mention any pre-order bonus or launch offer.

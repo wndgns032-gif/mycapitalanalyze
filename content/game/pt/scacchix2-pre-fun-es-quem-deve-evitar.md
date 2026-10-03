@@ -63,20 +63,6 @@ Pelo que a ficha oficial descreve, ScacchiX2 deve ser um jogo de partidas curtas
 
 A limitação mais importante é clara: ScacchiX2 não é xadrez completo. A ausência de arrocco e de en passant muda o cálculo de defesa do rei e de estrutura de peões, e quem vem do xadrez tradicional precisa reaprender. O multiplayer online também não está incluído. Além disso, a ficha não detalha o funcionamento do mana, o custo das evocações nem o equilíbrio entre as peças, então esses pontos seguem desconhecidos até que o jogo seja aberto.
 
-## Perguntas frequentes
-
-### Que tipo de app é?
-
-ScacchiX2 é um jogo de tabuleiro e estratégia para iPhone e iPad, disponível na categoria Jogos. Ele usa um tabuleiro 10×10, peças clássicas e um sistema de mana para evocar reforços. O objetivo continua sendo o xeque-mate, mas as regras são próprias e não incluem arrocco nem en passant.
-
-### É gratuito?
-
-O download de ScacchiX2 é grátis, segundo a ficha da App Store. A mesma ficha não informa se há compras dentro do app, assinatura ou teste, então não dá para garantir que todo o conteúdo seja gratuito. Quem quiser saber o custo total precisa checar a página do app antes de baixar.
-
-### Como reservar?
-
-Não é preciso reservar: ScacchiX2 já está disponível para download. A data de lançamento e a última atualização registradas são 25 de setembro de 2026, na versão 1.0. Basta abrir a página do app na App Store e baixar no iPhone ou iPad compatível.
-
 ## O que fazer agora
 
 Se você quer xadrez com uma variação de regras e partidas locais, baixe ScacchiX2 agora: é grátis e funciona offline. Se você quer xadrez tradicional completo ou partidas online, pule. Antes de baixar, confira na página do app se há compras dentro do aplicativo, já que a ficha não informa esse ponto.

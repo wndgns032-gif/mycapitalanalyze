@@ -55,21 +55,3 @@ A conclusão que emerge dos comentários é que dados e criatividade não são n
 O que fica em aberto é se a validação por trailer e lista de desejos antes da produção se consolida como padrão ou se continua restrita a projetos que buscam investimento de publicadoras. Também vale observar se estúdios que já adotam esse modelo conseguem reverter a baixa retenção citada nos exemplos do debate.
 
 Para desenvolvedores independentes, a pergunta prática é quanto do orçamento e do tempo deve ir para a validação antes de existir um jogo jogável. Não há resposta única nos comentários, e a própria comunidade segue dividida.
-
-## FAQ
-
-### O que exatamente o desenvolvedor quis dizer com "o jogo é secundário"?
-
-Ele reproduz a fala de um amigo que trabalha com dados em publicadoras: o gancho de marketing precisaria estar definido antes do código. O autor do post critica essa lógica, não a defende.
-
-### Esse processo de validar trailer antes do jogo é novidade?
-
-Não segundo vários comentários. Um usuário afirma que esse é o caminho para conseguir investimento de publicadora há cerca de dez anos.
-
-### Os números citados no debate são oficiais?
-
-Não. São estimativas e exemplos trazidos por usuários da comunidade, sem confirmação de publicadoras ou plataformas.
-
-### Qual foi a posição mais equilibrada entre os comentários?
-
-A do designer MeaningfulChoices: fazer uma pequena fatia vertical para validar e depois investir pesado, sem tratar arte e viabilidade comercial como opostos.

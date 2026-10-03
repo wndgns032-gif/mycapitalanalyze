@@ -53,21 +53,3 @@ El debate deja varias preguntas abiertas que el propio hilo no resuelve. No hay 
 Tampoco está claro qué ocurrirá con los juegos que no buscan complacer a nadie. Un aficionado lo expresó con claridad: su primer juego lo hizo para sí mismo, y del segundo al séptimo también. Esa postura, minoritaria o no, sigue existiendo.
 
 La pregunta de fondo, según recoge la cobertura original, es si la validación por datos se consolidará como norma y si eso terminará sofocando los proyectos personales. Cada lector, y cada desarrollador, tendrá su propia respuesta.
-
-## FAQ
-
-### ¿Qué significa exactamente "el juego es secundario"?
-
-Según el autor del hilo, significa que el gancho de marketing debe definirse antes de desarrollar el producto, de modo que el tráiler y la página de la tienda se validen primero y el juego se construya después.
-
-### ¿Es una práctica nueva en la industria?
-
-Varios comentaristas sostienen que no. Afirman que es la vía habitual para conseguir financiación de distribuidoras desde hace alrededor de una década.
-
-### ¿Qué opinan quienes defienden el desarrollo por pasión?
-
-Argumentan que el éxito comercial es estructuralmente improbable y que, si el objetivo es ganar dinero, quizá convenga buscarlo en otro sector y desarrollar videojuegos por amor al oficio.
-
-### ¿Hay datos que confirmen qué modelo funciona mejor?
-
-El debate no aporta cifras verificables más allá de ejemplos anecdóticos citados por los participantes. La cobertura original no ofrece estadísticas que zanjen la discusión.

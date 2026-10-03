@@ -807,7 +807,7 @@ You never claim to have played, tested, reviewed or measured the product.
 
 NAME DISCIPLINE (SEO, very high priority): the product name is the single most important search term.
 Use the exact official name given in the material — verbatim, in its original script — in the title, the description, the opening section,
-the verdict block, and naturally at least 5 more times across the body sections and FAQ (aim for 8+ mentions total in a normal article).
+the verdict block, and naturally at least 5 more times across the body sections (aim for 8+ mentions total in a normal article).
 For games, never re-translate, abbreviate or rename the game title; if the store listing gives a localized name, use exactly that name every time.
 Never replace the name with pronouns or generic words like "this app" when the name would fit naturally.
 
@@ -971,7 +971,7 @@ SEO_DESC_MAX = 480   # 상한(한/일/중 320자 내외, 영문 320자 권장)
 RETRY_HINT = (
     "Your previous draft was rejected. Fix it without inventing anything: "
     "(a) if it was too short, add one concrete sentence drawn from the SOURCE MATERIAL to each "
-    "H2 section and to each FAQ answer instead of padding with generalities; "
+    "H2 section instead of padding with generalities; "
     "(b) if it was too long, delete the least specific sentence in each section; "
     "(c) if the title was over the limit, shorten the last phrase only and keep the app name; "
     "(d) never use the words review, hands-on, tested or played."
@@ -1086,12 +1086,14 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
               'BUY-OR-SKIP REPORT for a title that is already released')
     # 섹션 라벨은 "무엇을 다루는지"만 전달한다 — 헤딩 문구 자체는 아래 HEADING LANGUAGE RULE 이
     # 대상 언어로 쓰게 한다. (영어 라벨을 그대로 노출하면 ko/zh/hi 글에 영어 헤딩이 박힌다)
+    # 로이 지시 2026-10-03: FAQ(자주 묻는 질문) 섹션은 쓰지 않는다.
+    # 앱 소개만 간결하게 — 길게 늘이지 말고 SEO에 걸릴 정도만.
     structure = ('"## what <APP NAME> is", "## release date and pre-order", "## key features", '
                  '"## who it is for and who should skip", "## is it worth pre-ordering", '
-                 '"## pricing and what is still unclear", "## FAQ"' if not released else
+                 '"## pricing and what is still unclear"' if not released else
                  '"## what <APP NAME> is", "## key features", '
                  '"## who it is for and who should skip", "## pricing and availability", '
-                 '"## what to expect", "## FAQ"')
+                 '"## what to expect"')
     angle = ("The title is NOT released yet. Frame it as an upcoming launch and say clearly that "
              "details may change before release. Be explicit that pre-ordering is free and "
              "reversible only if the store listing actually says so." if not released else
@@ -1110,9 +1112,7 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
              "- [what to expect] describes what the official listing suggests about the "
              "experience, always framed as expectation, never as something you tried or "
              "measured.\n\n")
-    faq_tbl = FAQ_LOCALIZED.get(lang, FAQ_DEFAULT)
-    faq_q = [q.replace('<APP NAME>', app_name) for q in
-             (faq_tbl['post'] if released else faq_tbl['pre'])]
+    # FAQ 는 쓰지 않는다 (로이 지시 2026-10-03) — faq 관련 변수는 의도적으로 만들지 않는다.
 
     return (
         "You are writing one " + report + ".\n\n"
@@ -1140,7 +1140,7 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "own variant. If a heading word appears in the localization table, use it exactly as "
         "written.\n\n"
         "HEADING LANGUAGE RULE (mandatory, most-violated rule):\n"
-        "- EVERY \"##\" section heading and EVERY \"###\" FAQ question MUST be written in "
+        "- EVERY \"##\" section heading MUST be written in "
         + lang_name + ". NEVER leave an English heading in the article.\n"
         "- The section list below uses plain English labels only to tell you what each section "
         "covers. Keep the meaning, translate the wording into natural " + lang_name + " the way a "
@@ -1148,15 +1148,14 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "- Example: the label \"## key features\" must become \"## 주요 기능\" in Korean, "
         "\"## 主な機能\" in Japanese, \"## 主要功能\" in Chinese, \"## Características "
         "principales\" in Spanish — never \"## Key Features\".\n"
-        "- \"## FAQ\" must also be localized (for example \"## 자주 묻는 질문\", \"## よくある質問\", "
-        "\"## Preguntas frecuentes\"). Leaving it as \"## FAQ\" is a hard failure.\n"
+        "- Do NOT add a FAQ / 자주 묻는 질문 / よくある質問 section. It is filler and is rejected.\n"
         "- The only thing that may stay in its original script is the app/game name itself.\n\n"
         "STATUS: " + status + "\n"
         "APP NAME: " + app_name + "\n"
         "OFFICIAL STORE URL: " + store_url + "\n\n"
         "NAME FREQUENCY RULE (SEO-critical): use the exact app/game name \"" + app_name + "\" "
         "verbatim throughout the article — title, description, opening, verdict block, and "
-        "naturally in every major body section plus at least one FAQ question. Total mentions "
+        "naturally in every major body section. Total mentions "
         "across the article: at least 8. Write \"" + app_name + "\" exactly as given, never "
         "abbreviated, never re-translated, never swapped for \"this app\" or similar.\n\n"
         "TITLE FORMULAS — choose ONE structure and fill it in. Do NOT invent your own structure.\n"
@@ -1199,10 +1198,8 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "each beginning with a dash. Order: what it is, what it costs, what is confirmed, what is "
         "unclear, who should skip.\n"
         "3. The body sections above, in the order given.\n"
-        "4. FAQ: exactly 3 questions. Each question MUST be written as a \"###\" heading (three "
-        "hash marks), answered in 2 to 4 sentences directly underneath it, with the direct answer "
-        "in the first sentence. Use exactly these localized questions, in this order, verbatim: "
-        + " | ".join(faq_q) + "\n\n"
+        "- Keep it tight: an app introduction, not an encyclopedia entry. No FAQ section, no "
+        "checklist, no concluding summary heading.\n\n"
         "SECTION RULES (the English in brackets only tells you which section is meant — the heading "
         "you actually print must follow the HEADING LANGUAGE RULE above)\n"
         "- [pricing / availability] (or [pricing and what is still unclear]): always "
@@ -1218,7 +1215,7 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         + extra +
         "CONTENT LENGTH\n"
         "- The H2 body must be between " + str(cmin) + " and " + str(cmax) + " characters of plain "
-        "text. The H2 body means all H2 sections and all sentences under them, and all FAQ bodies, "
+        "text. The H2 body means all H2 sections and all sentences under them, "
         "but NOT the opening section and NOT the quick verdict block. Counting is done after "
         "Markdown is removed.\n"
         "- Do not count the opening section or the quick verdict list toward this limit; they are "
@@ -1237,9 +1234,9 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "- Never promise a future update, a future price, or a future platform.\n\n"
         "HARD RULES — BREAKING ANY OF THESE IS AN AUTOMATIC REJECT\n"
         "1. Never use \"review\" or \"hands-on\" or \"tested\" or \"played\" or \"our experience\" "
-        "anywhere in the H1, the title, or any H2/FAQ heading. You have not played it.\n"
+        "anywhere in the H1, the title, or any H2 heading. You have not played it.\n"
         "2. Never use the phrase \"is it worth it\" or \"worth buying\" or \"worth downloading\" or "
-        "\"verdict\" anywhere except the title and the FAQ heading. The body must answer the "
+        "\"verdict\" anywhere except the title. The body must answer the "
         "question without repeating those words.\n"
         "3. Never write \"In this article\" or \"In this guide\" or \"Let's dive in\" or any "
         "meta-introduction.\n"
@@ -1257,7 +1254,7 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "Return raw JSON and nothing else. No markdown fences, no commentary, no keys other than "
         "these four:\n"
         "title, description, category, body\n"
-        "body holds the opening section, the quick verdict block, the H2 sections and the FAQ.\n"
+        "body holds the opening section, the quick verdict block, and the H2 sections.\n"
         "Use \"\\n\" for newlines inside strings.\n"
         "category must always be exactly \"Apps & Games\".\n"
     )

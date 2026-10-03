@@ -37,17 +37,3 @@ Die Diskussion um Sternenphantasie-Tiere ist Teil einer Branchenbewegung. Live-S
 ## Was als Nächstes zu beobachten ist
 
 Ob miHoYo neue Begleittier-Stile nachliefert, die den Geschmack breiterer Spielergruppen treffen. Ob die Blindbox rein kosmetisch bleibt oder Werte-Boni erhält – der Bericht sieht hier bislang keine Hinweise auf eine Abkehr von der bisherigen Linie. Ob das System die Produktionskapazität für Hauptinhalte beeinträchtigt. Und ob andere Live-Service-Titel ähnliche permanente Freizeitmodule einführen.
-
-## FAQ
-
-### Ist Sternenphantasie-Tiere ein Pflichtsystem?
-Nein. Laut Bericht ist es ein optionales Nebenmodul ohne Werte-Boni und ohne feste tägliche Pflichtaufgaben.
-
-### Wie bekomme ich Begleittiere ohne Bezahlung?
-Zum Start gab es 24 kostenlose Ziehungsgutscheine, was laut Bericht dem Garantiesystem für ein Sammlerstück entspricht. Duplikate können recycelt oder getauscht werden.
-
-### Warum gibt es Kritik am Design?
-Die erste Katzenmarder-Reihe wirkt stark vermenschlicht. Einige Spieler empfinden das als unpassend, besonders im Vergleich zu den rundlichen Chimären früherer Events.
-
-### Ist das System eine reine Geldmaschine?
-Der Bericht sieht diese Sorge als verständlich, aber verfrüht. Bislang seien Freizeitinhalte ohne Werte-Boni geblieben; ob das so bleibt, ist offen.

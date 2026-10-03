@@ -45,21 +45,3 @@ Idiberug rechnet ein typisches Szenario durch: 7.000 Wishlists, weniger als 1.00
 ## Was als Nächstes zu beobachten ist
 
 Die Debatte zeigt vor allem eines: Die Spannung zwischen kreativer Vision und Datenvalidierung ist nicht neu, wird aber durch die schiere Zahl an Releases und die Knappheit an Aufmerksamkeit verschärft. Zu beobachten bleibt, ob Verlage ihre Validierungsprozesse weiter nach vorn verlagern, ob Entwickler häufiger auf kleine, früh getestete vertikale Slice setzen und wie sich die Werkzeuge zur Wishlist-Analyse entwickeln. Der Thread liefert keine endgültige Antwort. Er macht aber sichtbar, dass „gemacht werden“ und „gesehen werden“ heute zwei getrennte Hürden sind. Ob datengetriebene Validierung persönliche Leidenschaftsprojekte verdrängt, muss jede Entwicklerin und jeder Entwickler für sich entscheiden.
-
-## FAQ
-
-### Ist der Hook wirklich wichtiger als das Spiel?
-
-Der Originalbeitrag behauptet das, aber viele Kommentatoren widersprechen. Ein guter Hook hilft bei der Sichtbarkeit, ersetzt aber kein tragfähiges Spielerlebnis.
-
-### Ist das Validieren per Trailer eine neue Entwicklung?
-
-Nein. Mehrere Nutzer weisen darauf hin, dass dieser Weg seit etwa zehn Jahren üblich ist, um Verlagsfinanzierung zu erhalten.
-
-### Garantieren viele Wishlists einen Erfolg?
-
-Laut den Diskussionsbeiträgen nicht. Ein Nutzer nennt Beispiele mit sechsstelligen Wishlist-Zahlen, bei denen die Spiele trotzdem kaum die Kosten deckten.
-
-### Was raten erfahrene Entwickler?
-
-Der Tenor lautet: erst einen kleinen, spielbaren Ausschnitt bauen und testen, dann größer investieren – und die Freude am Prozess nicht vom kommerziellen Ergebnis abhängig machen.

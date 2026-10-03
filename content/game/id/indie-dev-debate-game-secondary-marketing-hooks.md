@@ -51,17 +51,3 @@ Bahkan dari sisi pemasaran, unit187 mengaku, "Teman saya di studio yang mengutam
 ## What To Watch Next
 
 Pertanyaan yang tersisa: apakah validasi berbasis data akan menjadi norma baru, dan apakah itu akan mematikan proyek berbasis passion? Sumber tidak memberikan jawaban pasti. Yang jelas, debat ini menunjukkan bahwa "membuat" dan "dilihat" sama-sama menjadi tembok yang harus dilewati. Beberapa pengembang amatir di komunitas sudah memberi jawaban mereka sendiri. Salah satunya berkata, "Game pertama saya saya buat untuk diri sendiri, begitu juga game kedua sampai ketujuh."
-
-## FAQ
-
-### Apakah klaim bahwa game kini sekunder berasal dari penerbit resmi?
-Tidak. Klaim itu datang dari seorang pengembang yang mengaku mendapatkannya dari teman yang bekerja di sisi data penerbit, dan kemudian menjadi diskusi komunitas, bukan pernyataan resmi perusahaan.
-
-### Apakah ada data yang menunjukkan validasi trailer menjamin penjualan?
-Tidak. Sumber menyebut contoh studio yang trailer-nya viral dan wishlist-nya ratusan ribu, tetapi game-game mereka tetap gagal secara penjualan.
-
-### Apakah pengembang yang membuat game karena passion masih ada?
-Ya. Di komunitas, beberapa orang menyatakan tetap membuat game untuk diri sendiri, bahkan tanpa pemain, karena cinta pada seni.
-
-### Apa saran dari desainer senior dalam diskusi ini?
-MeaningfulChoices menyarankan membuat vertical slice kecil untuk validasi sebelum menginvestasikan dana besar, sambil menekankan bahwa seni dan bisnis tidak harus saling bertentangan.

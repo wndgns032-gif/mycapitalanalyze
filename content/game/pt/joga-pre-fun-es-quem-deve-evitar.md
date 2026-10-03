@@ -70,20 +70,6 @@ A promessa de começar em menos de 30 segundos depende de todos entrarem na sala
 
 O ponto mais incerto é o que a versão gratuita entrega. A ficha lista a assinatura Premium com jogos criados com IA a partir do grupo e do clima da noite, todos os jogos e categorias exclusivas e partidas ilimitadas, mas não detalha quais modos ficam disponíveis sem pagar. Sem esse detalhe, a expectativa de valor fica em aberto.
 
-## Perguntas frequentes
-
-### Que tipo de app é?
-
-Jogaê é um app de jogos de festa, listado na categoria Games com os gêneros Jogos, Casual e Entretenimento. Ele funciona como mestre de cerimônia: explica regras, sorteia papéis secretos, controla rodadas, cronômetro, votação e placar para grupos de 3 a 12 jogadores. A classificação de conteúdo é +4 e o idioma listado é português.
-
-### É gratuito?
-
-O download é gratuito, mas a ficha do app informa uma assinatura Premium mensal ou anual com 7 dias grátis. O valor da assinatura não é divulgado na ficha, e também não há informação sobre outras compras dentro do app. A assinatura libera jogos criados com IA a partir do grupo, todos os jogos e categorias exclusivas e partidas ilimitadas, segundo a descrição.
-
-### Como reservar?
-
-Não há reserva: o Jogaê já está disponível para baixar na App Store, com lançamento em 2026-10-02 e versão 1.0. Basta abrir a página do app no iPhone ou iPad compatível e fazer o download gratuito. A ficha não menciona pré-venda, lista de espera nem recompensa de lançamento.
-
 ## Limitações e o que ainda não se sabe
 
 A maior limitação visível é a ausência de preço para a assinatura Premium. A ficha confirma que existe um plano mensal ou anual com 7 dias grátis, mas não diz quanto ele custa, o que impede calcular o gasto real de quem quiser todos os jogos e partidas ilimitadas. Também não está claro o que exatamente fica disponível sem assinar.

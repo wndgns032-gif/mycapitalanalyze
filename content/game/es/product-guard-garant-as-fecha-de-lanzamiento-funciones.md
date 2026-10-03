@@ -61,19 +61,3 @@ No está pensada para gestionar inventarios complejos ni para uso empresarial av
 Product Guard Garantías es gratuita en su versión básica. La propia app indica que se pueden añadir los primeros 3 productos y hacer 3 preguntas al asistente sin coste y sin crear ninguna cuenta. Para eliminar ambos límites existe Product Guard Pro, una suscripción que permite productos ilimitados y ayuda ilimitada con reclamaciones y asistente. La suscripción se puede cancelar cuando se quiera.
 
 No se han publicado los precios concretos de la suscripción Pro en la información disponible. Es probable que se conozcan más detalles antes o durante el lanzamiento.
-
-## Preguntas frecuentes
-
-### ¿Cuándo sale Product Guard Garantías?
-
-La fecha de lanzamiento prevista es el 30 de septiembre de 2026, según la ficha oficial de la App Store. Al estar en preventa, la fecha podría cambiar.
-
-### ¿Es gratis?
-
-Sí, la versión básica es gratuita e incluye 3 productos y 3 preguntas al asistente sin necesidad de crear una cuenta. Para productos ilimitados y ayuda ilimitada existe una suscripción Pro de pago.
-
-### ¿Funciona sin conexión?
-
-Sí, la app funciona sin conexión: se pueden añadir productos en cualquier lugar y los datos se sincronizan de forma privada a través de la cuenta de iCloud del usuario cuando haya conexión.
-
-Puedes consultar la ficha oficial de Product Guard Garantías en la App Store para obtener más información: https://apps.apple.com/es/app/product-guard-garant%C3%ADas/id6798172392?uo=4

@@ -47,17 +47,3 @@ La question de fond reste donc : le jeu compte-t-il plus que les données, ou l'
 ## À surveiller
 
 La question de savoir si la validation par les données devient la norme, et si elle étouffe les projets passion, reste ouverte. Aucune donnée publique ne permet de trancher. Ce qui est certain, c'est que le débat agite autant les développeurs que les éditeurs, et qu'il devrait continuer à alimenter les discussions à mesure que les sorties se multiplient sur Steam.
-
-## FAQ
-
-### Le jeu est-il vraiment devenu secondaire ?
-C'est la thèse défendue par l'auteur du post, mais elle est loin de faire l'unanimité. De nombreux professionnels estiment au contraire que la qualité du jeu reste le facteur décisif, le marketing ne faisant que communiquer sur cette qualité.
-
-### Faut-il valider un trailer avant de développer un jeu ?
-Certains éditeurs imposent cette méthode pour limiter les risques. D'autres développeurs affirment ne jamais avoir procédé ainsi et considèrent que le prototype jouable est la seule validation qui compte.
-
-### Pourquoi les jeux à succès ont-ils si peu de joueurs actifs ?
-Le post cite des cas de jeux ayant vendu des dizaines de milliers d'exemplaires mais comptant très peu de joueurs simultanés. Cela illustre l'écart entre les ventes cumulées et l'engagement sur la durée, sans qu'aucune explication unique ne soit avancée dans la discussion.
-
-### Les données et la passion sont-elles incompatibles ?
-Non, plusieurs intervenants estiment que les deux peuvent coexister. Un designer suggère de commencer par une petite tranche verticale pour valider le concept, puis d'investir davantage si le résultat est convaincant.

@@ -47,19 +47,3 @@ Das Spiel richtet sich an Fans von Roguelite-RPGs mit Wellenmechanik und an Lese
 ## Preisgestaltung
 
 Der Preis ist im Store-Eintrag nicht angegeben. Da der Titel noch nicht veröffentlicht ist, kann sich die Preisgestaltung bis zum Release ändern. Es ist nicht bekannt, ob das Spiel kostenpflichtig, kostenlos oder mit In-App-Käufen finanziert wird. Eine Vorbestellung ist derzeit möglich, ohne dass Kosten genannt werden.
-
-## FAQ
-
-### Wann erscheint The Apocalypsnake?
-
-Der aktuelle Release-Termin ist der 31. Oktober 2026. Da sich Termine verschieben können, sollte man den offiziellen Store-Eintrag im Blick behalten.
-
-### Kann ich das Spiel jetzt schon spielen?
-
-Nein, der Titel ist als „Upcoming“ gelistet und kann nur vorbestellt werden. Ein tatsächlicher Download ist erst nach der Veröffentlichung möglich.
-
-### Was kostet The Apocalypsnake?
-
-Ein Preis wurde nicht veröffentlicht. Ob das Spiel kostenlos, kostenpflichtig oder mit In-App-Käufen erhältlich sein wird, ist derzeit unklar.
-
-Weitere Informationen findest du im offiziellen Store-Eintrag: https://apps.apple.com/de/app/the-apocalypsnake/id6782791720?uo=4

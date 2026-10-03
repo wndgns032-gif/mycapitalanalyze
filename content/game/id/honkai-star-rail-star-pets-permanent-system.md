@@ -69,17 +69,3 @@ Dari sudut pandang ini, langkah Star Rail menggarap hewan peliharaan sebenarnya 
 Jika model ini berhasil, ini akan menjadi referensi berharga bagi seluruh industri. Tidak perlu memaksakan kedalaman gameplay inti, tidak perlu mengikat waktu pemain dengan konten intensitas tinggi. Dengan konten santai berbiaya rendah dan minim tekanan, retensi masa kering bisa stabil, sekaligus menjangkau lebih banyak pemain kasual. Dibandingkan perlombaan gameplay yang saling menyalip, ekosistem konten yang lebih dekat dengan keseharian ini justru lebih mungkin menjadi kunci memperpanjang siklus hidup gim anime.
 
 Pada akhirnya, yang dicari pemain dalam gim adalah kebahagiaan dan relaksasi. Konten-konten kecil yang tidak perlu berpikir keras, tidak perlu bersaing, dan langsung memberi sedikit kebahagiaan saat login, seringkali justru menjadi perekat paling setia.
-
-## FAQ
-
-### Apa itu Star Pets di Honkai: Star Rail?
-Star Pets adalah sistem permanen yang diperkenalkan di versi 4.6, berisi blind box, koleksi hewan lucu, dan pertarungan santai. Pemain bisa mengumpulkan hingga 17 peliharaan dari seri Catmint dan Chimera.
-
-### Mengapa sistem ini menuai kontroversi?
-Kontroversi muncul karena desain visual Catmint dianggap terlalu mirip manusia, serta kekhawatiran bahwa sistem blind box akan berkembang menjadi monetisasi agresif di masa depan.
-
-### Apakah Star Pets memberi bonus statistik?
-Berdasarkan laporan, sistem ini tidak memberikan bonus statistik apa pun dan tidak diwajibkan dalam rutinitas harian. Fokusnya murni pada konten santai dan koleksi.
-
-### Apakah pemain gratis bisa mendapatkan peliharaan Precious?
-Ya, versi 4.6 memberikan 24 tiket undian gratis yang cukup untuk mencapai jaminan Precious. Mekanisme daur ulang dan tukar-menukar juga memungkinkan pemain mengumpulkan koleksi tanpa biaya tambahan.

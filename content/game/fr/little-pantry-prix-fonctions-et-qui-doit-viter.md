@@ -51,17 +51,3 @@ LITTLE PANTRY est affiché au prix de Gratuit sur l’App Store français. La fi
 ## What to Expect
 
 Ce que la fiche officielle laisse attendre, c’est une expérience lente et répétitive, construite autour de la collecte et du rangement. Le texte insiste sur le fait d’attendre tranquillement que Fred termine ses plats, et sur le plaisir de voir la collection de recettes s’agrandir petit à petit. Il faut donc s’attendre à des sessions courtes, sans pression, où la progression vient du nombre de plats découverts plutôt que d’un score. La principale limite est l’absence de repères : aucune note, aucun avis, aucune indication sur le nombre de recettes disponibles ou sur la durée de vie. La dernière mise à jour, datée du 29 septembre 2026, est décrite par une simple mention de correction de bugs, sans détail sur le contenu ajouté. Enfin, la fiche ne précise pas si LITTLE PANTRY propose des achats intégrés, ce qui reste la vraie inconnue pour un jeu gratuit.
-
-## FAQ
-
-### Quel type d’application est-ce ?
-
-LITTLE PANTRY est un jeu classé dans la catégorie Games et les genres Jeux, Simulation et Parties rapides. Il se joue sur iPhone et iPad et repose sur une boucle de collecte, d’échange et de cuisine. La fiche officielle le présente comme un jeu détente autour d’un renard nommé Fred, avec une classification 4+.
-
-### Est-ce gratuit ?
-
-Oui, LITTLE PANTRY est affiché au prix de Gratuit sur l’App Store français. La fiche ne mentionne ni abonnement ni essai, et elle ne détaille pas non plus d’éventuels achats intégrés. Il n’y a donc aucun coût confirmé pour télécharger et lancer le jeu dans sa version 1.0.2.
-
-### Comment le précommander ?
-
-La précommande n’est pas possible pour LITTLE PANTRY, car le jeu est déjà sorti : la fiche indique une date de sortie au 24 septembre 2026 et une disponibilité immédiate. Il suffit donc de le télécharger depuis l’App Store, sans réserver ni attendre une ouverture. Aucune récompense de précommande n’est mentionnée, puisque cette étape n’existe plus pour ce titre.

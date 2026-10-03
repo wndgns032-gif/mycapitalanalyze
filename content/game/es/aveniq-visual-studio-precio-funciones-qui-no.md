@@ -51,17 +51,3 @@ El precio que muestra la ficha es Gratis, sin más matices. Aveniq - Visual Stud
 ## What to Expect
 
 Lo que sugiere la ficha es un flujo sencillo de arranque y flexible para refinar: se empieza con un prompt, se exploran direcciones y se ajusta el resultado. La app se describe como simple para empezar y flexible para pulir, con un enfoque en la narración visual moderna. Al ser la versión 1.0.0 y no tener valoraciones todavía, es razonable esperar un producto joven, sin historial de opiniones que lo respalde. La limitación más importante que se puede señalar con los datos disponibles es la ausencia de información sobre el modelo de pago: la ficha dice Gratis, pero no aclara si hay compras dentro de la app o suscripciones, y eso es justo lo que conviene comprobar antes de depender de la app para trabajo real. Tampoco hay indicios de funciones de edición avanzada ni de soporte en español, dos ausencias que marcan bastante el tipo de uso para el que sirve.
-
-## FAQ
-
-### ¿Qué tipo de app es?
-
-Aveniq - Visual Studio es una app de foto y vídeo, con los géneros Foto y vídeo y Diseño gráfico, según su ficha oficial. Sirve para crear escenas de movimiento a partir de ideas simples y para preparar contenido visual destinado a redes, branding y trabajo creativo. No se describe como un juego ni como un editor de vídeo profesional, sino como un estudio para construir historias visuales. La desarrolladora es Aveniq y la versión publicada es la 1.0.0.
-
-### ¿Es gratis?
-
-Sí, la ficha indica que Aveniq - Visual Studio es gratis. Lo que no aclara es si hay compras dentro de la app, una suscripción o un periodo de prueba, porque ese dato no aparece en la información oficial. Tampoco hay un precio alternativo ni una versión de pago mencionada. Si el modelo de pago te condiciona la decisión, ese es el punto que queda pendiente de confirmar.
-
-### ¿Cómo se reserva?
-
-No hay reserva: Aveniq - Visual Studio ya está disponible y se puede descargar ahora. La ficha figura como publicada con fecha de lanzamiento 20 de septiembre de 2026, la misma que la última actualización, así que no hay una fase de preventa que gestionar. Basta con abrir su página en la App Store y descargarla en un iPhone o iPad compatible. La clasificación por edad es 4+ y el único idioma listado es el inglés.

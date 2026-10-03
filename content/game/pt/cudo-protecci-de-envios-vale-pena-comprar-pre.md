@@ -67,17 +67,3 @@ Para quem já sofreu prejuízo com pacote perdido ou danificado e usa transporta
 O download é grátis. O app funciona com saldo pré-pago, recarregado via MercadoPago, e o histórico mostra proteções, depósitos, reembolsos e ajustes. O material de origem não informa o valor da cobertura, o percentual cobrado sobre o envio, taxas de saque, valores mínimos de recarga nem o que acontece com o saldo em caso de encerramento da conta.
 
 Também não há informação sobre assinatura, período de teste ou compras dentro do aplicativo. A App Store lista o app como grátis, mas isso se refere apenas ao download, não ao uso da proteção. Sem esses números, não é possível calcular se a cobertura sai mais barata do que assumir o prejuízo de um extravio.
-
-## Perguntas frequentes
-
-### Quando será lançado?
-
-A App Store indica 1º de outubro de 2026 como data prevista de lançamento. O app está em pré-reserva e ainda não pode ser baixado para uso. O material de origem não confirma se essa data é definitiva nem menciona planos para outros países ou plataformas além do iOS.
-
-### É gratuito?
-
-O download é grátis, mas o app usa saldo pré-pago para criar as proteções, e a recarga é feita via MercadoPago. O material de origem não informa o preço da cobertura, as taxas nem se existe assinatura ou período de teste. Ou seja, baixar não custa nada, mas usar a proteção provavelmente custa.
-
-### Como reservar?
-
-A reserva é feita pela página do app na App Store, no botão de pré-reserva. O material de origem não informa se há recompensa, bônus de saldo ou qualquer vantagem para quem reservar antes do lançamento. Também não há informação sobre lista de espera, convite ou acesso antecipado.

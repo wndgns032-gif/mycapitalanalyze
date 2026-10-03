@@ -46,13 +46,3 @@ FlowCut - Video Editor & Maker ist kostenlos. Die Store-Seite gibt als Preis „
 
 ## Was zu erwarten ist
 Die offizielle Beschreibung legt nahe, dass FlowCut - Video Editor & Maker eine einfache, aufgeräumte Oberfläche bietet, die ohne komplizierte Arbeitsabläufe auskommt. Nutzer können erwarten, ihre Videos während der Bearbeitung in einer Vorschau zu sehen und am Ende in hoher Qualität zu exportieren. Die App verspricht Werkzeuge für Schnitt, Audio, Text und visuelle Effekte, die direkt in einer Zeitleiste angeordnet sind. Allerdings gibt es keine Bewertungen, keine Angaben zur tatsächlichen Exportqualität und keine Informationen zu In-App-Käufen. Auch die genaue Dateigröße oder Systemanforderungen werden nicht genannt. Wer sich für die App interessiert, sollte daher die kostenlose Version ausprobieren und die eigenen Erwartungen anhand der gebotenen Funktionen prüfen. Eine Garantie für zukünftige Updates oder neue Funktionen gibt die Store-Seite nicht.
-
-## FAQ
-### Was für eine App ist das?
-FlowCut - Video Editor & Maker ist eine kostenlose Video-Editor-App für iPhone und iPad aus der Kategorie Foto und Video. Sie bietet Werkzeuge zum Schneiden, Filtern, Vertonen und Gestalten von Videos. Die App wurde von 柳 王 entwickelt und ist in Version 1.0.0 verfügbar. Die Store-Seite beschreibt sie als Editor für Alltagsmomente wie Familienfeste, Reisen oder Haustiere.
-
-### Ist es kostenlos?
-Ja, FlowCut - Video Editor & Maker ist laut Store-Seite kostenlos. Es werden keine In-App-Käufe, Abonnements oder Testversionen angegeben. Ob die App dauerhaft vollständig kostenlos bleibt, ist nicht bestätigt. Die Store-Seite macht dazu keine Angaben.
-
-### Wie kann ich es vorbestellen?
-Eine Vorbestellung ist nicht möglich, da FlowCut - Video Editor & Maker bereits veröffentlicht ist. Die App kann direkt im App Store heruntergeladen werden. Die letzte Aktualisierung wird mit dem 2. Oktober 2026 angegeben. Eine Vorbestellung oder Reservierung ist daher nicht nötig.

@@ -51,17 +51,3 @@ Anatolia: Merge of Ages dapat diunduh secara gratis di App Store. Deskripsi resm
 ## What to Expect
 
 Berdasarkan deskripsi resmi, pemain dapat mengharapkan pengalaman merge-puzzle yang santai dengan progresi melalui sepuluh era sejarah. Setiap era memiliki tantangan unik dan pilihan moral antara perang dan damai. Ada juga mini-game dan museum yang menambah variasi. Namun, perlu dicatat bahwa belum ada ulasan pengguna atau penilaian yang tersedia, sehingga kualitas aktual dan tingkat kesenangan belum dapat dipastikan. Selain itu, game ini hanya tersedia dalam bahasa Inggris, yang mungkin menjadi kendala bagi pemain yang tidak fasih berbahasa Inggris. Ketiadaan ulasan juga berarti potensi bug atau masalah kinerja belum diketahui. Meskipun demikian, fitur offline dan tanpa iklan menjanjikan pengalaman yang tidak terganggu. Pemain yang menyukai game bertema sejarah dan puzzle santai mungkin akan menikmatinya, tetapi mereka yang mengharapkan grafik mewah atau aksi cepat sebaiknya menyesuaikan ekspektasi. Secara keseluruhan, ini adalah game yang menjanjikan untuk audiens niche.
-
-## FAQ
-
-### Aplikasi apa ini?
-
-Anatolia: Merge of Ages adalah game merge-puzzle santai yang dikembangkan oleh tolga banyocu. Game ini membawa pemain melalui sepuluh era peradaban Anatolia, dari Göbekli Tepe hingga era digital, dengan mekanisme menggabungkan tile untuk membangun kota. Game ini tersedia di App Store untuk perangkat iOS dan dapat dimainkan secara offline.
-
-### Apakah gratis?
-
-Ya, Anatolia: Merge of Ages dapat diunduh dan dimainkan secara gratis. Deskripsi resminya menyatakan tidak ada pembelian dalam aplikasi, iklan, atau pelacakan. Tidak ada biaya tersembunyi atau langganan. Anda dapat menikmati seluruh konten tanpa mengeluarkan uang sepeser pun.
-
-### Bagaimana cara memesannya?
-
-Anatolia: Merge of Ages sudah dirilis dan tersedia untuk diunduh langsung dari App Store. Tidak perlu memesan terlebih dahulu. Cukup buka App Store, cari "Anatolia: Merge of Ages", dan unduh secara gratis. Pastikan perangkat Anda kompatibel, karena game ini mendukung berbagai model iPhone dan iPad dari generasi lama hingga terbaru.

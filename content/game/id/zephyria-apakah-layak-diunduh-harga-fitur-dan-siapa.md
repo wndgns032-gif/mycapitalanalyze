@@ -52,17 +52,3 @@ Zephyria dapat diunduh gratis di App Store, dan itu satu-satunya informasi harga
 ## Apa yang Bisa Diharapkan
 
 Berdasarkan deskripsi resminya, pengalaman pertama kemungkinan besar dimulai dengan mengunduh aset dunia dalam jumlah besar, dan pengembangnya sendiri menyarankan Wi-Fi untuk percobaan pertama karena ukurannya sekitar dua gigabyte. Setelah itu, Anda masuk ke dunia multipemain langsung yang menuntut koneksi internet selama bermain. Pertarungannya mengikuti tata bahasa lama seperti THAC0 dan AC, jadi pemain yang belum pernah menyentuh sistem tabletop klasik mungkin butuh waktu untuk membiasakan diri dengan angka dan aturan yang ditampilkan. Karena ini aplikasi iPad native, kontrolnya dirancang untuk layar sentuh lanskap, bukan untuk ponsel, dan HUD-nya diklaim tetap terbaca di tablet. Yang belum bisa dipastikan adalah seberapa ramai server, seberapa sering pembaruan konten datang, dan apakah ada biaya tambahan di dalam game, karena halaman resminya tidak menyebutkan hal-hal itu. Belum ada ulasan pengguna yang bisa dijadikan gambaran awal, sehingga ekspektasi terbaik adalah mencobanya sendiri dan menilai apakah ritme dunia multipemainnya cocok untuk Anda.
-
-## FAQ
-
-### Aplikasi apa ini?
-
-Zephyria adalah game petualangan dan role-playing multipemain bergaya MMORPG fantasi 3D yang dikembangkan oleh Andrew Fell. Anda memulai di sebuah kedai kayu bernama Falling Pigeon di tepi peta, lalu menjelajah dunia bersama pemain lain dengan pertarungan bergaya AD&D, misi, inventaris, dan kemampuan. Aplikasi ini adalah pendamping iPad native untuk dunia yang juga berjalan di Mac melalui zephyria.live.
-
-### Apakah gratis?
-
-Ya, Zephyria dapat diunduh gratis di App Store. Namun halaman resminya tidak menyebutkan apakah ada pembelian dalam aplikasi, langganan, atau masa uji coba, jadi tidak ada kepastian soal biaya tambahan di dalam game. Perlu diingat juga bahwa bermain memerlukan koneksi internet dan pengunduhan aset dunia sekitar dua gigabyte pada percobaan pertama, yang sebaiknya dilakukan lewat Wi-Fi.
-
-### Bagaimana cara memesannya?
-
-Tidak ada sistem pemesanan di muka untuk Zephyria karena game ini sudah dirilis dan bisa diunduh sekarang juga. Buka halaman App Store-nya, lalu unduh langsung ke iPad Anda; aplikasi ini tidak tersedia untuk iPhone, Apple Watch, Apple TV, atau Vision Pro. Setelah terpasang, jalankan sekali lewat Wi-Fi agar aset dunia terunduh, dan sesudah itu Anda bisa masuk ke server multipemain langsung.

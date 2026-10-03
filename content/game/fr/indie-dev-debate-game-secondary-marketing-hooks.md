@@ -49,21 +49,3 @@ Face à cela, certains assument un choix clair : gagner de l'argent ailleurs, av
 La question de fond, selon GameLook, est de savoir si les jeux nés sans chercher à plaire à personne continueront d'exister, à l'heure où la validation par la bande-annonce devient la norme et où une idée créative est vue comme un « actif peu fiable ». Un amateur a déjà donné sa réponse : « Mon premier jeu, je l'ai fait pour moi. Du deuxième au septième aussi. »
 
 Reste à voir si la validation par les données s'installe durablement comme passage obligé, et si elle finit par étouffer les projets passion. Le débat ne devrait pas s'éteindre : il touche à la structure même d'un marché où sortir un jeu n'a jamais été aussi simple, mais où se faire remarquer n'a jamais été aussi difficile.
-
-## FAQ
-
-### Le « hook » dont parle le développeur, c'est quoi exactement ?
-
-Dans son message, il désigne l'élément accrocheur qui doit exister avant même le début du développement : une idée, une promesse ou une image capable de susciter l'intérêt. Selon lui, les éditeurs modernes veulent valider cet accrocheur via bande-annonce, captures et key art avant de financer le jeu.
-
-### Les wishlists garantissent-elles les ventes ?
-
-Non, selon plusieurs témoignages cités dans le fil. Un intervenant raconte que des studios ont atteint 150 000 à plus d'un million de wishlists sans parvenir à rentabiliser leurs jeux. Les chiffres de wishlist mesurent l'intérêt, pas l'achat.
-
-### Ce débat est-il nouveau ?
-
-Plusieurs commentateurs estiment que non : la validation marketing avant production serait la norme pour obtenir un financement d'éditeur depuis environ dix ans. Ce qui change, c'est l'ampleur du phénomène et le nombre record de sorties sur Steam.
-
-### Faut-il choisir entre passion et données ?
-
-Le fil ne tranche pas. Un designer expérimenté résume la position médiane : la plupart des jeux qui réussissent combinent art et commerce, et les deux ne sont pas incompatibles. La source ne permet pas de dire quelle approche l'emporte statistiquement.

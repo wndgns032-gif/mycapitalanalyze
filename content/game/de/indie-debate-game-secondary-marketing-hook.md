@@ -45,17 +45,3 @@ Die Community ist gespalten. Die "Marketing-Fraktion" argumentiert, ohne Vermark
 Ein erfahrener Designer namens MeaningfulChoices empfiehlt einen Mittelweg: erst einen kleinen vertikalen Slice bauen, diesen validieren, dann das große Budget freigeben. "Die allermeisten erfolgreichen Spiele schaffen Kunst und Kommerz – das schließt sich nicht aus."
 
 Ob datengetriebene Validierung zum neuen Standard wird und ob sie leidenschaftliche Projekte erstickt, dazu hat jeder seine eigene Antwort. Ein Hobbyentwickler brachte es auf den Punkt: "Mein erstes Spiel habe ich für mich gemacht. Das zweite bis siebte auch."
-
-## FAQ
-
-### Was genau hat der Reddit-Nutzer behauptet?
-Er zitierte einen Publisher-Datenanalysten mit den Worten, das Spiel selbst sei fast zweitrangig. Wichtig sei allein, dass der Hook vor der eigentlichen Entwicklung steht.
-
-### Warum widersprechen viele der These?
-Weil die Praxis das Gegenteil zeigt: Selbst Spiele mit starken Trailer-Daten und hohen Wishlist-Zahlen floppen, wenn das Spiel nicht überzeugt. Gutes Marketing kann ein schlechtes Spiel nicht retten.
-
-### Gibt es einen Kompromiss zwischen Kunst und Kommerz?
-Ja, viele Diskutanten sehen ihn in einem kleinen, validierbaren Prototyp vor der Vollproduktion. So bleiben kreative Ideen erhalten, ohne das Budget zu riskieren.
-
-### Was bedeutet das für Solo-Entwickler?
-Die Hürden sind niedrig, aber die Sichtbarkeit ist das Problem. Wer vom Spielen leben will, muss sich mit Vermarktung auseinandersetzen – ob es gefällt oder nicht.

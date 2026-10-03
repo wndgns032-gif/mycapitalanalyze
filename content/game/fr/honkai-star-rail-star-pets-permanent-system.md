@@ -43,21 +43,3 @@ Plus largement, toute l'industrie du jeu mobile chinois cherche des solutions po
 ## Ce qu'il faut surveiller
 
 L'évolution de Star Pets dépendra de plusieurs facteurs. D'abord, la capacité de miHoYo à diversifier les designs pour répondre aux attentes. Ensuite, la politique de monétisation : l'ajout éventuel de bonus de statistiques serait un signal négatif. Enfin, l'impact sur le contenu principal : si les ressources allouées aux donjons ou à l'histoire diminuent, la grogne pourrait s'amplifier. Pour l'instant, le système reste optionnel et sans lien avec la progression de puissance, ce qui limite les risques. Son succès pourrait inspirer d'autres jeux du genre.
-
-## FAQ
-
-### Qu'est-ce que le système Star Pets ?
-
-C'est un système permanent introduit dans la version 4.6 de *Honkai: Star Rail* qui permet de collectionner des créatures via des tirages, de les échanger et de les utiliser en exploration ou dans des mini-jeux de combat.
-
-### Pourquoi certains joueurs sont-ils mécontents ?
-
-Les critiques portent sur le design jugé trop anthropomorphe de certaines créatures et sur l'inquiétude que ce système de tirages n'introduise à terme des avantages de puissance, rendant le jeu plus exigeant financièrement.
-
-### Ce système est-il obligatoire pour progresser ?
-
-Non. Star Pets est un contenu annexe qui n'accorde aucun bonus de statistiques et n'est pas requis dans les quêtes quotidiennes. Les joueurs peuvent l'ignorer sans impact sur l'histoire ou les combats principaux.
-
-### Quelles sont les prochaines étapes pour miHoYo ?
-
-Le studio devrait enrichir le catalogue de créatures et surveiller les retours. L'équilibre entre contenu gratuit et incitations à l'achat sera déterminant pour l'acceptation à long terme.

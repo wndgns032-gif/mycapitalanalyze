@@ -67,17 +67,3 @@ D'après la description officielle, InkRush: Bataille de couleurs mise sur des m
 La limite la plus importante est déjà écrite noir sur blanc : pas de recherche d'adversaires sur Internet. Le multijoueur se limite au duel local sur le même Wi-Fi, avec deux appareils et l'autorisation réseau local. Certains réseaux invités ou isolés peuvent en plus bloquer la connexion. Pour un jeu de territoire, c'est une contrainte de fond, pas un détail.
 
 Autre incertitude : la fiche affiche une note de 0,0 sur 5 pour 0 évaluation. Cela ne veut pas dire que le jeu est mauvais, cela veut simplement dire qu'aucun avis n'est encore publié. Il n'existe donc aucun retour d'utilisateur à consulter pour se faire une idée avant de télécharger InkRush: Bataille de couleurs.
-
-## FAQ
-
-### Quel type d'application est-ce ?
-
-InkRush: Bataille de couleurs est un jeu d'action de peinture de territoire, classé dans les genres Jeux, Parties rapides et Action. Une manche dure 90 secondes : vous recouvrez Tidewater Plaza de votre encre et la plus grande surface peinte remporte la partie. Le jeu se lance contre un bot hors ligne ou contre un ami en duel local sur le même Wi-Fi. Il est classé 12+ et édité par Shintougen Limited Liability Company.
-
-### Est-ce gratuit ?
-
-Oui, le prix affiché pour InkRush: Bataille de couleurs est « Gratuit ». En revanche, la fiche ne dit rien sur d'éventuels achats intégrés, sur un abonnement ou sur un essai gratuit : ces points ne sont pas confirmés. Le seul fait vérifiable est que le téléchargement ne coûte rien. Si un contenu payant existe, il n'est pas documenté dans les informations disponibles.
-
-### Comment le précommander ?
-
-Il n'y a pas de précommande possible : InkRush: Bataille de couleurs est déjà sorti et téléchargeable, en version 1.0.0, avec une date de dernière mise à jour au 1er octobre 2026. Il suffit donc de le télécharger depuis l'App Store français, sans réservation préalable. Aucune récompense de précommande n'est mentionnée, puisqu'il n'y a plus de phase de précommande.

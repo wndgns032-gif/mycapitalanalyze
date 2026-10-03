@@ -85,17 +85,3 @@ Several other things are unclear. The size of the player roster is not stated, s
 Also unstated: supported devices beyond the App Store listing itself, the file size, whether a controller is supported, whether progress syncs across devices, and whether the game will be updated after launch. The version is listed as 1.0, which is the initial release version, and there is no roadmap in the description.
 
 What is clear is narrower but useful. The developer is Rana Muhammad Anas, the category is Games, the genres are Simulation and Sports, the version is 1.0, the price is free, and the release date is 2026-10-02. Those are the confirmed facts. Everything about how the game plays, how deep the team building goes and whether money is involved later is not confirmed by the listing.
-
-## FAQ
-
-### When does it come out?
-
-The listing gives a release date of 2026-10-02 for WFL - World Football Legends, and the title is currently shown as upcoming and available for pre-order. That is the only date provided, and the listing does not say whether it is firm or subject to change. No beta, early access or regional rollout is mentioned.
-
-### Is it free?
-
-Yes, the listing states the price as free. It does not mention a subscription, a free trial or any in-app purchase, so no paid tier is confirmed. Because the description says nothing about monetisation, treat the free download as the only confirmed cost and nothing beyond it as guaranteed.
-
-### How do I pre-order it?
-
-Pre-ordering happens through the App Store page for WFL - World Football Legends, which is set up for pre-order ahead of the 2026-10-02 release date. The listing does not describe any pre-order bonus, exclusive content or early-access reward, so pre-ordering simply queues the free download for launch day. If you would rather decide later, you can wait until the game is released and download it then.

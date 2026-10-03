@@ -69,17 +69,3 @@ Lo que la ficha sugiere es una estructura de progresión bastante marcada: 30 et
 La actualización a la versión 1.1 añade contenido que da pistas sobre el ritmo de juego. Incluye misiones del día y un regalo diario con racha de 7 días, ocho skins nuevas dibujadas a mano (pirata, astronauta, alien, frutilla, sombra, dorada, fuego y galaxia), mejoras con niveles y la nueva mejora Suerte, recompensas por etapas superadas, un Modo Infinito con lluvias de monedas y ovnis de asalto cada 500 metros, y un tutorial guiado en la primera partida.
 
 La limitación honesta es la falta de historial. Cows vs Aliens tiene una valoración de 0,0 sobre 5 con 0 valoraciones, así que no hay señales de otros jugadores sobre el equilibrio, la dificultad real o el rendimiento en dispositivos antiguos. La ficha tampoco publica el precio de los packs de monedas ni datos de ventas o descargas. Todo lo anterior describe lo que el listado promete, no una experiencia comprobada.
-
-## Preguntas frecuentes
-
-### ¿Qué tipo de app es?
-
-Cows vs Aliens es un juego de la categoría Juegos, con los géneros Juegos, Acción y Recreativos, y se presenta como un runner de acción en el que una vaca evoluciona de ternerita a leyenda cósmica mientras frena una invasión alienígena. La ficha describe 30 etapas repartidas en La Granja, El Pueblo y La Nave Nodriza, con 3 jefes, un Modo Infinito con tabla de posiciones y un Establo donde alimentás y acariciás a la vaca. Está clasificado para 9+ y declarado únicamente en español.
-
-### ¿Es gratis?
-
-Sí, Cows vs Aliens se descarga gratis. La ficha aclara que las compras dentro de la app son opcionales y que consisten en packs de monedas para acelerar la tienda, con la nota de que todo se puede conseguir jugando. Lo que no publica es el precio concreto de esos packs, así que no hay una cifra verificable en el listado. Tampoco menciona suscripción ni prueba gratuita.
-
-### ¿Cómo se reserva?
-
-No hay reserva posible, porque Cows vs Aliens ya está disponible para descargar. La ficha indica que el lanzamiento fue el 19 de septiembre de 2026 y que la última actualización llegó el 23 de septiembre de 2026, con la versión 1.1. Lo que sí conviene revisar antes de instalar es la lista de dispositivos compatibles, que cubre modelos de iPhone, iPad y iPod touch, y el requisito de Game Center para las tablas de posiciones y los 16 logros.

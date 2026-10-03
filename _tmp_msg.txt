@@ -1,0 +1,17 @@
+style: drop FAQ sections everywhere - app intro only, kept short
+
+Roy: FAQ/자주 묻는 질문 같은 군더더기 섹션은 모든 언어에서 삭제.
+앱 소개만 간결하게, 길게 늘이지 말고 SEO에 걸릴 정도만.
+
+app_radar.py:
+- structure: drop trailing "## FAQ" from both upcoming and released layouts
+- heading rule: no FAQ section (explicit rejection), H2-only language rule
+- remove FAQ item from WRITING ORDER, FAQ mention-count rule, FAQ length wording
+- drop unused faq_tbl/faq_q (FAQ_LOCALIZED kept for possible revert)
+
+game_daily.py:
+- structure: section 4 (FAQ) removed, "keep it tight" rule added
+- length budget and overflow guidance no longer reference FAQ
+
+Existing posts: stripped FAQ sections from all 90 content/game/{lang}/*.md
+(13 languages) and rebuilt - verified 0 FAQ headings remain in built HTML.

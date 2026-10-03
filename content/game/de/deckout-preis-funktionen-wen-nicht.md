@@ -55,17 +55,3 @@ DeckOut! ist gratis. Das ist der einzige bestätigte Preis. In-App-Käufe werden
 ## Was zu erwarten ist
 
 Die Store-Beschreibung legt nahe, dass DeckOut! auf schnelle, kurze Duelle ausgelegt ist. Die acht Sekunden pro Runde deuten auf ein hohes Tempo hin, und die drei Arenen mit eigenen Regeln sollen für Abwechslung sorgen. Der handgezeichnete Stil mit dicken Tuschelinien und Sprecheransagen wirkt wie eine bewusste Entscheidung für einen comicartigen Look. Das Kartensystem mit Aufstiegen bis Stufe 3 und die täglichen Aufgaben legen nahe, dass langfristiges Spielen belohnt wird. Ob das Spielgefühl tatsächlich trägt, lässt sich aus der Beschreibung nicht ableiten. Die 0 Bewertungen bedeuten, dass es keine unabhängige Rückmeldung gibt. Auch die Frage, wie ausbalanciert die zwölf Karten sind, bleibt offen. Wer sich für DeckOut! interessiert, muss mit der englischen Oberfläche leben. Die Store-Seite sagt nichts über einen Offline-Modus, über die Anzahl der Karten insgesamt oder über geplante Updates. Was du erwarten kannst, ist ein kostenloses, schnelles Kartenduell mit Online-1v1 und Fortschritt auf dem Gerät, ohne Konto und ohne Registrierung.
-
-## FAQ
-
-### Was für eine App ist das?
-
-DeckOut! ist ein Kartenduell für iPhone und iPad, bei dem du und dein Gegner gleichzeitig eine verdeckte Karte wählen und dann aufdecken. Es wird als Spiel in der Kategorie Spiele mit den Genres Action und Karten geführt. Laut Beschreibung hast du acht Sekunden pro Runde, und es gibt drei Arenen mit eigenen Regeln. Ein Konto ist nicht nötig, der Fortschritt bleibt auf dem Telefon.
-
-### Ist es kostenlos?
-
-Ja, DeckOut! ist gratis. Die Store-Seite nennt keinen Preis und keine In-App-Käufe, also gibt es keinen bestätigten kostenpflichtigen Inhalt. Ob es dennoch In-App-Käufe gibt, wird auf der Store-Seite nicht ausgewiesen. Ein Abonnement oder eine Testphase sind ebenfalls nicht angegeben.
-
-### Wie kann ich es vorbestellen?
-
-Eine Vorbestellung ist nicht nötig, denn DeckOut! ist bereits veröffentlicht und kann direkt geladen werden. Die aktuelle Version ist 1.0.1, die letzte Aktualisierung erfolgte am 30. September 2026. Du findest das Spiel im App Store unter dem Namen DeckOut!. Eine Vorbestellung oder Reservierung ist auf der Store-Seite nicht vorgesehen.

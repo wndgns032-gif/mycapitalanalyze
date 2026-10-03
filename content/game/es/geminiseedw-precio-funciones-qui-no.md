@@ -59,17 +59,3 @@ Lo que la ficha sugiere es una experiencia de rol por turnos con dos capas bien 
 La historia se presenta como un recorrido por capítulos con misterios ocultos de un mundo, así que cabe esperar una narrativa que se desbloquea a medida que avanzas, no un argumento cerrado desde el principio. El reclutamiento y fortalecimiento de heroínas apunta a un componente de colección: cuanto más amplío sea tu grupo, más opciones tendrás al montar un equipo para cada combate.
 
 La limitación más honesta que se puede señalar hoy es la ausencia total de valoraciones: 0,0 sobre 5 con 0 valoraciones significa que nadie ha dejado una opinión pública en la ficha, y eso deja sin resolver preguntas como el equilibrio del sistema de medallas, la generosidad de la progresión o el peso real de las compras internas. La ficha tampoco aclara el modelo de monetización, así que no se puede afirmar que el juego sea completamente gratuito en la práctica ni que tenga un techo de gasto. Otra incertidumbre es el alcance de las actualizaciones: la última nota publicada es "Fix bug v.184", un arreglo de errores, y no hay ningún compromiso de contenido futuro en el material disponible. Si necesitas certezas antes de dedicarle tiempo, hoy no las tienes.
-
-## Preguntas frecuentes
-
-### ¿Qué tipo de app es?
-
-GeminiSeedW es un RPG táctico de fantasía para iPhone y iPad, dentro de la categoría Juegos y con géneros de rol y estrategia. Su mecánica central son las batallas por turnos con Medallas de Habilidad, y a eso se suma una historia por capítulos, un elenco de heroínas de anime y un sistema de mejora basado en pesca, cocina y mejoras de instalaciones. La ficha lo describe como un RPG táctico oficial publicado originalmente por DMM GAMES, distribuido ahora por ShangHai WePlayDynamics.
-
-### ¿Es gratis?
-
-Sí, GeminiSeedW se descarga gratis: la ficha indica Gratis como precio y no muestra ninguna tarifa de compra. Lo que no aparece en el material disponible es si existen compras dentro de la app, una suscripción o un periodo de prueba, así que ese punto queda sin confirmar. Tampoco hay constancia de un precio de lanzamiento ni de una edición de pago. Si el gasto potencial te importa, conviene comprobarlo en la propia ficha antes de instalar.
-
-### ¿Cómo se reserva?
-
-No hay reserva posible: GeminiSeedW ya está publicado y disponible para descargar, con fecha de lanzamiento registrada el 19 de septiembre de 2026. La versión actual es la 1.183 y la última actualización figura el 21 de septiembre de 2026. Para conseguirlo, basta con abrir su página en la App Store desde un iPhone o un iPad compatible y pulsar el botón de descarga; no existe un paso previo de preventa ni un depósito.
