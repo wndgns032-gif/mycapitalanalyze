@@ -1267,15 +1267,85 @@ def build_search_page(lang, posts, game_list, available):
     return out_path
 
 
+# 홈 1페이지에 보여줄 글 수 (로이 지시 2026-10-03: 스크롤 귀찮으니 5개 + 페이지 이동)
+HOME_PAGE_SIZE = 5
+# 언어별 홈 총 페이지 수 — build_index 가 채우고 build_sitemap 이 읽는다.
+HOME_PAGES = {}
+
+
+def home_page_path(lang, n):
+    """홈 페이지 경로. 1페이지는 기존 홈, 2페이지부터 /page/2/ ..."""
+    base = home_path(lang)
+    return base if n <= 1 else base + 'page/%d/' % n
+
+
+def merged_feed(lang, posts, game_list):
+    """경제 글 + 앱/게임 글을 하나로 합쳐 **최신순**으로 돌려준다 (로이 지시 2026-10-03).
+
+    각 항목에 _kind('macro'|'game') 와 href 를 붙여 카드 렌더링이 갈라지게 한다."""
+    feed = []
+    for p in posts or []:
+        q = dict(p)
+        q['href'] = q.get('href') or post_href(lang, q['slug'])
+        q['_kind'] = 'macro'
+        feed.append(q)
+    for p in game_list or []:
+        if p.get('legacy'):
+            continue      # 옛 영문 앱 글은 /post/ 에 이미 중복 노출되므로 제외
+        q = dict(p)
+        q['href'] = q.get('href') or game_post_href(lang, q['slug'])
+        q['_kind'] = 'game'
+        feed.append(q)
+    feed.sort(key=lambda x: (x.get('date') or ''), reverse=True)
+    return feed
+
+
+def feed_card_html(lang, p):
+    """통합 피드용 카드 — 앱/게임은 스토어 이미지·배지 카드, 경제 글은 기존 카드."""
+    if p.get('_kind') == 'game':
+        return game_card_html(lang, p)
+    return card_html(lang, p['slug'], p['title'], p['desc'], p['category'],
+                     p['date'], href=p['href'])
+
+
+def pager_html(lang, page, pages):
+    """페이지 네비게이션. 숫자와 ‹ › 기호는 언어 중립이라 번역 없이 전 언어 공용."""
+    if pages <= 1:
+        return ''
+    btn = ('px-3 py-1.5 rounded text-sm border transition-colors '
+           'border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 '
+           'hover:border-brand-400')
+    nums = []
+    for n in range(1, pages + 1):
+        if n == page:
+            nums.append('<span class="px-3 py-1.5 rounded text-sm border bg-brand-600 '
+                        'text-white border-brand-600" aria-current="page">%d</span>' % n)
+        else:
+            nums.append('<a class="%s" href="%s">%d</a>' % (btn, home_page_path(lang, n), n))
+    prev = ('<a class="%s" href="%s" aria-label="Previous">&lsaquo;</a>'
+            % (btn, home_page_path(lang, page - 1))) if page > 1 else ''
+    nxt = ('<a class="%s" href="%s" aria-label="Next">&rsaquo;</a>'
+           % (btn, home_page_path(lang, page + 1))) if page < pages else ''
+    return ('<nav class="mt-8 flex items-center justify-center gap-2 flex-wrap" '
+            'aria-label="Pagination">' + prev + ''.join(nums) + nxt + '</nav>')
+
+
 def build_index(lang, posts, available, game_list=None):
+    """홈(경제+앱/게임 통합, 최신순) + 2페이지 이후를 페이지 단위로 생성."""
     s = strs(lang)
-    card_list = [card_html(lang, p['slug'], p['title'], p['desc'], p['category'], p['date']) for p in posts]
-    half = max(1, len(card_list) // 2)
-    cards = '\n'.join(card_list[:half])
-    cards2 = '\n'.join(card_list[half:])
-    infeed = ad_unit('index_infeed', wrap_class='sm:col-span-2 my-6 text-center')
+    feed = merged_feed(lang, posts, game_list)
+    pages = max(1, (len(feed) + HOME_PAGE_SIZE - 1) // HOME_PAGE_SIZE)
     widgets = homepage_widgets(lang, posts, game_list or [])
-    content = f'''<div class="space-y-6">
+    infeed = ad_unit('index_infeed', wrap_class='sm:col-span-2 my-6 text-center')
+    written = []
+    for page in range(1, pages + 1):
+        chunk = feed[(page - 1) * HOME_PAGE_SIZE: page * HOME_PAGE_SIZE]
+        half = max(1, len(chunk) // 2)
+        cards = '\n'.join(feed_card_html(lang, p) for p in chunk[:half])
+        cards2 = '\n'.join(feed_card_html(lang, p) for p in chunk[half:])
+        # 1페이지에만 디스플레이 광고를 얹는다 — 5개 카드 페이지에 광고 3개는 과하다.
+        mid_ads = ad_unit('index') if page == 1 else ''
+        content = f'''<div class="space-y-6">
   <div>
     <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">{htmllib.escape(s[2])}</h1>
     <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{htmllib.escape(s[1])}</p>
@@ -1285,18 +1355,22 @@ def build_index(lang, posts, available, game_list=None):
   {infeed}
 {cards2}
   </div>
+  {pager_html(lang, page, pages)}
   {widgets}
-  {ad_unit('index')}
+  {mid_ads}
   {ad_unit('index_bottom')}
 </div>'''
-    canonical = DOMAIN + home_path(lang)
-    title = f'{SITE_NAME} — {s[0]}'
-    html_doc = layout(lang, title, s[1], canonical, content, 'website', [website_ld(lang)],
-                      slug=None, available=available, switcher_slug=None)
-    out_path = os.path.join(BASE, 'index.html') if lang == 'en' else os.path.join(BASE, lang, 'index.html')
-    os.makedirs(os.path.dirname(out_path), exist_ok=True)
-    open(out_path, 'w', encoding='utf-8').write(html_doc)
-    return out_path
+        canonical = DOMAIN + home_page_path(lang, page)
+        title = f'{SITE_NAME} — {s[0]}' + ('' if page == 1 else f' (Page {page})')
+        html_doc = layout(lang, title, s[1], canonical, content, 'website', [website_ld(lang)],
+                          slug=None, available=available, switcher_slug=None)
+        rel = home_page_path(lang, page).lstrip('/') or ''
+        out_path = os.path.join(BASE, rel, 'index.html') if rel else os.path.join(BASE, 'index.html')
+        os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        open(out_path, 'w', encoding='utf-8').write(html_doc)
+        written.append(out_path)
+    HOME_PAGES[lang] = pages
+    return written[0]
 
 
 def game_tabs(lang, active):
@@ -1414,6 +1488,14 @@ def build_sitemap(posts, avail_by_slug, langs_with_home, game=None):
     for c in LANG_META:
         if c in langs_with_home:
             emit(DOMAIN + home_path(c), home_alts)
+
+    # 홈 2페이지 이후 (페이지네이션 — build_index 가 HOME_PAGES 를 채운다)
+    for c in LANG_META:
+        if c not in langs_with_home:
+            continue
+        for n in range(2, HOME_PAGES.get(c, 1) + 1):
+            loc = DOMAIN + home_page_path(c, n)
+            emit(loc, [(c, loc)])
 
     for p in posts:
         avail = avail_by_slug.get(p['slug'], {'en'})
