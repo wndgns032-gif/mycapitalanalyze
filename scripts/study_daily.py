@@ -75,6 +75,88 @@ TOEIC_PART5_POINTS = [
 
 TOEIC_PART7_TYPES = ['이메일', '사내 공지', '광고·전단', '기사문', '이중 지문(이메일+일정표)']
 
+# ---------- 매일 최하단 TOEIC 단어 (정적 데이터 · LLM 호출 없음) ----------
+# 로이 요청(2026-10-03): 트랙과 무관하게 '매일' 최하단에 단어를 붙인다.
+# LLM에 맡기면 실패·비용이 생기므로 날짜 기반 결정적 로테이션으로 매일 확실히 나오게 한다.
+TOEIC_VOCAB = [
+    {"w": "accommodate", "pos": "동", "mean": "수용하다 · 숙박을 제공하다", "ex": "The hotel can accommodate 500 guests."},
+    {"w": "adjacent", "pos": "형", "mean": "인접한", "ex": "The office is adjacent to the station."},
+    {"w": "anticipate", "pos": "동", "mean": "예상하다", "ex": "We anticipate a rise in demand."},
+    {"w": "authorize", "pos": "동", "mean": "승인하다 · 권한을 주다", "ex": "Only managers can authorize the payment."},
+    {"w": "comply with", "pos": "동", "mean": "~을 준수하다", "ex": "All staff must comply with the policy."},
+    {"w": "consolidate", "pos": "동", "mean": "통합하다", "ex": "We consolidated the two departments."},
+    {"w": "courteous", "pos": "형", "mean": "정중한", "ex": "The staff were courteous and helpful."},
+    {"w": "deadline", "pos": "명", "mean": "마감일", "ex": "The deadline is next Friday."},
+    {"w": "defective", "pos": "형", "mean": "불량한", "ex": "Return any defective items within 30 days."},
+    {"w": "dispatch", "pos": "동", "mean": "발송하다", "ex": "The order was dispatched yesterday."},
+    {"w": "eligible", "pos": "형", "mean": "자격이 있는", "ex": "Only full-time staff are eligible."},
+    {"w": "expedite", "pos": "동", "mean": "신속히 처리하다", "ex": "We expedited the shipment."},
+    {"w": "fluctuate", "pos": "동", "mean": "변동하다", "ex": "Prices fluctuate seasonally."},
+    {"w": "incentive", "pos": "명", "mean": "인센티브 · 유인", "ex": "Sales incentives boosted performance."},
+    {"w": "inventory", "pos": "명", "mean": "재고", "ex": "The inventory is checked monthly."},
+    {"w": "itinerary", "pos": "명", "mean": "여행 일정", "ex": "Please review your itinerary."},
+    {"w": "liability", "pos": "명", "mean": "책임 · 부채", "ex": "The company accepted no liability."},
+    {"w": "mandatory", "pos": "형", "mean": "의무적인", "ex": "Attendance is mandatory."},
+    {"w": "notify", "pos": "동", "mean": "통지하다", "ex": "Please notify us of any changes."},
+    {"w": "obsolete", "pos": "형", "mean": "구식의", "ex": "The software is now obsolete."},
+    {"w": "outstanding", "pos": "형", "mean": "미결제의 · 뛰어난", "ex": "Two invoices are still outstanding."},
+    {"w": "oversee", "pos": "동", "mean": "감독하다", "ex": "She oversees the project."},
+    {"w": "prospective", "pos": "형", "mean": "잠재적인 · 예상되는", "ex": "We met a prospective client."},
+    {"w": "reimburse", "pos": "동", "mean": "상환하다", "ex": "Travel costs will be reimbursed."},
+    {"w": "remittance", "pos": "명", "mean": "송금", "ex": "Remittance must arrive by the 15th."},
+    {"w": "renovation", "pos": "명", "mean": "개보수", "ex": "The renovation takes six weeks."},
+    {"w": "rigorous", "pos": "형", "mean": "엄격한", "ex": "Testing is rigorous."},
+    {"w": "shipment", "pos": "명", "mean": "선적 · 출하", "ex": "The shipment arrived late."},
+    {"w": "subsidiary", "pos": "명", "mean": "자회사", "ex": "It is a subsidiary of the group."},
+    {"w": "terminate", "pos": "동", "mean": "종료하다", "ex": "The contract was terminated."},
+    {"w": "tentative", "pos": "형", "mean": "잠정적인 · 임시의", "ex": "We set a tentative date."},
+    {"w": "vacancy", "pos": "명", "mean": "공석 · 빈자리", "ex": "There is one vacancy left."},
+    {"w": "validate", "pos": "동", "mean": "확인하다 · 유효하게 하다", "ex": "Validate your ticket online."},
+    {"w": "viable", "pos": "형", "mean": "실행 가능한", "ex": "A viable alternative."},
+    {"w": "waive", "pos": "동", "mean": "면제하다 · 포기하다", "ex": "The fee was waived."},
+    {"w": "warranty", "pos": "명", "mean": "보증", "ex": "The warranty lasts two years."},
+    {"w": "appraise", "pos": "동", "mean": "평가하다 · 감정하다", "ex": "The property was appraised."},
+    {"w": "benchmark", "pos": "명", "mean": "기준점", "ex": "Set a benchmark for quality."},
+    {"w": "turnover", "pos": "명", "mean": "매출액 · 이직률", "ex": "Annual turnover rose 12 percent."},
+    {"w": "concise", "pos": "형", "mean": "간결한", "ex": "Keep the report concise."},
+]
+
+# 자주 쓰는 표현 중 헷갈리는 쌍 (비슷한 표현 vs 차이)
+TOEIC_CONFUSABLES = [
+    {"a": "in time", "b": "on time", "diff": "in time = 제때(시간 내에) / on time = 정각에(약속 시각에 딱 맞춰)"},
+    {"a": "assure", "b": "ensure", "diff": "assure = 사람에게 확신시키다(assure A that) / ensure = 일이 되도록 보장하다(ensure that)"},
+    {"a": "rise", "b": "raise", "diff": "rise = 자동사, 스스로 오르다(가격이 오른다) / raise = 타동사, 올리다(가격을 올리다)"},
+    {"a": "affect", "b": "effect", "diff": "affect = 동사 '영향을 미치다' / effect = 명사 '영향'"},
+    {"a": "principal", "b": "principle", "diff": "principal = 형용사 '주요한'·명사 '교장' / principle = 명사 '원칙'"},
+    {"a": "farther", "b": "further", "diff": "farther = 물리적 거리(더 멀리) / further = 추가의·더 나아가(추상)"},
+    {"a": "lend", "b": "borrow", "diff": "lend = 빌려주다(lend A to B) / borrow = 빌리다(borrow A from B)"},
+    {"a": "beside", "b": "besides", "diff": "beside = ~옆에(위치) / besides = ~게다가(추가)"},
+    {"a": "economic", "b": "economical", "diff": "economic = 경제의(economy) / economical = 경제적인·절약하는"},
+    {"a": "stationary", "b": "stationery", "diff": "stationary = 정지한(움직이지 않는) / stationery = 문구류"},
+    {"a": "adapt", "b": "adopt", "diff": "adapt = 적응하다·개조하다 / adopt = 채택하다·입양하다"},
+    {"a": "imminent", "b": "eminent", "diff": "imminent = 임박한(곧 일어날) / eminent = 저명한(유명한)"},
+    {"a": "loose", "b": "lose", "diff": "loose = 헐렁한(형용사) / lose = 잃다(동사)"},
+    {"a": "complement", "b": "compliment", "diff": "complement = 보완하다 / compliment = 칭찬하다"},
+    {"a": "advice", "b": "advise", "diff": "advice = 명사 '조언' / advise = 동사 '조언하다'"},
+    {"a": "personal", "b": "personnel", "diff": "personal = 개인의 / personnel = 직원(인사)"},
+]
+
+# 빈출문제 쉽게 외우는 방법 (1일 1줄)
+TOEIC_TIPS = [
+    "단어는 문장째로 외우기 — 뒤 명사까지 묶어 외우면 Part 7에서 그대로 보입니다.",
+    "Part 5는 품사 문제가 절반 — 빈칸 앞뒤 품사만 확인하면 3초컷입니다.",
+    "접속사 vs 전치사: 빈칸 뒤에 '주어+동사'가 오면 접속사(Since), 명사만 오면 전치사(Because of)입니다.",
+    "수일치: 주어와 동사 사이 전치사구는 무시하고 핵심 주어만 찾으세요.",
+    "Part 7은 문서 종류(이메일·공지·광고)를 먼저 파악하면 '목적' 문제가 바로 풀립니다.",
+    "정답은 동의어 치환 — 지문 단어와 같은 뜻의 다른 표현이 정답입니다.",
+    "부정어(not·never·without)에 밑줄 — Part 7에서 부정 표현이 정답의 힌트입니다.",
+    "분사구문은 주절 주어를 확인 — 행위자면 -ing, 대상이면 -ed입니다.",
+    "시제는 시간 부사어를 먼저 — yesterday·since·by the time이 답을 정합니다.",
+    "관계대명사: 빈칸 뒤가 불완전하면 which·that, 완전하면 where·when·why입니다.",
+    "오답은 '지문에 없는 정보' — 그럴듯해도 지문 근거가 없으면 오답입니다.",
+    "하루 3개씩만 — 한 달이면 90개. 양보다 매일이 훨씬 중요합니다.",
+]
+
 TRACK_TITLE = {'history': '한국사(심화)', 'toeic': 'TOEIC', 'psat': 'PSAT 자료해석', 'rest': '주간 복습'}
 
 
@@ -207,6 +289,22 @@ def fix_psat_answer(p):
                 p['answer'] = i
                 return True
     return False
+
+
+def gen_vocab(d):
+    """매일 최하단 TOEIC 단어 — 날짜 기반 결정적 로테이션(LLM 호출 없음).
+
+    트랙(한국사·TOEIC·PSAT·휴식)과 무관하게 매일 붙는다.
+    salt*3 간격으로 3개를 고르므로 하루가 지나면 겹치지 않고 다음 3개로 넘어간다.
+    """
+    salt = d.toordinal()
+    nv = len(TOEIC_VOCAB)
+    words = [TOEIC_VOCAB[(salt * 3 + i) % nv] for i in range(3)]
+    return {
+        'words': words,
+        'confusable': TOEIC_CONFUSABLES[salt % len(TOEIC_CONFUSABLES)],
+        'tip': TOEIC_TIPS[salt % len(TOEIC_TIPS)],
+    }
 
 
 # ---------- 트랙별 생성 + 검증 ----------
@@ -357,9 +455,12 @@ def pick(seq, used, salt):
 
 
 def normalize_file(path):
-    """이미 생성된 세트에 표기 정리 + 정답 편중 완화만 적용(LLM 재호출 없음)."""
+    """이미 생성된 세트에 표기 정리 + 정답 편중 완화 + TOEIC 단어 백필(LLM 재호출 없음)."""
     it = json.load(open(path, encoding='utf-8'))
-    salt = datetime.date.fromisoformat(it['date']).toordinal()
+    d = datetime.date.fromisoformat(it['date'])
+    salt = d.toordinal()
+    if not it.get('vocab'):
+        it['vocab'] = gen_vocab(d)
     all_q = ((it.get('questions') or []) + (it.get('part5') or [])
              + ((it.get('part7') or {}).get('questions') or []) + (it.get('problems') or []))
     for q in all_q:
@@ -449,6 +550,9 @@ def main():
                 if attempt == 2:
                     raise
         item['psat_type'] = ptype
+
+    # 매일 최하단 TOEIC 단어 (트랙 무관 · LLM 호출 없음)
+    item['vocab'] = gen_vocab(d)
 
     if args.dry_run:
         print(json.dumps(item, ensure_ascii=False, indent=2)[:2000])

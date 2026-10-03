@@ -7,22 +7,22 @@
     {
       "q": "The list of approved suppliers ____ updated every quarter.",
       "choices": [
-        "are",
-        "is",
+        "have been",
         "were",
-        "have been"
+        "is",
+        "are"
       ],
-      "answer": 1,
+      "answer": 2,
       "explain": "주어 'The list'는 단수이므로 단수 동사 'is'가 적절합니다. 'of approved suppliers'는 주어를 수식하는 전치사구로 동사 수일치에 영향을 주지 않습니다.",
       "point": "주어-동사 수일치"
     },
     {
       "q": "Each of the new employees ____ required to attend the safety training.",
       "choices": [
-        "have been",
-        "is",
         "are",
-        "were"
+        "is",
+        "were",
+        "have been"
       ],
       "answer": 1,
       "explain": "'Each of + 복수명사'는 단수 취급하므로 단수 동사 'is'가 맞습니다. 'were'나 'have been'은 복수 동사이므로 틀립니다.",
@@ -32,23 +32,23 @@
       "q": "The number of applications ____ significantly since the new policy was implemented.",
       "choices": [
         "have increased",
+        "has increased",
         "are increasing",
-        "increase",
-        "has increased"
+        "increase"
       ],
-      "answer": 3,
+      "answer": 1,
       "explain": "'The number of + 복수명사'는 단수 주어로 취급되어 단수 동사 'has increased'가 적절합니다. 'A number of'와 달리 'The number of'는 단수 동사를 씁니다.",
       "point": "주어-동사 수일치"
     },
     {
       "q": "Neither the manager nor the employees ____ satisfied with the new schedule.",
       "choices": [
+        "were",
         "is",
         "has been",
-        "was",
-        "were"
+        "was"
       ],
-      "answer": 3,
+      "answer": 0,
       "explain": "'Neither A nor B' 구문에서는 동사가 B에 수일치합니다. 여기서 B가 'the employees'로 복수이므로 복수 동사 'were'가 맞습니다.",
       "point": "주어-동사 수일치"
     },
@@ -57,8 +57,8 @@
       "choices": [
         "have",
         "has",
-        "are",
-        "were"
+        "were",
+        "are"
       ],
       "answer": 1,
       "explain": "주어 'The company's policy'는 단수이므로 단수 동사 'has'가 필요합니다. 'on remote work'는 전치사구로 주어와 동사의 수일치에 영향을 주지 않습니다.",
@@ -122,5 +122,33 @@
     ]
   },
   "part5_point": "주어-동사 수일치",
-  "part7_type": "사내 공지"
+  "part7_type": "사내 공지",
+  "vocab": {
+    "words": [
+      {
+        "w": "defective",
+        "pos": "형",
+        "mean": "불량한",
+        "ex": "Return any defective items within 30 days."
+      },
+      {
+        "w": "dispatch",
+        "pos": "동",
+        "mean": "발송하다",
+        "ex": "The order was dispatched yesterday."
+      },
+      {
+        "w": "eligible",
+        "pos": "형",
+        "mean": "자격이 있는",
+        "ex": "Only full-time staff are eligible."
+      }
+    ],
+    "confusable": {
+      "a": "economic",
+      "b": "economical",
+      "diff": "economic = 경제의(economy) / economical = 경제적인·절약하는"
+    },
+    "tip": "단어는 문장째로 외우기 — 뒤 명사까지 묶어 외우면 Part 7에서 그대로 보입니다."
+  }
 }

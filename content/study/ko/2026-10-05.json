@@ -82,5 +82,33 @@
       "explain": "통일신라는 민정문서를 작성하여 촌락의 인구, 토지, 가축, 수확량 등을 파악하였다. 발해는 화폐를 주조했다는 기록이 없고, 벼농사도 일부 지역에서 이루어졌다. 주자감은 교육 기관이며, 통일신라는 해상 교역이 활발하였다.",
       "trap": "발해의 화폐 주조 여부와 통일신라의 벼농사 사실을 혼동하지 않도록 주의"
     }
-  ]
+  ],
+  "vocab": {
+    "words": [
+      {
+        "w": "anticipate",
+        "pos": "동",
+        "mean": "예상하다",
+        "ex": "We anticipate a rise in demand."
+      },
+      {
+        "w": "authorize",
+        "pos": "동",
+        "mean": "승인하다 · 권한을 주다",
+        "ex": "Only managers can authorize the payment."
+      },
+      {
+        "w": "comply with",
+        "pos": "동",
+        "mean": "~을 준수하다",
+        "ex": "All staff must comply with the policy."
+      }
+    ],
+    "confusable": {
+      "a": "lend",
+      "b": "borrow",
+      "diff": "lend = 빌려주다(lend A to B) / borrow = 빌리다(borrow A from B)"
+    },
+    "tip": "오답은 '지문에 없는 정보' — 그럴듯해도 지문 근거가 없으면 오답입니다."
+  }
 }

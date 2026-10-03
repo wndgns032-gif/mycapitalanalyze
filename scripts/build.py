@@ -1744,6 +1744,46 @@ def study_today_html(item):
             f'text-slate-700 dark:text-slate-300">{htmllib.escape(str(item.get("rest_note", "이번 주 세트를 다시 봅니다.")))}</div>')
 
 
+def study_vocab_html(v):
+    """매일 최하단 TOEIC 단어 카드 (트랙 무관 · LLM 호출 없이 정적 로테이션)."""
+    if not v:
+        return ''
+    words = v.get('words') or []
+    if not words:
+        return ''
+    lis = ''
+    for w in words:
+        lis += (f'<li class="rounded-lg border border-slate-200 dark:border-slate-800 p-3">'
+                f'<p class="font-semibold text-slate-900 dark:text-slate-100">'
+                f'{htmllib.escape(str(w.get("w", "")))}'
+                f'<span class="ml-1 rounded bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 text-xs font-normal text-slate-500 dark:text-slate-400">'
+                f'{htmllib.escape(str(w.get("pos", "")))}</span></p>'
+                f'<p class="text-sm text-slate-700 dark:text-slate-300">{htmllib.escape(str(w.get("mean", "")))}</p>'
+                f'<p class="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{htmllib.escape(str(w.get("ex", "")))}</p>'
+                f'</li>')
+    conf = v.get('confusable') or {}
+    conf_html = ''
+    if conf.get('a'):
+        conf_html = (f'<div class="mt-3 rounded-lg bg-slate-50 dark:bg-slate-800 p-3">'
+                     f'<p class="text-xs font-bold text-brand-600">헷갈리는 표현</p>'
+                     f'<p class="mt-1 text-sm text-slate-800 dark:text-slate-200">'
+                     f'<span class="font-semibold">{htmllib.escape(str(conf.get("a", "")))}</span>'
+                     f' <span class="text-slate-400">vs</span> '
+                     f'<span class="font-semibold">{htmllib.escape(str(conf.get("b", "")))}</span></p>'
+                     f'<p class="mt-1 text-xs text-slate-600 dark:text-slate-400">'
+                     f'{htmllib.escape(str(conf.get("diff", "")))}</p></div>')
+    tip = v.get('tip')
+    tip_html = (f'<p class="mt-3 text-sm text-slate-700 dark:text-slate-300">'
+                f'<span class="font-bold text-brand-600">암기 팁</span> · '
+                f'{htmllib.escape(str(tip))}</p>') if tip else ''
+    return f'''<section class="space-y-3">
+    <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">④ 오늘의 토익 단어 <span class="text-xs font-normal text-slate-500">매일 3개</span></h3>
+    <ul class="space-y-2">{lis}</ul>
+    {conf_html}
+    {tip_html}
+  </section>'''
+
+
 def study_page_html(item, prev7, prev1, next_item=None):
     date = item.get('date', '')
     d = datetime.date.fromisoformat(date)
@@ -1774,6 +1814,7 @@ def study_page_html(item, prev7, prev1, next_item=None):
     <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">③ 오늘 새 내용 <span class="text-xs font-normal text-slate-500">약 20분</span></h3>
     {study_today_html(item)}
   </section>
+  {study_vocab_html(item.get('vocab'))}
   {nav}
   <p class="text-xs text-slate-400 dark:text-slate-600">※ 본 학습 문항은 AI가 생성 후 자동 검증(계산 재확인·근거 일치 확인)을 거쳤습니다. 오답이나 오류가 있으면 무시하고 넘어가 주세요.</p>
   {STUDY_JS}

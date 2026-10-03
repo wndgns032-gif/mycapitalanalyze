@@ -82,5 +82,33 @@
       "explain": "제시된 제도는 최충헌이 설치한 교정도감과 도방이다. 최충헌은 과거제를 처음 시행한 광종이 아니라 무신 집권기 인물이다. ①은 광종, ②도 광종, ③은 공민왕, ④는 성종, ⑤는 태조의 정책이다. 따라서 최충헌과 같은 왕의 정책은 ①이 아니라 다른 선지가 되어야 하지만, 문제는 ‘다음 제도를 시행한 왕’을 묻고 있으므로 최충헌의 정책이 아닌 것을 골라야 한다. 그러나 선택지 중 최충헌의 정책은 없으므로, 정답은 광종의 정책인 ①이 아니라, 최충헌과 동시대 인물이 아닌 다른 왕의 정책을 묻는 오류가 있다. 따라서 문제를 수정한다.",
       "trap": "교정도감과 도방은 최충헌의 정책임을 기억"
     }
-  ]
+  ],
+  "vocab": {
+    "words": [
+      {
+        "w": "consolidate",
+        "pos": "동",
+        "mean": "통합하다",
+        "ex": "We consolidated the two departments."
+      },
+      {
+        "w": "courteous",
+        "pos": "형",
+        "mean": "정중한",
+        "ex": "The staff were courteous and helpful."
+      },
+      {
+        "w": "deadline",
+        "pos": "명",
+        "mean": "마감일",
+        "ex": "The deadline is next Friday."
+      }
+    ],
+    "confusable": {
+      "a": "beside",
+      "b": "besides",
+      "diff": "beside = ~옆에(위치) / besides = ~게다가(추가)"
+    },
+    "tip": "하루 3개씩만 — 한 달이면 90개. 양보다 매일이 훨씬 중요합니다."
+  }
 }

@@ -83,5 +83,33 @@
       "calc_value": "0.2"
     }
   ],
-  "psat_type": "2단 비율 계산"
+  "psat_type": "2단 비율 계산",
+  "vocab": {
+    "words": [
+      {
+        "w": "appraise",
+        "pos": "동",
+        "mean": "평가하다 · 감정하다",
+        "ex": "The property was appraised."
+      },
+      {
+        "w": "benchmark",
+        "pos": "명",
+        "mean": "기준점",
+        "ex": "Set a benchmark for quality."
+      },
+      {
+        "w": "turnover",
+        "pos": "명",
+        "mean": "매출액 · 이직률",
+        "ex": "Annual turnover rose 12 percent."
+      }
+    ],
+    "confusable": {
+      "a": "principal",
+      "b": "principle",
+      "diff": "principal = 형용사 '주요한'·명사 '교장' / principle = 명사 '원칙'"
+    },
+    "tip": "시제는 시간 부사어를 먼저 — yesterday·since·by the time이 답을 정합니다."
+  }
 }
