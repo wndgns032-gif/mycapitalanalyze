@@ -40,30 +40,39 @@
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
-<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-10">
-    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-      <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="/ja/">MyCapital Analyze</a>
-      <nav class="flex items-center gap-4 text-sm">
+<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-20">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
+      <a class="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 truncate tap px-1" href="/ja/">MyCapital Analyze</a>
+
+      <nav class="hidden sm:flex items-center gap-4 text-sm">
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ja/">Home</a>
         
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ja/game/apps/">アプリ</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ja/game/games/">ゲーム</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
-        <a class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/ja/search/" aria-label="検索">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
-        </a>
-        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
-          <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-          <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-        </button>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/contact.html">Contact</a>
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/ja/search/" aria-label="検索"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
       </nav>
+
+      <div class="flex items-center gap-0.5 sm:hidden">
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/ja/search/" aria-label="検索"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <details class="relative" data-mca-menu>
+          <summary class="mca-menu-btn tap w-11 cursor-pointer text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded" aria-label="Menu">
+            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </summary>
+          <div class="absolute right-0 top-12 w-48 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-1.5 z-30">
+            <a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ja/">Home</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ja/game/apps/">アプリ</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ja/game/games/">ゲーム</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/about.html">About</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/privacy.html">Privacy</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/contact.html">Contact</a>
+          </div>
+        </details>
+      </div>
     </div>
   </header>
-<div class="max-w-5xl mx-auto px-4 pt-3 flex flex-wrap items-center gap-1"><span class="text-slate-500 mr-1 text-sm">Language:</span><a href="/post/cbo-projects-social-security-trust-fund-depletion-by.html" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="English" hreflang="en">EN</a><a href="/zh/post/cbo-projects-social-security-trust-fund-depletion-by.html" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="中文" hreflang="zh">ZH</a><a href="/hi/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="हिन्दी" hreflang="hi">HI</a><a href="/es/post/cbo-projects-social-security-trust-fund-depletion-by.html" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Español" hreflang="es">ES</a><a href="/ar/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="العربية" hreflang="ar">AR</a><a href="/fr/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Français" hreflang="fr">FR</a><a href="/bn/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="বাংলা" hreflang="bn">BN</a><a href="/pt/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Português" hreflang="pt">PT</a><a href="/ru/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Русский" hreflang="ru">RU</a><a href="/de/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Deutsch" hreflang="de">DE</a><a href="/ja/post/cbo-projects-social-security-trust-fund-depletion-by.html" class="px-2 py-0.5 rounded text-sm bg-brand-600 text-white" title="日本語" hreflang="ja">JA</a><a href="/id/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Bahasa Indonesia" hreflang="id">ID</a><a href="/ko/post/cbo-projects-social-security-trust-fund-depletion-by.html" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="한국어" hreflang="ko">KO</a></div>
+<div class="max-w-5xl mx-auto px-4 sm:px-6 pt-3 flex flex-wrap items-center gap-1.5"><span class="text-slate-500 mr-1 text-sm">Language:</span><a href="/post/cbo-projects-social-security-trust-fund-depletion-by.html" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="English" hreflang="en">EN</a><a href="/zh/post/cbo-projects-social-security-trust-fund-depletion-by.html" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="中文" hreflang="zh">ZH</a><a href="/hi/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="हिन्दी" hreflang="hi">HI</a><a href="/es/post/cbo-projects-social-security-trust-fund-depletion-by.html" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Español" hreflang="es">ES</a><a href="/ar/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="العربية" hreflang="ar">AR</a><a href="/fr/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Français" hreflang="fr">FR</a><a href="/bn/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="বাংলা" hreflang="bn">BN</a><a href="/pt/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Português" hreflang="pt">PT</a><a href="/ru/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Русский" hreflang="ru">RU</a><a href="/de/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Deutsch" hreflang="de">DE</a><a href="/ja/post/cbo-projects-social-security-trust-fund-depletion-by.html" class="tap px-2.5 rounded text-sm bg-brand-600 text-white" title="日本語" hreflang="ja">JA</a><a href="/id/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Bahasa Indonesia" hreflang="id">ID</a><a href="/ko/post/cbo-projects-social-security-trust-fund-depletion-by.html" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="한국어" hreflang="ko">KO</a></div>
 
-<main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
+<main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 <article class="max-w-3xl mx-auto">
   <header class="mb-6">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
@@ -72,9 +81,9 @@
       <span class="text-slate-400">&middot;</span>
       <span>Independent Analysis</span>
     </div>
-    <h1 class="text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 mb-4">CBO、社会保障信託基金が2032年に枯渇と予測：財政と市場への影響</h1>
+    <h1 class="text-2xl sm:text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 mb-4">CBO、社会保障信託基金が2032年に枯渇と予測：財政と市場への影響</h1>
     <p class="text-slate-600 dark:text-slate-400">議会予算局の長期見通しによると、社会保障の収入と支出の差は75年間で拡大し、老齢遺族保険信託基金は2032会計年度に枯渇する見込みだ。</p>
-    <p class="mt-4 text-xs text-slate-500">出典: <a class="underline hover:text-brand-600" rel="nofollow noopener" target="_blank" href="https://www.cbo.gov/publication/62556">CBO</a></p>
+    <p class="mt-4 text-xs text-slate-500">出典: <a class="inline-block py-2 underline hover:text-brand-600" rel="nofollow noopener" target="_blank" href="https://www.cbo.gov/publication/62556">CBO</a></p>
   </header>
   
   
@@ -123,20 +132,20 @@
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9243770518153989" data-ad-slot="3845915588" data-ad-format="autorelaxed" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
-  <aside class="mt-10 border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-slate-50 dark:bg-slate-900">
+  <aside class="mt-10 border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-slate-50 dark:bg-slate-900">
   <p class="text-xs uppercase tracking-wide text-slate-500 mb-2">広告 · アフィリエイト</p>
   <h2 class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">おすすめリソース</h2>
   <ul class="space-y-2 text-sm text-slate-700 dark:text-slate-300">
-    <li><a class="font-medium underline hover:text-brand-600" rel="sponsored nofollow noopener" target="_blank" data-affiliate="tradingview" href="https://www.tradingview.com/?aff_id=1171086">TradingView</a> — <span class="text-slate-600 dark:text-slate-400">Advanced charts, screeners and real-time market data. Free plan available.</span></li>
+    <li><a class="inline-block py-2 font-medium underline hover:text-brand-600" rel="sponsored nofollow noopener" target="_blank" data-affiliate="tradingview" href="https://www.tradingview.com/?aff_id=1171086">TradingView</a> — <span class="text-slate-600 dark:text-slate-400">Advanced charts, screeners and real-time market data. Free plan available.</span></li>
   </ul>
   <p class="mt-4 text-xs text-slate-500 leading-relaxed">上記リンクの一部はアフィリエイトリンクです。それらを経由して登録された場合、お客様に追加費用なく当サイトが報酬を受け取ることがあります。分析内容や評価に影響はありません。</p>
 </aside>
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">関連分析</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
-    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="/ja/post/bank-of-england-edmc-appointments-signal-tougher-enforcement.html">イングランド銀行のEDMC人事、より厳格な執行姿勢を示唆</a></li>
-    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="/ja/post/cbo-directors-speaking-engagements-spotlight-fiscal-policy-and.html">CBO長官の講演活動が浮き彫りにする財政政策と米国経済の見通し</a></li>
-    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="/ja/post/bank-of-england-court-backs-frontier-ai-funding.html">イングランド銀行理事会、フロンティアAIへの追加資金を承認しつつコスト引き締めを強化</a></li>
+    <li><a class="inline-block py-1.5 hover:text-brand-600 underline-offset-2 hover:underline" href="/ja/post/bank-of-england-edmc-appointments-signal-tougher-enforcement.html">イングランド銀行のEDMC人事、より厳格な執行姿勢を示唆</a></li>
+    <li><a class="inline-block py-1.5 hover:text-brand-600 underline-offset-2 hover:underline" href="/ja/post/cbo-directors-speaking-engagements-spotlight-fiscal-policy-and.html">CBO長官の講演活動が浮き彫りにする財政政策と米国経済の見通し</a></li>
+    <li><a class="inline-block py-1.5 hover:text-brand-600 underline-offset-2 hover:underline" href="/ja/post/bank-of-england-court-backs-frontier-ai-funding.html">イングランド銀行理事会、フロンティアAIへの追加資金を承認しつつコスト引き締めを強化</a></li>
   </ul>
 </nav>
   <div class="mt-8" data-ad-slot-name="post_related">
@@ -151,10 +160,10 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本ブログの記事は公開されたマクロ経済データに基づく AI 支援の要約と独自分析です。情報提供のみを目的とし、投資助言ではありません。</p>
-      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ja/disclosure.html">アフィリエイト開示</a></p>
+      <p class="text-xs pt-2"><a class="inline-block py-2.5 underline hover:text-brand-600" href="/ja/disclosure.html">アフィリエイト開示</a></p>
     </div>
   </footer>
-<script src="/assets/js/main.js?v=3"></script>
+<script src="/assets/js/main.js?v=4"></script>
   <script>
   (function () {
     if (!document.addEventListener) return;

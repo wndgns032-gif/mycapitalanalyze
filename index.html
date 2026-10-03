@@ -47,30 +47,39 @@
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
-<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-10">
-    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-      <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="/">MyCapital Analyze</a>
-      <nav class="flex items-center gap-4 text-sm">
+<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-20">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
+      <a class="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 truncate tap px-1" href="/">MyCapital Analyze</a>
+
+      <nav class="hidden sm:flex items-center gap-4 text-sm">
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/">Home</a>
         
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/game/apps/">Apps</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/game/games/">Games</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
-        <a class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/search/" aria-label="Search">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
-        </a>
-        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
-          <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-          <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-        </button>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/contact.html">Contact</a>
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/search/" aria-label="Search"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
       </nav>
+
+      <div class="flex items-center gap-0.5 sm:hidden">
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/search/" aria-label="Search"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <details class="relative" data-mca-menu>
+          <summary class="mca-menu-btn tap w-11 cursor-pointer text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded" aria-label="Menu">
+            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </summary>
+          <div class="absolute right-0 top-12 w-48 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-1.5 z-30">
+            <a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/">Home</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/game/apps/">Apps</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/game/games/">Games</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/about.html">About</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/privacy.html">Privacy</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/contact.html">Contact</a>
+          </div>
+        </details>
+      </div>
     </div>
   </header>
-<div class="max-w-5xl mx-auto px-4 pt-3 flex flex-wrap items-center gap-1"><span class="text-slate-500 mr-1 text-sm">Language:</span><a href="/" class="px-2 py-0.5 rounded text-sm bg-brand-600 text-white" title="English" hreflang="en">EN</a><a href="/zh/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="中文" hreflang="zh">ZH</a><a href="/hi/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="हिन्दी" hreflang="hi">HI</a><a href="/es/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Español" hreflang="es">ES</a><a href="/ar/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="العربية" hreflang="ar">AR</a><a href="/fr/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Français" hreflang="fr">FR</a><a href="/bn/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="বাংলা" hreflang="bn">BN</a><a href="/pt/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Português" hreflang="pt">PT</a><a href="/ru/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Русский" hreflang="ru">RU</a><a href="/de/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Deutsch" hreflang="de">DE</a><a href="/ja/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="日本語" hreflang="ja">JA</a><a href="/id/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Bahasa Indonesia" hreflang="id">ID</a><a href="/ko/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="한국어" hreflang="ko">KO</a></div>
+<div class="max-w-5xl mx-auto px-4 sm:px-6 pt-3 flex flex-wrap items-center gap-1.5"><span class="text-slate-500 mr-1 text-sm">Language:</span><a href="/" class="tap px-2.5 rounded text-sm bg-brand-600 text-white" title="English" hreflang="en">EN</a><a href="/zh/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="中文" hreflang="zh">ZH</a><a href="/hi/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="हिन्दी" hreflang="hi">HI</a><a href="/es/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Español" hreflang="es">ES</a><a href="/ar/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="العربية" hreflang="ar">AR</a><a href="/fr/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Français" hreflang="fr">FR</a><a href="/bn/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="বাংলা" hreflang="bn">BN</a><a href="/pt/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Português" hreflang="pt">PT</a><a href="/ru/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Русский" hreflang="ru">RU</a><a href="/de/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Deutsch" hreflang="de">DE</a><a href="/ja/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="日本語" hreflang="ja">JA</a><a href="/id/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Bahasa Indonesia" hreflang="id">ID</a><a href="/ko/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="한국어" hreflang="ko">KO</a></div>
 
-<main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
+<main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 <div class="space-y-6">
   <div>
     <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Latest Macro &amp; Market Insights</h1>
@@ -81,7 +90,7 @@
   <a class="block aspect-[16/9] overflow-hidden bg-gradient-to-br from-indigo-800 to-indigo-600 flex items-center justify-center" href="/post/cbo-analysis-of-the-rise-act-what-the.html" aria-label="CBO Analysis of the RISE Act: What the Senate Higher Education Bill Means for the Federal Budget and Markets">
     <span class="text-white/90 text-sm font-semibold uppercase tracking-widest px-4 text-center">US Economy</span>
   </a>
-  <div class="p-5">
+  <div class="p-4 sm:p-5">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
       <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">US Economy</span>
       <time datetime="2026-10-03">2026-10-03</time>
@@ -94,7 +103,7 @@
   <a class="block aspect-[16/9] overflow-hidden bg-gradient-to-br from-indigo-800 to-indigo-600 flex items-center justify-center" href="/post/cbo-cost-estimate-for-the-canterbury-shaker-village.html" aria-label="CBO Cost Estimate for the Canterbury Shaker Village Heritage Act">
     <span class="text-white/90 text-sm font-semibold uppercase tracking-widest px-4 text-center">US Economy</span>
   </a>
-  <div class="p-5">
+  <div class="p-4 sm:p-5">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
       <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">US Economy</span>
       <time datetime="2026-10-03">2026-10-03</time>
@@ -111,7 +120,7 @@
   <a class="block aspect-[16/9] overflow-hidden bg-gradient-to-br from-indigo-800 to-indigo-600 flex items-center justify-center" href="/post/cbo-scores-water-system-expansion-bill-fiscal-impact.html" aria-label="CBO Scores Water System Expansion Bill: Fiscal Impact and Market Implications">
     <span class="text-white/90 text-sm font-semibold uppercase tracking-widest px-4 text-center">US Economy</span>
   </a>
-  <div class="p-5">
+  <div class="p-4 sm:p-5">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
       <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">US Economy</span>
       <time datetime="2026-10-03">2026-10-03</time>
@@ -124,7 +133,7 @@
   <a class="relative block aspect-[16/10] overflow-hidden bg-gradient-to-br from-fuchsia-800 to-fuchsia-600" href="/game/post/mmorpg-price-features-and-who-should-skip.html" aria-label="リネージュM - 本格スマホMMORPG — Price, Features and Who Should Skip">
     <img src="/assets/img/apps/app-7ec4b40f43.jpg" alt="" loading="lazy" decoding="async" class="w-full h-full object-cover object-top" /><span class="absolute top-2 right-2 flex flex-col items-end gap-1"><span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-slate-800/90 text-white">Free</span></span>
   </a>
-  <div class="p-5">
+  <div class="p-4 sm:p-5">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-1">
       <span class="bg-fuchsia-50 text-fuchsia-700 px-2 py-0.5 rounded uppercase tracking-wide">Apps &amp; Games</span>
       <time datetime="2026-10-03">2026-10-03</time>
@@ -138,7 +147,7 @@
   <a class="relative block aspect-[16/10] overflow-hidden bg-gradient-to-br from-fuchsia-800 to-fuchsia-600" href="/game/post/play-mecha-break-on-pc-download-now-google.html" aria-label="Play Mecha BREAK on PC | Download Now - Google Play Store — Price">
     <img src="/assets/img/apps/app-36bbbab0de.jpg" alt="" loading="lazy" decoding="async" class="w-full h-full object-cover object-top" /><span class="absolute top-2 right-2 flex flex-col items-end gap-1"><span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-slate-800/90 text-white">Free</span></span>
   </a>
-  <div class="p-5">
+  <div class="p-4 sm:p-5">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-1">
       <span class="bg-fuchsia-50 text-fuchsia-700 px-2 py-0.5 rounded uppercase tracking-wide">Apps &amp; Games</span>
       <time datetime="2026-10-03">2026-10-03</time>
@@ -149,19 +158,19 @@
   </div>
 </article>
   </div>
-  <nav class="mt-8 flex items-center justify-center gap-2 flex-wrap" aria-label="Pagination"><span class="px-3 py-1.5 rounded text-sm border bg-brand-600 text-white border-brand-600" aria-current="page">1</span><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/2/">2</a><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/3/">3</a><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/4/">4</a><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/5/">5</a><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/6/">6</a><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/7/">7</a><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/8/">8</a><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/9/">9</a><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/2/" aria-label="Next">&rsaquo;</a></nav>
+  <nav class="mt-8 flex items-center justify-center gap-2 flex-wrap" aria-label="Pagination"><span class="tap px-3.5 rounded text-sm border bg-brand-600 inline-flex items-center justify-center text-white border-brand-600" aria-current="page">1</span><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/2/">2</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/3/">3</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/4/">4</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/5/">5</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/6/">6</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/7/">7</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/8/">8</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/9/">9</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/page/2/" aria-label="Next">&rsaquo;</a></nav>
   
 <section class="mt-10 grid gap-6 lg:grid-cols-2 items-start">
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
+  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">Daily posts</h2>
     <div id="mca-cal" data-locale="en" data-str-none="No posts were published on this day." data-str-wait="Collecting…" data-str-unit="posts"></div>
     <div id="mca-cal-out" class="mt-3 text-sm"></div>
   </div>
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
+  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">Visitors by country — last 7 days</h2>
     <div id="mca-geo" data-locale="en" data-str-wait="Collecting…"></div>
   </div>
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
+  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">Popular this week</h2>
     <div id="mca-pop" data-locale="en" data-str-wait="Collecting…" data-str-views="views"></div>
   </div>
@@ -182,10 +191,10 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Posts on this blog are AI-assisted summaries and independent analysis of public macro and economic data. Content is for informational purposes only and does not constitute investment advice.</p>
-      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/disclosure.html">Affiliate Disclosure</a></p>
+      <p class="text-xs pt-2"><a class="inline-block py-2.5 underline hover:text-brand-600" href="/disclosure.html">Affiliate Disclosure</a></p>
     </div>
   </footer>
-<script src="/assets/js/main.js?v=3"></script>
+<script src="/assets/js/main.js?v=4"></script>
   <script>
   (function () {
     if (!document.addEventListener) return;

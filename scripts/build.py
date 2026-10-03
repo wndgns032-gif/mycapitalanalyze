@@ -554,31 +554,71 @@ def extract_faq(body_md):
 
 
 # ---------- 헤더/푸터 ----------
+def _theme_btn(cls='p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'):
+    """다크모드 토글 버튼 (헤더 데스크톱/모바일 양쪽에서 재사용)."""
+    return (f'<button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="{cls}">'
+            '<svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>'
+            '<svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>'
+            '</button>')
+
+
+def _search_link(current, cls='p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600'):
+    return (f'<a class="{cls}" href="{search_path(current)}" '
+            f'aria-label="{htmllib.escape(UX_STR.get(current, DEFAULT_UX)[0])}">'
+            '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>')
+
+
 def header_html(current):
+    """헤더.
+
+    모바일(640px 미만)에서는 내비 항목이 가로로 넘치므로(13개 언어 + 메뉴 5개)
+    데스크톱용 inline nav 를 숨기고, 검색·테마 아이콘 + 햄버거 메뉴(details) 로 바꾼다.
+    메뉴 항목은 44px 터치 목표를 지킨다. (2026-10-04 모바일 규격)
+    """
     s = strs(current)
     home = home_path(current)
     # KO 전용: 오늘의 학습 바로가기 (로이 학습 섹션 진입점)
     study_link = ('<a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 font-semibold" '
                   'href="/ko/study/">오늘의 학습</a>') if current == 'ko' else ''
-    return f'''<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-10">
-    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-      <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="{home}">{SITE_NAME}</a>
-      <nav class="flex items-center gap-4 text-sm">
+    app_lbl = htmllib.escape(TAB_STR.get(current, DEFAULT_TAB)[1])
+    game_lbl = htmllib.escape(TAB_STR.get(current, DEFAULT_TAB)[2])
+    m_item = ('<a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 '
+              'hover:bg-slate-100 dark:hover:bg-slate-800" href="%s">%s</a>')
+    m_study = (m_item % ('/ko/study/', '오늘의 학습')) if current == 'ko' else ''
+    menu_items = (m_item % (home, 'Home') + m_study
+                  + m_item % (game_home_for(current, 'app'), app_lbl)
+                  + m_item % (game_home_for(current, 'game'), game_lbl)
+                  + m_item % ('/about.html', 'About')
+                  + m_item % ('/privacy.html', 'Privacy')
+                  + m_item % ('/contact.html', 'Contact'))
+    return f'''<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-20">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
+      <a class="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 truncate tap px-1" href="{home}">{SITE_NAME}</a>
+
+      <nav class="hidden sm:flex items-center gap-4 text-sm">
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{home}">Home</a>
         {study_link}
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{game_home_for(current, 'app')}">{htmllib.escape(TAB_STR.get(current, DEFAULT_TAB)[1])}</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{game_home_for(current, 'game')}">{htmllib.escape(TAB_STR.get(current, DEFAULT_TAB)[2])}</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{game_home_for(current, 'app')}">{app_lbl}</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{game_home_for(current, 'game')}">{game_lbl}</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
-        <a class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="{search_path(current)}" aria-label="{htmllib.escape(UX_STR.get(current, DEFAULT_UX)[0])}">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
-        </a>
-        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
-          <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-          <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-        </button>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/contact.html">Contact</a>
+        {_search_link(current, 'p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600')}
+        {_theme_btn()}
       </nav>
+
+      <div class="flex items-center gap-0.5 sm:hidden">
+        {_search_link(current)}
+        {_theme_btn()}
+        <details class="relative" data-mca-menu>
+          <summary class="mca-menu-btn tap w-11 cursor-pointer text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded" aria-label="Menu">
+            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </summary>
+          <div class="absolute right-0 top-12 w-48 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-1.5 z-30">
+            {menu_items}
+          </div>
+        </details>
+      </div>
     </div>
   </header>'''
 
@@ -588,7 +628,7 @@ def footer_html(lang):
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 {SITE_NAME}. All rights reserved.</p>
       <p class="text-xs leading-relaxed">{strs(lang)[6]}</p>
-      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="{(home_path(lang)) + AFF_CFG.get('disclosure_path', 'disclosure.html')}">{htmllib.escape(AFF_STR.get(lang, DEFAULT_AFF)[3])}</a></p>
+      <p class="text-xs pt-2"><a class="inline-block py-2.5 underline hover:text-brand-600" href="{(home_path(lang)) + AFF_CFG.get('disclosure_path', 'disclosure.html')}">{htmllib.escape(AFF_STR.get(lang, DEFAULT_AFF)[3])}</a></p>
     </div>
   </footer>'''
 
@@ -704,13 +744,13 @@ def affiliate_box(lang, category):
         return ''
     s = AFF_STR.get(lang, DEFAULT_AFF)
     items = '\n'.join(
-        '    <li><a class="font-medium underline hover:text-brand-600" '
+        '    <li><a class="inline-block py-2 font-medium underline hover:text-brand-600" '
         'rel="sponsored nofollow noopener" target="_blank" '
         f'data-affiliate="{htmllib.escape(o["id"])}" href="{htmllib.escape(o["url"])}">'
         f'{htmllib.escape(o["name"])}</a>'
         f' — <span class="text-slate-600 dark:text-slate-400">{htmllib.escape(o["blurb"])}</span></li>'
         for o in offers)
-    return f'''<aside class="mt-10 border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-slate-50 dark:bg-slate-900">
+    return f'''<aside class="mt-10 border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-slate-50 dark:bg-slate-900">
   <p class="text-xs uppercase tracking-wide text-slate-500 mb-2">{htmllib.escape(s[2])}</p>
   <h2 class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(s[0])}</h2>
   <ul class="space-y-2 text-sm text-slate-700 dark:text-slate-300">
@@ -767,8 +807,8 @@ def lang_switcher(current, slug=None, available=None, section=None):
         else:
             href = home_fn(code)
         active = 'bg-brand-600 text-white' if code == current else 'text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800'
-        btns.append(f'<a href="{href}" class="px-2 py-0.5 rounded text-sm {active}" title="{name}" hreflang="{code}">{code.upper()}</a>')
-    return ('<div class="max-w-5xl mx-auto px-4 pt-3 flex flex-wrap items-center gap-1">'
+        btns.append(f'<a href="{href}" class="tap px-2.5 rounded text-sm {active}" title="{name}" hreflang="{code}">{code.upper()}</a>')
+    return ('<div class="max-w-5xl mx-auto px-4 sm:px-6 pt-3 flex flex-wrap items-center gap-1.5">'
             '<span class="text-slate-500 mr-1 text-sm">Language:</span>' + ''.join(btns) + '</div>')
 
 
@@ -834,12 +874,12 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
 {header_html(lang)}
 {'' if plain else lang_switcher(lang, switcher_slug, available, section)}
 
-<main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
+<main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 {content_html}
 </main>
 
 {footer_html(lang)}
-<script src="/assets/js/main.js?v=3"></script>
+<script src="/assets/js/main.js?v=4"></script>
 {conversion_tracking_js()}
 </body>
 </html>
@@ -984,7 +1024,7 @@ def fact_box_html(lang, f):
         '    <div class="flex justify-between gap-4 py-1.5 border-b border-slate-100 '
         'dark:border-slate-800 last:border-0">'
         '<dt class="text-slate-500 dark:text-slate-400 shrink-0">%s</dt>'
-        '<dd class="text-right font-medium text-slate-900 dark:text-slate-100">%s</dd></div>'
+        '<dd class="text-right font-medium text-slate-900 dark:text-slate-100 min-w-0 break-words">%s</dd></div>'
         % (htmllib.escape(k), htmllib.escape(v))
         for k, v in rows if v)
     if not body:
@@ -1004,10 +1044,10 @@ def toc_html(body_html, lang):
     if len(items) < 3:
         return ''
     lis = '\n'.join(
-        '    <li><a class="block py-0.5 hover:text-fuchsia-700 dark:hover:text-fuchsia-300" '
+        '    <li><a class="block py-2 hover:text-fuchsia-700 dark:hover:text-fuchsia-300" '
         'href="#%s">%s</a></li>' % (i, re.sub(r'<[^>]+>', '', txt)) for i, txt in items)
     return ('<details class="mb-6 rounded-lg border border-slate-200 dark:border-slate-800 p-4" open>'
-            '<summary class="text-sm font-semibold cursor-pointer text-slate-900 '
+            '<summary class="tap px-1 text-sm font-semibold cursor-pointer text-slate-900 '
             'dark:text-slate-100">%s</summary>'
             '<ul class="mt-3 text-sm text-slate-600 dark:text-slate-400 space-y-1">\n%s\n</ul>'
             '</details>' % (htmllib.escape(t[9]), lis))
@@ -1022,16 +1062,16 @@ def store_cta_html(lang, url, store_name, news=False):
         # 뉴스 재각색 글: '스토어에서 보기'가 아니라 '원문 기사 보기'로 안내한다.
         label = ('%s · %s' % (store_name, t[12])) if store_name else t[12]
         return ('<aside class="mt-10 rounded-lg border border-fuchsia-200 dark:border-fuchsia-900 '
-                'bg-fuchsia-50/60 dark:bg-fuchsia-950/30 p-5 text-center">'
+                'bg-fuchsia-50/60 dark:bg-fuchsia-950/30 p-4 sm:p-5 text-center">'
                 '<a class="inline-block px-5 py-2.5 rounded-md bg-fuchsia-700 hover:bg-fuchsia-800 '
-                'text-white text-sm font-semibold" rel="nofollow noopener" target="_blank" '
+                'text-white text-sm font-semibold tap px-5" rel="nofollow noopener" target="_blank" '
                 'href="%s">%s</a></aside>'
                 % (htmllib.escape(url), htmllib.escape(label)))
     label = ('%s · %s' % (store_name, t[10])) if store_name else t[10]
     return ('<aside class="mt-10 rounded-lg border border-fuchsia-200 dark:border-fuchsia-900 '
-            'bg-fuchsia-50/60 dark:bg-fuchsia-950/30 p-5 text-center">'
+            'bg-fuchsia-50/60 dark:bg-fuchsia-950/30 p-4 sm:p-5 text-center">'
             '<a class="inline-block px-5 py-2.5 rounded-md bg-fuchsia-700 hover:bg-fuchsia-800 '
-            'text-white text-sm font-semibold" rel="nofollow noopener" target="_blank" '
+            'text-white text-sm font-semibold tap px-5" rel="nofollow noopener" target="_blank" '
             'href="%s">%s</a>'
             '<p class="mt-2 text-xs text-slate-500 dark:text-slate-400">%s</p></aside>'
             % (htmllib.escape(url), htmllib.escape(label), htmllib.escape(t[11])))
@@ -1067,7 +1107,7 @@ def game_card_html(lang, p):
   <a class="relative block aspect-[16/10] overflow-hidden bg-gradient-to-br from-fuchsia-800 to-fuchsia-600" href="{p.get('href')}" aria-label="{htmllib.escape(p.get('title', ''))}">
     {thumb}{badge}
   </a>
-  <div class="p-5">
+  <div class="p-4 sm:p-5">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-1">
       <span class="bg-fuchsia-50 text-fuchsia-700 px-2 py-0.5 rounded uppercase tracking-wide">{htmllib.escape(p.get('category', ''))}</span>
       <time datetime="{p.get('date', '')}">{p.get('date', '')}</time>
@@ -1087,7 +1127,7 @@ def card_html(lang, slug, title, desc, category, date, href_fn=None, href=None):
   <a class="block aspect-[16/9] overflow-hidden bg-gradient-to-br {grad} flex items-center justify-center" href="{href}" aria-label="{htmllib.escape(title)}">
     <span class="text-white/90 text-sm font-semibold uppercase tracking-widest px-4 text-center">{htmllib.escape(category)}</span>
   </a>
-  <div class="p-5">
+  <div class="p-4 sm:p-5">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
       <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">{htmllib.escape(category)}</span>
       <time datetime="{date}">{date}</time>
@@ -1104,7 +1144,7 @@ def related_html(lang, slug, posts_in_lang, label, href_fn=None):
         return ''
     fn = href_fn or post_href
     items = '\n'.join(
-        f'    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="{p.get("href") or fn(lang, p["slug"])}">{htmllib.escape(p["title"])}</a></li>'
+        f'    <li><a class="inline-block py-1.5 hover:text-brand-600 underline-offset-2 hover:underline" href="{p.get("href") or fn(lang, p["slug"])}">{htmllib.escape(p["title"])}</a></li>'
         for p in others)
     return f'''<nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">{htmllib.escape(label)}</h2>
@@ -1127,7 +1167,7 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     src = ''
     if source_url:
         src = (f'\n    <p class="mt-4 text-xs text-slate-500">{htmllib.escape(s[4])}: '
-               f'<a class="underline hover:text-brand-600" rel="nofollow noopener" target="_blank" '
+               f'<a class="inline-block py-2 underline hover:text-brand-600" rel="nofollow noopener" target="_blank" '
                f'href="{htmllib.escape(source_url)}">{htmllib.escape(source_name or source_url)}</a></p>')
     # 앱·게임 글: 첫 화면에 팩트박스 + 목차를 먼저 보여주고 광고는 그 아래로 내린다.
     box = fact_box_html(lang, f) if is_game else ''
@@ -1165,7 +1205,7 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
       <span class="text-slate-400">&middot;</span>
       <span>{"Store Listing Summary" if is_game else "Independent Analysis"}</span>
 {dday_chip}    </div>
-    <h1 class="text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 mb-4">{htmllib.escape(title)}</h1>
+    <h1 class="text-2xl sm:text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 mb-4">{htmllib.escape(title)}</h1>
     <p class="text-slate-600 dark:text-slate-400">{htmllib.escape(desc)}</p>{src}
   </header>
   {box}
@@ -1230,16 +1270,16 @@ def homepage_widgets(lang, posts, game_list):
                  f'data-str-views="{htmllib.escape(u[5], quote=True)}"')
     return f'''
 <section class="mt-10 grid gap-6 lg:grid-cols-2 items-start">
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
+  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(w[0])}</h2>
     <div id="mca-cal" {attrs}></div>
     <div id="mca-cal-out" class="mt-3 text-sm"></div>
   </div>
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
+  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(w[2])}</h2>
     <div id="mca-geo" data-locale="{lang}" data-str-wait="{htmllib.escape(w[3], quote=True)}"></div>
   </div>
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
+  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(u[4])}</h2>
     <div id="mca-pop" {pop_attrs}></div>
   </div>
@@ -1323,14 +1363,14 @@ def pager_html(lang, page, pages):
     """페이지 네비게이션. 숫자와 ‹ › 기호는 언어 중립이라 번역 없이 전 언어 공용."""
     if pages <= 1:
         return ''
-    btn = ('px-3 py-1.5 rounded text-sm border transition-colors '
+    btn = ('tap px-3.5 rounded text-sm border transition-colors '
            'border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 '
            'hover:border-brand-400')
     nums = []
     for n in range(1, pages + 1):
         if n == page:
-            nums.append('<span class="px-3 py-1.5 rounded text-sm border bg-brand-600 '
-                        'text-white border-brand-600" aria-current="page">%d</span>' % n)
+            nums.append('<span class="tap px-3.5 rounded text-sm border bg-brand-600 inline-flex '
+                        'items-center justify-center text-white border-brand-600" aria-current="page">%d</span>' % n)
         else:
             nums.append('<a class="%s" href="%s">%d</a>' % (btn, home_page_path(lang, n), n))
     prev = ('<a class="%s" href="%s" aria-label="Previous">&lsaquo;</a>'
@@ -1389,7 +1429,7 @@ def game_tabs(lang, active):
     t = TAB_STR.get(lang, DEFAULT_TAB)
     base = game_home_path(lang)
     items = [('', base, t[0]), ('app', base + 'apps/', t[1]), ('game', base + 'games/', t[2])]
-    cls = ('px-3 py-1.5 rounded-full text-sm border transition-colors')
+    cls = ('tap px-4 rounded-full text-sm border transition-colors')
     out = []
     for key, href, label in items:
         on = (key == active)
@@ -1648,15 +1688,15 @@ def study_q_html(q, idx, key):
   <p class="font-semibold text-slate-900 dark:text-slate-100">{idx}. {htmllib.escape(str(q.get('q', '')))}</p>
   <ul class="mt-2 space-y-1 text-sm text-slate-700 dark:text-slate-300 list-none">{lis}</ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> {sym}</p>
       <p>{htmllib.escape(str(q.get('explain', '')))}</p>{ev}{trap}
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="{key}">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="{key}">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>'''
 
@@ -1794,9 +1834,9 @@ def study_page_html(item, prev7, prev1, next_item=None):
     pd = item.get('_prev_day')
     nd = next_item or item.get('_next_day')
     if pd:
-        prev_link = (f'<a class="underline hover:text-brand-600" href="/ko/study/day/{pd}/">← Day {pd}</a>')
+        prev_link = (f'<a class="tap px-3 rounded-lg border border-slate-300 dark:border-slate-700 hover:border-brand-500" href="/ko/study/day/{pd}/">← Day {pd}</a>')
     if nd:
-        next_link = (f'<a class="underline hover:text-brand-600" href="/ko/study/day/{nd["day"]}/">Day {nd["day"]} →</a>')
+        next_link = (f'<a class="tap px-3 rounded-lg border border-slate-300 dark:border-slate-700 hover:border-brand-500" href="/ko/study/day/{nd["day"]}/">Day {nd["day"]} →</a>')
     nav = (f'<nav class="flex items-center justify-between border-t border-slate-200 dark:border-slate-800 pt-4 text-sm">'
            f'<span>{prev_link or "·"}</span><span>{next_link or "·"}</span></nav>'
            if (prev_link or next_link) else '')
@@ -1806,7 +1846,7 @@ def study_page_html(item, prev7, prev1, next_item=None):
     <h1 class="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">Day {item.get('day', '')} · {htmllib.escape(str(item.get('track_title', '')))}</h1>
     <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{date} · {STUDY_BUDGET}</p>
     <p id="study-progress" class="mt-2 text-sm text-slate-500"></p>
-    <p class="mt-3 text-sm"><a class="underline hover:text-brand-600" href="/ko/study/">← 학습 목록으로</a></p>
+    <p class="mt-3"><a class="tap px-3 rounded-lg border border-slate-300 dark:border-slate-700 text-sm font-semibold" href="/ko/study/">← 학습 목록으로</a></p>
   </div>
   {study_review_html('① 복습 — 7일 전', 5, prev7, d7)}
   {study_review_html('② 복습 — 어제', 5, prev1, d1)}
@@ -1862,7 +1902,7 @@ def study_index_html(items, today_str):
   </div>
   {note}
   <div class="space-y-2">{cards}</div>
-  <p class="text-sm"><a class="underline hover:text-brand-600" href="/ko/study/archive/">표 형태 전체 목록 →</a></p>
+  <p><a class="tap px-3 rounded-lg border border-slate-300 dark:border-slate-700 text-sm font-semibold" href="/ko/study/archive/">표 형태 전체 목록 →</a></p>
 </div>'''
 
 
@@ -1924,7 +1964,7 @@ def build_study():
                f'''<div class="space-y-4">
   <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">학습 전체 목록</h1>
   <p class="text-sm text-slate-600 dark:text-slate-400">누적 {len(items)}일 · 총 {sum(len(study_questions(x)) for x in items)}문항</p>
-  <p class="text-sm"><a class="underline hover:text-brand-600" href="/ko/study/">오늘의 학습으로 →</a></p>
+  <p><a class="tap px-3 rounded-lg border border-slate-300 dark:border-slate-700 text-sm font-semibold" href="/ko/study/">오늘의 학습으로 →</a></p>
   <div class="overflow-x-auto"><table class="min-w-full text-sm text-slate-800 dark:text-slate-200">
     <thead><tr><th class="px-3 py-2 text-left border-b border-slate-300 dark:border-slate-700">Day</th>
     <th class="px-3 py-2 text-left border-b border-slate-300 dark:border-slate-700">날짜</th>

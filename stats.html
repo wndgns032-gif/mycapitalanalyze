@@ -25,17 +25,34 @@
 </script>
 
 <main class="max-w-5xl mx-auto px-4 py-8">
-  <header class="flex flex-wrap items-end justify-between gap-3 mb-6">
-    <div>
-      <h1 class="text-2xl font-bold tracking-tight">방문자 통계</h1>
-      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-        MyCapital Analyze · 일/주/월 방문자 추이 &nbsp;·&nbsp; 기준시간 KST(UTC+9) &nbsp;·&nbsp; 집계 시작 <span id="startLabel">-</span>
-      </p>
-    </div>
-    <div class="flex items-center gap-3">
-      <span id="updated" class="text-xs text-slate-500 dark:text-slate-400"></span>
-      <button id="refresh" class="text-sm px-3 py-1.5 rounded border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">새로고침</button>
-      <a href="/ko/" class="text-sm px-3 py-1.5 rounded border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">사이트로</a>
+  <header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-20">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
+      <a class="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 truncate tap px-1" href="/">MyCapital Analyze</a>
+
+      <nav class="hidden sm:flex items-center gap-4 text-sm">
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/">Home</a>
+        
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/game/apps/">Apps</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/game/games/">Games</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/contact.html">Contact</a>
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/search/" aria-label="Search"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+      </nav>
+
+      <div class="flex items-center gap-0.5 sm:hidden">
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/search/" aria-label="Search"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <details class="relative" data-mca-menu>
+          <summary class="mca-menu-btn tap w-11 cursor-pointer text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded" aria-label="Menu">
+            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </summary>
+          <div class="absolute right-0 top-12 w-48 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-1.5 z-30">
+            <a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/">Home</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/game/apps/">Apps</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/game/games/">Games</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/about.html">About</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/privacy.html">Privacy</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/contact.html">Contact</a>
+          </div>
+        </details>
+      </div>
     </div>
   </header>
 

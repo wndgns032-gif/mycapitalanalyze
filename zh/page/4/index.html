@@ -47,30 +47,39 @@
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
-<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-10">
-    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-      <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="/zh/">MyCapital Analyze</a>
-      <nav class="flex items-center gap-4 text-sm">
+<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-20">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
+      <a class="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 truncate tap px-1" href="/zh/">MyCapital Analyze</a>
+
+      <nav class="hidden sm:flex items-center gap-4 text-sm">
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/zh/">Home</a>
         
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/zh/game/apps/">应用</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/zh/game/games/">游戏</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
-        <a class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/zh/search/" aria-label="搜索">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
-        </a>
-        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
-          <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-          <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-        </button>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/contact.html">Contact</a>
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/zh/search/" aria-label="搜索"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
       </nav>
+
+      <div class="flex items-center gap-0.5 sm:hidden">
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/zh/search/" aria-label="搜索"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <details class="relative" data-mca-menu>
+          <summary class="mca-menu-btn tap w-11 cursor-pointer text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded" aria-label="Menu">
+            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </summary>
+          <div class="absolute right-0 top-12 w-48 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-1.5 z-30">
+            <a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/zh/">Home</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/zh/game/apps/">应用</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/zh/game/games/">游戏</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/about.html">About</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/privacy.html">Privacy</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/contact.html">Contact</a>
+          </div>
+        </details>
+      </div>
     </div>
   </header>
-<div class="max-w-5xl mx-auto px-4 pt-3 flex flex-wrap items-center gap-1"><span class="text-slate-500 mr-1 text-sm">Language:</span><a href="/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="English" hreflang="en">EN</a><a href="/zh/" class="px-2 py-0.5 rounded text-sm bg-brand-600 text-white" title="中文" hreflang="zh">ZH</a><a href="/hi/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="हिन्दी" hreflang="hi">HI</a><a href="/es/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Español" hreflang="es">ES</a><a href="/ar/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="العربية" hreflang="ar">AR</a><a href="/fr/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Français" hreflang="fr">FR</a><a href="/bn/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="বাংলা" hreflang="bn">BN</a><a href="/pt/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Português" hreflang="pt">PT</a><a href="/ru/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Русский" hreflang="ru">RU</a><a href="/de/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Deutsch" hreflang="de">DE</a><a href="/ja/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="日本語" hreflang="ja">JA</a><a href="/id/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Bahasa Indonesia" hreflang="id">ID</a><a href="/ko/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="한국어" hreflang="ko">KO</a></div>
+<div class="max-w-5xl mx-auto px-4 sm:px-6 pt-3 flex flex-wrap items-center gap-1.5"><span class="text-slate-500 mr-1 text-sm">Language:</span><a href="/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="English" hreflang="en">EN</a><a href="/zh/" class="tap px-2.5 rounded text-sm bg-brand-600 text-white" title="中文" hreflang="zh">ZH</a><a href="/hi/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="हिन्दी" hreflang="hi">HI</a><a href="/es/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Español" hreflang="es">ES</a><a href="/ar/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="العربية" hreflang="ar">AR</a><a href="/fr/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Français" hreflang="fr">FR</a><a href="/bn/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="বাংলা" hreflang="bn">BN</a><a href="/pt/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Português" hreflang="pt">PT</a><a href="/ru/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Русский" hreflang="ru">RU</a><a href="/de/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Deutsch" hreflang="de">DE</a><a href="/ja/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="日本語" hreflang="ja">JA</a><a href="/id/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Bahasa Indonesia" hreflang="id">ID</a><a href="/ko/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="한국어" hreflang="ko">KO</a></div>
 
-<main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
+<main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 <div class="space-y-6">
   <div>
     <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">最新宏观与市场洞察</h1>
@@ -81,7 +90,7 @@
   <a class="block aspect-[16/9] overflow-hidden bg-gradient-to-br from-brand-700 to-brand-500 flex items-center justify-center" href="/zh/post/bank-of-england-holds-rates-at-375-as.html" aria-label="英国央行维持利率于3.75%不变 能源冲击令政策路径蒙上阴影">
     <span class="text-white/90 text-sm font-semibold uppercase tracking-widest px-4 text-center">Monetary Policy</span>
   </a>
-  <div class="p-5">
+  <div class="p-4 sm:p-5">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
       <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">Monetary Policy</span>
       <time datetime="2026-09-29">2026-09-29</time>
@@ -94,7 +103,7 @@
   <a class="block aspect-[16/9] overflow-hidden bg-gradient-to-br from-cyan-800 to-cyan-600 flex items-center justify-center" href="/zh/post/bank-of-england-sets-2027-mpc-calendar-eight.html" aria-label="英国央行公布2027年货币政策委员会日程：八次会议、四份报告，以及2018年会议纪要解密">
     <span class="text-white/90 text-sm font-semibold uppercase tracking-widest px-4 text-center">Central Banking</span>
   </a>
-  <div class="p-5">
+  <div class="p-4 sm:p-5">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
       <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">Central Banking</span>
       <time datetime="2026-09-29">2026-09-29</time>
@@ -111,7 +120,7 @@
   <a class="block aspect-[16/9] overflow-hidden bg-gradient-to-br from-cyan-800 to-cyan-600 flex items-center justify-center" href="/zh/post/bank-of-england-taps-four-banks-for-5.html" aria-label="英国央行委托四家银行发行5年期美元债券以补充外汇储备">
     <span class="text-white/90 text-sm font-semibold uppercase tracking-widest px-4 text-center">Central Banking</span>
   </a>
-  <div class="p-5">
+  <div class="p-4 sm:p-5">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
       <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">Central Banking</span>
       <time datetime="2026-09-23">2026-09-23</time>
@@ -124,7 +133,7 @@
   <a class="block aspect-[16/9] overflow-hidden bg-gradient-to-br from-cyan-800 to-cyan-600 flex items-center justify-center" href="/zh/post/bank-of-englands-leeds-expansion-what-the-new.html" aria-label="英国央行利兹扩张：新办公室对英国区域政策意味着什么">
     <span class="text-white/90 text-sm font-semibold uppercase tracking-widest px-4 text-center">Central Banking</span>
   </a>
-  <div class="p-5">
+  <div class="p-4 sm:p-5">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
       <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">Central Banking</span>
       <time datetime="2026-09-22">2026-09-22</time>
@@ -137,7 +146,7 @@
   <a class="block aspect-[16/9] overflow-hidden bg-gradient-to-br from-cyan-800 to-cyan-600 flex items-center justify-center" href="/zh/post/bank-of-england-and-fca-move-to-harmonise.html" aria-label="英国央行与金融行为监管局携手统一英国交易报告制度：整合MiFIR、EMIR与SFTR">
     <span class="text-white/90 text-sm font-semibold uppercase tracking-widest px-4 text-center">Central Banking</span>
   </a>
-  <div class="p-5">
+  <div class="p-4 sm:p-5">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
       <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">Central Banking</span>
       <time datetime="2026-09-18">2026-09-18</time>
@@ -147,19 +156,19 @@
   </div>
 </article>
   </div>
-  <nav class="mt-8 flex items-center justify-center gap-2 flex-wrap" aria-label="Pagination"><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/page/3/" aria-label="Previous">&lsaquo;</a><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/">1</a><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/page/2/">2</a><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/page/3/">3</a><span class="px-3 py-1.5 rounded text-sm border bg-brand-600 text-white border-brand-600" aria-current="page">4</span><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/page/5/">5</a><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/page/6/">6</a><a class="px-3 py-1.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/page/5/" aria-label="Next">&rsaquo;</a></nav>
+  <nav class="mt-8 flex items-center justify-center gap-2 flex-wrap" aria-label="Pagination"><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/page/3/" aria-label="Previous">&lsaquo;</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/">1</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/page/2/">2</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/page/3/">3</a><span class="tap px-3.5 rounded text-sm border bg-brand-600 inline-flex items-center justify-center text-white border-brand-600" aria-current="page">4</span><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/page/5/">5</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/page/6/">6</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/zh/page/5/" aria-label="Next">&rsaquo;</a></nav>
   
 <section class="mt-10 grid gap-6 lg:grid-cols-2 items-start">
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
+  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">每日发布</h2>
     <div id="mca-cal" data-locale="zh" data-str-none="这一天没有发布文章。" data-str-wait="统计中…" data-str-unit="篇"></div>
     <div id="mca-cal-out" class="mt-3 text-sm"></div>
   </div>
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
+  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">各国访客 — 最近 7 天</h2>
     <div id="mca-geo" data-locale="zh" data-str-wait="统计中…"></div>
   </div>
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-white dark:bg-slate-900">
+  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">本周热门文章</h2>
     <div id="mca-pop" data-locale="zh" data-str-wait="统计中…" data-str-views="次浏览"></div>
   </div>
@@ -177,10 +186,10 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">本博客文章为基于公开宏观数据的 AI 辅助摘要与独立分析，仅供参考，不构成投资建议。</p>
-      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/zh/disclosure.html">联盟营销披露</a></p>
+      <p class="text-xs pt-2"><a class="inline-block py-2.5 underline hover:text-brand-600" href="/zh/disclosure.html">联盟营销披露</a></p>
     </div>
   </footer>
-<script src="/assets/js/main.js?v=3"></script>
+<script src="/assets/js/main.js?v=4"></script>
   <script>
   (function () {
     if (!document.addEventListener) return;

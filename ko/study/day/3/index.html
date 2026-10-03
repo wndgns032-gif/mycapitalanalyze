@@ -35,37 +35,46 @@
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
-<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-10">
-    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-      <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="/ko/">MyCapital Analyze</a>
-      <nav class="flex items-center gap-4 text-sm">
+<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-20">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
+      <a class="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 truncate tap px-1" href="/ko/">MyCapital Analyze</a>
+
+      <nav class="hidden sm:flex items-center gap-4 text-sm">
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ko/">Home</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 font-semibold" href="/ko/study/">오늘의 학습</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ko/game/apps/">앱</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/ko/game/games/">게임</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
-        <a class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/ko/search/" aria-label="검색">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
-        </a>
-        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
-          <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-          <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-        </button>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/contact.html">Contact</a>
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/ko/search/" aria-label="검색"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
       </nav>
+
+      <div class="flex items-center gap-0.5 sm:hidden">
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/ko/search/" aria-label="검색"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <details class="relative" data-mca-menu>
+          <summary class="mca-menu-btn tap w-11 cursor-pointer text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded" aria-label="Menu">
+            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </summary>
+          <div class="absolute right-0 top-12 w-48 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-1.5 z-30">
+            <a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ko/">Home</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ko/study/">오늘의 학습</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ko/game/apps/">앱</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/ko/game/games/">게임</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/about.html">About</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/privacy.html">Privacy</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/contact.html">Contact</a>
+          </div>
+        </details>
+      </div>
     </div>
   </header>
 
 
-<main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
+<main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 <div data-study-page="2026-10-05" class="space-y-8">
   <div>
     <p class="text-xs font-bold tracking-widest text-brand-600">KO STUDY · 7급 워밍업</p>
     <h1 class="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">Day 3 · 한국사(심화)</h1>
     <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">2026-10-05 · 복습 5분(7일 전) + 복습 5분(어제) + 새 내용 20분 = 30분</p>
     <p id="study-progress" class="mt-2 text-sm text-slate-500"></p>
-    <p class="mt-3 text-sm"><a class="underline hover:text-brand-600" href="/ko/study/">← 학습 목록으로</a></p>
+    <p class="mt-3"><a class="tap px-3 rounded-lg border border-slate-300 dark:border-slate-700 text-sm font-semibold" href="/ko/study/">← 학습 목록으로</a></p>
   </div>
   <section class="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 p-4"><h3 class="text-base font-bold text-slate-900 dark:text-slate-100">① 복습 — 7일 전 <span class="text-xs font-normal text-slate-500">약 5분</span></h3><p class="mt-2 text-sm text-slate-500">해당 세트 없음(2026-09-28). 시작 첫 주에는 비어 있는 게 정상입니다.</p></section>
   <section class="space-y-3"><h3 class="text-base font-bold text-slate-900 dark:text-slate-100">② 복습 — 어제 <span class="text-xs font-normal text-slate-500">약 5분</span></h3><p class="text-sm text-slate-600 dark:text-slate-400">주간 복습 · 0문항 — 문제를 다시 풀고 정답을 확인하세요.</p><div class="space-y-3"></div></section>
@@ -79,15 +88,15 @@
 <li>④ 토지 개혁을 통해 전국의 토지를 균분하였다.</li>
 <li>⑤ 지방관이 촌락의 인구와 토지, 가축 등을 파악하였다.</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ⑤</p>
       <p>제시된 사료는 통일신라의 민정문서로, 촌락의 인구·토지·가축·수확량 등을 기록한 것이다. 이를 통해 국가가 지방 촌락을 직접 파악하여 조세와 부역을 부과했음을 알 수 있다. ②는 신문왕 대의 조치이고, ③은 신라 말의 상황이며, ④는 통일신라에서 시행되지 않았다. ⑤는 사료와 직접 관련이 없다.</p><p class="mt-1 text-amber-700 dark:text-amber-400"><b>함정</b> 민정문서를 토지 개혁이나 귀족 경제와 혼동하지 않도록 주의</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-05-h0">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-05-h0">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -98,15 +107,15 @@
 <li>④ 통일신라는 녹읍을 폐지한 후 다시 부활시켰다.</li>
 <li>⑤ 통일신라는 골품제라는 신분 제도를 유지하였다.</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ①</p>
       <p>발해의 3성 6부는 당의 제도를 받아들인 것으로, 고구려의 전통을 계승한 것이 아니다. 발해는 고구려 계승 의식을 드러내었지만 중앙 관제는 당의 3성 6부를 모방하였다. ①, ③, ④, ⑤는 모두 사실과 일치한다.</p><p class="mt-1 text-amber-700 dark:text-amber-400"><b>함정</b> 발해의 3성 6부를 고구려 계승으로 오해하지 않도록 주의</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-05-h1">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-05-h1">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -117,15 +126,15 @@
 <li>④ (가) 녹읍 폐지, (나) 관료전 지급</li>
 <li>⑤ (가) 관료전 폐지, (나) 녹읍 지급</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ④</p>
       <p>신문왕은 귀족의 경제 기반을 약화시키기 위해 녹읍을 폐지하고 관료전을 지급하였다. 이후 경덕왕 대에 녹읍이 다시 부활하였다. 따라서 (가)는 녹읍 폐지, (나)는 관료전 지급이 옳다.</p><p class="mt-1 text-amber-700 dark:text-amber-400"><b>함정</b> 녹읍 폐지와 관료전 지급의 순서를 헷갈리지 않도록 주의</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-05-h2">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-05-h2">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -136,15 +145,15 @@
 <li>④ 발해가 불교를 수용하여 사찰을 건립하였음을 보여 준다.</li>
 <li>⑤ 발해가 신라와 협력하여 당을 공격하였음을 알 수 있다.</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ③</p>
       <p>제시된 사료는 발해 무왕이 당에 보낸 국서로, 고구려의 옛 땅을 회복하고 부여의 풍속을 이어받았다는 내용이 담겨 있다. 이는 발해가 고구려를 계승하였다는 의식을 보여 준다. ②는 사실과 다르고, ③, ④, ⑤는 사료와 직접 관련이 없다.</p><p class="mt-1 text-amber-700 dark:text-amber-400"><b>함정</b> 발해의 고구려 계승 의식을 보여 주는 사료임을 기억</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-05-h3">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-05-h3">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div>
 <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
@@ -155,15 +164,15 @@
 <li>④ 통일신라에서는 민정문서를 통해 촌락의 경제를 파악하였다.</li>
 <li>⑤ 발해에서는 화폐를 주조하여 유통하였다.</li></ul>
   <details class="mt-3">
-    <summary class="cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
+    <summary class="tap px-1 cursor-pointer text-sm font-semibold text-brand-600">정답·해설 보기</summary>
     <div class="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1">
       <p><b>정답</b> ④</p>
       <p>통일신라는 민정문서를 작성하여 촌락의 인구, 토지, 가축, 수확량 등을 파악하였다. 발해는 화폐를 주조했다는 기록이 없고, 벼농사도 일부 지역에서 이루어졌다. 주자감은 교육 기관이며, 통일신라는 해상 교역이 활발하였다.</p><p class="mt-1 text-amber-700 dark:text-amber-400"><b>함정</b> 발해의 화폐 주조 여부와 통일신라의 벼농사 사실을 혼동하지 않도록 주의</p>
     </div>
   </details>
-  <div class="mt-3 flex gap-2 text-xs" data-mark="2026-10-05-h4">
-    <button type="button" data-ok="1" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">맞음</button>
-    <button type="button" data-ok="0" class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700">틀림</button>
+  <div class="mt-3 flex gap-2" data-mark="2026-10-05-h4">
+    <button type="button" data-ok="1" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">맞음</button>
+    <button type="button" data-ok="0" class="tap flex-1 px-4 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:border-brand-500 hover:text-brand-600">틀림</button>
   </div>
 </div></div>
   </section>
@@ -173,7 +182,7 @@
     <div class="mt-3 rounded-lg bg-slate-50 dark:bg-slate-800 p-3"><p class="text-xs font-bold text-brand-600">헷갈리는 표현</p><p class="mt-1 text-sm text-slate-800 dark:text-slate-200"><span class="font-semibold">lend</span> <span class="text-slate-400">vs</span> <span class="font-semibold">borrow</span></p><p class="mt-1 text-xs text-slate-600 dark:text-slate-400">lend = 빌려주다(lend A to B) / borrow = 빌리다(borrow A from B)</p></div>
     <p class="mt-3 text-sm text-slate-700 dark:text-slate-300"><span class="font-bold text-brand-600">암기 팁</span> · 오답은 &#x27;지문에 없는 정보&#x27; — 그럴듯해도 지문 근거가 없으면 오답입니다.</p>
   </section>
-  <nav class="flex items-center justify-between border-t border-slate-200 dark:border-slate-800 pt-4 text-sm"><span><a class="underline hover:text-brand-600" href="/ko/study/day/2/">← Day 2</a></span><span><a class="underline hover:text-brand-600" href="/ko/study/day/4/">Day 4 →</a></span></nav>
+  <nav class="flex items-center justify-between border-t border-slate-200 dark:border-slate-800 pt-4 text-sm"><span><a class="tap px-3 rounded-lg border border-slate-300 dark:border-slate-700 hover:border-brand-500" href="/ko/study/day/2/">← Day 2</a></span><span><a class="tap px-3 rounded-lg border border-slate-300 dark:border-slate-700 hover:border-brand-500" href="/ko/study/day/4/">Day 4 →</a></span></nav>
   <p class="text-xs text-slate-400 dark:text-slate-600">※ 본 학습 문항은 AI가 생성 후 자동 검증(계산 재확인·근거 일치 확인)을 거쳤습니다. 오답이나 오류가 있으면 무시하고 넘어가 주세요.</p>
   <script>
 (function () {
@@ -219,10 +228,10 @@
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">이 블로그의 글은 공개된 거시경제 데이터를 AI가 요약·분석한 것입니다. 정보 제공 목적이며 투자 조언이 아닙니다.</p>
-      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/ko/disclosure.html">제휴 수익 고지</a></p>
+      <p class="text-xs pt-2"><a class="inline-block py-2.5 underline hover:text-brand-600" href="/ko/disclosure.html">제휴 수익 고지</a></p>
     </div>
   </footer>
-<script src="/assets/js/main.js?v=3"></script>
+<script src="/assets/js/main.js?v=4"></script>
   <script>
   (function () {
     if (!document.addEventListener) return;
