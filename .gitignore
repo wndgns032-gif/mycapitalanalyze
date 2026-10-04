@@ -15,3 +15,7 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# 로컬 진단·스크린샷 (커밋하지 않는다)
+_shared/
+_shots/

@@ -119,6 +119,14 @@ SCRIPT_HINT = {
 # 언어 검증 때문에 후보를 최대 몇 개까지 뒤져볼지 (HTTP 호출 폭주 방지)
 MAX_TRY = 40
 
+# 출시예정 앱을 받을 수 있는 언어 수 (로이 지시 2026-10-04).
+#   "언어별 대표 나라의 출시예정 게임을 찾으라" → 각 언어가 자기 스토어프론트 기준으로
+#   뽑되, 출시예정 후보는 희소(실측 12개)하므로 상한을 둔다.
+#   12개로 두면 언어당 1개(=13개 언어 거의 전부)까지 허용, 후보 소진 시 자연히 일반작으로 내려간다.
+#   ⚠️ 전 언어가 같은 앱이 되는 것을 막는 것은 이 값이 아니라 '언어별 후보 풀이 다르다'는 사실이다
+#      (Apple 피드가 스토어프론트별로 다르고, Play 관련앱 확장도 hl/gl 별로 다르다).
+UPCOMING_SHARE_LANGS = 12
+
 # 구글플레이 사전등록(출시예정) 표기 — 언어권별 버튼/배지 문구
 PREORDER_MARKERS = [
     '사전 등록', '사전등록', '출시 예정', '출시예정',
@@ -262,6 +270,14 @@ def apple_feeds(cc):
         'https://itunes.apple.com/%s/rss/newapplications/limit=100/json' % cc,
         'https://itunes.apple.com/%s/rss/newfreeapplications/limit=100/json' % cc,
     ]
+
+
+# Apple RSS 를 아예 안 주는 스토어프론트 — 실측(2026-10-04): bd 는 643바이트 빈 피드(entry 0개).
+# 그대로 두면 해당 언어(bn)는 Play 고정목록에만 의존해 후보가 빈약해진다.
+# 같은 언어권에서 실제로 피드를 주는 이웃 스토어로 대체한다.
+APPLE_CC_FALLBACK = {
+    'bd': 'in',   # 방글라데시 → 인도 (벵골어권 인접, RSS 정상)
+}
 
 
 def parse_iso(s):
@@ -543,17 +559,36 @@ def collect_apple_all():
     """
     pool, seen = [], set()
     for cc in APPLE_CC_POOL:
+        got = 0
         for url in apple_feeds(cc):
             try:
                 items = parse_apple_feed(get_json(url), cc)
             except Exception as ex:
                 print('   [apple %s] 피드 실패: %s' % (cc, str(ex)[:50]))
                 continue
+            got += len(items)
             for it in items:
                 if it['key'] in seen:
                     continue
                 seen.add(it['key'])
                 pool.append(it)
+        # 빈 피드 스토어프론트(bd 등)는 이웃 스토어로 대체한다.
+        if got == 0 and cc in APPLE_CC_FALLBACK:
+            alt = APPLE_CC_FALLBACK[cc]
+            alt_n = 0
+            for url in apple_feeds(alt):
+                try:
+                    items = parse_apple_feed(get_json(url), alt)
+                except Exception as ex:
+                    print('   [apple %s→%s] 대체 피드 실패: %s' % (cc, alt, str(ex)[:40]))
+                    continue
+                alt_n += len(items)
+                for it in items:
+                    if it['key'] in seen:
+                        continue
+                    seen.add(it['key'])
+                    pool.append(it)
+            print('   [apple %s] 피드 0개 → %s 로 대체 (%d개)' % (cc, alt, alt_n))
     print('   Apple 전 스토어프론트 %d곳 → 후보 %d개' % (len(APPLE_CC_POOL), len(pool)))
     return pool
 
@@ -562,11 +597,21 @@ def collect(cc, hl, gl, use_play=True, apple_pool=None):
     """언어권 1개의 후보 풀. apple_pool 이 오면 이미 모아둔 전 스토어 Apple 후보를 쓴다."""
     pool = []
     if apple_pool is None:
+        got = 0
         for url in apple_feeds(cc):
             try:
-                pool.extend(parse_apple_feed(get_json(url), cc))
+                items = parse_apple_feed(get_json(url), cc)
+                got += len(items)
+                pool.extend(items)
             except Exception as ex:
                 print('   [apple %s] 피드 실패: %s' % (cc, str(ex)[:50]))
+        if got == 0 and cc in APPLE_CC_FALLBACK:
+            alt = APPLE_CC_FALLBACK[cc]
+            for url in apple_feeds(alt):
+                try:
+                    pool.extend(parse_apple_feed(get_json(url), alt))
+                except Exception as ex:
+                    print('   [apple %s→%s] 대체 피드 실패: %s' % (cc, alt, str(ex)[:40]))
     else:
         pool.extend(apple_pool)
     if use_play:
@@ -613,6 +658,11 @@ def expand_play(cands, hl, gl, seed_limit=6, rel_limit=28):
     (2026-10-03 실측: 7개 국가·4종 URL 전부 동일 22개).
     그래서 매일 같은 유명 게임만 후보가 되고 사전등록 앱은 영원히 안 잡힌다.
     상세 페이지에 노출된 관련 앱으로 시드를 넓혀 다양한 후보를 확보한다.
+
+    ⚠️ 2026-10-04 실측: 이 함수가 hl/gl 을 'en'/'us' 로 하드코딩해 호출해서
+       13개 언어가 완전히 같은 관련앱 체인을 따라갔다 → 후보 풀이 동일(md5 일치)
+       → 13개 언어가 전부 같은 사전등록 앱(ANANTA)을 뽑는 사고로 이어졌다.
+       반드시 그 언어의 hl/gl 로 조회해 언어별 후보가 갈라지게 한다.
     """
     seeds = [c for c in cands if c.get('store') == 'play'][:seed_limit]
     if not seeds:
@@ -620,7 +670,8 @@ def expand_play(cands, hl, gl, seed_limit=6, rel_limit=28):
     have = {c['ident'] for c in cands if c.get('store') == 'play'}
     added = []
     for s in seeds:
-        d = play_details(s['ident'], 'en', 'us') or {}
+        # 언어별로 다른 리스팅을 받아야 관련앱도 달라진다 → hl/gl 은 인자값 그대로.
+        d = play_details(s['ident'], hl, gl) or {}
         for p in (d.get('related') or [])[:rel_limit]:
             if p in have:
                 continue
@@ -870,7 +921,7 @@ def mark_games(cands, cc):
     return cands
 
 
-def rank_candidates(cands, seen, pub_urls, pub_ids, today):
+def rank_candidates(cands, seen, pub_urls, pub_ids, today, rotate_idx=0):
     """로이 확정 우선순위 (2026-10-03 개정) — 고정 순서, 회전 없음:
        1 출시예정 게임(Play) → 2 출시예정 앱(Play) → 3 출시예정 게임(Apple)
        → 4 신작 게임(Play) → 5 신작 게임(Apple) → 6 신작 앱(Play) → 7 신작 앱(Apple)
@@ -881,7 +932,13 @@ def rank_candidates(cands, seen, pub_urls, pub_ids, today):
     출시일이 미래인지로 판정한다.
 
     우선순위 전체를 '순서대로 늘어놓은 리스트'로 돌려준다. 호출부가 앞에서부터
-    하나씩 지원 언어를 검증해, 그 언어를 실제로 지원하는 첫 후보를 발행한다."""
+    하나씩 지원 언어를 검증해, 그 언어를 실제로 지원하는 첫 후보를 발행한다.
+
+    rotate_idx (2026-10-04 추가): 각 우선순위 티어 안에서 시작 위치를 밀어주는 값.
+      없으면 모든 언어가 같은 티어에서 **똑같은 1위 후보**(예: 유일한 출시예정 Play
+      게임 ANANTA)를 집어 대서 13개 언어가 전부 같은 글을 발행했다(실측).
+      언어별로 i 번째부터 훑게 해서 서로 다른 출시예정 앱을 나눠 갖게 한다.
+    """
     fresh = [c for c in cands
              if c['key'] not in seen and c['key'] not in pub_ids and c['url'] not in pub_urls]
     if not fresh:
@@ -910,6 +967,13 @@ def rank_candidates(cands, seen, pub_urls, pub_ids, today):
     def rel_key(c):
         return c.get('released') or datetime.datetime.min
 
+    def rotate(lst, k):
+        """같은 티어 안에서 시작점을 k 만큼 민다 → 언어마다 다른 후보를 먼저 만난다."""
+        if not lst:
+            return lst
+        k %= len(lst)
+        return lst[k:] + lst[:k]
+
     out = []
     for q, rev, tier in ((play_game_up, False, '출시예정게임(Play)'),
                          (play_app_up, False, '출시예정앱(Play)'),
@@ -920,7 +984,8 @@ def rank_candidates(cands, seen, pub_urls, pub_ids, today):
                          (apple_app_new, True, '신작앱(Apple)'),
                          (apple_app_up, False, '출시예정앱(비상)')):
         # 출시예정은 임박순(오름차순), 나머지는 최신순(내림차순)
-        for c in sorted(q, key=rel_key, reverse=rev):
+        # 정렬 후에 회전해야 언어별로 "그 티어의 i번째"가 일관되게 달라진다.
+        for c in rotate(sorted(q, key=rel_key, reverse=rev), rotate_idx):
             c['_tier'] = tier
             out.append(c)
     return out
@@ -1034,7 +1099,13 @@ def build_material(item, cc, hl, gl, today):
     d = play_details(item['ident'], hl, gl)
     if not d or not d.get('description'):
         return None, False, '', ''
-    upcoming = bool(d.get('upcoming'))
+    # ⚠️ 2026-10-04 실측: 여기서 play_details(hl, gl) 의 upcoming 값을 쓰면
+    #   순위 계산(mark_upcoming → 언어무관 'en/us' 기준)과 결과가 어긋난다.
+    #   실측 사례: Racing Master 가 '출시예정게임(Play)' 티어로 뽑혔는데 글은 released 로 발행.
+    #   원인 = Install 버튼 유무가 hl/gl 마다 달라서 en/us 는 사전예약, 현지 스토어는 출시로 나옴.
+    #   → 판정은 **항상 언어무관 정본 play_upcoming()** 으로 통일하고,
+    #     현지 리스팅(hl/gl)은 글 본문용 텍스트를 얻는 용도로만 쓴다.
+    upcoming = bool(play_upcoming(item['ident']))
     price_txt = 'Free' if d.get('free') else ('%s (paid)' % (d.get('price') or 'paid'))
     lines = [
         'APP NAME: %s' % d.get('name'),
@@ -1713,6 +1784,11 @@ def main():
     done = 0
     tried = 0
     reserved = set()   # 이번 실행에서 이미 뽑은 앱 (다른 언어가 같은 앱을 또 쓰지 않도록)
+    # 출시예정 앱을 쓴 언어 수. 로이 지시(2026-10-04): "언어별 대표 나라의 출시예정 게임을 찾으라"
+    # → 후보가 1개뿐일 때 13개 언어가 전부 같은 앱을 쓰면 안 된다(전 언어 동일 글이 됨).
+    #   출시예정은 '먼저 뽑힌 언어'에게만 주고, 그 뒤 언어는 일반 신작으로 내려보낸다.
+    upcoming_quota = int(cfg.get('upcoming_share_langs', UPCOMING_SHARE_LANGS))
+    upcoming_used = 0
     for lang, cc, hl, gl, lang_name in order:
         if done >= target:
             break
@@ -1720,6 +1796,8 @@ def main():
         outdir = os.path.join(game_dir, lang)
         os.makedirs(outdir, exist_ok=True)
         print('\n[%s] apple=%s / play=%s-%s' % (lang, cc, gl, hl))
+        # 언어마다 자신의 Apple 스토어프론트 피드를 따로 긁는다(us/kr/jp/cn...).
+        # 피드 내용이 실제로 다르기 때문에(실측 105~124개, 서로 다른 앱) 여기서 갈라진다.
         cands = collect(cc, hl, gl, use_play=not args.no_play, apple_pool=apple_pool)
         print('   후보 %d개' % len(cands))
 
@@ -1731,16 +1809,23 @@ def main():
         if lang == order[0][0]:
             backlog = merge_upcoming_backlog(backlog_path, cands, today, today_str)
 
-        rank = rank_candidates(cands, seen | reserved, pub_urls, pub_ids, today)
+        # 13개 언어가 같은 티어의 같은 1위 후보를 집지 않도록, 언어 인덱스로 회전시킨다.
+        rank = rank_candidates(cands, seen | reserved, pub_urls, pub_ids, today,
+                               rotate_idx=tried - 1)
         if not rank:
             print('   신규 후보 없음 → 다음 언어')
             continue
 
         # 우선순위 앞에서부터 훑어 "이 언어를 실제로 지원하는" 첫 후보를 고른다.
+        # 이 언어가 출시예정을 쓸 수 있는지 먼저 판단한다(전 언어 동일글 방지).
+        allow_upcoming = upcoming_used < upcoming_quota
         item = None
         mat = upcoming = img_url = disp_name = None
         for cand in rank[:MAX_TRY]:
             cname = cand.get('name') or cand.get('ident')
+            if is_upcoming_cand(cand, today) and not allow_upcoming:
+                print('   건너뜀(출시예정 할당 소진): %s' % cname)
+                continue
             if strict_lang:
                 ok, why = lang_gate(cand, lang, cc, hl, gl)
                 if ok is False:
@@ -1764,11 +1849,13 @@ def main():
         if not item:
             print('   %s 언어를 지원하는 신규 후보 없음 → 다음 언어' % lang)
             continue
-        # 출시예정 앱은 예약하지 않는다 → 같은 출시예정 앱을 지원하는 **모든 언어**가 쓴다.
-        # (로이 지시 2026-10-04: "출시예정 앱을 우선순위로" — 일반 신작이 밀려 나가야 한다)
+        # 출시예정 앱은 여기서 예약(reserved)하지 않는다 — 후보 자체가 희소해서
+        # 예약해 버리면 뒤 언어는 아예 못 쓴다. 대신 upcoming_quota 로 언어 수를 제한한다.
         if upcoming:
-            print('   선정: %s (%s / %s) ← 출시예정, 전 언어 공용'
-                  % (item.get('name'), item['store'], item.get('_tier', '')))
+            upcoming_used += 1
+            print('   선정: %s (%s / %s) ← 출시예정 [%d/%d]'
+                  % (item.get('name'), item['store'], item.get('_tier', ''),
+                     upcoming_used, upcoming_quota))
         else:
             reserved.add(item['key'])
             print('   선정: %s (%s / %s)' % (item.get('name'), item['store'],

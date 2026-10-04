@@ -14,7 +14,7 @@ price: "Free"
 developer: "Peter Weiss"
 genre: "Games, Entertainment, Puzzle, Casual"
 kind: "game"
-upcoming: "true"
+upcoming: false
 ---
 
 ![Scary Halloween Games](/assets/img/apps/app-a405a84b59.jpg)
