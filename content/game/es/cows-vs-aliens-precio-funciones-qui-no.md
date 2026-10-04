@@ -9,12 +9,12 @@ sourceUrl: "https://apps.apple.com/es/app/cows-vs-aliens/id6812863713?uo=2"
 lang: "es"
 status: "released"
 image: "/assets/img/apps/app-503540d1c9.jpg"
-releaseDate: "2026-09-23"
+releaseDate: "2026-09-19"
 price: "Gratis"
 developer: "Adrian Aristegui"
 genre: "Juegos, Acción, Recreativos"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Cows vs Aliens](/assets/img/apps/app-503540d1c9.jpg)

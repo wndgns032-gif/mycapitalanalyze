@@ -9,12 +9,12 @@ sourceUrl: "https://apps.apple.com/fr/app/little-pantry/id6805045227?uo=2"
 lang: "fr"
 status: "released"
 image: "/assets/img/apps/app-0ffd095b3d.jpg"
-releaseDate: "2026-09-29"
+releaseDate: "2026-09-24"
 price: "Gratuit"
 developer: "Ciagram"
 genre: "Jeux, Simulation, Parties rapides"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![LITTLE PANTRY](/assets/img/apps/app-0ffd095b3d.jpg)

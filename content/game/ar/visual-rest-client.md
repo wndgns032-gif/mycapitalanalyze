@@ -9,12 +9,12 @@ sourceUrl: "https://apps.apple.com/sa/app/visual-rest-client/id6813028067?uo=2"
 lang: "ar"
 status: "released"
 image: "/assets/img/apps/app-da91631eec.jpg"
-releaseDate: "2026-09-28"
+releaseDate: "2026-09-23"
 price: "SAR 17.99"
 developer: "Pawel Karpinski"
 genre: "Developer Tools, Utilities"
 kind: "app"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Visual REST Client](/assets/img/apps/app-da91631eec.jpg)

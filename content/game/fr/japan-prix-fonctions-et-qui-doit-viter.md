@@ -9,12 +9,12 @@ sourceUrl: "https://apps.apple.com/fr/app/%E6%BA%80%E3%82%BF%E3%83%B3japan/id681
 lang: "fr"
 status: "released"
 image: "/assets/img/apps/app-05b69a7174.jpg"
-releaseDate: "2026-09-26"
+releaseDate: "2026-09-23"
 price: "0,99 €"
 developer: "masakazu okano"
 genre: "Jeux, Casse-tête, Éducation"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![満タンJAPAN](/assets/img/apps/app-05b69a7174.jpg)

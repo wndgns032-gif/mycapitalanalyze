@@ -7,14 +7,14 @@ date: "2026-10-04"
 sourceName: "Google Play"
 sourceUrl: "https://play.google.com/store/apps/details?id=com.wondergames.xgame.gp.ptr&hl=hi&gl=in"
 lang: "hi"
-status: "upcoming"
+status: "released"
 image: "/assets/img/apps/app-e7844d77d6.jpg"
 releaseDate: ""
 price: "Free"
 developer: "FARLIGHT"
 genre: "GAME_ROLE_PLAYING"
 kind: "game"
-upcoming: true
+upcoming: false
 ---
 
 ![Dislyte: Origin Miracle - Google Play पर ऐप्लिकेशन](/assets/img/apps/app-e7844d77d6.jpg)

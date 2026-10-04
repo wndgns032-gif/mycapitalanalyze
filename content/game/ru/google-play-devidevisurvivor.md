@@ -7,14 +7,14 @@ date: "2026-10-04"
 sourceName: "Google Play"
 sourceUrl: "https://play.google.com/store/apps/details?id=com.jp.qoo.suf&hl=ru&gl=ru"
 lang: "ru"
-status: "upcoming"
+status: "released"
 image: "/assets/img/apps/app-a21857cd18.jpg"
 releaseDate: ""
 price: "269 (paid)"
 developer: "PAKOchan Factory"
 genre: "GAME_ACTION"
 kind: "game"
-upcoming: "true"
+upcoming: false
 ---
 
 ![Приложения в Google Play – DeviDeviSurvivor](/assets/img/apps/app-a21857cd18.jpg)

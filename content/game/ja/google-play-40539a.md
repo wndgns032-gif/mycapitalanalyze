@@ -7,14 +7,14 @@ date: "2026-10-04"
 sourceName: "Google Play"
 sourceUrl: "https://play.google.com/store/apps/details?id=com.YoStarJP.StellaSora&hl=ja&gl=jp"
 lang: "ja"
-status: "upcoming"
+status: "released"
 image: "/assets/img/apps/app-40539af61d.jpg"
 releaseDate: ""
 price: "Free"
 developer: "Yostar, Inc."
 genre: "GAME_ROLE_PLAYING"
 kind: "game"
-upcoming: true
+upcoming: false
 ---
 
 ![ステラソラ - Google Play のアプリ](/assets/img/apps/app-40539af61d.jpg)

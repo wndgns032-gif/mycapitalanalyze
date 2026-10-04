@@ -9,12 +9,12 @@ sourceUrl: "https://apps.apple.com/cn/app/rejist-employee/id6811915539?uo=2"
 lang: "zh"
 status: "released"
 image: "/assets/img/apps/app-93841ba250.jpg"
-releaseDate: "2026-09-30"
+releaseDate: "2026-09-23"
 price: "免费"
 developer: "WiseLead Solutions Limited"
 genre: "商务"
 kind: "app"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Rejist Employee](/assets/img/apps/app-93841ba250.jpg)

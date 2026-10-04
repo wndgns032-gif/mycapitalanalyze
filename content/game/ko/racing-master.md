@@ -7,14 +7,14 @@ date: "2026-10-04"
 sourceName: "Google Play"
 sourceUrl: "https://play.google.com/store/apps/details?id=com.netease.dfjskr&hl=ko&gl=kr"
 lang: "ko"
-status: "upcoming"
+status: "released"
 image: "/assets/img/apps/app-816bf6f885.jpg"
 releaseDate: "2026-09-10"
 price: "Free"
 developer: "Exptional Global"
 genre: "GAME_RACING"
 kind: "game"
-upcoming: true
+upcoming: false
 ---
 
 ![레이싱 마스터(Racing Master)](/assets/img/apps/app-816bf6f885.jpg)

@@ -9,12 +9,12 @@ sourceUrl: "https://apps.apple.com/br/app/bramblewick-puzzle-de-l%C3%B3gica/id68
 lang: "pt"
 status: "released"
 image: "/assets/img/apps/app-14d133404c.jpg"
-releaseDate: "2026-09-30"
+releaseDate: "2026-09-25"
 price: "Grátis"
 developer: "Regularly LTD"
 genre: "Jogos, Quebra-cabeça, Casual"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Bramblewick: Puzzle de lógica](/assets/img/apps/app-14d133404c.jpg)

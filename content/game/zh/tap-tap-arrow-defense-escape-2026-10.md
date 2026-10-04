@@ -8,12 +8,12 @@ sourceName: "App Store"
 sourceUrl: "https://apps.apple.com/cn/app/tap-tap-arrow-defense-escape/id6793505556?uo=2"
 lang: "zh"
 image: "/assets/img/apps/app-9128b113c4.jpg"
-releaseDate: "2026-10-09"
+releaseDate: "2026-09-02"
 price: "免费"
 developer: "UBI Soft Pvt Ltd"
 genre: "游戏, 模拟, 体育, 益智解谜"
 kind: "game"
-upcoming: "true"
+upcoming: false
 ---
 ![Tap Tap Arrow Defense Escape](/assets/img/apps/app-9128b113c4.jpg)
 

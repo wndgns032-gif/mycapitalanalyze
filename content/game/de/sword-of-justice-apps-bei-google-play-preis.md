@@ -7,14 +7,14 @@ date: "2026-10-04"
 sourceName: "Google Play"
 sourceUrl: "https://play.google.com/store/apps/details?id=com.netease.nshmeu&hl=de&gl=de"
 lang: "de"
-status: "upcoming"
+status: "released"
 image: "/assets/img/apps/app-d22c87f754.jpg"
 releaseDate: ""
 price: "Free"
 developer: "Exptional Global"
 genre: "GAME_ROLE_PLAYING"
 kind: "game"
-upcoming: true
+upcoming: false
 ---
 
 ![SWORD OF JUSTICE – Apps bei Google Play](/assets/img/apps/app-d22c87f754.jpg)

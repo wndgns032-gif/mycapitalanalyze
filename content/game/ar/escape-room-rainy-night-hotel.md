@@ -9,12 +9,12 @@ sourceUrl: "https://apps.apple.com/sa/app/escape-room-rainy-night-hotel/id680885
 lang: "ar"
 status: "released"
 image: "/assets/img/apps/app-cb19988e20.jpg"
-releaseDate: "2026-09-24"
+releaseDate: "2026-09-20"
 price: "Free"
 developer: "Nishiura Ryohei"
 genre: "Games, Entertainment, Trivia, Adventure"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Escape Room: Rainy Night Hotel](/assets/img/apps/app-cb19988e20.jpg)

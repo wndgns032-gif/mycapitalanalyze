@@ -8,12 +8,12 @@ sourceName: "App Store"
 sourceUrl: "https://apps.apple.com/jp/app/ai-video-with-omni-clips/id6766179756?uo=2"
 lang: "ja"
 image: "/assets/img/apps/app-25655065f9.jpg"
-releaseDate: "2026-10-19"
+releaseDate: "2026-08-30"
 price: "無料"
 developer: "GEDIMEX, UAB"
 genre: "写真／ビデオ, ユーティリティ"
 kind: "app"
-upcoming: "true"
+upcoming: false
 ---
 ![AI Video with Omni Clips](/assets/img/apps/app-25655065f9.jpg)
 

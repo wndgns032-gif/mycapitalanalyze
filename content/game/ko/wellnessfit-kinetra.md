@@ -8,12 +8,12 @@ sourceName: "App Store"
 sourceUrl: "https://apps.apple.com/kr/app/wellnessfit-kinetra/id6801174153?uo=2"
 lang: "ko"
 image: "/assets/img/apps/app-0f0b03bc09.jpg"
-releaseDate: "2027-02-11"
+releaseDate: "2026-09-01"
 price: "무료"
 developer: "AMALIYA RUSTAMOVA"
 genre: "건강 및 피트니스"
 kind: "app"
-upcoming: "true"
+upcoming: false
 ---
 
 ![WellnessFit-Kinetra](/assets/img/apps/app-0f0b03bc09.jpg)

@@ -8,12 +8,12 @@ sourceName: "App Store"
 sourceUrl: "https://apps.apple.com/us/app/lost-team-wild-quest/id6794827742?uo=2"
 lang: "en"
 image: "/assets/img/apps/app-450ead53cf.jpg"
-releaseDate: "2026-12-05"
+releaseDate: "2026-09-26"
 price: "Free"
 developer: "Muhammad Nouman"
 genre: "Games, Roleplaying, Sports"
 kind: "game"
-upcoming: "true"
+upcoming: false
 ---
 
 ![Lost Team: Wild Quest](/assets/img/apps/app-450ead53cf.jpg)

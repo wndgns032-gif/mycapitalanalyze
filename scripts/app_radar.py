@@ -366,10 +366,23 @@ def apple_detail_cached(app_id, cc):
     후보 풀이 전 스토어프론트 공용이 되면서(2026-10-04) 언어별 cc 조회를 전부 미리
     채우면 HTTP 호출이 13배로 늘어난다. 지원 언어·장르·출시일은 스토어프론트와
     무관한 값이므로 us 조회 1번으로 충분하다(현지어 이름이 필요할 때만 개별 조회).
+
+    ⚠️ 2026-10-04 실측: cn 스토어프론트는 일부 앱(ANANTA id 6776533126)을 아예
+      안 준다 → releaseDate 를 못 얻어 '출시예정' 딱지가 빠지는 사고가 났다.
+      us 캐시에도 없으면 마지막으로 kr 로 직접 조회해 출시일을 확보한다.
     """
-    return (_CACHE.get('apple:%s:%s' % (app_id, cc))
-            or _CACHE.get('apple:%s:us' % app_id)
-            or {})
+    got = (_CACHE.get('apple:%s:%s' % (app_id, cc))
+           or _CACHE.get('apple:%s:us' % app_id))
+    if got:
+        return got
+    if cc != 'kr':
+        try:
+            d = apple_lookup(app_id, 'kr')
+            if d and d.get('releaseDate'):
+                return d
+        except Exception:
+            pass
+    return {}
 
 
 def apple_reviews(app_id, cc, limit=3):
@@ -506,15 +519,15 @@ def _play_details_uncached(pkg, hl, gl):
     # (실측: Blood Strike 2.5주년 페이지가 마커에 걸려 출시예정으로 오탐된 적 있다)
     if upcoming and 'PreOrder' not in avail and (rating_cnt or 0) > 0:
         upcoming = False
-    # 결정적 신호(2026-10-04 로이 지적·실측): 출시 전 앱은 'Install' 버튼이
-    # 아예 없고 'Add to wishlist' 버튼만 있다. 출시된 앱은 항상 Install 버튼이 있다.
-    # (무한대/아난타 com.netease.anantana 가 마커·availability 없어 출시예정으로
-    # 못 잡혔던 사례를 이 신호로 잡는다) — en/us 페이지 기준으로 판정한다.
-    if not upcoming and (rating_cnt or 0) == 0:
-        has_install = bool(re.search(r'aria-label="Install"', page)
-                           or re.search(r'>\s*Install\s*<', page))
-        if not has_install:
-            upcoming = True
+    # ⚠️ 2026-10-04 로이 지적으로 **삭제한 로직** (되살리지 말 것):
+    #   "Install 버튼이 없으면 출시예정" 이라는 판정을 여기서 했었다. 오탐의 원인.
+    #   실측으로 틀렸음이 증명됐다 —
+    #     · 출시된 게임(Kingshot)도 ko/kr·ja/jp 페이지에선 Install 버튼이 안 나온다
+    #     · 출시된 레이싱 마스터는 전 스토어에서 Install 버튼 0개 → 출시예정으로 오탐
+    #     · 반대로 진짜 사전예약 ANANTA 페이지에도 사전등록 마커가 아예 없다
+    #   즉 Play 웹페이지(봇 렌더)로는 사전등록 여부를 판별할 수 없다.
+    #   → 출시예정 판정은 **Apple 의 미래 releaseDate** 만 신뢰한다(is_upcoming_cand).
+    #     불확실하면 출시예정으로 표시하지 않는다(오탐이 로이 지적의 핵심이었다).
 
     updated = ''
     m = re.search(r'(\d{4})[.\-년]\s*(\d{1,2})[.\-월]\s*(\d{1,2})', page)
@@ -766,10 +779,15 @@ def candidates_from_seeds(seeds_path, today):
     for g in games:
         aid = str(g.get('apple_id') or '').strip()
         acc = (g.get('apple_cc') or 'us').strip()
+        # 같은 게임의 Apple 출시일이 미래인지 = 신뢰 가능한 유일한 출시예정 신호.
+        # (Play 웹페이지로는 사전등록 판별 불가 — 2026-10-04 실측)
+        apple_up = False
+        rel = None
         if aid:
             d = apple_lookup(aid, acc)
             rel = parse_iso(d.get('releaseDate')) if d else None
-            if rel and rel.replace(tzinfo=None) > today:
+            apple_up = bool(rel and rel.replace(tzinfo=None) > today)
+            if apple_up:
                 # 다른 언어 cc 로 조회할 때 매번 HTTP 안 가도록 캐시를 복사해 둔다
                 for cc in APPLE_CC_POOL:
                     _CACHE.setdefault('apple:%s:%s' % (aid, cc), d)
@@ -783,13 +801,15 @@ def candidates_from_seeds(seeds_path, today):
                 })
         pkg = str(g.get('play_pkg') or '').strip()
         if pkg and pkg.count('.') >= 2:
-            pd = play_details(pkg, 'en', 'us')
-            if pd and pd.get('upcoming'):
+            # 같은 게임이므로 Apple 이 미래 출시면 Play 판도 출시예정이다.
+            # (Play 자체 판정은 못 믿지만, Apple 로 확인된 게임은 확실하다)
+            if apple_up or (not aid and (play_details(pkg, 'en', 'us') or {}).get('upcoming')):
+                pd = play_details(pkg, 'en', 'us') or {}
                 out.append({
                     'store': 'play', 'key': 'play:%s' % pkg, 'ident': pkg,
                     'name': pd.get('name') or g.get('name') or pkg,
                     'category': pd.get('category') or '',
-                    'released': None, 'upcoming': True,
+                    'released': rel, 'upcoming': True,
                     'game': ('yes' if (pd.get('category') or '').upper().startswith('GAME') else 'no'),
                     'url': 'https://play.google.com/store/apps/details?id=%s' % pkg,
                     '_seed': True,
@@ -1962,6 +1982,16 @@ def main():
         m_price = re.search(r'^PRICE:\s*(.+)$', material, re.M)
         m_dev = re.search(r'^DEVELOPER:\s*(.+)$', material, re.M)
         m_rel = re.search(r'(20\d\d-\d\d-\d\d)', material)
+        # ⚠️ 2026-10-04 실측: 위 정규식은 본문 첫 'YYYY-MM-DD' 를 물어오기 때문에
+        #   스토어 설명에 적힌 이벤트 날짜를 출시일로 박아버린다
+        #   (WellnessFit: 실제 2026-09-01 인데 frontmatter 에는 2027-02-11 → D-day 오류).
+        #   Apple 글은 lookup 이 준 releaseDate 를 정본으로 쓴다.
+        apple_rel = ''
+        if item['store'] == 'apple':
+            _d = apple_detail_cached(item['ident'], cc)
+            _rd = parse_iso((_d or {}).get('releaseDate'))
+            if _rd:
+                apple_rel = _rd.strftime('%Y-%m-%d')
         m_gen = (re.search(r'^GENRES?:\s*(.+)$', material, re.M | re.I)
                  or re.search(r'^STORE CATEGORY:\s*(.+)$', material, re.M))
         price = (m_price.group(1).strip() if m_price else '')
@@ -1989,7 +2019,7 @@ def main():
                             src_name, item['url'], lang,
                             'released' if released else 'upcoming',
                             rel or '',
-                            (m_rel.group(1) if m_rel else ''),
+                            (apple_rel or (m_rel.group(1) if m_rel else '')),
                             price.replace('"', "'"),
                             (m_dev.group(1).strip().replace('"', "'") if m_dev else ''),
                             (m_gen.group(1).strip().replace('"', "'") if m_gen else ''),

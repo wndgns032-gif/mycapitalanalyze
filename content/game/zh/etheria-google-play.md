@@ -7,14 +7,14 @@ date: "2026-10-04"
 sourceName: "Google Play"
 sourceUrl: "https://play.google.com/store/apps/details?id=com.xd.etheria.gp.asia&hl=zh-CN&gl=tw"
 lang: "zh"
-status: "upcoming"
+status: "released"
 image: "/assets/img/apps/app-558155dcc7.jpg"
 releaseDate: ""
 price: "Free"
 developer: "XD Entertainment Co., Ltd."
 genre: "GAME_ROLE_PLAYING"
 kind: "game"
-upcoming: true
+upcoming: false
 ---
 
 ![伊瑟（Etheria） - Google Play 上的应用](/assets/img/apps/app-558155dcc7.jpg)

@@ -9,12 +9,12 @@ sourceUrl: "https://apps.apple.com/es/app/geminiseedw/id6800990586?uo=2"
 lang: "es"
 status: "released"
 image: "/assets/img/apps/app-afa51a8183.jpg"
-releaseDate: "2026-09-21"
+releaseDate: "2026-09-19"
 price: "Gratis"
 developer: "ShangHai WePlayDynamics"
 genre: "Juegos, Juegos de rol, Estrategia"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![GeminiSeedW](/assets/img/apps/app-afa51a8183.jpg)
