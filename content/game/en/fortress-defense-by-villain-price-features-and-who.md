@@ -14,7 +14,7 @@ price: "Free"
 developer: "Studio Villain Co., Ltd."
 genre: "Games, Strategy"
 kind: "game"
-upcoming: "true"
+upcoming: false
 ---
 
 ![Fortress Defense by Villain](/assets/img/apps/app-d4b819a004.jpg)

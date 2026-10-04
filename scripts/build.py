@@ -1330,6 +1330,25 @@ def home_page_path(lang, n):
     return base if n <= 1 else base + 'page/%d/' % n
 
 
+def upcoming_first(plist):
+    """출시 예정(미래 출시일이 확인된 글)을 목록 맨 앞으로 올린다 (로이 지시 2026-10-04).
+
+    출시예정은 임박한 순(출시일 오름차순), 나머지는 원래 순서(최신순)를 유지한다.
+    """
+    today = datetime.date.today().isoformat()
+    up, rest = [], []
+    for p in plist:
+        f = p.get('facts') or {}
+        if f.get('upcoming') and (f.get('releaseDate') or '') > today:
+            up.append(p)
+        else:
+            rest.append(p)
+    if not up:
+        return plist
+    up.sort(key=lambda p: ((p.get('facts') or {}).get('releaseDate') or '9999-12-31'))
+    return up + rest
+
+
 def merged_feed(lang, posts, game_list):
     """경제 글 + 앱/게임 글을 하나로 합쳐 **최신순**으로 돌려준다 (로이 지시 2026-10-03).
 
@@ -1348,7 +1367,8 @@ def merged_feed(lang, posts, game_list):
         q['_kind'] = 'game'
         feed.append(q)
     feed.sort(key=lambda x: (x.get('date') or ''), reverse=True)
-    return feed
+    # 출시예정 글은 최신순과 무관하게 맨 위로 — 로이 지시(2026-10-04)
+    return upcoming_first(feed)
 
 
 def feed_card_html(lang, p):
@@ -2016,7 +2036,7 @@ def main():
                           'url': game_post_url(lang, slug)})
         if items:
             items.sort(key=lambda p: p['date'], reverse=True)
-            game_posts[lang] = items
+            game_posts[lang] = upcoming_first(items)
     if legacy_app:
         en = game_posts.setdefault('en', [])
         for p in legacy_app:

@@ -42,6 +42,7 @@ LLM 호출은 scripts/llm.py 에 위임 (Flash 전용 + 제공자 자동 폴백)
 """
 import argparse
 import datetime
+import glob
 import hashlib
 import html as htmlmod
 import json
@@ -50,6 +51,7 @@ import re
 import sys
 import time
 import urllib.request
+import urllib.parse
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(_HERE)
@@ -74,6 +76,8 @@ LOCALES = [
     ('bn', 'bd', 'bn',    'bd', 'Bengali'),
 ]
 LOCALE_BY_CODE = {c[0]: c for c in LOCALES}
+# Apple 피드를 긁을 스토어프론트 — 전 언어 공용 후보 풀을 만들 때 사용한다.
+APPLE_CC_POOL = [c[1] for c in LOCALES]
 # 비라틴 표기 언어 — 같은 정보량이 더 적은 글자로 표현된다 (글자수 기준 완화 대상)
 NON_LATIN = {'ko', 'ja', 'zh', 'ar', 'hi', 'bn', 'ru'}
 CJK = {'ko', 'ja', 'zh'}
@@ -340,6 +344,18 @@ def apple_lookup_many(app_ids, cc):
                 _CACHE['apple:%s:%s' % (tid, cc)] = r
 
 
+def apple_detail_cached(app_id, cc):
+    """캐시에서 상세를 찾는다. 해당 스토어프론트 조회가 없으면 전 스토어 공용 'us' 캐시로 대체.
+
+    후보 풀이 전 스토어프론트 공용이 되면서(2026-10-04) 언어별 cc 조회를 전부 미리
+    채우면 HTTP 호출이 13배로 늘어난다. 지원 언어·장르·출시일은 스토어프론트와
+    무관한 값이므로 us 조회 1번으로 충분하다(현지어 이름이 필요할 때만 개별 조회).
+    """
+    return (_CACHE.get('apple:%s:%s' % (app_id, cc))
+            or _CACHE.get('apple:%s:us' % app_id)
+            or {})
+
+
 def apple_reviews(app_id, cc, limit=3):
     try:
         d = get_json('https://itunes.apple.com/%s/rss/customerreviews/page=1/id=%s/'
@@ -474,6 +490,15 @@ def _play_details_uncached(pkg, hl, gl):
     # (실측: Blood Strike 2.5주년 페이지가 마커에 걸려 출시예정으로 오탐된 적 있다)
     if upcoming and 'PreOrder' not in avail and (rating_cnt or 0) > 0:
         upcoming = False
+    # 결정적 신호(2026-10-04 로이 지적·실측): 출시 전 앱은 'Install' 버튼이
+    # 아예 없고 'Add to wishlist' 버튼만 있다. 출시된 앱은 항상 Install 버튼이 있다.
+    # (무한대/아난타 com.netease.anantana 가 마커·availability 없어 출시예정으로
+    # 못 잡혔던 사례를 이 신호로 잡는다) — en/us 페이지 기준으로 판정한다.
+    if not upcoming and (rating_cnt or 0) == 0:
+        has_install = bool(re.search(r'aria-label="Install"', page)
+                           or re.search(r'>\s*Install\s*<', page))
+        if not has_install:
+            upcoming = True
 
     updated = ''
     m = re.search(r'(\d{4})[.\-년]\s*(\d{1,2})[.\-월]\s*(\d{1,2})', page)
@@ -507,14 +532,43 @@ def _play_details_uncached(pkg, hl, gl):
 
 # ---------------------------------------------------------------- 후보 수집
 
-def collect(cc, hl, gl, use_play=True):
-    """언어권 1개의 후보 풀(Apple + Play)."""
+def collect_apple_all():
+    """**모든 스토어프론트**의 Apple 신작 피드를 한 번에 모은다 (로이 지시 2026-10-04).
+
+    이전엔 언어별로 자기 스토어프론트(us/kr/jp...)만 훑었다. 그러면 한국어 글은
+    한국 스토어에 뜬 출시예정 앱만 볼 수 있었고, 그날 그 스토어에 출시예정이 없으면
+    그냥 일반 신작을 발행했다 — "출시예정 우선순위"가 지켜지지 않은 원인.
+    전 스토어프론트를 합치면 하루에 찾을 수 있는 출시예정 후보가 늘고,
+    어느 스토어에서 발견됐든 **그 앱이 지원하는 모든 언어로** 발행할 수 있다.
+    """
+    pool, seen = [], set()
+    for cc in APPLE_CC_POOL:
+        for url in apple_feeds(cc):
+            try:
+                items = parse_apple_feed(get_json(url), cc)
+            except Exception as ex:
+                print('   [apple %s] 피드 실패: %s' % (cc, str(ex)[:50]))
+                continue
+            for it in items:
+                if it['key'] in seen:
+                    continue
+                seen.add(it['key'])
+                pool.append(it)
+    print('   Apple 전 스토어프론트 %d곳 → 후보 %d개' % (len(APPLE_CC_POOL), len(pool)))
+    return pool
+
+
+def collect(cc, hl, gl, use_play=True, apple_pool=None):
+    """언어권 1개의 후보 풀. apple_pool 이 오면 이미 모아둔 전 스토어 Apple 후보를 쓴다."""
     pool = []
-    for url in apple_feeds(cc):
-        try:
-            pool.extend(parse_apple_feed(get_json(url), cc))
-        except Exception as ex:
-            print('   [apple %s] 피드 실패: %s' % (cc, str(ex)[:50]))
+    if apple_pool is None:
+        for url in apple_feeds(cc):
+            try:
+                pool.extend(parse_apple_feed(get_json(url), cc))
+            except Exception as ex:
+                print('   [apple %s] 피드 실패: %s' % (cc, str(ex)[:50]))
+    else:
+        pool.extend(apple_pool)
     if use_play:
         for url, kind in play_collections(hl, gl):
             try:
@@ -597,13 +651,209 @@ def mark_upcoming(cands):
     return cands
 
 
+def is_upcoming_cand(c, today):
+    """출시예정 판정 — '미래 출시일이 확인된 경우에만' True.
+
+    날짜가 없거나 오늘/과거면 절대 출시예정이 아니다. (2026-10-04 로이 지적:
+    출시일이 지났는데도 '출시 예정' 딱지가 붙어 있는 글이 발견됨)
+    """
+    if c.get('store') == 'play':
+        return bool(c.get('upcoming'))
+    rel = c.get('released')
+    return bool(rel and rel.replace(tzinfo=None) > today)
+
+
+def load_upcoming_backlog(path, today_str):
+    """저장해 둔 출시예정 후보를 읽는다. 출시일이 지나간 것은 버린다.
+
+    왜 필요한가: Apple 신작 피드는 롤링 윈도라 **출시예정 앱이 몇 시간만 지나면
+    피드에서 사라진다**(2026-10-04 실측: 08시에 있던 후보가 같은 날 다시 조회하니 없음).
+    발견한 순간 저장해 두면 그 뒤 며칠간 계속 '출시예정 1순위'로 쓸 수 있다.
+    """
+    obj = load_json(path, {})
+    items = obj.get('items') or []
+    out = []
+    for it in items:
+        rd = (it.get('releaseDate') or '')[:10]
+        if not rd or rd <= today_str:
+            continue      # 이미 출시됐거나 날짜 불명 → 폐기
+        out.append(it)
+    return out
+
+
+def save_upcoming_backlog(path, items):
+    save_json(path, {'updated': datetime.datetime.now().strftime('%Y-%m-%d %H:%M'),
+                     'items': items})
+
+
+def backlog_to_cands(items):
+    """백로그 항목 → 후보 dict (순위 계산에 바로 넣을 수 있는 형태)."""
+    out = []
+    for it in items:
+        out.append({
+            'store': it.get('store', 'apple'), 'key': it['key'], 'ident': it['ident'],
+            'name': it.get('name') or it['ident'],
+            'category': it.get('category') or '',
+            'released': parse_iso(it.get('releaseDate')),
+            'url': it.get('url', ''), '_backlog': True,
+        })
+    return out
+
+
+def candidates_from_seeds(seeds_path, today):
+    """시드 파일에 적어둔 출시예정 게임·앱을 실제 후보로 만든다.
+
+    왜 필요한가: Apple 신작 RSS 피드엔 **출시 예정(사전예약) 앱이 안 들어있다** —
+    'new applications'는 말 그대로 '막 출시된' 앱만 나열한다(로이 지적 2026-10-04:
+    무한대/아난타, 바람의흔적이 피드에 없어 못 찾았다). 그래서 로이가 팁을 주거나
+    우리가 검색으로 찾은 출시예정 게임을 시드로 두고, 매 실행마다 상세에서
+    '아직 출시 전인지' 확인해 후보로 넣는다. 출시일이 지나면 자동으로 후보에서 빠진다.
+    """
+    cfg = load_json(seeds_path, {})
+    games = cfg.get('games') or []
+    out = []
+    for g in games:
+        aid = str(g.get('apple_id') or '').strip()
+        acc = (g.get('apple_cc') or 'us').strip()
+        if aid:
+            d = apple_lookup(aid, acc)
+            rel = parse_iso(d.get('releaseDate')) if d else None
+            if rel and rel.replace(tzinfo=None) > today:
+                # 다른 언어 cc 로 조회할 때 매번 HTTP 안 가도록 캐시를 복사해 둔다
+                for cc in APPLE_CC_POOL:
+                    _CACHE.setdefault('apple:%s:%s' % (aid, cc), d)
+                out.append({
+                    'store': 'apple', 'key': 'apple:%s' % aid, 'ident': aid,
+                    'name': d.get('trackName') or g.get('name') or aid,
+                    'category': d.get('primaryGenreName') or '',
+                    'released': rel, 'game': ('yes' if d.get('primaryGenreName') == 'Games' else 'no'),
+                    'url': 'https://apps.apple.com/%s/app/id%s' % (acc, aid),
+                    '_seed': True,
+                })
+        pkg = str(g.get('play_pkg') or '').strip()
+        if pkg and pkg.count('.') >= 2:
+            pd = play_details(pkg, 'en', 'us')
+            if pd and pd.get('upcoming'):
+                out.append({
+                    'store': 'play', 'key': 'play:%s' % pkg, 'ident': pkg,
+                    'name': pd.get('name') or g.get('name') or pkg,
+                    'category': pd.get('category') or '',
+                    'released': None, 'upcoming': True,
+                    'game': ('yes' if (pd.get('category') or '').upper().startswith('GAME') else 'no'),
+                    'url': 'https://play.google.com/store/apps/details?id=%s' % pkg,
+                    '_seed': True,
+                })
+    return out
+
+
+def apple_search_upcoming(terms, today):
+    """Apple 검색 API 로 출시예정 앱을 자동 발굴한다.
+
+    시드의 search_terms(게임명·'사전예약' 등)를 각 스토어프론트에서 검색 →
+    releaseDate 가 미래인 결과만 모은다. Apple 검색은 사전예약 앱도 반환한다
+    (실측 2026-10-04: 'ananta' 검색으로 무한대 2027-01-15 가 잡힌다).
+    """
+    out, seen = [], set()
+    for cc in APPLE_CC_POOL:
+        for term in terms:
+            try:
+                u = ('https://itunes.apple.com/search?term=%s&country=%s&entity=software&limit=25'
+                     % (urllib.parse.quote(term), cc))
+                r = get_json(u)
+            except Exception:
+                continue
+            for x in (r.get('results') or []):
+                tid = str(x.get('trackId') or '')
+                if not tid or tid in seen:
+                    continue
+                rel = parse_iso(x.get('releaseDate'))
+                if not (rel and rel.replace(tzinfo=None) > today):
+                    continue
+                seen.add(tid)
+                for c in APPLE_CC_POOL:
+                    _CACHE.setdefault('apple:%s:%s' % (tid, c), x)
+                out.append({
+                    'store': 'apple', 'key': 'apple:%s' % tid, 'ident': tid,
+                    'name': x.get('trackName') or tid,
+                    'category': x.get('primaryGenreName') or '',
+                    'released': rel, 'url': x.get('trackViewUrl') or '',
+                    'game': ('yes' if x.get('primaryGenreName') == 'Games' else 'no'),
+                    '_search': True,
+                })
+    return out
+
+
+def merge_upcoming_backlog(path, cands, today, today_str):
+    """이번 실행에서 발견한 출시예정 후보를 백로그에 합쳐 저장한다."""
+    backlog = load_upcoming_backlog(path, today_str)
+    by_key = {b['key']: b for b in backlog}
+    for c in cands:
+        if not is_upcoming_cand(c, today):
+            continue
+        rel = c.get('released')
+        by_key[c['key']] = {
+            'key': c['key'], 'store': c['store'], 'ident': c['ident'],
+            'name': c.get('name') or c['ident'],
+            'category': c.get('category') or '',
+            'releaseDate': rel.strftime('%Y-%m-%d') if rel else today_str,
+            'url': c.get('url', ''),
+        }
+    items = sorted(by_key.values(), key=lambda x: x['releaseDate'])
+    save_upcoming_backlog(path, items)
+    return items
+
+
+def refresh_upcoming_flags(base, today_str):
+    """발행된 글의 '출시 예정' 딱지를 매일 다시 검사한다.
+
+    발행 시점엔 미래였던 출시일이 시간이 지나면 지나간 날짜가 된다.
+    그대로 두면 이미 출시된 앱에 '출시 예정' 이 붙어 떠다닌다(로이 지적 2026-10-04).
+    → 출시일이 오늘보다 같거나 앞서면 upcoming 을 false 로 되돌린다.
+    """
+    game_dir = os.path.join(base, 'content', 'game')
+    fixed, kept, nodate = [], 0, 0
+    for path in sorted(glob.glob(os.path.join(game_dir, '*', '*.md'))):
+        try:
+            raw = open(path, encoding='utf-8').read()
+        except Exception:
+            continue
+        m = re.match(r'^---\s*\n(.*?)\n---', raw, re.S)
+        if not m:
+            continue
+        head = m.group(1)
+        fmv = {}
+        for line in head.splitlines():
+            if ':' in line:
+                k, v = line.split(':', 1)
+                fmv[k.strip()] = v.strip().strip('"')
+        if str(fmv.get('upcoming', '')).lower() not in ('1', 'true', 'yes', 'y'):
+            continue
+        rel = (fmv.get('releaseDate') or '').strip()[:10]
+        if not rel:
+            nodate += 1
+            continue
+        if rel <= today_str:
+            new_head, n = re.subn(r'(?m)^upcoming:\s*.*$', 'upcoming: false', head)
+            if n:
+                open(path, 'w', encoding='utf-8').write(
+                    raw[:m.start(1)] + new_head + raw[m.end(1):])
+                fixed.append((os.path.basename(path), rel))
+        else:
+            kept += 1
+    print('[refresh] 출시예정 재검사: 유지 %d건 / 출시일 경과로 해제 %d건 / 날짜없음 %d건'
+          % (kept, len(fixed), nodate))
+    for fn, rel in fixed:
+        print('   → 해제: %s (출시일 %s ≤ 오늘 %s)' % (fn, rel, today_str))
+    return len(fixed)
+
+
 def mark_games(cands, cc):
     """게임 여부를 후보마다 확정한다.
     Apple 은 lookup 의 영문 primaryGenreName(스토어프론트와 무관하게 영어로 온다)으로,
     조회 실패 시에만 현지어 카테고리 라벨로 판정한다."""
     for c in cands:
         if c.get('store') == 'apple':
-            d = _CACHE.get('apple:%s:%s' % (c['ident'], cc)) or {}
+            d = apple_detail_cached(c['ident'], cc)
             if d.get('primaryGenreName'):
                 c['game'] = 'yes' if d['primaryGenreName'] == 'Games' else 'no'
                 continue
@@ -645,9 +895,7 @@ def rank_candidates(cands, seen, pub_urls, pub_ids, today):
 
     def is_upcoming(c):
         # Play = 상세에서 확인한 사전등록 플래그 / Apple = 출시일이 미래인지
-        if is_play(c):
-            return bool(c.get('upcoming'))
-        return bool(c.get('released') and c['released'].replace(tzinfo=None) > today)
+        return is_upcoming_cand(c, today)
 
     play_game_up = [c for c in fresh if is_play(c) and is_game(c) and is_upcoming(c)]
     play_app_up = [c for c in fresh if is_play(c) and not is_game(c) and is_upcoming(c)]
@@ -1358,10 +1606,18 @@ def main():
     ap.add_argument('--no-play', action='store_true', help='구글플레이 소스 제외')
     ap.add_argument('--no-lang-gate', action='store_true',
                     help='지원 언어 검증 끄기(비상용: 후보가 없을 때만 사용)')
+    ap.add_argument('--refresh-upcoming', action='store_true',
+                    help='발행된 글의 "출시 예정" 딱지만 재검사하고 종료')
     ap.add_argument('--base', default=BASE)
     args = ap.parse_args()
 
     base = os.path.abspath(args.base)
+
+    if args.refresh_upcoming:
+        # 본 실행(main)이 UTC 기준 오늘을 쓰므로 단독 실행도 같은 기준으로 맞춘다.
+        refresh_upcoming_flags(
+            base, datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d'))
+        return 0
     game_dir = os.path.join(base, 'content', 'game')
     assets_dir = os.path.join(base, 'assets', 'img', 'apps')
     seen_file = os.path.join(base, 'content', 'app_radar_seen.json')
@@ -1421,6 +1677,39 @@ def main():
           % (today_str, target,
              ', '.join('%s×%d' % (r[0], order.count(r)) for r in wanted) if order else '0건'))
 
+    # 출시일이 지나 '출시 예정'이 아닌데 딱지가 남아 있는 글을 먼저 정리한다.
+    refresh_upcoming_flags(base, today_str)
+
+    # Apple 후보는 전 스토어프론트에서 한 번만 모아 전 언어가 공유한다 →
+    # 어느 나라 스토어에 떴든 출시예정 앱을 모든 언어가 볼 수 있다.
+    apple_pool = collect_apple_all()
+
+    # 출시예정 시드(로이 팁·사전 조사한 게임) + Apple 검색 자동 발굴.
+    # — Apple 신작 RSS 에는 사전예약 앱이 안 들어있어 시드/검색으로 따로 긁어온다.
+    seeds_path = os.path.join(base, 'content', 'app_upcoming_seeds.json')
+    seed_cands = candidates_from_seeds(seeds_path, today)
+    search_terms = (load_json(seeds_path, {}).get('search_terms') or [])
+    search_cands = apple_search_upcoming(search_terms, today) if search_terms else []
+    extra = seed_cands + search_cands
+    if extra:
+        print('   시드·검색 출시예정 후보 %d개 (시드 %d / 검색 %d): %s'
+              % (len(extra), len(seed_cands), len(search_cands),
+                 ', '.join((c.get('name') or c['ident'])[:18] for c in extra)))
+    apple_pool = apple_pool + extra
+
+    # 출시예정 백로그(어제·지난 실행에서 발견해 둔 것)를 오늘 후보에 되살린다.
+    backlog_path = os.path.join(base, 'content', 'app_upcoming.json')
+    backlog = load_upcoming_backlog(backlog_path, today_str)
+    have = {c['key'] for c in apple_pool}
+    revived = [b for b in backlog if b['key'] not in have]
+    if revived:
+        print('   출시예정 백로그 %d개 복원: %s'
+              % (len(revived), ', '.join(b.get('name', '')[:20] for b in revived)))
+        apple_pool.extend(backlog_to_cands(revived))
+    apple_lookup_many([c['ident'] for c in apple_pool], 'us')
+    n_up = sum(1 for c in apple_pool if is_upcoming_cand(c, today))
+    print('   그중 출시예정(미래 출시일) %d개' % n_up)
+
     done = 0
     tried = 0
     reserved = set()   # 이번 실행에서 이미 뽑은 앱 (다른 언어가 같은 앱을 또 쓰지 않도록)
@@ -1431,16 +1720,16 @@ def main():
         outdir = os.path.join(game_dir, lang)
         os.makedirs(outdir, exist_ok=True)
         print('\n[%s] apple=%s / play=%s-%s' % (lang, cc, gl, hl))
-        cands = collect(cc, hl, gl, use_play=not args.no_play)
+        cands = collect(cc, hl, gl, use_play=not args.no_play, apple_pool=apple_pool)
         print('   후보 %d개' % len(cands))
 
-        # Apple 은 후보 전체를 배치로 한 번에 조회해 캐시를 채운다 →
-        # 지원 언어 검증과 게임 판정을 후보당 HTTP 1회가 아니라 언어권당 2~3회로 끝낸다.
         # (반드시 순위 계산보다 먼저: 게임 여부가 우선순위를 결정한다)
         cands = expand_play(cands, hl, gl)   # Play 고정 목록 우회 → 관련 앱으로 풀 확장
-        apple_lookup_many([c['ident'] for c in cands if c['store'] == 'apple'], cc)
         mark_games(cands, cc)
         mark_upcoming(cands)   # Play 사전등록 판별 → 반드시 순위 계산보다 먼저
+        # 발견한 출시예정은 즉시 백로그에 저장 — 피드에서 사라져도 며칠간 계속 쓴다.
+        if lang == order[0][0]:
+            backlog = merge_upcoming_backlog(backlog_path, cands, today, today_str)
 
         rank = rank_candidates(cands, seen | reserved, pub_urls, pub_ids, today)
         if not rank:
@@ -1460,9 +1749,14 @@ def main():
                     continue
             m, up, iu, dn = build_material(cand, cc, hl, gl, today)
             if not m:
-                print('   제외(자료 없음): %s' % cname)
-                seen.add(cand['key'])
-                save_seen(seen_file, seen)
+                # 출시예정 후보는 seen 에 넣지 않는다. 한 번 조회가 실패했다고
+                # 영원히 제외하면 출시예정 큐가 텅 빈다(실측: Tideward 가 이렇게 소실됨).
+                if is_upcoming_cand(cand, today):
+                    print('   제외(자료 없음·출시예정은 보류): %s' % cname)
+                else:
+                    seen.add(cand['key'])
+                    save_seen(seen_file, seen)
+                    print('   제외(자료 없음): %s' % cname)
                 continue
             item, mat, upcoming, img_url, disp_name = cand, m, up, iu, dn
             break
@@ -1470,9 +1764,15 @@ def main():
         if not item:
             print('   %s 언어를 지원하는 신규 후보 없음 → 다음 언어' % lang)
             continue
-        reserved.add(item['key'])
-        print('   선정: %s (%s / %s)' % (item.get('name'), item['store'],
-                                          item.get('_tier', '')))
+        # 출시예정 앱은 예약하지 않는다 → 같은 출시예정 앱을 지원하는 **모든 언어**가 쓴다.
+        # (로이 지시 2026-10-04: "출시예정 앱을 우선순위로" — 일반 신작이 밀려 나가야 한다)
+        if upcoming:
+            print('   선정: %s (%s / %s) ← 출시예정, 전 언어 공용'
+                  % (item.get('name'), item['store'], item.get('_tier', '')))
+        else:
+            reserved.add(item['key'])
+            print('   선정: %s (%s / %s)' % (item.get('name'), item['store'],
+                                              item.get('_tier', '')))
         if args.dry:
             print('   출시예정=%s / 자료 %d자 / 표시명=%s' % (upcoming, len(mat), disp_name))
             print('\n'.join('   ' + l for l in mat.split('\n')[:10]))

@@ -14,7 +14,7 @@ price: "Free"
 developer: "Rana Muhammad Anas"
 genre: "Games, Simulation, Sports"
 kind: "game"
-upcoming: "true"
+upcoming: false
 ---
 
 ![WFL - World Football Legends](/assets/img/apps/app-fb2919c537.jpg)

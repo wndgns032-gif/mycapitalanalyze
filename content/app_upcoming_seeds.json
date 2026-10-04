@@ -1,0 +1,23 @@
+{
+  "_comment": "출시예정(사전예약) 게임·앱 시드. 로이가 팁을 주면 여기에 추가한다. 매 실행마다 각 항목을 Apple lookup / Play 상세로 확인해 아직 출시 전이면 최우선 후보로 넣는다. 출시일이 지나면 자동으로 후보에서 빠진다(백로그가 폐기). Apple id 는 그 스토어프론트(apple_cc)에 등록된 것.",
+  "games": [
+    {
+      "name": "무한대 / Ananta",
+      "apple_id": "6776533126",
+      "apple_cc": "kr",
+      "play_pkg": "com.netease.anantana",
+      "note": "넷이즈 오픈월드 RPG. 2027-01-15 글로벌 출시 예정. EN+ZH 지원."
+    },
+    {
+      "name": "바람의흔적 / Windtrace",
+      "apple_id": "6779527511",
+      "apple_cc": "kr",
+      "play_pkg": "",
+      "note": "2027-02-01 출시 예정. EN 지원."
+    }
+  ],
+  "search_terms": [
+    "ananta", "무한대", "바람의흔적", "windtrace",
+    "사전예약", "pre-register", "출시예정"
+  ]
+}

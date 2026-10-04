@@ -14,7 +14,7 @@ price: "Free"
 developer: "Onur Demircan"
 genre: "Games, Casual, Entertainment, Puzzle"
 kind: "game"
-upcoming: "true"
+upcoming: false
 ---
 
 ![MindSharp Challenges](/assets/img/apps/app-51855743d5.jpg)

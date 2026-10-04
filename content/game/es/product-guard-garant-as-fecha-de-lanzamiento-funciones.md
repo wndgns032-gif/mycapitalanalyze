@@ -13,7 +13,7 @@ price: "Gratis"
 developer: "Shabab H Siddique"
 genre: "Utilidades, Productividad"
 kind: "app"
-upcoming: "true"
+upcoming: false
 ---
 
 ![Product Guard Garantías](/assets/img/apps/app-d8de93977c.jpg)

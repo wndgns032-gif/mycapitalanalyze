@@ -62,6 +62,10 @@ def main():
     run('fix_length.py')
     run('app_radar.py')
 
+    # 5-b. '출시 예정' 딱지 재검사 — 발행 시점엔 미래였던 출시일이 지나면 딱지를 떼야 한다.
+    # (안 지우면 이미 출시된 앱이 계속 '출시 예정'으로 남는다 — 로이 지적 2026-10-04)
+    run('app_radar.py', ['--refresh-upcoming'])
+
     # 6. HTML 빌드 (레이더 글까지 포함해야 하므로 레이더 다음에 둔다)
     if run('build.py') != 0:
         revert_build_outputs()
