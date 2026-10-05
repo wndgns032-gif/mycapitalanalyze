@@ -14,7 +14,8 @@ price: "Free"
 developer: "Deviloper Limited"
 genre: "GAME_STRATEGY"
 kind: "game"
-upcoming: "true"
+sourceCollection: "preregistration"
+upcoming: true
 ---
 
 ![Shadow Dungeon: Roguelike Game – Applications sur Google Play](/assets/img/apps/app-9ee9c2c706.jpg)

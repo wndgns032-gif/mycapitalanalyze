@@ -14,7 +14,7 @@ price: "Free"
 developer: "NC Japan K.K."
 genre: "GAME_ROLE_PLAYING"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![リネージュM - 本格スマホMMORPG](/assets/img/apps/app-7ec4b40f43.jpg)

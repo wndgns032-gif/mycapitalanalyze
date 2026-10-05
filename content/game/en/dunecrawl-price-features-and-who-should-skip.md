@@ -14,7 +14,8 @@ price: "Free"
 developer: "Alientrap Games Inc"
 genre: "GAME_ACTION"
 kind: "game"
-upcoming: "true"
+sourceCollection: "preregistration"
+upcoming: true
 ---
 
 ![DuneCrawl](/assets/img/apps/app-a1dc6bbbcd.jpg)

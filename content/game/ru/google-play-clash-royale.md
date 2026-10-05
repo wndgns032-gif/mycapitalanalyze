@@ -14,7 +14,7 @@ price: "Free"
 developer: "Supercell"
 genre: "GAME_STRATEGY"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Приложения в Google Play – Clash Royale](/assets/img/apps/app-fe5e75f645.jpg)

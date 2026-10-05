@@ -14,7 +14,8 @@ price: "Free"
 developer: "Funtaptic"
 genre: "GAME_ARCADE"
 kind: "game"
-upcoming: "true"
+sourceCollection: "preregistration"
+upcoming: true
 ---
 
 ![Space Rock Breaker - Aplikasi di Google Play](/assets/img/apps/app-91cc1e163a.jpg)

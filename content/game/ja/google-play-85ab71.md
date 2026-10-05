@@ -7,14 +7,14 @@ date: "2026-10-04"
 sourceName: "Google Play"
 sourceUrl: "https://play.google.com/store/apps/details?id=com.netease.anantana"
 lang: "ja"
-status: "upcoming"
+status: "released"
 image: "/assets/img/apps/app-85ab715062.jpg"
 releaseDate: "2027-01-15"
 price: "Free"
 developer: "Exptional Global"
 genre: "GAME_ROLE_PLAYING"
 kind: "game"
-upcoming: "true"
+upcoming: false
 ---
 
 ![無限大 - Google Play のアプリ](/assets/img/apps/app-85ab715062.jpg)

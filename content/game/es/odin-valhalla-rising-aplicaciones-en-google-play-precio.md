@@ -14,7 +14,7 @@ price: "Free"
 developer: "Kakao Games Corp."
 genre: "GAME_ROLE_PLAYING"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![ODIN:VALHALLA RISING - Aplicaciones en Google Play](/assets/img/apps/app-efd37a4a95.jpg)

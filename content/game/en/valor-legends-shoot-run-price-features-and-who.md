@@ -14,7 +14,7 @@ price: "Free"
 developer: "Century Games PTE. LTD."
 genre: "GAME_ROLE_PLAYING"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Valor Legends: Shoot &amp; Run](/assets/img/apps/app-3113de3878.jpg)

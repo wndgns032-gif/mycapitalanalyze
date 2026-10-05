@@ -14,7 +14,7 @@ price: "Free"
 developer: "Supercell"
 genre: "GAME_STRATEGY"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Clash of Clans - Aplikasi di Google Play](/assets/img/apps/app-95879f6b1e.jpg)

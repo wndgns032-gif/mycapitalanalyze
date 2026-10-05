@@ -14,7 +14,8 @@ price: "Free"
 developer: "Bandai Namco Entertainment Inc."
 genre: "GAME_ROLE_PLAYING"
 kind: "game"
-upcoming: "true"
+sourceCollection: "preregistration"
+upcoming: true
 ---
 
 ![BLEACH Mirrors High【ミラハイ】 - Google Play のアプリ](/assets/img/apps/app-1225299806.jpg)

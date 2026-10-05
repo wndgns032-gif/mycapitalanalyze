@@ -14,7 +14,8 @@ price: "Free"
 developer: "Raw Fury"
 genre: "GAME_ACTION"
 kind: "game"
-upcoming: "true"
+sourceCollection: "preregistration"
+upcoming: true
 ---
 
 ![Dome Keeper - Aplicaciones en Google Play](/assets/img/apps/app-d68d917b85.jpg)

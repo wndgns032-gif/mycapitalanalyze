@@ -14,7 +14,7 @@ price: "Free"
 developer: "TG Inc."
 genre: "GAME_STRATEGY"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![إيفوني: عودة الملك - التطبيقات على Google Play](/assets/img/apps/app-bfcd7a8a1a.jpg)

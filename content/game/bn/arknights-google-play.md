@@ -7,14 +7,14 @@ date: "2026-09-30"
 sourceName: "Google Play"
 sourceUrl: "https://play.google.com/store/apps/details?id=com.YoStarEN.Arknights&hl=bn&gl=bd"
 lang: "bn"
-status: "upcoming"
+status: "released"
 image: "/assets/img/apps/app-d432296d37.jpg"
 releaseDate: ""
 price: "Free"
 developer: "Yostar Limited."
 genre: "GAME_STRATEGY"
 kind: "game"
-upcoming: true
+upcoming: false
 ---
 ![Arknights - Google Play তে অ্যাপ](/assets/img/apps/app-d432296d37.jpg)
 

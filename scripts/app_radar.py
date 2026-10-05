@@ -442,15 +442,15 @@ PLAY_DETAIL_RE = re.compile(r'/store/apps/details\?id=([A-Za-z][A-Za-z0-9_.]+)')
 
 
 def play_pkg_ids(html_text, limit=24):
-    """컬렉션 페이지에서 패키지 ID 목록을 뽑는다.
+    """컬렉션 페이지에서 패키지 ID 목록을 뽑는다 — 본문 상세 링크만 사용.
 
-    1순위 = 본문의 실제 상세 링크 `/store/apps/details?id=...` (2026-10-04 실측:
-      이게 컬렉션 페이지에서 봇이 얻을 수 있는 유일하게 진짜인 목록. 언어별로 다르게 나온다)
-    2순위 = 예전 JSON 블록 방식 — WIZ_global_data 전역 상수까지 긁어와서
-      언어와 무관한 가짜 후보를 만들었으므로, 상세 링크를 못 찾았을 때의 보조 수단으로만 쓴다.
+    ⚠️ 2026-10-05 실측: 예전처럼 JSON 블록을 폴백으로 돌리면 window.WIZ_global_data
+      전역 상수("fXOvac" 18개)까지 긁어온다. 실측 사고 — 상세링크 20개를 찾은 뒤에도
+      limit 24를 채우려 폴백이 돌아 Clash Royale·Clash of Clans 같은 출시 완료작이
+      섞여 '출시예정'으로 복구되는 일이 있었다.
+      → 폴백 완전 제거. 상세 링크가 0개면 그 컬렉션은 빈 것으로 본다.
     """
     out, seen = [], set()
-    # 1) 실제 상세 링크 — 진짜 목록
     for tok in PLAY_DETAIL_RE.findall(html_text or ''):
         if tok in seen or tok.count('.') < 1:
             continue
@@ -460,28 +460,6 @@ def play_pkg_ids(html_text, limit=24):
         out.append(tok)
         if len(out) >= limit:
             return out
-    if out:
-        return out
-    # 2) 폴백: JSON 블록(전역 상수 포함 위험 — 그래도 아무것도 없을 때만)
-    for block in PKG_BLOCK_RE.findall(html_text or ''):
-        for tok in re.findall(r'"([^"]+)"', block):
-            tok = tok.strip()
-            if not PKG_TOKEN_RE.match(tok) or tok.count('.') < 2:
-                continue
-            if len(tok) > 64 or len(tok) < 6:
-                continue
-            low = tok.lower()
-            if any(b in low for b in BAD_SEGMENTS):
-                continue
-            if low.endswith(('.png', '.jpg', '.jpeg', '.js', '.css', '.svg', '.html',
-                             '.json', '.webp', '.gif')):
-                continue
-            if tok in seen:
-                continue
-            seen.add(tok)
-            out.append(tok)
-            if len(out) >= limit:
-                return out
     return out
 
 
@@ -946,9 +924,17 @@ def refresh_upcoming_flags(base, today_str):
     발행 시점엔 미래였던 출시일이 시간이 지나면 지나간 날짜가 된다.
     그대로 두면 이미 출시된 앱에 '출시 예정' 이 붙어 떠다닌다(로이 지적 2026-10-04).
     → 출시일이 오늘보다 같거나 앞서면 upcoming 을 false 로 되돌린다.
+
+    ⚠️ 2026-10-05 실측: Play 글의 releaseDate 는 출시일이 아니라 **최종 업데이트
+      날짜**가 박힌다(상세의 LAST UPDATE). 그래서 사전등록 컬렉션 출신 글
+      (예: 어바타)이 과거 날짜 때문에 배지를 잃었다.
+      → **Apple 글만** 날짜로 재판정한다. Play 글은 사전등록 컬렉션에서 수집한
+        출처(_src) 기반이므로 날짜로 해제하지 않는다 — 컬렉션에서 내려간 것이
+        진짜 출시 신호다(발행 시점에 컬렉션에 있었는지는 frontmatter 로 알 수 없어
+        보수적으로 유지한다. 잘못 유지되는 비용 < 잘못 해제되는 비용).
     """
     game_dir = os.path.join(base, 'content', 'game')
-    fixed, kept, nodate = [], 0, 0
+    fixed, kept, nodate, skipped = [], 0, 0, 0
     for path in sorted(glob.glob(os.path.join(game_dir, '*', '*.md'))):
         try:
             raw = open(path, encoding='utf-8').read()
@@ -965,6 +951,10 @@ def refresh_upcoming_flags(base, today_str):
                 fmv[k.strip()] = v.strip().strip('"')
         if str(fmv.get('upcoming', '')).lower() not in ('1', 'true', 'yes', 'y'):
             continue
+        src = (fmv.get('sourceUrl') or '')
+        if 'play.google.com' in src:
+            skipped += 1    # Play 글은 출시예정이 출처 기반이므로 날짜로 해제하지 않는다
+            continue
         rel = (fmv.get('releaseDate') or '').strip()[:10]
         if not rel:
             nodate += 1
@@ -977,8 +967,9 @@ def refresh_upcoming_flags(base, today_str):
                 fixed.append((os.path.basename(path), rel))
         else:
             kept += 1
-    print('[refresh] 출시예정 재검사: 유지 %d건 / 출시일 경과로 해제 %d건 / 날짜없음 %d건'
-          % (kept, len(fixed), nodate))
+    print('[refresh] 출시예정 재검사: 유지 %d건 / 출시일 경과로 해제 %d건 / '
+          '날짜없음 %d건 / Play(출처기반) 유지 %d건'
+          % (kept, len(fixed), nodate, skipped))
     for fn, rel in fixed:
         print('   → 해제: %s (출시일 %s ≤ 오늘 %s)' % (fn, rel, today_str))
     return len(fixed)
@@ -2091,6 +2082,7 @@ def main():
               'developer: "%s"\n'
               'genre: "%s"\n'
               'kind: "%s"\n'
+              'sourceCollection: "%s"\n'
               'upcoming: "%s"\n'
               '---\n\n') % (slug, title, desc,
                             datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d'),
@@ -2102,6 +2094,9 @@ def main():
                             (m_dev.group(1).strip().replace('"', "'") if m_dev else ''),
                             (m_gen.group(1).strip().replace('"', "'") if m_gen else ''),
                             kind_of(m_gen.group(1) if m_gen else '', item.get('category') or ''),
+                            # 출처를 영구 기록 — 사전등록 컬렉션은 롤링이라 "지금 목록에
+                            # 있나"로 과거 글을 재판정하면 방금 발행한 글까지 틀어진다.
+                            (item.get('_src') or ''),
                             'false' if released else 'true')
         open(os.path.join(outdir, slug + '.md'), 'w', encoding='utf-8').write(
             fm + img_md + body + '\n')

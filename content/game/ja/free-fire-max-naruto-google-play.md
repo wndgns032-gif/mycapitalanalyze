@@ -14,7 +14,7 @@ price: "Free"
 developer: "GARENA INTERNATIONAL I"
 genre: "GAME_ACTION"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Free Fire MAX x NARUTO - Google Play のアプリ](/assets/img/apps/app-c29ad16feb.jpg)

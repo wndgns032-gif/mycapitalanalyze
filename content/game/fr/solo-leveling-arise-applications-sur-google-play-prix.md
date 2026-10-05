@@ -14,7 +14,7 @@ price: "Free"
 developer: "Netmarble"
 genre: "GAME_ACTION"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Solo Leveling:Arise – Applications sur Google Play](/assets/img/apps/app-2e20002931.jpg)

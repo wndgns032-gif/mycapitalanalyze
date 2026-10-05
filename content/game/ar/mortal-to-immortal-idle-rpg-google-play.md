@@ -14,7 +14,8 @@ price: "Free"
 developer: "Acingfun"
 genre: "GAME_CASUAL"
 kind: "game"
-upcoming: "true"
+sourceCollection: "preregistration"
+upcoming: true
 ---
 
 ![Mortal to Immortal: Idle RPG - التطبيقات على Google Play](/assets/img/apps/app-379e81aab4.jpg)

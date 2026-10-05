@@ -14,7 +14,7 @@ price: "Free"
 developer: "Pocketpair Publishing"
 genre: "GAME_ADVENTURE"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Truckful - Google Play पर ऐप्लिकेशन](/assets/img/apps/app-a128ebb00d.jpg)

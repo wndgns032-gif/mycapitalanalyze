@@ -14,7 +14,8 @@ price: "Free"
 developer: "Purplecow games"
 genre: "GAME_STRATEGY"
 kind: "game"
-upcoming: "true"
+sourceCollection: "preregistration"
+upcoming: true
 ---
 
 ![Mad Ducks: Roguelike Defense – Apps bei Google Play](/assets/img/apps/app-1012893207.jpg)

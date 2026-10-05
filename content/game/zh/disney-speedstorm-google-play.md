@@ -14,7 +14,7 @@ price: "Free"
 developer: "Gameloft SE"
 genre: "GAME_RACING"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![迪士尼无限飞车 - Disney Speedstorm - Google Play 上的应用](/assets/img/apps/app-c8767c48dd.jpg)

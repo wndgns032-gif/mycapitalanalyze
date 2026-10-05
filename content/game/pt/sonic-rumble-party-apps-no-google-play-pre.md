@@ -14,7 +14,7 @@ price: "Free"
 developer: "SEGA CORPORATION"
 genre: "GAME_ACTION"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Sonic Rumble Party – Apps no Google Play](/assets/img/apps/app-40a9669ce3.jpg)

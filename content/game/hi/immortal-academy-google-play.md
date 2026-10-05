@@ -14,7 +14,8 @@ price: "Free"
 developer: "FYR Game"
 genre: "GAME_ROLE_PLAYING"
 kind: "game"
-upcoming: "true"
+sourceCollection: "preregistration"
+upcoming: true
 ---
 
 ![Immortal Academy - Google Play पर ऐप्लिकेशन](/assets/img/apps/app-382309042c.jpg)

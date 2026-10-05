@@ -9,12 +9,12 @@ sourceUrl: "https://play.google.com/store/apps/details?id=com.ArrugaCorp.DarkMer
 lang: "ko"
 status: "upcoming"
 image: "/assets/img/apps/app-6cab4f2956.jpg"
-releaseDate: "2026-09-18"
+releaseDate: ""
 price: "Free"
 developer: "ArruGa Corp."
 genre: "GAME_PUZZLE"
 kind: "game"
-upcoming: false
+upcoming: true
 ---
 
 ![Dark Merge Farm](/assets/img/apps/app-6cab4f2956.jpg)

@@ -9,12 +9,12 @@ sourceUrl: "https://play.google.com/store/apps/details?id=com.devsisters.cba&hl=
 lang: "ko"
 status: "released"
 image: "/assets/img/apps/app-be5bad4913.jpg"
-releaseDate: "2026-09-07"
+releaseDate: ""
 price: "Free"
 developer: "Devsisters Corporation"
 genre: "GAME_ACTION"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![쿠키런: 모험의 탑](/assets/img/apps/app-be5bad4913.jpg)

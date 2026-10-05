@@ -9,12 +9,13 @@ sourceUrl: "https://play.google.com/store/apps/details?id=com.angames.android.go
 lang: "ko"
 status: "upcoming"
 image: "/assets/img/apps/app-7d277f29a2.jpg"
-releaseDate: "2026-09-30"
+releaseDate: ""
 price: "Free"
 developer: "Tilting Point"
 genre: "GAME_STRATEGY"
 kind: "game"
-upcoming: false
+sourceCollection: "preregistration"
+upcoming: true
 ---
 
 ![아바타: 충돌하는 세계](/assets/img/apps/app-7d277f29a2.jpg)

@@ -14,7 +14,8 @@ price: "Free"
 developer: "HYKICK"
 genre: "GAME_STRATEGY"
 kind: "game"
-upcoming: "true"
+sourceCollection: "preregistration"
+upcoming: true
 ---
 
 ![Приложения в Google Play – MewAge: Cat Tower Defense](/assets/img/apps/app-4a50ae9786.jpg)

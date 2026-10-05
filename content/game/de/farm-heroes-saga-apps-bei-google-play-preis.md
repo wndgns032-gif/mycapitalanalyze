@@ -14,7 +14,7 @@ price: "Free"
 developer: "King"
 genre: "GAME_CASUAL"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Farm Heroes Saga – Apps bei Google Play](/assets/img/apps/app-72d31107bd.jpg)

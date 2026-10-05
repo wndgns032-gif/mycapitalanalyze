@@ -14,7 +14,7 @@ price: "Free"
 developer: "Seasun Games Pte. Ltd."
 genre: "GAME_ACTION"
 kind: "game"
-upcoming: "false"
+upcoming: false
 ---
 
 ![Play Mecha BREAK on PC | Download Now - Google Play Store](/assets/img/apps/app-36bbbab0de.jpg)

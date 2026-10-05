@@ -14,7 +14,8 @@ price: "Free"
 developer: "Feral Interactive"
 genre: "GAME_ACTION"
 kind: "game"
-upcoming: "true"
+sourceCollection: "preregistration"
+upcoming: true
 ---
 
 ![Saints Row: The Third – Apps no Google Play](/assets/img/apps/app-09ec255ae2.jpg)
