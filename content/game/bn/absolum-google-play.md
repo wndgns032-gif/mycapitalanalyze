@@ -7,14 +7,14 @@ date: "2026-10-03"
 sourceName: "Google Play"
 sourceUrl: "https://play.google.com/store/apps/details?id=com.playdigious.absolum&hl=bn&gl=bd"
 lang: "bn"
-status: "released"
+status: "upcoming"
 image: "/assets/img/apps/app-37682602ea.jpg"
 releaseDate: ""
 price: "Free"
 developer: "Playdigious"
 genre: "GAME_ACTION"
 kind: "game"
-upcoming: "false"
+upcoming: true
 ---
 
 ![Absolum - Google Play তে অ্যাপ](/assets/img/apps/app-37682602ea.jpg)

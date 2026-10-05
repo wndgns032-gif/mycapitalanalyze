@@ -7,14 +7,14 @@ date: "2026-10-01"
 sourceName: "Google Play"
 sourceUrl: "https://play.google.com/store/apps/details?id=com.YoStarJP.Arknights&hl=bn&gl=bd"
 lang: "bn"
-status: "released"
+status: "upcoming"
 image: "/assets/img/apps/app-2b4f04573a.jpg"
 releaseDate: ""
 price: "Free"
 developer: "Yostar, Inc."
 genre: "GAME_ADVENTURE"
 kind: "game"
-upcoming: "false"
+upcoming: true
 ---
 
 ![アークナイツ - Google Play তে অ্যাপ](/assets/img/apps/app-2b4f04573a.jpg)

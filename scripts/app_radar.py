@@ -125,7 +125,7 @@ MAX_TRY = 40
 #   12개로 두면 언어당 1개(=13개 언어 거의 전부)까지 허용, 후보 소진 시 자연히 일반작으로 내려간다.
 #   ⚠️ 전 언어가 같은 앱이 되는 것을 막는 것은 이 값이 아니라 '언어별 후보 풀이 다르다'는 사실이다
 #      (Apple 피드가 스토어프론트별로 다르고, Play 관련앱 확장도 hl/gl 별로 다르다).
-UPCOMING_SHARE_LANGS = 12
+UPCOMING_SHARE_LANGS = 13   # 언어 수와 동일 — 모든 언어가 출시예정을 받을 수 있게
 
 # 구글플레이 사전등록(출시예정) 표기 — 언어권별 버튼/배지 문구
 PREORDER_MARKERS = [
@@ -279,6 +279,11 @@ APPLE_CC_FALLBACK = {
     'bd': 'in',   # 방글라데시 → 인도 (벵골어권 인접, RSS 정상)
 }
 
+# Play 컬렉션도 스토어프론트가 아예 안 주는 지역이 있다(실측: gl=bd 는 사전등록 목록 0개).
+PLAY_GL_FALLBACK = {
+    'bd': 'in',
+}
+
 
 def parse_iso(s):
     """ISO 문자열 → tz 없는(naive) UTC datetime. 비교 시 offset 충돌을 없애기 위함."""
@@ -410,18 +415,54 @@ def apple_reviews(app_id, cc, limit=3):
 
 # ---------------------------------------------------------------- 구글플레이
 
+# Play 컬렉션 슬러그 — 어느 컬렉션에 실렸는지가 곧 '출시예정' 판정의 근거다.
+#   2026-10-04 실측: 예전에 쓰던 topselling_new_free(_game) 은 봇에게 앱 상세 링크를
+#   **0개** 준다(빈 껍데기). 거기서 뽑히던 22개는 본문이 아니라 window.WIZ_global_data
+#   전역 상수("fXOvac" 18개)여서 hl/gl 과 무관하게 전부 동일했다 → 후보가 매일 똑같았다.
+#   → 실제로 상세 링크를 주는 아래 두 컬렉션으로 교체한다(로이 제안: 소스를 먼저 넓힌다).
+PLAY_COLLECTIONS = [
+    # 사전등록 전용 — 이 목록에 실려 있다는 것 자체가 '아직 미출시'의 출처 기반 증거
+    ('promotion_3000000d51_pre_registration_games', 'Game', 'upcoming'),
+    # 얼리 액세스 — 정식 출시 전이지만 설치는 가능. 별도 취급(출시예정으로 보지 않음)
+    ('promotion_30029b2_earlyaccessgames', 'Game', None),
+]
+
+
 def play_collections(hl, gl):
+    """Play 후보 소스 목록 → (url, category, upcoming_hint)"""
     return [
-        ('https://play.google.com/store/apps/collection/topselling_new_free?hl=%s&gl=%s'
-         % (hl, gl), 'App'),
-        ('https://play.google.com/store/apps/collection/topselling_new_free_game?hl=%s&gl=%s'
-         % (hl, gl), 'Game'),
+        ('https://play.google.com/store/apps/collection/%s?hl=%s&gl=%s'
+         % (slug, hl, gl), cat, hint)
+        for slug, cat, hint in PLAY_COLLECTIONS
     ]
 
 
+# 상세 페이지 링크에서 패키지를 뽑는 정규식 — 컬렉션 페이지 본문에 실제로 존재하는 유일한 신호
+PLAY_DETAIL_RE = re.compile(r'/store/apps/details\?id=([A-Za-z][A-Za-z0-9_.]+)')
+
+
 def play_pkg_ids(html_text, limit=24):
-    """클러스터 페이지에서 패키지 ID 목록을 뽑는다 (JS 렌더 전 JSON 블록)."""
+    """컬렉션 페이지에서 패키지 ID 목록을 뽑는다.
+
+    1순위 = 본문의 실제 상세 링크 `/store/apps/details?id=...` (2026-10-04 실측:
+      이게 컬렉션 페이지에서 봇이 얻을 수 있는 유일하게 진짜인 목록. 언어별로 다르게 나온다)
+    2순위 = 예전 JSON 블록 방식 — WIZ_global_data 전역 상수까지 긁어와서
+      언어와 무관한 가짜 후보를 만들었으므로, 상세 링크를 못 찾았을 때의 보조 수단으로만 쓴다.
+    """
     out, seen = [], set()
+    # 1) 실제 상세 링크 — 진짜 목록
+    for tok in PLAY_DETAIL_RE.findall(html_text or ''):
+        if tok in seen or tok.count('.') < 1:
+            continue
+        if len(tok) > 64:
+            continue
+        seen.add(tok)
+        out.append(tok)
+        if len(out) >= limit:
+            return out
+    if out:
+        return out
+    # 2) 폴백: JSON 블록(전역 상수 포함 위험 — 그래도 아무것도 없을 때만)
     for block in PKG_BLOCK_RE.findall(html_text or ''):
         for tok in re.findall(r'"([^"]+)"', block):
             tok = tok.strip()
@@ -628,17 +669,33 @@ def collect(cc, hl, gl, use_play=True, apple_pool=None):
     else:
         pool.extend(apple_pool)
     if use_play:
-        for url, kind in play_collections(hl, gl):
-            try:
-                ids = play_pkg_ids(get_text(url))
-            except Exception as ex:
-                print('   [play %s] 수집 실패: %s' % (gl, str(ex)[:50]))
-                continue
-            for pkg in ids:
-                pool.append({'store': 'play', 'key': 'play:%s' % pkg, 'ident': pkg,
-                             'name': pkg, 'category': kind, 'released': None,
-                             'url': 'https://play.google.com/store/apps/details?id=%s&hl=%s&gl=%s'
-                                    % (pkg, hl, gl)})
+        got_any = False
+        for cand in ([gl] + ([PLAY_GL_FALLBACK[gl]] if gl in PLAY_GL_FALLBACK else [])):
+            if got_any:
+                break
+            for url, kind, hint in play_collections(hl, cand):
+                try:
+                    ids = play_pkg_ids(get_text(url))
+                except Exception as ex:
+                    print('   [play %s] 수집 실패: %s' % (cand, str(ex)[:50]))
+                    continue
+                if not ids:
+                    continue
+                got_any = True
+                for pkg in ids:
+                    # hint == 'upcoming' → 사전등록 컬렉션에서 왔다는 것 자체가 출처 기반 증거.
+                    # 상세 페이지를 뒤져 추측하지 않는다(그 방식은 오탐으로 폐기).
+                    item = {
+                        'store': 'play', 'key': 'play:%s' % pkg, 'ident': pkg,
+                        'name': pkg, 'category': kind, 'released': None,
+                        'url': ('https://play.google.com/store/apps/details?id=%s&hl=%s&gl=%s'
+                                % (pkg, hl, cand)),
+                    }
+                    if hint:
+                        item['upcoming'] = True
+                        item['_src'] = hint
+                    pool.append(item)
+                time.sleep(0.4)   # 연속 요청 시 429 가 났다(실측 2026-10-04)
     uniq, seen = [], set()
     for it in pool:
         if it['key'] in seen:
@@ -704,12 +761,21 @@ def mark_upcoming(cands):
     collect() 는 Play 후보를 상세 조회 없이 넣기 때문에 released 가 None 이다.
     그대로 두면 rank 의 is_upcoming 이 Play 후보를 영원히 False 로 처리해서
     '출시 예정' 큐가 비고 신작만 발행된다 (로이 지적 2026-10-03).
+
+    판정 우선순위 (2026-10-04 개편 — 로이 제안 "소스에서 먼저 뽑는다"):
+      1) 출처 기반: 사전등록 전용 컬렉션에서 수집된 후보('_src' 플래그)는 확정 True.
+         상세 페이지를 뒤져 추측하지 않는다 — 그 방식은 오탐 때문에 폐기했다.
+      2) 그 외에는 상세의 명시적 마커(play_upcoming)만 참고한다.
     """
     hit = 0
     for c in cands:
-        if c.get('store') == 'play':
-            c['upcoming'] = play_upcoming(c['ident'])
-            hit += 1 if c['upcoming'] else 0
+        if c.get('store') != 'play':
+            continue
+        if c.get('upcoming') and c.get('_src'):
+            hit += 1
+            continue          # 출처가 이미 증명 → 덮어쓰지 않는다
+        c['upcoming'] = play_upcoming(c['ident'])
+        hit += 1 if c['upcoming'] else 0
     print('   Play 사전등록 확인 %d개 중 %d개 출시예정' % (
         sum(1 for c in cands if c.get('store') == 'play'), hit))
     return cands
@@ -1123,9 +1189,15 @@ def build_material(item, cc, hl, gl, today):
     #   순위 계산(mark_upcoming → 언어무관 'en/us' 기준)과 결과가 어긋난다.
     #   실측 사례: Racing Master 가 '출시예정게임(Play)' 티어로 뽑혔는데 글은 released 로 발행.
     #   원인 = Install 버튼 유무가 hl/gl 마다 달라서 en/us 는 사전예약, 현지 스토어는 출시로 나옴.
-    #   → 판정은 **항상 언어무관 정본 play_upcoming()** 으로 통일하고,
-    #     현지 리스팅(hl/gl)은 글 본문용 텍스트를 얻는 용도로만 쓴다.
-    upcoming = bool(play_upcoming(item['ident']))
+    #   → 판정은 **정본 하나**로 통일하고, 현지 리스팅(hl/gl)은 본문 텍스트용으로만 쓴다.
+    #
+    # ⚠️ 정본이 2026-10-05 다시 바뀌었다(로이 제안 채택): 상세 페이지 추측은 아예 신뢰하지 않고
+    #   **사전등록 전용 컬렉션에서 수집됐다는 출처(_src)** 를 최우선 근거로 쓴다.
+    #   (실측: 컬렉션에서 왔는데도 play_upcoming() 이 False 라 released 로 발행되는 사고 발생)
+    if item.get('upcoming') and item.get('_src'):
+        upcoming = True      # 출처가 증명 — 상세 페이지를 다시 물어보지 않는다
+    else:
+        upcoming = bool(play_upcoming(item['ident']))
     price_txt = 'Free' if d.get('free') else ('%s (paid)' % (d.get('price') or 'paid'))
     lines = [
         'APP NAME: %s' % d.get('name'),
@@ -1954,6 +2026,12 @@ def main():
         # 잘못된 언어로 쓰인 글은 그 언어 섹션에 실릴 수 없다 → 버리고 다음 실행에 새로 뽑는다.
         if not script_ok(lang, body):
             print('   언어 불일치(%s) → 폐기, 다음 실행에서 다시 시도' % lang)
+            continue
+        # 하한도 못 채운 글은 발행하지 않는다. (실측 2026-10-05: zh 가 234자 한 문단으로
+        # 발행됨 — 재시도 3회를 다 썼다는 이유로 길이 검사를 그냥 통과했었다.
+        # 짧은 글은 검색에 걸리지도 않고 품질만 떨어뜨린다 → 다음 실행에 다시 뽑게 한다)
+        if n < accept_lo:
+            print('   본문 하한 미달(%d<%d) → 폐기, 다음 실행에서 다시 시도' % (n, accept_lo))
             continue
 
         title = re.sub(r'"', "'", obj['title']).strip()

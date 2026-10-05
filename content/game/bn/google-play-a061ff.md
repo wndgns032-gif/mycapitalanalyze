@@ -7,14 +7,14 @@ date: "2026-10-03"
 sourceName: "Google Play"
 sourceUrl: "https://play.google.com/store/apps/details?id=com.YoStarKR.Arknights&hl=bn&gl=bd"
 lang: "bn"
-status: "released"
+status: "upcoming"
 image: "/assets/img/apps/app-a061ff584a.jpg"
 releaseDate: ""
 price: "Free"
 developer: "Yostar Limited."
 genre: "GAME_STRATEGY"
 kind: "game"
-upcoming: "false"
+upcoming: true
 ---
 
 ![명일방주 - Google Play তে অ্যাপ](/assets/img/apps/app-a061ff584a.jpg)
