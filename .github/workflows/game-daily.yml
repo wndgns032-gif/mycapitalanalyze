@@ -39,6 +39,7 @@ jobs:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_API_KEY_2: ${{ secrets.GROQ_API_KEY_2 }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
           GA4_ID: ${{ secrets.GA4_ID }}
@@ -50,8 +51,8 @@ jobs:
           glm = os.environ.get('GLM_API_KEY', '').strip()
           ds  = os.environ.get('DEEPSEEK_API_KEY', '').strip()
           free_keys = [os.environ.get(k, '').strip()
-                       for k in ('GEMINI_API_KEY', 'GROQ_API_KEY', 'OPENROUTER_API_KEY',
-                                 'NVIDIA_API_KEY')]
+                       for k in ('GEMINI_API_KEY', 'GROQ_API_KEY', 'GROQ_API_KEY_2',
+                                 'OPENROUTER_API_KEY', 'NVIDIA_API_KEY')]
           # 무료 API 만 등록해도 동작해야 한다(로이 2026-10-02) → 키 하나라도 있으면 진행
           if not (glm or ds or any(free_keys)):
               raise SystemExit('GLM/DeepSeek 또는 무료 API(GEMINI/GROQ/OPENROUTER/NVIDIA) '
@@ -83,13 +84,15 @@ jobs:
                                'https://generativelanguage.googleapis.com/v1beta/openai',
                                'gemini-flash-latest'),
             "groq": free_sec('GROQ_API_KEY', 'https://api.groq.com/openai/v1',
-                             'openai/gpt-oss-20b'),
+                             'llama-3.3-70b-versatile'),
+            "groq2": free_sec('GROQ_API_KEY_2', 'https://api.groq.com/openai/v1',
+                              'llama-3.3-70b-versatile'),
             "openrouter": free_sec('OPENROUTER_API_KEY', 'https://openrouter.ai/api/v1',
                                    'openrouter/free'),
             "nvidia": free_sec('NVIDIA_API_KEY', 'https://integrate.api.nvidia.com/v1',
                                'nvidia/deepseek-v4-flash'),
-            "write_provider_order": ["gemini", "groq", "openrouter", "nvidia", "glm", "deepseek"],
-            "check_provider_order": ["groq", "gemini", "openrouter", "deepseek"],
+            "write_provider_order": ["gemini", "groq", "groq2", "openrouter", "nvidia", "glm", "deepseek"],
+            "check_provider_order": ["gemini", "groq", "groq2", "openrouter", "deepseek"],
             "glm": {
               "api_key": glm,
               "base_url": "https://open.bigmodel.cn/api/paas/v4",

@@ -86,12 +86,18 @@ def chain(purpose='write'):
     """
     order = PURPOSE_ORDER.get(purpose) or PURPOSE_ORDER['write']
     override = PURPOSE_MODEL.get(purpose, '')
+    # ⚠️ 2026-10-05 실측 버그: override 를 order[0] 에 적용했는데, 무료 제공자
+    #   (gemini/groq) 가 1순위가 되자 **Gemini 에 'deepseek-flash' 모델명이 붙어**
+    #   404 가 났다("models/deepseek-flash is not found ... for generateContent").
+    #   write_model/check_model 은 원래 유료 폴백(DeepSeek)용 값이다
+    #   → override 는 체인의 **마지막(폴백) 제공자**에만 적용한다.
+    fallback = order[-1] if order else ''
     out = []
     for name in order:
         sec = CONFIG.get(name) or {}
         if not (sec.get('api_key') or '').strip():
             continue
-        model = _flash_model(name, sec, override if name == order[0] else '')
+        model = _flash_model(name, sec, override if name == fallback else '')
         if not model:
             continue
         is_free = bool(sec.get('free')) or name in FREE_PROVIDERS
@@ -147,15 +153,34 @@ def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,
                     d = json.loads(resp.read().decode('utf-8', 'ignore'))
                 content = ((d.get('choices') or [{}])[0].get('message') or {}).get('content') or ''
                 if not content.strip():
-                    # 추론 모델에서 빈 응답이 오는 케이스 → 재시도
+                    # 추론 모델에서 빈 응답이 오는 케이스 → 재시도.
+                    # 2026-10-05 실측: Gemini 는 "Say only: PONG" 처럼 지시가 짧으면
+                    # 빈 문자열을 그대로 반환한다. 같은 요청을 반복해도 또 비니
+                    # "최소 몇 단어로 답하라" 는 지시를 덧붙여 다시 물어본다.
                     last_err = 'empty content'
-                    time.sleep(2)
+                    if not any('Answer with at least' in (m.get('content') or '')
+                               for m in messages):
+                        messages = list(messages) + [
+                            {'role': 'user',
+                             'content': 'Answer with at least five words of plain text.'}]
+                    time.sleep(1)
                     continue
                 return content, name
             except urllib.error.HTTPError as e:
                 detail = e.read().decode('utf-8', 'ignore')[:200]
                 last_err = 'HTTP %s %s' % (e.code, detail)
                 log('  [llm] %s 실패: %s' % (name, last_err))
+                # 429(요청 한도)·503(일시적 고부하) 는 **기다리면 다시 된다**.
+                #   2026-10-05 실측: Gemini 무료 티어가 503 → 429 로 막히는데
+                #   예전 코드는 이 둘을 즉시 폴백시켰다 → 무료 API 를 거의 못 쓰고
+                #   유료 DeepSeek 이 대부분을 처리했다(로이: "무료 API도 이용해줘").
+                #   → 무료 제공자는 짧은 백오프 후 같은 제공자를 한 번 더 시도한다.
+                if e.code in (429, 503) and is_free:
+                    wait = 5 if e.code == 429 else 3
+                    log('  [llm] %s %s → %d초 대기 후 재시도(무료 티어)' % (name, e.code, wait))
+                    time.sleep(wait)
+                    if attempt <= retries:
+                        continue
                 if e.code in (401, 402, 403, 404, 429):
                     break  # 다른 제공자로 폴백
                 if attempt <= retries:
