@@ -13,6 +13,7 @@
 """
 import json
 import os
+import re
 import time
 import urllib.error
 import urllib.request
@@ -116,6 +117,48 @@ for _p in PURPOSE_ORDER:
                              % (_p, _row[0], _row[3]))
 
 
+# 제공자별 성공/실패 집계 — 실행 마지막에 "무료 API 가 실제로 쓰였나" 를 보여주려는 목적.
+# (로이 2026-10-06: 시크릿을 등록했는데 진짜 무료로 도는지 로그에서 바로 확인하고 싶다)
+STATS = {}
+
+
+def _stat(name, ok, err=''):
+    s = STATS.setdefault(name, {'ok': 0, 'fail': 0, 'err': ''})
+    if ok:
+        s['ok'] += 1
+        return
+    s['fail'] += 1
+    if not err:
+        return
+    # 응답 본문(JSON)이 그대로 들어오면 통계 줄이 엉망이 된다 → 핵심만 남긴다.
+    one = ' '.join((err or '').split())
+    m = re.search(r'(HTTP\s+\d+)', one)
+    code = m.group(1) if m else one[:24]
+    # 오류 사유: "message" 값이 있으면 그것을, 없으면 첫 40자
+    m2 = re.search(r'"message"\s*:\s*"([^"]{0,70})', one)
+    why = m2.group(1) if m2 else one[:40]
+    s['err'] = '%s %s' % (code, why)
+
+
+def stats_report():
+    """집계를 사람이 읽는 한 줄 요약으로."""
+    if not STATS:
+        return 'LLM 호출 없음'
+    free = {'gemini', 'groq', 'groq2', 'openrouter', 'nvidia'}
+    parts = []
+    for name in sorted(STATS):
+        s = STATS[name]
+        tag = '무료' if name in free else '유료'
+        parts.append('%s(%s) 성공%d/실패%d%s'
+                     % (name, tag, s['ok'], s['fail'],
+                        (' — %s' % s['err']) if (s['fail'] and s['err']) else ''))
+    tot_free = sum(STATS[n]['ok'] for n in STATS if n in free)
+    tot = sum(s['ok'] for s in STATS.values())
+    return ' | '.join(parts) + ('\n   → 무료 %d / 전체 %d건 (%s)'
+                                % (tot_free, tot,
+                                   ('%.0f%%' % (100.0 * tot_free / tot)) if tot else '-'))
+
+
 def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,
          timeout=180, retries=2, log=print, purpose='write'):
     """Flash 모델로 채팅 완료를 호출한다. 실패 시 다음 제공자로 폴백.
@@ -165,6 +208,7 @@ def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,
                              'content': 'Answer with at least five words of plain text.'}]
                     time.sleep(1)
                     continue
+                _stat(name, True)
                 return content, name
             except urllib.error.HTTPError as e:
                 detail = e.read().decode('utf-8', 'ignore')[:200]
@@ -191,6 +235,7 @@ def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,
                 last_err = 'network: %s' % str(e)[:120]
                 log('  [llm] %s 네트워크 오류(%d/%d)' % (name, attempt, retries + 1))
                 time.sleep(3)
+        _stat(name, False, last_err or '')
         log('  [llm] %s 포기 → 다음 제공자로 폴백' % name)
 
     raise RuntimeError('모든 LLM 제공자 실패: %s' % last_err)

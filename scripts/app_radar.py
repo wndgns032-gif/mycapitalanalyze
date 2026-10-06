@@ -2107,6 +2107,10 @@ def main():
         time.sleep(0.3)
 
     print('\nApp Radar 완료: %d건 (오늘 %s)' % (done, today_str))
+    # 무료 API 가 실제로 쓰였는지 Actions 로그에서 바로 보이도록 집계를 출력한다.
+    # (로이 2026-10-06: 시크릿을 등록했는데 진짜 무료로 도는지 확인하고 싶다)
+    import llm as _llm
+    print('[LLM 사용 통계] %s' % _llm.stats_report())
     return 0
 
 
