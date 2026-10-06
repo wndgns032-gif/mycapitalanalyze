@@ -254,7 +254,14 @@ function mcaPidOf(h) {
   if (!mount || !window.__POSTS__) return;
   var wait = mount.dataset.strWait || '…';
   var views = mount.dataset.strViews || 'views';
-  var posts = window.__POSTS__.slice(0, 30);
+  // ⚠️ 2026-10-07 실측 버그: __POSTS__ 는 **오래된 글부터** 들어있다.
+  //   그냥 slice(0,30) 하면 최신 글이 아니라 8월 긁 việt만 재게 되어
+  //   "이번 주 인기 글" 이 영원히 집계중으로 남는다 → 최근 7일 글만, 최신순으로.
+  var cutoff = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 10);
+  var posts = window.__POSTS__
+    .filter(function (p) { return (p.d || '') >= cutoff; })
+    .sort(function (a, b) { return (a.d < b.d) ? 1 : (a.d > b.d) ? -1 : 0; })
+    .slice(0, 30);
 
   function tagOf(k) {
     var c = k === 'game' ? 'bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-900/40 dark:text-fuchsia-300'
@@ -290,7 +297,7 @@ function mcaPidOf(h) {
     return Promise.all(days.map(function (d) {
       return fetch(MCA_API + '/get/' + MCA_NS + '/p' + d + '-' + pid, { mode: 'cors', cache: 'no-store' })
         .then(function (r) { return r.json(); })
-        .then(function (j) { return (j && j.count) || 0; })
+        .then(function (j) { return (j && (j.value != null ? j.value : j.count)) || 0; })
         .catch(function () { return 0; });
     })).then(function (arr) {
       return arr.reduce(function (a, b) { return a + b; }, 0);
@@ -419,7 +426,7 @@ function mcaPidOf(h) {
     return Promise.all(days.map(function (d) {
       return fetch(API + '/get/' + NS + '/v' + d + '-' + cc, { mode: 'cors', cache: 'no-store' })
         .then(function (r) { return r.json(); })
-        .then(function (j) { return (j && j.count) || 0; })
+        .then(function (j) { return (j && (j.value != null ? j.value : j.count)) || 0; })
         .catch(function () { return 0; });
     })).then(function (arr) { return [cc, arr.reduce(function (a, b) { return a + b; }, 0)]; });
   })).then(function (pairs) {
