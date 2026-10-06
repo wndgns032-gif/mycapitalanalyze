@@ -38,6 +38,10 @@ body {
   .prose th, .prose td { white-space: normal; }
 }
 
+/* RTL(아랍어)에서 방향성 아이콘·장식만 좌우 반전한다.
+   논리 속성(ms-/me-/start-/end-)으로 이미 처리된 배치는 건드리지 않는다. */
+[dir="rtl"] .mca-flip { transform: scaleX(-1); }
+
 /* 터치 목표 최소 44px — 버튼·탭·페이지 번호에 공통 적용 */
 .tap { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
 
