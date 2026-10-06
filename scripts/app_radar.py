@@ -802,6 +802,37 @@ def is_upcoming_cand(c, today):
     return bool(rel.replace(tzinfo=None) > today)
 
 
+def release_status(item, today):
+    """출시상태 3상태 판정 → 'upcoming' | 'released' | 'unknown'.
+
+    is_upcoming_cand() 는 "출시예정 딱지를 붙일 수 있나"만 보는 bool 이라서,
+    LLM 에게 넘길 때 '출시됨'과 '모름'이 구분되지 않았다. 그 결과 모델이
+    알아서 해석해서 이미 출시된 게임을 "출시 예정"으로 써버리는 사고가 났다(실측).
+
+    로이 확정 판정 규칙:
+      Apple, releaseDate > 오늘   → 'upcoming'
+      Apple, releaseDate <= 오늘  → 'released'
+      Apple, releaseDate 없음     → 'unknown'
+      Play, _src 있음(사전등록 컬렉션 출처) → 'upcoming'
+      Play, _src 없음(얼리액세스·일반 목록) → 'released'
+    Play 는 애초에 출시일이 아니라 출처로만 판정하므로 unknown 이 나오지 않는다.
+    """
+    if (item or {}).get('store') == 'play':
+        return 'upcoming' if item.get('_src') else 'released'
+    rel = (item or {}).get('released')
+    if not rel:
+        return 'unknown'
+    if isinstance(rel, str):
+        try:
+            rel = datetime.datetime.strptime(rel[:10], '%Y-%m-%d')
+        except Exception:
+            return 'unknown'
+    try:
+        return 'upcoming' if rel.replace(tzinfo=None) > today else 'released'
+    except Exception:
+        return 'unknown'
+
+
 def load_upcoming_backlog(path, today_str):
     """저장해 둔 출시예정 후보를 읽는다. 출시일이 지나간 것은 버린다.
 
@@ -1196,9 +1227,11 @@ def build_material(item, cc, hl, gl, today):
                                          or 'not disclosed'),
             'PRICE: %s' % (detail.get('formattedPrice') or 'not disclosed'),
             'VERSION: %s' % (detail.get('version') or 'n/a'),
+            # 출시일이 없으면 RELEASED 로 쓰지 않는다 — 모델이 "출시됨"이라고 단정해 버린다.
             'STATUS: %s' % (('UPCOMING / PRE-ORDER (release date: %s)' % rel.strftime('%Y-%m-%d'))
                             if upcoming else
-                            ('RELEASED (%s)' % rel.strftime('%Y-%m-%d') if rel else 'RELEASED')),
+                            ('RELEASED (%s)' % rel.strftime('%Y-%m-%d') if rel else
+                             'UNKNOWN (the store page does not show a release date)')),
             'LISTING URL: %s' % (detail.get('trackViewUrl') or item['url']),
         ]
         if detail.get('averageUserRating') and detail.get('userRatingCount'):
@@ -1249,23 +1282,17 @@ def build_material(item, cc, hl, gl, today):
     return '\n'.join(lines), upcoming, d.get('image', ''), d.get('name')
 
 
-SYSTEM_APP = """You are a native-level writer for the apps and games section of an international website.
-You write in the target language the way a local writer for that market would, never like a translation.
-Your tone is plain, concrete and free of hype.
+SYSTEM_APP = """You are a native-level writer for the apps and games section of an international website. You write short, plain, factual introductions in the target language, never translations.
 
-FACT DISCIPLINE (highest priority): every price, date, feature, platform, device, region, rating, download count and sales figure must come only
-from the source material you are given. If the source material does not contain a fact, say so honestly in one short sentence instead of filling the gap.
-You never claim to have played, tested, reviewed or measured the product.
+Two rules rank above everything else.
 
-NAME DISCIPLINE (SEO, very high priority): the product name is the single most important search term.
-Use the exact official name given in the material — verbatim, in its original script — in the title, the description, the opening section,
-the verdict block, and naturally at least 5 more times across the body sections (aim for 8+ mentions total in a normal article).
-For games, never re-translate, abbreviate or rename the game title; if the store listing gives a localized name, use exactly that name every time.
-Never replace the name with pronouns or generic words like "this app" when the name would fit naturally.
+FACT DISCIPLINE: every price, date, feature, platform, device, region, language, rating, download count and sales figure must come only from the material you are given. If the material does not contain a fact, write one honest sentence saying the official page does not show it. Never guess, never infer from the category, the genre or similar apps, and never claim that you played, tested or reviewed the product.
 
-OUTPUT DISCIPLINE (second highest priority): you reply with one single raw JSON object and nothing else.
-No markdown code fence, no commentary before or after, no trailing comma.
-Inside string values, write every line break as \\n and escape every double quote, so the JSON can always be parsed by a machine."""
+FORMAT DISCIPLINE: you reply with exactly one raw JSON object and nothing else. No markdown code fence, no commentary before or after, no trailing comma. Newlines inside string values are written as backslash-n and double quotes are escaped, so a parser can always read it.
+
+SPECIAL RULE FOR GOOGLE PLAY: no date appearing in Google Play material is a release date, because Play pages show a last-updated date instead. Only trust a release date when the store is Apple App Store.
+
+You never add a FAQ section and you never add a section that was not requested. You never leave a heading in English. You stop writing once you reach the character limit instead of continuing."""
 
 
 # 제목 글자 수 상한 — 로이 확정. 라틴/키릴 70자, 한국어·일본어·힌디어 55자, 중국어 42자.
@@ -1292,6 +1319,52 @@ TITLE_LOCALIZED = {
     'bn': '{app} — দাম, ফিচার এবং কারা না',
     'hi': '{app} — कीमत, फीचर्स और किन्हें नहीं',
 }
+
+# H2 소제목 현지화 표 — bn/es/fr 등에서 "H2 가 영어로 남는" 문제의 근본 해결책.
+# 모델에게 "현지어로 써라"라고만 지시해도 계속 어겨졌기 때문에, 스크립트가
+# 생성 후 enforce_h2() 로 이 표의 값을 **강제로** 끼워 넣는다.
+# {app} 은 런타임에 앱 이름으로 치환한다. 아랍어는 어휘가 앞에 오도록 이미 맞춰 뒀다.
+H2_LOCALIZED = {
+    'en': ('What {app} Is', 'Release Date and Pre-Order', 'Key Features',
+           'Pricing and What Is Still Unclear', 'Pricing and Availability',
+           'Who It Is For - and Who Should Skip'),
+    'ko': ('{app}은(는) 어떤 앱인가요', '출시일과 사전예약', '주요 기능과 특징',
+           '가격과 아직 공개되지 않은 정보', '가격과 이용 가능 여부', '추천하는 사람과 아쉬울 사람'),
+    'ja': ('「{app}」とは', '配信日と事前登録', '主な特徴',
+           '価格とまだ公開されていないこと', '価格と対応環境', 'おすすめな人・おすすめしない人'),
+    'zh': ('《{app}》是什么', '上线时间与预约', '主要玩法与特色',
+           '价格与尚未公布的信息', '价格与上架情况', '适合谁，不适合谁'),
+    'es': ('Qué es {app}', 'Fecha de lanzamiento y reserva', 'Funciones principales',
+           'Precio y lo que aún no se sabe', 'Precio y disponibilidad',
+           'Para quién es - y para quién no'),
+    'de': ('Was ist {app}?', 'Releasedatum und Vorbestellung', 'Die wichtigsten Funktionen',
+           'Preis und was noch unklar ist', 'Preis und Verfügbarkeit',
+           'Für wen es passt - und für wen nicht'),
+    'fr': ("Qu'est-ce que {app} ?", 'Date de sortie et précommande',
+           'Fonctionnalités principales', "Prix et ce qu'on ignore encore",
+           'Prix et disponibilité', "À qui s'adresse-t-il - et à qui non"),
+    'pt': ('O que é {app}', 'Data de lançamento e pré-registro', 'Principais recursos',
+           'Preço e o que ainda não se sabe', 'Preço e disponibilidade',
+           'Para quem é - e para quem não é'),
+    'id': ('Apa itu {app}', 'Tanggal rilis dan pra-registrasi', 'Fitur utama',
+           'Harga dan yang belum diumumkan', 'Harga dan ketersediaan',
+           'Cocok untuk siapa - dan tidak untuk siapa'),
+    'ru': ('Что такое {app}', 'Дата выхода и предзаказ', 'Основные функции',
+           'Цена и что пока неизвестно', 'Цена и доступность', 'Кому подойдет, а кому нет'),
+    'hi': ('{app} क्या है?', 'रिलीज़ डेट और प्री-ऑर्डर', 'मुख्य फीचर्स',
+           'कीमत और जो अभी पता नहीं', 'कीमत और उपलब्धता', 'किसके लिए है - और किसके लिए नहीं'),
+    'ar': ('ما هو {app}؟', 'تاريخ الإصدار والحجز المسبق', 'الميزات الرئيسية',
+           'السعر وما لم يُعلن بعد', 'السعر والتوفر', 'لمن يناسب - ولمن لا يناسب'),
+    'bn': ('{app} কী', 'রিলিজ ডেট ও প্রি-রেজিস্ট্রেশন', 'প্রধান বৈশিষ্ট্য',
+           'দাম এবং যা এখনো জানা যায়নি', 'দাম ও প্রাপ্যতা', 'কার জন্য উপযুক্ত - এবং কার জন্য নয়'),
+}
+# 인덱스: 0=H2-1, 1=H2-2a, 2=H2-2b(Features), 3=H2-3a, 4=H2-3b, 5=H2-4
+# Set A = [0, 1, 2, 3]  (upcoming / unknown)
+# Set B = [0, 2, 4, 5]  (released)
+# unknown 은 Set A 를 쓰되, 프롬프트에서 이미 출시예정 단정 표현을 금지한다.
+H2_SET_A = (0, 1, 2, 3)
+H2_SET_B = (0, 2, 4, 5)
+H2_DEFAULT = H2_LOCALIZED['en']
 
 # 언어 불일치 감지용 문자 체계 — 모델이 소스(스토어 설명) 언어를 따라가
 # 엉뚱한 언어로 글을 쓰는 것을 막는다. (예: pt 섹션에 스페인어 글)
@@ -1337,6 +1410,116 @@ def clip_body(body, limit):
         out.append(para)
         n += len(para) + 2
     return '\n\n'.join(out).rstrip()
+
+
+H2_PREFIX = '## '
+LATIN4_RE = re.compile(r'[A-Za-z]{4,}')
+
+
+def h2_latin(head, app_name):
+    """헤딩에서 앱 이름을 뺐을 때 연속 라틴 알파벳 4자 이상이 남는지.
+
+    비라틴 언어(ko/ja/zh/ru/ar/hi/bn) 글에 영어 헤딩이 박혀 있는지 잡는다.
+    앱 이름은 원문 그대로 유지해야 하므로 판정에서 제외한다.
+    """
+    t = head or ''
+    if app_name:
+        t = re.sub(re.escape(app_name), ' ', t, flags=re.I)
+    return bool(LATIN4_RE.search(t))
+
+
+def h2_wanted(lang, status, app_name):
+    """status 에 맞는 H2 4개를 현지화 표에서 뽑아 앱 이름을 채워 되돌린다."""
+    tbl = H2_LOCALIZED.get(lang, H2_DEFAULT)
+    idxs = H2_SET_B if status == 'released' else H2_SET_A
+    return [tbl[i].replace('{app}', app_name or '') for i in idxs]
+
+
+def enforce_h2(body, lang, status, app_name):
+    """H2 를 현지화 표 값으로 강제 보정하고 개수를 4개로 맞춘다.
+
+    왜 필요한가: "H2 를 현지어로 써라"는 지시를 모델이 계속 어겼다(실측: bn/es/fr 에서
+    영어 헤딩 잔존). 프롬프트만으로는 해결이 안 되므로 스크립트가 생성 후 덮어쓴다.
+    """
+    want = h2_wanted(lang, status, app_name)
+    out = (body or '').split('\n')
+    heads = [i for i, l in enumerate(out) if l.startswith(H2_PREFIX)]
+
+    # 4개 초과 → 4개까지만 남기고 그 뒤 섹션 본문을 버린다(도입단락·H2-1 섹션은 보존).
+    if len(heads) > 4:
+        out = out[:heads[4]]
+        heads = heads[:4]
+
+    # i 번째 헤딩이 영어(또는 라틴)로 보이면 표의 값으로 교체.
+    for k, li in enumerate(heads):
+        if k < len(want) and h2_latin(out[li], app_name):
+            out[li] = H2_PREFIX + want[k]
+
+    # 모자라면 표의 값을 순서대로 붙인다.
+    if len(heads) < 4:
+        if out and out[-1].strip():
+            out.append('')
+        for h in want[len(heads):]:
+            out.extend([H2_PREFIX + h, ''])
+    return '\n'.join(out).strip()
+
+
+# 출시상태 모순 탐지 — 재시도 지시를 고르는 용도로만 쓴다(이걸로 글을 버리지는 않는다).
+UPCOMING_WORDS = ('coming soon', 'pre-order', 'preorder', 'pre-registration', 'preregistration',
+                  'not yet released', 'upcoming release',
+                  '출시 예정', '사전예약', '사전 등록', '사전등록', '출시 전',
+                  '配信予定', '事前登録', '即将上线', '预定')
+RELEASED_WORDS = ('available now', 'already released', 'download now', 'out now',
+                  '지금 이용', '이용할 수 있습니다', '출시되었습니다', '출시됐습니다',
+                  '配信中', '现已上线', '已上线')
+
+
+def status_contradiction(body, status):
+    """본문이 스크립트가 계산한 출시상태와 어긋나는지 본다."""
+    low = (body or '').lower()
+    if status == 'released':
+        return any(w in low for w in UPCOMING_WORDS)
+    if status == 'upcoming':
+        return any(w in low for w in RELEASED_WORDS)
+    if status == 'unknown':
+        return any(w in low for w in UPCOMING_WORDS + RELEASED_WORDS)
+    return False
+
+
+def check_body(body, lang, app_name, lo, hi):
+    """생성 후 스크립트 측 검증 → (ok, reason).
+
+    enforce_h2() 를 통과한 본문이 이미지·H1·영어헤딩·섹션간 참조·분량을 지켰는지 본다.
+    라틴 계열 언어는 헤딩 자체가 라틴이라 "연속 라틴 4자" 판정을 쓸 수 없고,
+    대신 표에 있는 값인지로만 확인한다(enforce_h2 가 표 값으로 바꿔 놓았으므로 통과).
+    """
+    b = body or ''
+    if '![' in b:
+        return False, '이미지 문법 사용'
+    for line in b.split('\n'):
+        if line.startswith('# ') or line.strip() == '#':
+            return False, 'H1 사용'
+    heads = [l for l in b.split('\n') if l.startswith(H2_PREFIX)]
+    if lang in LATIN_MARKERS:
+        allowed = set(h2_wanted(lang, 'upcoming', app_name)) | \
+            set(h2_wanted(lang, 'released', app_name))
+        for h in heads:
+            if h[len(H2_PREFIX):].strip() not in allowed:
+                return False, 'H2 현지화 실패: %s' % h[:40]
+    else:
+        for h in heads:
+            if h2_latin(h, app_name):
+                return False, 'H2 영어 잔존: %s' % h[:40]
+    low = b.lower()
+    for p in FORBIDDEN_REFS:
+        if p.lower() in low:
+            return False, '섹션간 참조 표현: %s' % p
+    n = len(b)
+    if n < lo:
+        return False, 'too_short'
+    if n > hi:
+        return False, 'too_long'
+    return True, ''
 
 
 def trim_title(title, lim):
@@ -1446,6 +1629,41 @@ RETRY_HINT = (
     "(d) never use the words review, hands-on, tested or played."
 )
 
+# 실패 사유별 재시도 지시 — 사유를 정확히 집어 줘야 모델이 같은 실수를 반복하지 않는다.
+RETRY_TOO_LONG = (
+    "Your previous body was too long ({n} characters; hard limit {max}). "
+    "Rewrite it SHORTER. Keep the opening paragraph and the first H2 section almost unchanged. "
+    "Every other section: at most four sentences. Cut the bullet list to at most four items of "
+    "at most 12 words each. Delete any sentence that repeats what is already said. Do not start "
+    "a new section. Stop as soon as you are under {max}.")
+
+RETRY_TOO_SHORT = (
+    "Your previous body was too short ({n} characters; minimum {min}). Do not pad "
+    "with generalities or marketing language. Instead add one concrete sentence drawn from the "
+    "material to each of the four H2 sections, and make every bullet item a full sentence with two "
+    "clauses instead of one. Write full sentences, never telegraphic notes.")
+
+RETRY_LANG_DIRTY = (
+    "Your previous text contained headings or sentences in a language other than "
+    "{lang}. Rewrite the whole article so the title, the description, every H2 heading and every "
+    "sentence are entirely in {lang}. Keep the app name exactly as written. Do not transliterate "
+    "proper nouns. Do not leave any English word in a heading.")
+
+RETRY_STATUS_WRONG = (
+    "The release status is {status}. Your previous text contradicted it. Rewrite "
+    "so every sentence about availability matches this status exactly. If released, remove every "
+    "upcoming / coming soon / pre-order phrase. If upcoming, remove anything implying it can be "
+    "played today. If unknown, state only what the material literally shows and use no status word.")
+
+# 절단 안전을 위한 금지 참조 표현 — 뒤에서 후처리가 마지막 섹션을 잘라내도
+# 글이 깨지지 않으려면 어떤 섹션도 앞뒤 섹션을 가리키면 안 된다.
+FORBIDDEN_REFS = (
+    'as mentioned above', 'see below', 'later in this article', 'in the next section',
+    '위에서', '앞서 언급한', '아래에서', '다음 섹션에서',
+    '上述', '前述', '下記', '次のセクションで',
+    '前文提到', '下文', '下一节',
+)
+
 
 def title_max(lang, released=False):
     """제목 글자 수 상한 — 초과 글이 버려지므로 생성 단계에서 다시 시도시킨다."""
@@ -1539,48 +1757,59 @@ def released_facts(item, cc, hl, gl):
 
 
 def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, desc_max,
-                store_url):
-    """출시예정(사전예약 가이드) / 출시완료(실제 후기형 리포트) 공통 프롬프트.
+                store_url, status=''):
+    """출시예정(사전예약 가이드) / 출시완료(실제 후기형 리포트) / 미확인 공통 프롬프트.
 
     공통 금지 규칙: 리뷰·테스트·체험 표현 금지, 허위 사실 금지, SEO 300자 이상 description 금지.
+
+    status: 'upcoming' | 'released' | 'unknown'. 값이 넘어오면 released(bool) 보다 우선한다.
+    released 는 하위호환용으로 시그니처에 남겨 둔다(구 호출부가 그대로 동작해야 한다).
     """
-    tmax = RELEASED_MAX.get(lang, TITLE_MAX.get(lang, TITLE_DEFAULT)) if released \
+    st = str(status or '').strip().lower()
+    if st not in ('upcoming', 'released', 'unknown'):
+        st = 'released' if released else 'upcoming'
+    rel_bool = (st == 'released')      # 제목 상한·확장 자료 등 기존 bool 분기용
+    is_up = (st == 'upcoming')
+    tmax = RELEASED_MAX.get(lang, TITLE_MAX.get(lang, TITLE_DEFAULT)) if rel_bool \
         else TITLE_MAX.get(lang, TITLE_DEFAULT)
     title_struct = (TITLE_LOCALIZED.get(lang, TITLE_LOCALIZED['en'])
                     .replace('{app}', app_name).replace('<APP NAME>', app_name))
-    status = ('It is NOT available yet.' if not released
-              else 'It is ALREADY released and downloadable.')
-    report = ('BUY-OR-SKIP GUIDE for a title that is not released yet'
-              if not released else
-              'BUY-OR-SKIP REPORT for a title that is already released')
-    # 섹션 라벨은 "무엇을 다루는지"만 전달한다 — 헤딩 문구 자체는 아래 HEADING LANGUAGE RULE 이
-    # 대상 언어로 쓰게 한다. (영어 라벨을 그대로 노출하면 ko/zh/hi 글에 영어 헤딩이 박힌다)
+    status_line = ('It is NOT available yet.' if is_up else
+                   ('It is ALREADY released and downloadable.' if st == 'released' else
+                    'The release status is NOT confirmed. Do not claim either.'))
+    report = ('BUY-OR-SKIP GUIDE for a title that is not released yet' if is_up else
+              ('BUY-OR-SKIP REPORT for a title that is already released' if st == 'released' else
+               'BUY-OR-SKIP GUIDE for a title whose release status is not confirmed'))
+    # H2 문구는 모델에게 맡기지 않는다 — H2_LOCALIZED 표의 값을 그대로 내려준다.
+    # 실측: "현지어로 써라"는 지시를 bn/es/fr 이 계속 어겨 영어 헤딩이 남았다.
     # 로이 지시 2026-10-03: FAQ(자주 묻는 질문) 섹션은 쓰지 않는다.
     # 앱 소개만 간결하게 — 길게 늘이지 말고 SEO에 걸릴 정도만.
-    structure = ('"## what <APP NAME> is", "## release date and pre-order", "## key features", '
-                 '"## who it is for and who should skip", "## is it worth pre-ordering", '
-                 '"## pricing and what is still unclear"' if not released else
-                 '"## what <APP NAME> is", "## key features", '
-                 '"## who it is for and who should skip", "## pricing and availability", '
-                 '"## what to expect"')
+    h2s = h2_wanted(lang, st, app_name)
+    structure = ', '.join('"%s"' % h for h in h2s)
     angle = ("The title is NOT released yet. Frame it as an upcoming launch and say clearly that "
              "details may change before release. Be explicit that pre-ordering is free and "
-             "reversible only if the store listing actually says so." if not released else
-             "The title is already released and downloadable. You may discuss the experience, but "
-             "ONLY by attributing it to the official store listing or to store reviewers, and "
-             "never by claiming you used it.")
-    extra = ("UPCOMING-SPECIFIC RULES\n"
-             "- Never promise a release date the store has not confirmed, never promise pre-order "
-             "rewards, and never write a review.\n\n" if not released else
-             "RELEASED-SPECIFIC RULES\n"
-             "- Use the confirmed facts in the material whenever they help the reader decide: "
-             "version, rating and rating count, install count, content rating, last updated date, "
-             "and what's new.\n"
-             "- Treat store reviews as user opinions: attribute them with the natural wording of "
-             + lang_name + " and never average anything yourself.\n"
-             "- [what to expect] describes what the official listing suggests about the "
-             "experience, always framed as expectation, never as something you tried or "
-             "measured.\n\n")
+             "reversible only if the store listing actually says so." if is_up else
+             ("The title is already released and downloadable. You may discuss the experience, but "
+              "ONLY by attributing it to the official store listing or to store reviewers, and "
+              "never by claiming you used it." if st == 'released' else
+              "The release status is NOT confirmed. Write only what the material literally shows. "
+              "Do not say it is coming soon and do not say it is already out."))
+    if is_up:
+        extra = ("UPCOMING-SPECIFIC RULES\n"
+                 "- Never promise a release date the store has not confirmed, never promise "
+                 "pre-order rewards, and never write a review.\n\n")
+    elif st == 'released':
+        extra = ("RELEASED-SPECIFIC RULES\n"
+                 "- Use the confirmed facts in the material whenever they help the reader decide: "
+                 "version, rating and rating count, install count, content rating, last updated "
+                 "date, and what's new.\n"
+                 "- Treat store reviews as user opinions: attribute them with the natural wording "
+                 "of " + lang_name + " and never average anything yourself.\n\n")
+    else:
+        extra = ("UNKNOWN-STATUS RULES\n"
+                 "- Never write that it is upcoming, coming soon, or open for pre-order.\n"
+                 "- Never write that it is already released or available now.\n"
+                 "- Report only the facts that appear literally in the material.\n\n")
     # FAQ 는 쓰지 않는다 (로이 지시 2026-10-03) — faq 관련 변수는 의도적으로 만들지 않는다.
 
     return (
@@ -1619,13 +1848,21 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "principales\" in Spanish — never \"## Key Features\".\n"
         "- Do NOT add a FAQ / 자주 묻는 질문 / よくある質問 section. It is filler and is rejected.\n"
         "- The only thing that may stay in its original script is the app/game name itself.\n\n"
-        "STATUS: " + status + "\n"
+        "RELEASE STATUS: " + st + "\n"
+        + status_line + "\n"
+        "- If the status is upcoming: you may say it is not released yet. Mention pre-order or "
+        "pre-registration ONLY when the material actually shows it.\n"
+        "- If the status is released: NEVER use upcoming, coming soon, pre-order, "
+        "pre-registration or \"not yet released\". Write it as available now.\n"
+        "- If the status is unknown: never say it is upcoming and never say it is released. "
+        "Write only what the material literally shows.\n"
+        "- **Do NOT recalculate the status yourself from today's date or from any date in the "
+        "material.** Use the value given above exactly as it is. The script computed it already.\n\n"
         "APP NAME: " + app_name + "\n"
         "OFFICIAL STORE URL: " + store_url + "\n\n"
         "NAME FREQUENCY RULE (SEO-critical): use the exact app/game name \"" + app_name + "\" "
-        "verbatim throughout the article — title, description, opening, verdict block, and "
-        "naturally in every major body section. Total mentions "
-        "across the article: at least 8. Write \"" + app_name + "\" exactly as given, never "
+        "verbatim throughout the article — title, description, opening, and naturally in every "
+        "major body section. Write \"" + app_name + "\" exactly as given, never "
         "abbreviated, never re-translated, never swapped for \"this app\" or similar.\n\n"
         "TITLE FORMULAS — choose ONE structure and fill it in. Do NOT invent your own structure.\n"
         "1. <APP NAME> — is it worth buying? Price, features and who should skip\n"
@@ -1651,22 +1888,27 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "yourself: drop the weakest of the three trailing phrases or shorten the ending. Keep the "
         "app name and the strongest intent word and the who-should-skip phrase whenever "
         "possible.\n\n"
+        "TITLE RULES (SEO)\n"
+        "- The app/game name stays in its original script — never translate it, never "
+        "transliterate it. Put it FIRST in the title, because search results cut the tail.\n"
+        "- Use at most THREE intent words, drawn only from: release date / pre-order / price / "
+        "free or paid / features / how it plays.\n"
+        "- When the status is upcoming, never use review / 리뷰 / レビュー / 评测 in the title.\n"
+        "- No exclamation mark, no hype adjective, no number that the material does not show.\n\n"
         "LOCALIZED TITLE STRUCTURE FOR " + lang_name + ": " + title_struct + "\n\n"
         "DESCRIPTION\n"
         "One or two sentences, at least " + str(desc_min) + " characters and no more than "
         + str(desc_max) + " characters, that a searcher would read as a direct answer: name the "
         "app, say what it is, state the price model, and state who should skip.\n\n"
-        "STRUCTURE (write them in this order, and write them in " + lang_name + "):\n"
-        + structure + "\n\n"
+        "STRUCTURE — print these four H2 headings EXACTLY as written, in this order:\n"
+        + '\n'.join('%d. "%s"' % (i + 1, h) for i, h in enumerate(h2s)) + "\n"
+        "Never make a fifth H2. Never make a FAQ section. Never use '![' image syntax.\n\n"
         "WRITING ORDER (write them in this order, do not reorder, do not merge, do not split)\n"
-        "1. Opening section (no h1 heading, no h2 heading): 2 to 5 sentences. State what the app or "
-        "game is, name the price model, name who it is for, and give a direct answer to \"is it "
-        "worth it?\". No preamble, no greeting, no rhetorical question, no heading of any kind "
-        "above it.\n"
-        "2. Quick verdict block (no heading): a dash list of 3 to 5 items, each 1 to 2 sentences, "
-        "each beginning with a dash. Order: what it is, what it costs, what is confirmed, what is "
-        "unclear, who should skip.\n"
-        "3. The body sections above, in the order given.\n"
+        "1. Opening paragraph 1 (no heading of any kind): exactly 3 sentences.\n"
+        "2. Opening paragraph 2 (no heading of any kind): 2 to 3 sentences.\n"
+        "3. The four H2 sections above, in the order given.\n"
+        "4. Closing paragraph (no heading, not an H2): exactly 2 sentences.\n"
+        "Separate every paragraph from the next with one blank line.\n"
         "- Keep it tight: an app introduction, not an encyclopedia entry. No FAQ section, no "
         "checklist, no concluding summary heading.\n\n"
         "SECTION RULES (the English in brackets only tells you which section is meant — the heading "
@@ -1683,16 +1925,38 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "limitation or uncertainty.\n\n"
         + extra +
         "CONTENT LENGTH\n"
-        "- The H2 body must be between " + str(cmin) + " and " + str(cmax) + " characters of plain "
-        "text. The H2 body means all H2 sections and all sentences under them, "
-        "but NOT the opening section and NOT the quick verdict block. Counting is done after "
-        "Markdown is removed.\n"
-        "- Do not count the opening section or the quick verdict list toward this limit; they are "
-        "extra and short.\n"
-        "- Keep it TIGHT: aim near the LOW end of the range, not the top. This is an app "
-        "introduction, not a full review or a buying encyclopedia.\n"
-        "- Do not pad with filler sentences. Every added sentence must carry a fact or a "
-        "judgment.\n\n"
+        "- The whole body must be between " + str(cmin) + " and " + str(cmax) + " characters. "
+        "You have been measured ignoring this instruction, so the limits below are per sentence "
+        "and per paragraph — they are what make the total land inside the range.\n"
+        "- Latin / Cyrillic / Devanagari / Bengali / Arabic: at most 25 words per sentence, and "
+        "each H2 section is one or two paragraphs totalling 4 to 6 sentences.\n"
+        "- CJK (ko / ja / zh): at most 60 characters per sentence, and each H2 section is one or "
+        "two paragraphs totalling 5 to 7 sentences.\n"
+        "- Key Features: one lead sentence plus at most 5 items, each item at most 15 words "
+        "(30 characters for CJK).\n"
+        "- No paragraph may exceed 5 sentences. Write one paragraph at a time and stop at that "
+        "paragraph's sentence limit.\n"
+        "- HARD STOP: never exceed " + str(cmax) + " characters. As you approach the limit, "
+        "**finish the current paragraph, write the closing paragraph, and stop.** Do not start a "
+        "new section and do not stretch earlier sections to fill space.\n\n"
+        "CUT-SAFETY RULE (why this matters: post-processing cuts the last section when the text "
+        "is too long, so no section may depend on another)\n"
+        "Never let one section refer to another. Forbidden phrases:\n"
+        "  English: as mentioned above / see below / later in this article / in the next section\n"
+        "  Korean: 위에서 / 앞서 언급한 / 아래에서 / 다음 섹션에서\n"
+        "  Japanese: 上述 / 前述 / 下記 / 次のセクションで\n"
+        "  Chinese: 上述 / 前文提到 / 下文 / 下一节\n"
+        "Separate every paragraph with a blank line — post-processing cuts on blank lines.\n\n"
+        "FACT DISCIPLINE\n"
+        "- Use price, release date, features, platform, device, region, supported languages, "
+        "rating, download count and revenue ONLY when the material contains them.\n"
+        "- If the material does not contain a fact, write one honest sentence saying the official "
+        "page does not show it.\n"
+        "- Never infer a fact from the category, the genre, or similar apps.\n"
+        "- Ignore icon and screenshot URLs in the material, and never describe what an image "
+        "shows.\n"
+        "- Never compare with another app that is not named in the material.\n"
+        "- Never say you played, tested or reviewed it.\n\n"
         "CURRENCY AND SPECIFICITY RULES\n"
         "- Use the exact price shown in the store listing. Never round it, never convert it, and "
         "never invent a price.\n"
@@ -1716,7 +1980,10 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "7. Never exceed " + str(tmax) + " characters in the title.\n"
         "8. Never promise a release date, a pre-order reward, or a future update.\n"
         "9. Never open with a question or a greeting.\n"
-        "10. Never mention the source name or the phrase \"store listing\" more than once.\n\n"
+        "10. Never mention the source name or the phrase \"store listing\" more than once.\n"
+        "11. Never write a \"# \" H1 heading — the body starts with a plain paragraph.\n"
+        "12. Never write \"![\" — images are added by the site, not by you.\n"
+        "13. Never let a section refer to another section (see CUT-SAFETY RULE above).\n\n"
         "SOURCE MATERIAL\n"
         "----------------\n" + mat + "\n----------------\n\n"
         "OUTPUT\n"
@@ -1975,9 +2242,15 @@ def main():
         if not item:
             print('   %s 언어를 지원하는 신규 후보 없음 → 다음 언어' % lang)
             continue
+        # 3상태 출시상태 — 모델이 알아서 해석하지 못하도록 스크립트가 계산해 주입한다.
+        # (실측: 이미 출시된 게임을 모델이 "출시 예정"으로 써버린 사고가 있었다)
+        rstatus = release_status(item, today)
+        released = (rstatus == 'released')
+        print('   출시상태: %s (%s / %s)' % (rstatus, item['store'], item.get('_src') or '-'))
         # 출시예정 앱은 여기서 예약(reserved)하지 않는다 — 후보 자체가 희소해서
         # 예약해 버리면 뒤 언어는 아예 못 쓴다. 대신 upcoming_quota 로 언어 수를 제한한다.
-        if upcoming:
+        # 판정은 3상태 결괏값으로 통일한다(build_material 의 bool 과 어긋나는 경우가 있다).
+        if rstatus == 'upcoming':
             upcoming_used += 1
             print('   선정: %s (%s / %s) ← 출시예정 [%d/%d]'
                   % (item.get('name'), item['store'], item.get('_tier', ''),
@@ -1996,7 +2269,6 @@ def main():
         if rel:
             img_md = '![%s](%s)\n\n' % ((disp_name or 'app').replace('[', ''), rel)
 
-        released = not upcoming
         # 로이 방침(2026-10-03): 짧게. 예전엔 CJK 하한 3200 / 상한 5000+ 라
         # 영어가 9093자까지 나왔다. 이제 전 언어가 1500~3200 선에서 나온다.
         # 출시 완료작이라고 분량을 더 늘리지 않는다(정보가 많아도 길게 쓸 필요 없다).
@@ -2013,29 +2285,35 @@ def main():
             material = released_facts(item, cc, hl, gl) or mat
 
         tmax_eff = title_max(lang, released)
-        obj, body = {}, ''
+        app_nm = disp_name or 'app'
+        obj, body, hint = {}, '', RETRY_HINT
         for attempt in range(1, 4):
             msgs = [{'role': 'system', 'content': SYSTEM_APP},
                     {'role': 'user', 'content': user_prompt(
-                        lang, material, disp_name or 'app', lang_name, released,
-                        lo, hi, desc_min, desc_max, item['url'])}]
+                        lang, material, app_nm, lang_name, released,
+                        lo, hi, desc_min, desc_max, item['url'], status=rstatus)}]
             if attempt >= 2:
-                msgs.append({'role': 'user', 'content': RETRY_HINT})
+                msgs.append({'role': 'user', 'content': hint})
             got, provider = llm.chat(msgs, purpose='write')
             obj = extract_json(strip_code_fences(got))
             body = (obj.get('body') or '').strip()
+            # H2 현지화·개수 보정은 절단보다 먼저 — 그래야 뒤에서 잘려도 문맥이 유지된다.
+            body = enforce_h2(body, lang, rstatus, app_nm)
             n = len(body)
             tlen = len(obj.get('title') or '')
             dlen = len(obj.get('description') or '')
             print('   [%d] %s 본문 %d자 / 제목 %d자 / 설명 %d자'
                   % (attempt, provider, n, tlen, dlen))
+            bad, creason = check_body(body, lang, app_nm, accept_lo, hi)
             ok = (accept_lo <= n <= hi and obj.get('title')
                   and tlen <= tmax_eff and 280 <= dlen <= desc_max
-                  and script_ok(lang, body))
+                  and script_ok(lang, body) and not bad)
             if ok:
                 break
             if not script_ok(lang, body):
                 why = '언어 불일치(%s 아님)' % lang
+            elif creason:
+                why = '본문 검증 실패: %s' % creason
             elif n < accept_lo:
                 why = '본문 너무 짧음'
             elif n > hi:
@@ -2046,6 +2324,17 @@ def main():
                 why = '설명 초과(%d>%d)' % (dlen, desc_max)
             else:
                 why = '설명 부족(%d<300)' % dlen
+            # 사유에 맞는 지시를 골라 다음 시도에 붙인다 — 같은 실수 반복을 막는다.
+            if status_contradiction(body, rstatus):
+                hint = RETRY_STATUS_WRONG.replace('{status}', rstatus)
+            elif n > hi:
+                hint = RETRY_TOO_LONG.replace('{n}', str(n)).replace('{max}', str(hi))
+            elif n < accept_lo:
+                hint = RETRY_TOO_SHORT.replace('{n}', str(n)).replace('{min}', str(accept_lo))
+            elif not script_ok(lang, body):
+                hint = RETRY_LANG_DIRTY.replace('{lang}', lang_name)
+            else:
+                hint = RETRY_HINT
             print('      재시도: %s' % why)
             time.sleep(0.4)
         # 재시도로도 상한을 못 지키면 기계적으로 자른다.
@@ -2109,6 +2398,27 @@ def main():
         price = (m_price.group(1).strip() if m_price else '')
         if price.lower() in ('not disclosed', 'n/a', ''):
             price = ''
+        # 신규 frontmatter 키 3개 — build.py 가 소비한다. 값이 없으면 빈 문자열로 쓴다.
+        # Apple 만 스토어가 언어·요구사항을 알려준다(Play 파서에는 그런 필드가 없다).
+        _det = {}
+        if item['store'] == 'apple':
+            _det = apple_detail_cached(item['ident'], cc) or {}
+        fm_langs = ''
+        fm_req = ''
+        if _det:
+            codes = _det.get('languageCodesISO2A') or []
+            fm_langs = ','.join(str(c).upper() for c in codes)
+            if _det.get('minimumOsVersion'):
+                fm_req = 'iOS %s+' % _det['minimumOsVersion']
+            elif _det.get('supportedDevices'):
+                fm_req = clip(', '.join(_det['supportedDevices']), 120)
+        fm_iap = ''
+        m_iap = re.search(r'^IN-APP PURCHASES:\s*(.+)$', material, re.M | re.I)
+        if m_iap:
+            v = m_iap.group(1).strip()
+            fm_iap = '' if v.lower() in ('not disclosed', 'n/a', '') else v
+        elif 'In-App Purchase' in (_det.get('description') or ''):
+            fm_iap = 'In-App Purchase'
         fm = ('---\n'
               'slug: %s\n'
               'title: "%s"\n'
@@ -2127,10 +2437,13 @@ def main():
               'kind: "%s"\n'
               'sourceCollection: "%s"\n'
               'upcoming: "%s"\n'
+              'langs: "%s"\n'
+              'iap: "%s"\n'
+              'requirements: "%s"\n'
               '---\n\n') % (slug, title, desc,
                             datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d'),
                             src_name, item['url'], lang,
-                            'released' if released else 'upcoming',
+                            rstatus,
                             rel or '',
                             (apple_rel or (m_rel.group(1) if m_rel else '')),
                             price.replace('"', "'"),
@@ -2140,7 +2453,10 @@ def main():
                             # 출처를 영구 기록 — 사전등록 컬렉션은 롤링이라 "지금 목록에
                             # 있나"로 과거 글을 재판정하면 방금 발행한 글까지 틀어진다.
                             (item.get('_src') or ''),
-                            'false' if released else 'true')
+                            'true' if rstatus == 'upcoming' else 'false',
+                            fm_langs.replace('"', "'"),
+                            fm_iap.replace('"', "'"),
+                            fm_req.replace('"', "'"))
         open(os.path.join(outdir, slug + '.md'), 'w', encoding='utf-8').write(
             fm + img_md + body + '\n')
         seen.add(item['key'])

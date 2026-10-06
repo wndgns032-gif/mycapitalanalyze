@@ -420,6 +420,63 @@ FACT_STR = {
 }
 DEFAULT_FACT = FACT_STR['en']
 
+# 출시일 미정(TBA) 표기 — 카드 1행·팩트박스 공용
+FACT_TBA_STR = {
+    'en': 'TBA', 'ko': '미정', 'ja': '未定', 'zh': '待定', 'es': 'Por confirmar',
+    'de': 'Noch offen', 'fr': 'À confirmer', 'pt': 'A definir', 'id': 'Belum ditentukan',
+    'ru': 'Уточняется', 'hi': 'अघोषित', 'ar': 'لم يُحدَّد', 'bn': 'নির্ধারিত হয়নি',
+}
+FACT_TBA_DEFAULT = FACT_TBA_STR['en']
+
+# 지원 언어 / 인앱 결제 / 미지원 라벨 — 팩트박스·카드 공용
+FACT_LANGS_STR = {
+    'en': 'Languages', 'ko': '지원 언어', 'ja': '対応言語', 'zh': '支持语言', 'es': 'Idiomas',
+    'de': 'Sprachen', 'fr': 'Langues', 'pt': 'Idiomas', 'id': 'Bahasa', 'ru': 'Языки',
+    'hi': 'भाषाएँ', 'ar': 'اللغات', 'bn': 'ভাষাসমূহ'}
+FACT_IAP_STR = {
+    'en': 'In-app purchases', 'ko': '앱 내 구매', 'ja': 'アプリ内課金', 'zh': '应用内购买',
+    'es': 'Compras en la app', 'de': 'In-App-Käufe', 'fr': 'Achats intégrés', 'pt': 'Compras no app',
+    'id': 'Pembelian dalam aplikasi', 'ru': 'Внутриигровые покупки', 'hi': 'इन-ऐप खरीदारी',
+    'ar': 'عمليات الشراء داخل التطبيق', 'bn': 'ইন-অ্যাপ কেনাকাটা'}
+FACT_NA_STR = {
+    'en': 'not supported', 'ko': '미지원', 'ja': '非対応', 'zh': '不支持', 'es': 'no compatible',
+    'de': 'nicht unterstützt', 'fr': 'non pris en charge', 'pt': 'não suportado', 'id': 'tidak didukung',
+    'ru': 'не поддерживается', 'hi': 'समर्थित नहीं', 'ar': 'غير مدعوم', 'bn': 'সমর্থিত নয়'}
+
+# 목록을 '출시 예정' / '신규 출시' 두 그룹으로 나눌 때의 소제목.
+# GAME_STR 튜플 인덱스는 건드리지 않기 위해 별도 dict 를 쓴다.
+GAME_GROUP_STR = {
+    'en': ('Upcoming', 'New & Available'),
+    'ko': ('출시 예정', '신규 출시'),
+    'ja': ('配信予定', '新着・配信中'),
+    'zh': ('即将上线', '已上线新作'),
+    'es': ('Próximamente', 'Novedades'),
+    'de': ('Demnächst', 'Neu erschienen'),
+    'fr': ('Bientôt disponible', 'Nouveautés'),
+    'pt': ('Em breve', 'Novidades'),
+    'id': ('Segera hadir', 'Rilis baru'),
+    'ru': ('Скоро выйдет', 'Новинки'),
+    'hi': ('जल्द आ रहा है', 'नया और उपलब्ध'),
+    'ar': ('قريبًا', 'جديد ومتاح'),
+    'bn': ('শীঘ্রই আসছে', 'নতুন ও উপলব্ধ'),
+}
+GAME_GROUP_DEFAULT = GAME_GROUP_STR['en']
+
+# 상세 페이지 빵부스러기 섹션명 (홈 › 앱 & 게임 › 제목)
+GAME_CRUMB_STR = {
+    'en': 'Apps & Games', 'ko': '앱 & 게임', 'ja': 'アプリ & ゲーム', 'zh': '应用与游戏',
+    'es': 'Apps y juegos', 'de': 'Apps & Spiele', 'fr': 'Apps et jeux', 'pt': 'Apps e jogos',
+    'id': 'Aplikasi & Game', 'ru': 'Приложения и игры', 'hi': 'ऐप्स और गेम',
+    'ar': 'التطبيقات والألعاب', 'bn': 'অ্যাপ ও গেম'}
+GAME_CRUMB_DEFAULT = GAME_CRUMB_STR['en']
+
+# 빵부스러기 첫 항목(홈) — 헤더의 'Home' 은 번역이 없어 별도 표기를 쓴다.
+HOME_CRUMB_STR = {
+    'en': 'Home', 'ko': '홈', 'ja': 'ホーム', 'zh': '首页', 'es': 'Inicio', 'de': 'Start',
+    'fr': 'Accueil', 'pt': 'Início', 'id': 'Beranda', 'ru': 'Главная', 'hi': 'होम',
+    'ar': 'الرئيسية', 'bn': 'হোম'}
+HOME_CRUMB_DEFAULT = HOME_CRUMB_STR['en']
+
 CATEGORY_GRADIENT = {
     'Monetary Policy': 'from-brand-700 to-brand-500',
     'Inflation': 'from-slate-700 to-slate-500',
@@ -812,17 +869,28 @@ def lang_switcher(current, slug=None, available=None, section=None):
             '<span class="text-slate-500 mr-1 text-sm">Language:</span>' + ''.join(btns) + '</div>')
 
 
-def alternates_html(slug, available, section=None):
-    """검색엔진용 hreflang 상호 링크 (존재하는 언어만)."""
+def alternates_html(lang, slug, available, section=None):
+    """검색엔진용 hreflang 상호 링크 (존재하는 언어만).
+
+    게임 개별 글은 언어마다 **다른 앱**을 다루므로 slug 가 보통 한 언어에만 존재한다.
+    이때 타언어 URL을 출력하면 없는 페이지를 서로 가리키는 잘못된 신호가 되므로
+    자기 자신 1개 + x-default(자기 자신) 만 내보낸다. 섹션 홈은 전 언어에 실재하므로 기존대로.
+    """
     is_game = (section == 'game')
     url_fn = game_post_url if is_game else post_url
     home_fn = game_home_path if is_game else home_path
     tags = []
     if slug:
-        for code in LANG_META:
-            if code in available:
-                tags.append(f'  <link rel="alternate" hreflang="{code}" href="{url_fn(code, slug)}" />')
-        tags.append(f'  <link rel="alternate" hreflang="x-default" href="{url_fn("en", slug)}" />')
+        if is_game:
+            me = url_fn(lang, slug)
+            tags.append(f'  <link rel="alternate" hreflang="{lang}" href="{me}" />')
+            tags.append(f'  <link rel="alternate" hreflang="x-default" href="{me}" />')
+        else:
+            for code in LANG_META:
+                if code in available:
+                    tags.append(f'  <link rel="alternate" hreflang="{code}" href="{url_fn(code, slug)}" />')
+            if 'en' in available:
+                tags.append(f'  <link rel="alternate" hreflang="x-default" href="{url_fn("en", slug)}" />')
     else:
         for code in LANG_META:
             if code in available:
@@ -840,7 +908,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
         abs_url = image if image.startswith('http') else DOMAIN + image
         og_img = (f'  <meta property="og:image" content="{htmllib.escape(abs_url)}" />\n'
                   f'  <meta name="twitter:image" content="{htmllib.escape(abs_url)}" />\n')
-    head_extra = '' if plain else alternates_html(slug, available or {lang}, section)
+    head_extra = '' if plain else alternates_html(lang, slug, available or {lang}, section)
     robots = ('  <meta name="robots" content="noindex, follow" />\n' if noindex else '')
     ld = '\n'.join('  <script type="application/ld+json">' + json.dumps(b, ensure_ascii=False) + '</script>'
                    for b in (jsonld_blocks or []))
@@ -1008,7 +1076,35 @@ def game_facts(fm, md=''):
         'news': str(fm.get('news', '')).strip().lower() in ('1', 'true', 'yes', 'y'),
         'checked': (fm.get('date') or '').strip(),
         'image': (fm.get('image') or '').strip() or first_image(md),
+        # app_radar 가 스토어에서 뽑아 넣는 키. 아직 없는 글도 있으므로 빈 문자열 허용.
+        'langs': (fm.get('langs') or '').strip(),
+        'iap': (fm.get('iap') or '').strip(),
+        'requirements': (fm.get('requirements') or '').strip(),
+        'lang': (fm.get('lang') or '').strip(),
     }
+
+
+def langs_codes(f):
+    """facts['langs'] → 소문자 2자리 코드 목록. 값이 없으면 글 자체 언어로 폴백."""
+    raw = (f or {}).get('langs') or ''
+    toks = [t.strip().lower().split('-')[0] for t in re.split(r'[,\s/;]+', raw) if t.strip()]
+    if not toks:
+        own = ((f or {}).get('lang') or '').strip().lower()
+        toks = [own] if own else []
+    return [t for t in toks if t]
+
+
+def langs_value(lang, f):
+    """표시용 지원 언어 문구. 현재 UI 언어 지원 여부를 함께 적는다."""
+    codes = langs_codes(f)
+    if not codes:
+        return ''
+    shown = ', '.join(c.upper() for c in codes[:8])
+    if len(codes) > 8:
+        shown += ' …'
+    if lang in codes:
+        return shown
+    return '%s · %s' % (shown, FACT_NA_STR.get(lang, FACT_NA_STR['en']))
 
 
 def fact_box_html(lang, f):
@@ -1019,12 +1115,14 @@ def fact_box_html(lang, f):
     t = FACT_STR.get(lang, DEFAULT_FACT)
     status = t[7] if f['upcoming'] else (t[8] if f['releaseDate'] else '')
     rows = [(t[1], f['releaseDate']), (t[2], f['price']), (t[5], status),
+            (FACT_LANGS_STR.get(lang, FACT_LANGS_STR['en']), langs_value(lang, f)),
+            (FACT_IAP_STR.get(lang, FACT_IAP_STR['en']), (f.get('iap') or '').strip()),
             (t[3], f['platform']), (t[4], f['developer']), (t[6], f['checked'])]
     body = '\n'.join(
         '    <div class="flex justify-between gap-4 py-1.5 border-b border-slate-100 '
         'dark:border-slate-800 last:border-0">'
         '<dt class="text-slate-500 dark:text-slate-400 shrink-0">%s</dt>'
-        '<dd class="text-right font-medium text-slate-900 dark:text-slate-100 min-w-0 break-words">%s</dd></div>'
+        '<dd class="text-end font-medium text-slate-900 dark:text-slate-100 min-w-0 break-words">%s</dd></div>'
         % (htmllib.escape(k), htmllib.escape(v))
         for k, v in rows if v)
     if not body:
@@ -1077,8 +1175,62 @@ def store_cta_html(lang, url, store_name, news=False):
             % (htmllib.escape(url), htmllib.escape(label), htmllib.escape(t[11])))
 
 
+def store_text_link_html(lang, url):
+    """본문 중간용 중립 텍스트 링크 CTA — 배너처럼 보이지 않게 한 줄로."""
+    if not url:
+        return ''
+    t = FACT_STR.get(lang, DEFAULT_FACT)
+    return ('<p class="my-6 text-sm"><a class="inline-block py-2 underline underline-offset-2 '
+            'hover:text-fuchsia-700" rel="nofollow noopener" target="_blank" '
+            'href="%s">%s</a></p>' % (htmllib.escape(url), htmllib.escape(t[10])))
+
+
+def insert_after_h2(html, n, snippet):
+    """n번째 <h2> 섹션 뒤에 snippet 을 끼운다. h2 가 n개뿐이면 문말에 붙인다."""
+    if not snippet:
+        return html or ''
+    ms = list(re.finditer(r'<h2 id="h-\d+">', html or ''))
+    if len(ms) < n:
+        return (html or '') + snippet
+    pos = ms[n].start() if len(ms) > n else len(html or '')
+    return (html or '')[:pos] + snippet + (html or '')[pos:]
+
+
+def game_card_rows(lang, p):
+    """카드 결정정보 4행 — 출시일·가격·플랫폼/분류·지원 언어.
+
+    목록에서 스토어로 넘어갈지 판단하는 값만 남긴다(CTR·이탈 개선).
+    """
+    f = p.get('facts') or {}
+    t = FACT_STR.get(lang, DEFAULT_FACT)
+    tba = FACT_TBA_STR.get(lang, FACT_TBA_DEFAULT)
+    iap_lbl = FACT_IAP_STR.get(lang, FACT_IAP_STR['en'])
+    rel = (f.get('releaseDate') or '').strip()
+    dd = dday_badge_html(rel)
+    row1 = ('<time datetime="%s" class="tabular-nums">%s</time>%s'
+            % (htmllib.escape(rel), htmllib.escape(rel),
+               (' ' + dd) if dd else '')) if rel else htmllib.escape(tba)
+    price = (f.get('price') or '').strip()
+    if price and (f.get('iap') or '').strip():
+        row2 = '%s · %s' % (htmllib.escape(price), htmllib.escape(iap_lbl))
+    else:
+        row2 = htmllib.escape(price) if price else htmllib.escape(tba)
+    genre = (f.get('genre') or '').strip().split(',')[0].strip()
+    bits3 = [b for b in ((f.get('platform') or '').strip(), genre or p.get('category', '')) if b]
+    row3 = htmllib.escape(' · '.join(bits3)) if bits3 else htmllib.escape(tba)
+    row4 = htmllib.escape(langs_value(lang, f) or tba)
+    rows = [(t[1], row1), (t[2], row2), (t[3], row3),
+            (FACT_LANGS_STR.get(lang, FACT_LANGS_STR['en']), row4)]
+    return '\n'.join(
+        '      <div class="flex justify-between gap-3 py-1 border-b border-slate-100 '
+        'dark:border-slate-800 last:border-0">'
+        '<dt class="text-slate-400 dark:text-slate-500 shrink-0">%s</dt>'
+        '<dd class="text-end font-medium text-slate-800 dark:text-slate-100 min-w-0 break-words">%s</dd></div>'
+        % (htmllib.escape(k), v) for k, v in rows)
+
+
 def game_card_html(lang, p):
-    """목록 카드: 스토어 실제 이미지 + 상태/가격 뱃지 + 출시일·가격 한 줄."""
+    """목록 카드: 스토어 실제 이미지 + 상태/가격 뱃지 + 결정정보 4행."""
     f = p.get('facts') or game_facts({}, p.get('body', ''))
     t = FACT_STR.get(lang, DEFAULT_FACT)
     img = f.get('image') or ''
@@ -1099,22 +1251,62 @@ def game_card_html(lang, p):
         badge = ('<span class="text-[11px] font-semibold px-2 py-0.5 '
                  'rounded bg-slate-800/90 text-white">%s</span>' % htmllib.escape(f['price']))
     if badge:
-        badge = '<span class="absolute top-2 right-2 flex flex-col items-end gap-1">' + badge + '</span>'
-    bits = [b for b in (f.get('releaseDate'), f.get('price'), f.get('platform')) if b]
-    meta = ('<p class="mt-1 text-xs text-fuchsia-700 dark:text-fuchsia-300 font-medium">%s</p>'
-            % htmllib.escape(' · '.join(bits))) if bits else ''
-    return f'''<article class="border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden hover:shadow-md transition-shadow bg-white dark:bg-slate-900 flex flex-col">
+        badge = '<span class="absolute top-2 end-2 flex flex-col items-end gap-1">' + badge + '</span>'
+    return f'''<article class="border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden hover:shadow-md transition-shadow bg-white dark:bg-slate-900 flex flex-col min-w-0">
   <a class="relative block aspect-[16/10] overflow-hidden bg-gradient-to-br from-fuchsia-800 to-fuchsia-600" href="{p.get('href')}" aria-label="{htmllib.escape(p.get('title', ''))}">
     {thumb}{badge}
   </a>
-  <div class="p-4 sm:p-5">
+  <div class="p-4 sm:p-5 min-w-0">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-1">
       <span class="bg-fuchsia-50 text-fuchsia-700 px-2 py-0.5 rounded uppercase tracking-wide">{htmllib.escape(p.get('category', ''))}</span>
       <time datetime="{p.get('date', '')}">{p.get('date', '')}</time>
     </div>
-    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-1 leading-snug"><a class="hover:text-fuchsia-700" href="{p.get('href')}">{htmllib.escape(p.get('title', ''))}</a></h2>
-    {meta}
+    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-1 leading-snug line-clamp-2"><a class="hover:text-fuchsia-700" href="{p.get('href')}">{htmllib.escape(p.get('title', ''))}</a></h2>
+    <dl class="mt-2 text-xs">
+{game_card_rows(lang, p)}
+    </dl>
     <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 line-clamp-3">{htmllib.escape(p.get('desc', ''))}</p>
+  </div>
+</article>'''
+
+
+def game_hero_html(lang, p):
+    """출시예정 Hero 카드 — D-day 를 주시각으로 써서 목록 첫 화면에서 우위를 준다.
+
+    D-day 가 없으면(날짜 오파싱·999일 초과 등) Hero 를 쓰지 않고 일반 카드로 돌려보낸다.
+    이미 출시된 글은 호출하지 않는다(build_game_index 가 걸러낸다).
+    """
+    f = p.get('facts') or {}
+    t = FACT_STR.get(lang, DEFAULT_FACT)
+    rel = (f.get('releaseDate') or '').strip()
+    dd = dday_str(rel)
+    if not dd:
+        return game_card_html(lang, p)
+    img = f.get('image') or ''
+    if img:
+        thumb = ('<img src="%s" alt="" decoding="async" '
+                 'class="w-full h-full object-cover object-top" />' % htmllib.escape(img))
+    else:
+        thumb = ('<span class="text-white/90 text-sm font-semibold uppercase tracking-widest px-4 '
+                 'text-center">%s</span>' % htmllib.escape(p.get('category', '')))
+    badge = ('<span class="absolute top-3 end-3 flex flex-col items-end gap-1">'
+             '<span class="text-[11px] font-semibold px-2 py-0.5 rounded '
+             'bg-fuchsia-700 text-white">%s</span></span>' % htmllib.escape(t[7]))
+    return f'''<article data-hero="1" class="sm:col-span-2 border-2 border-fuchsia-300 dark:border-fuchsia-800 rounded-lg overflow-hidden hover:shadow-md transition-shadow bg-white dark:bg-slate-900 grid sm:grid-cols-2 min-w-0">
+  <a class="relative block aspect-[16/9] sm:aspect-[4/3] overflow-hidden bg-gradient-to-br from-fuchsia-800 to-fuchsia-600" href="{p.get('href')}" aria-label="{htmllib.escape(p.get('title', ''))}">
+    {thumb}{badge}
+  </a>
+  <div class="p-5 sm:p-6 flex flex-col justify-center min-w-0">
+    <div class="flex items-center gap-2 text-xs text-slate-500 mb-1">
+      <span class="bg-fuchsia-50 text-fuchsia-700 px-2 py-0.5 rounded uppercase tracking-wide">{htmllib.escape(p.get('category', ''))}</span>
+      <time datetime="{p.get('date', '')}">{p.get('date', '')}</time>
+    </div>
+    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2 leading-snug line-clamp-2"><a class="hover:text-fuchsia-700" href="{p.get('href')}">{htmllib.escape(p.get('title', ''))}</a></h2>
+    <p class="text-5xl sm:text-6xl font-bold tabular-nums leading-none bg-gradient-to-r from-amber-500 to-amber-300 bg-clip-text text-transparent">{htmllib.escape(dd)}</p>
+    <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">{htmllib.escape(t[1])} <time datetime="{htmllib.escape(rel)}" class="font-medium text-slate-800 dark:text-slate-100 tabular-nums">{htmllib.escape(rel)}</time></p>
+    <dl class="mt-3 text-xs">
+{game_card_rows(lang, p)}
+    </dl>
   </div>
 </article>'''
 
@@ -1169,10 +1361,15 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
         src = (f'\n    <p class="mt-4 text-xs text-slate-500">{htmllib.escape(s[4])}: '
                f'<a class="inline-block py-2 underline hover:text-brand-600" rel="nofollow noopener" target="_blank" '
                f'href="{htmllib.escape(source_url)}">{htmllib.escape(source_name or source_url)}</a></p>')
-    # 앱·게임 글: 첫 화면에 팩트박스 + 목차를 먼저 보여주고 광고는 그 아래로 내린다.
+    # 앱·게임 글: 첫 화면에 팩트박스 + 스토어 버튼을 먼저 보여주고 광고는 그 아래로 내린다.
     box = fact_box_html(lang, f) if is_game else ''
     toc = toc_html(body_html, lang) if is_game else ''
-    top_ad = ad_unit('post_top')
+    # 게임 상세 첫 화면은 무광고(post_top 제외) — 트래픽이 적을 때 광고를 늘려도
+    # 수익이 늘지 않고 체류·정책 리스크만 커진다(로이 지시 2026-10-06).
+    top_ad = '' if is_game else ad_unit('post_top')
+    # 스토어 CTA ① 결정표 바로 아래 (주 버튼)
+    cta_top = (store_cta_html(lang, source_url, source_name, news=bool(f.get('news')))
+               if is_game else '')
     # 인아티클(본문 중간) 광고 — 문단 경계 중간 지점에 끼워 넣는다.
     # 문단이 7개 미만이면 본문이 짧아 광고를 끼우지 않는다(2026-10-01 로이: 애드센스 승인 후 도입).
     mid_ad = ad_unit('post_mid')
@@ -1183,8 +1380,31 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
             half = max(3, len(parts) // 2)
             body_html = ('</p>'.join(parts[:half]) + '</p>\n' + mid_ad + '\n'
                          + '</p>'.join(parts[half:]))
+    # 스토어 CTA ② 두 번째 h2 섹션 뒤 — 중립 텍스트 링크
+    if is_game:
+        body_html = insert_after_h2(body_html, 2, store_text_link_html(lang, source_url))
+    # 스토어 CTA ③ 문말 카드
     bottom = (store_cta_html(lang, source_url, source_name, news=bool(f.get('news')))
               if is_game else affiliate_box(lang, category))
+    # 게임 상세 광고는 post_mid·post_bottom·post_related 최대 3개.
+    # 광고와 스토어 CTA 사이에는 120px 이상 띄운다(오클릭·정책 리스크 완화).
+    bottom_ad = (ad_unit('post_bottom', wrap_class='mt-10 mb-[120px]') if is_game
+                 else ad_unit('post_bottom'))
+    # 상세 빵부스러기: 홈 › 앱 & 게임 › 제목
+    crumb = ''
+    if is_game:
+        crumb = ('  <nav class="mb-3 text-xs text-slate-500 dark:text-slate-400" '
+                 'aria-label="Breadcrumb">'
+                 '<a class="inline-block py-1 underline-offset-2 hover:underline" href="%s">%s</a>'
+                 '<span class="px-1.5" aria-hidden="true">&rsaquo;</span>'
+                 '<a class="inline-block py-1 underline-offset-2 hover:underline" href="%s">%s</a>'
+                 '<span class="px-1.5" aria-hidden="true">&rsaquo;</span>'
+                 '<span aria-current="page" class="text-slate-700 dark:text-slate-300">%s</span>'
+                 '</nav>' % (home_path(lang),
+                             htmllib.escape(HOME_CRUMB_STR.get(lang, HOME_CRUMB_DEFAULT)),
+                             game_home_path(lang),
+                             htmllib.escape(GAME_STR.get(lang, DEFAULT_GAME)[0]),
+                             htmllib.escape(title)))
     # 사전예약 글: 헤더에 D-데이 칩. 공유 버튼 마운트(렌더는 main.js).
     dday_chip = ''
     if is_game and f.get('upcoming'):
@@ -1199,7 +1419,7 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
                  % (lang, htmllib.escape(u[6], quote=True), htmllib.escape(u[7], quote=True)))
     content = f'''<article class="max-w-3xl mx-auto">
   <header class="mb-6">
-    <div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
+{crumb}    <div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
       <span class="{"bg-fuchsia-50 text-fuchsia-700" if is_game else "bg-brand-50 text-brand-700"} px-2 py-0.5 rounded uppercase tracking-wide">{htmllib.escape(category)}</span>
       <time datetime="{date}">{htmllib.escape(s[3])}: {date}</time>
       <span class="text-slate-400">&middot;</span>
@@ -1209,10 +1429,11 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     <p class="text-slate-600 dark:text-slate-400">{htmllib.escape(desc)}</p>{src}
   </header>
   {box}
+  {cta_top}
   {toc}
   {top_ad}
   <div class="prose prose-slate dark:prose-invert max-w-none">{body_html}</div>
-  {ad_unit('post_bottom')}
+  {bottom_ad}
   {bottom}
   {related_html(lang, slug, posts_in_lang, s[5], href_fn)}
   {ad_unit('post_related', wrap_class='mt-8')}
@@ -1268,6 +1489,45 @@ def homepage_widgets(lang, posts, game_list):
              f'data-str-wait="{htmllib.escape(w[3], quote=True)}" data-str-unit="{htmllib.escape(w[4], quote=True)}"')
     pop_attrs = (f'data-locale="{lang}" data-str-wait="{htmllib.escape(w[3], quote=True)}" '
                  f'data-str-views="{htmllib.escape(u[5], quote=True)}"')
+    # 신규 앱·게임 미니 모듈 — 같은 언어 글이 없으면 블록 전체를 렌더하지 않는다(빈 섹션 금지).
+    g_items = [p for p in (game_list or []) if not p.get('legacy')][:3]
+    game_block = ''
+    if g_items:
+        glabel = GAME_GROUP_STR.get(lang, GAME_GROUP_DEFAULT)[1]
+        lis = []
+        for p in g_items:
+            f = (p.get('facts') or {})
+            img = (f.get('image') or '').strip()
+            if img:
+                icon = ('<img src="%s" alt="" loading="lazy" decoding="async" width="40" height="40" '
+                        'class="w-10 h-10 rounded-full object-cover shrink-0" />'
+                        % htmllib.escape(img))
+            else:
+                icon = ('<span class="w-10 h-10 rounded-full shrink-0 bg-fuchsia-100 '
+                        'dark:bg-fuchsia-900 flex items-center justify-center text-fuchsia-700 '
+                        'dark:text-fuchsia-300 text-xs font-bold">%s</span>'
+                        % htmllib.escape((p.get('category') or '·')[:2]))
+            sub = ' · '.join(b for b in ((f.get('releaseDate') or '').strip(),
+                                         (f.get('price') or '').strip()) if b)
+            lis.append(
+                '    <li class="min-w-0"><a class="flex items-center gap-3 py-2 hover:text-fuchsia-700" '
+                'href="%s">%s<span class="min-w-0"><span class="block text-sm font-medium '
+                'text-slate-900 dark:text-slate-100 line-clamp-1">%s</span>'
+                '<span class="block text-xs text-slate-500 dark:text-slate-400 tabular-nums">%s</span>'
+                '</span></a></li>'
+                % (htmllib.escape(p.get('href') or game_post_href(lang, p['slug'])), icon,
+                   htmllib.escape(p.get('title', '')), htmllib.escape(sub)))
+        game_block = (
+            '  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 '
+            'bg-white dark:bg-slate-900">\n'
+            '    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">%s</h2>\n'
+            '    <ul class="divide-y divide-slate-100 dark:divide-slate-800">\n%s\n    </ul>\n'
+            '    <p class="mt-3"><a class="tap px-3 text-sm text-fuchsia-700 dark:text-fuchsia-300 '
+            'font-semibold" href="%s">%s</a></p>\n'
+            '  </div>'
+            % (htmllib.escape(glabel), '\n'.join(lis),
+               htmllib.escape(game_home_path(lang)),
+               htmllib.escape(GAME_STR.get(lang, DEFAULT_GAME)[0])))
     return f'''
 <section class="mt-10 grid gap-6 lg:grid-cols-2 items-start">
   <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
@@ -1283,6 +1543,7 @@ def homepage_widgets(lang, posts, game_list):
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(u[4])}</h2>
     <div id="mca-pop" {pop_attrs}></div>
   </div>
+{game_block}
 </section>
 <script>window.__POSTS__={payload};</script>'''
 
@@ -1478,6 +1739,9 @@ def dday_str(release_date, today=None):
         return ''
     t = today or datetime.date.today()
     n = (d - t).days
+    # 999일을 넘는 날짜는 오파싱(연도 오독 등)일 수 있어 표시하지 않는다.
+    if n > 999:
+        return ''
     if n > 0:
         return 'D-%d' % n
     if n == 0:
@@ -1490,28 +1754,61 @@ def dday_badge_html(release_date, cls=''):
     dd = dday_str(release_date)
     if not dd:
         return ''
-    return ('<span class="text-[11px] font-semibold px-2 py-0.5 rounded '
+    return ('<span class="text-[11px] font-semibold px-2 py-0.5 rounded tabular-nums '
             'bg-amber-500 text-white%s">%s</span>' % (cls, htmllib.escape(dd)))
+
+
+def is_upcoming_future(p):
+    """출시 예정 + 미래 출시일이 확인된 글 (Hero 자격 — D-day 가 있어야 한다)."""
+    f = p.get('facts') or {}
+    if not f.get('upcoming'):
+        return False
+    rel = (f.get('releaseDate') or '').strip()
+    return bool(rel) and rel > datetime.date.today().isoformat()
+
+
+def is_upcoming_group(p):
+    """'출시 예정' 그룹 편성용. 출시일이 이미 지난 사전예약 글은 출시된 것으로 본다."""
+    f = p.get('facts') or {}
+    if not f.get('upcoming'):
+        return False
+    rel = (f.get('releaseDate') or '').strip()
+    return (not rel) or rel > datetime.date.today().isoformat()
 
 
 def build_game_index(lang, plist, available, kind=''):
     """/game/ (전체·앱·게임) 인덱스. 기존 /game/ URL 은 그대로 두고 apps/ games/ 를 추가."""
     g = GAME_STR.get(lang, DEFAULT_GAME)
     shown = [p for p in plist if not kind or p.get('kind') == kind] if kind else plist
-    cards = '\n'.join(game_card_html(lang, p) for p in shown)
     infeed = ad_unit('index_infeed', wrap_class='sm:col-span-2 my-6 text-center')
     empty = (f'<p class="text-sm text-slate-500 dark:text-slate-400 py-8 text-center">'
              f'{htmllib.escape(TAB_STR.get(lang, DEFAULT_TAB)[0])} — 0</p>')
+    # 목록 첫 항목이 "미래 출시예정"일 때만 Hero 를 쓴다. 이미 출시된 글은 Hero 자격 없음.
+    blocks = []
+    rest = shown
+    if shown and is_upcoming_future(shown[0]):
+        blocks.append('<div class="grid gap-4 sm:grid-cols-2">\n%s\n</div>'
+                      % game_hero_html(lang, shown[0]))
+        rest = shown[1:]
+    up_list = [p for p in rest if is_upcoming_group(p)]
+    new_list = [p for p in rest if not is_upcoming_group(p)]
+    labels = GAME_GROUP_STR.get(lang, GAME_GROUP_DEFAULT)
+    for i, (label, items) in enumerate(((labels[0], up_list), (labels[1], new_list))):
+        if not items:
+            continue      # 빈 그룹은 제목까지 통째로 렌더하지 않는다
+        grid = ('<div class="grid gap-4 sm:grid-cols-2">\n%s\n%s\n</div>'
+                % ('\n'.join(game_card_html(lang, p) for p in items), infeed if i == 1 else ''))
+        blocks.append('<section class="space-y-3">\n'
+                      '<h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">'
+                      '%s</h2>\n%s\n</section>' % (htmllib.escape(label), grid))
+    body = '\n'.join(blocks) if blocks else empty
     content = f'''<div class="space-y-6">
   <div>
     <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">{htmllib.escape(g[1])}</h1>
     <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{htmllib.escape(g[2])}</p>
   </div>
   {game_tabs(lang, kind)}
-  <div class="grid gap-4 sm:grid-cols-2">
-{cards if shown else empty}
-  {infeed}
-  </div>
+  {body}
   {ad_unit('index')}
   {ad_unit('index_bottom')}
 </div>'''
@@ -2048,6 +2345,8 @@ def main():
                        'kind': LEGACY_KIND.get(p['slug'], 'app'),
                        'facts': game_facts({}, p['body'])})
         game_posts['en'].sort(key=lambda p: p['date'], reverse=True)
+        # 레거시 글을 합치면서 최신순 정렬을 다시 걸면 출시예정이 밀려난다 → 재정렬로 복구.
+        game_posts['en'] = upcoming_first(game_posts['en'])
 
     # 번역 로드: {slug: {lang: {...}}}
     trans = {}
