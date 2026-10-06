@@ -127,6 +127,13 @@ MAX_TRY = 40
 #      (Apple 피드가 스토어프론트별로 다르고, Play 관련앱 확장도 hl/gl 별로 다르다).
 UPCOMING_SHARE_LANGS = 13   # 언어 수와 동일 — 모든 언어가 출시예정을 받을 수 있게
 
+# 출시예정 딱지를 요구하지 않는 언어 (로이 지시 2026-10-06):
+#   "bn은 그냥 최신 아무 게임이면 돼!"
+#   bd(방글라데시) 스토어프론트는 사전등록·신작 피드가 사실상 비어 있어서
+#   출시예정만 기다리면 글 자체가 안 나간다(실측: bn 만 출시예정 0건).
+#   → 이 언어들은 '최신 게임'을 1순위로 잡고, 출시예정은 있으면 덤으로 쓴다.
+ANY_GAME_LANGS = {'bn'}
+
 # 구글플레이 사전등록(출시예정) 표기 — 언어권별 버튼/배지 문구
 PREORDER_MARKERS = [
     '사전 등록', '사전등록', '출시 예정', '출시예정',
@@ -647,9 +654,14 @@ def collect(cc, hl, gl, use_play=True, apple_pool=None):
     else:
         pool.extend(apple_pool)
     if use_play:
-        got_any = False
+        # ⚠️ 2026-10-06 실측 버그: 예전엔 "아무 후보라도 얻으면 성공(got_any)" 으로 판정했다.
+        #   gl=bd 는 사전등록 목록을 안 주지만 **얼리액세스 목록은 준다** →
+        #   후보가 생겼으니 성공으로 보고 인도(in) 폴백을 건너뛰었다.
+        #   결과: bn 만 "사전등록 확인 59개 중 0개" — 사전등록을 영원히 못 받았다.
+        #   → 폴백 판정을 **전체 후보 수가 아니라 사전등록(hint) 수**로 한다.
+        got_pre = 0
         for cand in ([gl] + ([PLAY_GL_FALLBACK[gl]] if gl in PLAY_GL_FALLBACK else [])):
-            if got_any:
+            if got_pre:
                 break
             for url, kind, hint in play_collections(hl, cand):
                 try:
@@ -659,7 +671,8 @@ def collect(cc, hl, gl, use_play=True, apple_pool=None):
                     continue
                 if not ids:
                     continue
-                got_any = True
+                if hint:
+                    got_pre += len(ids)
                 for pkg in ids:
                     # hint == 'upcoming' → 사전등록 컬렉션에서 왔다는 것 자체가 출처 기반 증거.
                     # 상세 페이지를 뒤져 추측하지 않는다(그 방식은 오탐으로 폐기).
@@ -762,13 +775,31 @@ def mark_upcoming(cands):
 def is_upcoming_cand(c, today):
     """출시예정 판정 — '미래 출시일이 확인된 경우에만' True.
 
+    로이 확정 원칙 (2026-10-06):
+      "동일한 게임이 플레이스토어/앱스토어에서 출시일이 오늘보다 이전이면
+       그건 출시예정 게임이 아니라 이미 출시된 게임이다."
+      → 출시일 <= 오늘  ⇒ 무조건 False (딱지 붙이지 않음)
+      → 출시일 없음    ⇒ False (추측 금지)
+      → 출시일 > 오늘  ⇒ True
+
     날짜가 없거나 오늘/과거면 절대 출시예정이 아니다. (2026-10-04 로이 지적:
-    출시일이 지났는데도 '출시 예정' 딱지가 붙어 있는 글이 발견됨)
+    출시일이 지났는데도 '출시 예정' 딱지가 붙어 있는 글이 발견됨 — 레이싱마스터)
+
+    Play 는 예외적으로 **날짜가 아니라 출처**로 판정한다:
+      Play 상세의 날짜는 '최종 업데이트일'이라 출시일이 아니다(실측).
+      그래서 Play 는 사전등록 전용 컬렉션에서 왔다는事实(_src) 만을 근거로 쓴다.
     """
     if c.get('store') == 'play':
         return bool(c.get('upcoming'))
     rel = c.get('released')
-    return bool(rel and rel.replace(tzinfo=None) > today)
+    if not rel:
+        return False
+    if isinstance(rel, str):
+        try:
+            rel = datetime.datetime.strptime(rel[:10], '%Y-%m-%d')
+        except Exception:
+            return False
+    return bool(rel.replace(tzinfo=None) > today)
 
 
 def load_upcoming_backlog(path, today_str):
@@ -998,7 +1029,7 @@ def mark_games(cands, cc):
     return cands
 
 
-def rank_candidates(cands, seen, pub_urls, pub_ids, today, rotate_idx=0):
+def rank_candidates(cands, seen, pub_urls, pub_ids, today, rotate_idx=0, lang=None):
     """로이 확정 우선순위 (2026-10-03 개정) — 고정 순서, 회전 없음:
        1 출시예정 게임(Play) → 2 출시예정 앱(Play) → 3 출시예정 게임(Apple)
        → 4 신작 게임(Play) → 5 신작 게임(Apple) → 6 신작 앱(Play) → 7 신작 앱(Apple)
@@ -1051,15 +1082,27 @@ def rank_candidates(cands, seen, pub_urls, pub_ids, today, rotate_idx=0):
         k %= len(lst)
         return lst[k:] + lst[:k]
 
+    # 로이 지시 2026-10-06: bn 같은 언어는 출시예정을 기다리지 말고 최신 게임부터.
+    #   (bd 스토어에 사전등록 물량이 없어 출시예정만 노리면 글이 안 나간다)
+    if lang in ANY_GAME_LANGS:
+        tiers = ((play_game_new, True, '신작게임(Play)'),
+                 (apple_game_new, True, '신작게임(Apple)'),
+                 (play_game_up, False, '출시예정게임(Play)'),
+                 (apple_game_up, False, '출시예정게임(Apple)'),
+                 (play_app_new, True, '신작앱(Play)'),
+                 (apple_app_new, True, '신작앱(Apple)'))
+    else:
+        tiers = ((play_game_up, False, '출시예정게임(Play)'),
+                 (play_app_up, False, '출시예정앱(Play)'),
+                 (apple_game_up, False, '출시예정게임(Apple)'),
+                 (play_game_new, True, '신작게임(Play)'),
+                 (apple_game_new, True, '신작게임(Apple)'),
+                 (play_app_new, True, '신작앱(Play)'),
+                 (apple_app_new, True, '신작앱(Apple)'),
+                 (apple_app_up, False, '출시예정앱(비상)'))
+
     out = []
-    for q, rev, tier in ((play_game_up, False, '출시예정게임(Play)'),
-                         (play_app_up, False, '출시예정앱(Play)'),
-                         (apple_game_up, False, '출시예정게임(Apple)'),
-                         (play_game_new, True, '신작게임(Play)'),
-                         (apple_game_new, True, '신작게임(Apple)'),
-                         (play_app_new, True, '신작앱(Play)'),
-                         (apple_app_new, True, '신작앱(Apple)'),
-                         (apple_app_up, False, '출시예정앱(비상)')):
+    for q, rev, tier in tiers:
         # 출시예정은 임박순(오름차순), 나머지는 최신순(내림차순)
         # 정렬 후에 회전해야 언어별로 "그 티어의 i번째"가 일관되게 달라진다.
         for c in rotate(sorted(q, key=rel_key, reverse=rev), rotate_idx):
@@ -1894,7 +1937,7 @@ def main():
 
         # 13개 언어가 같은 티어의 같은 1위 후보를 집지 않도록, 언어 인덱스로 회전시킨다.
         rank = rank_candidates(cands, seen | reserved, pub_urls, pub_ids, today,
-                               rotate_idx=tried - 1)
+                               rotate_idx=tried - 1, lang=lang)
         if not rank:
             print('   신규 후보 없음 → 다음 언어')
             continue
