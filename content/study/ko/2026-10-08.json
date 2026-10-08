@@ -1,0 +1,154 @@
+{
+  "day": 6,
+  "date": "2026-10-08",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "The marketing team ____ the new advertising campaign by the time the product launches next month.",
+      "choices": [
+        "completed",
+        "completes",
+        "will have completed",
+        "has completed"
+      ],
+      "answer": 2,
+      "explain": "미래의 특정 시점까지 완료될 일을 나타내므로 미래완료 시제가 적절합니다. 'by the time the product launches'는 미래 시점을 나타내는 부사절이므로 주절에는 미래완료를 씁니다.",
+      "point": "시제 일치"
+    },
+    {
+      "q": "When the manager arrived at the office, she found that the employees ____ the meeting without her.",
+      "choices": [
+        "have started",
+        "had started",
+        "will start",
+        "start"
+      ],
+      "answer": 1,
+      "explain": "과거의 특정 시점(도착했을 때)보다 더 이전에 일어난 일을 나타내므로 과거완료를 사용합니다. 주절이 과거이므로 종속절도 과거 시제와 일치시켜야 합니다.",
+      "point": "시제 일치"
+    },
+    {
+      "q": "The company ____ its annual report every January for the past ten years.",
+      "choices": [
+        "published",
+        "publishes",
+        "has published",
+        "is publishing"
+      ],
+      "answer": 2,
+      "explain": "과거부터 현재까지 계속되어 온 일을 나타내므로 현재완료를 사용합니다. 'for the past ten years'는 현재완료와 함께 쓰이는 대표적인 시간 표현입니다.",
+      "point": "시제 일치"
+    },
+    {
+      "q": "By the time you receive this letter, I ____ for the New York branch.",
+      "choices": [
+        "have left",
+        "leave",
+        "will have left",
+        "will leave"
+      ],
+      "answer": 2,
+      "explain": "미래의 특정 시점(편지를 받을 때)까지 완료될 일을 나타내므로 미래완료를 씁니다. 'By the time'은 미래 시점을 나타내는 부사절로, 주절에는 미래완료가 적절합니다.",
+      "point": "시제 일치"
+    },
+    {
+      "q": "The technician ____ the equipment when the power suddenly went out.",
+      "choices": [
+        "repairs",
+        "was repairing",
+        "has repaired",
+        "repaired"
+      ],
+      "answer": 1,
+      "explain": "과거의 특정 시점에 진행 중이던 일을 나타내므로 과거진행형을 사용합니다. 'when the power went out'은 과거에 발생한 갑작스러운 사건을 나타내므로 주절은 과거진행이 적절합니다.",
+      "point": "시제 일치"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "Grand Opening Sale at Green Leaf Grocery",
+      "body": "Green Leaf Grocery is excited to announce the grand opening of its newest location in Riverside Plaza. To celebrate, we are offering special discounts from May 1st to May 7th. Enjoy 20% off all organic fruits and vegetables, and buy one get one free on all bakery items. Additionally, the first 100 customers each day will receive a free reusable shopping bag. Our new store features a wider selection of local products, a fresh juice bar, and a cozy café area. We are open daily from 7 a.m. to 10 p.m. Don't miss out on these amazing deals! Visit us at 123 Riverside Plaza, next to the cinema. For more information, call us at (555) 123-4567 or visit our website at www.greenleafgrocery.com."
+    },
+    "questions": [
+      {
+        "q": "What is the purpose of the advertisement?",
+        "choices": [
+          "To announce a new store opening",
+          "To promote a new product line",
+          "To hire new employees",
+          "To announce a store closure"
+        ],
+        "answer": 0,
+        "explain": "광고의 첫 문장에서 'grand opening of its newest location'을 언급하며 새로운 매장 개점을 알리고 있습니다. 따라서 목적은 새 매장 개점을 알리는 것입니다.",
+        "evidence": "Green Leaf Grocery is excited to announce the grand opening of its newest location in Riverside Plaza."
+      },
+      {
+        "q": "What can customers receive for free?",
+        "choices": [
+          "A reusable shopping bag",
+          "A cup of coffee",
+          "A bakery item",
+          "A bottle of juice"
+        ],
+        "answer": 0,
+        "explain": "지문에서 'the first 100 customers each day will receive a free reusable shopping bag'이라고 명시되어 있습니다. 따라서 무료로 받을 수 있는 것은 재사용 가능한 쇼핑백입니다.",
+        "evidence": "Additionally, the first 100 customers each day will receive a free reusable shopping bag."
+      },
+      {
+        "q": "How long will the special discounts last?",
+        "choices": [
+          "One day",
+          "Three days",
+          "One week",
+          "One month"
+        ],
+        "answer": 2,
+        "explain": "할인 기간은 'from May 1st to May 7th'로, 5월 1일부터 7일까지 총 7일간입니다. 따라서 일주일 동안 진행됩니다.",
+        "evidence": "To celebrate, we are offering special discounts from May 1st to May 7th."
+      },
+      {
+        "q": "What is NOT mentioned as a feature of the new store?",
+        "choices": [
+          "A fresh juice bar",
+          "A cozy café area",
+          "A wider selection of local products",
+          "A children's play area"
+        ],
+        "answer": 3,
+        "explain": "지문에서는 'a wider selection of local products, a fresh juice bar, and a cozy café area'를 언급하지만 어린이 놀이터는 언급되지 않았습니다. 따라서 언급되지 않은 것은 어린이 놀이터입니다.",
+        "evidence": "Our new store features a wider selection of local products, a fresh juice bar, and a cozy café area."
+      }
+    ]
+  },
+  "part5_point": "시제 일치",
+  "part7_type": "광고·전단",
+  "vocab": {
+    "words": [
+      {
+        "w": "expedite",
+        "pos": "동",
+        "mean": "신속히 처리하다",
+        "ex": "We expedited the shipment."
+      },
+      {
+        "w": "fluctuate",
+        "pos": "동",
+        "mean": "변동하다",
+        "ex": "Prices fluctuate seasonally."
+      },
+      {
+        "w": "incentive",
+        "pos": "명",
+        "mean": "인센티브 · 유인",
+        "ex": "Sales incentives boosted performance."
+      }
+    ],
+    "confusable": {
+      "a": "stationary",
+      "b": "stationery",
+      "diff": "stationary = 정지한(움직이지 않는) / stationery = 문구류"
+    },
+    "tip": "Part 5는 품사 문제가 절반 — 빈칸 앞뒤 품사만 확인하면 3초컷입니다."
+  }
+}
