@@ -201,7 +201,27 @@ def load_seen(path):
 
 
 def save_seen(path, ids):
-    save_json(path, sorted(ids)[-3000:])
+    """seen 상태를 원자적으로 저장한다.
+
+    예외를 삼키지 않는다 — 조용한 저장 실패가 그대로 '중복 발행'의温床이 된다
+    (같은 저장소의 game_daily.py 도 같은 방식으로 고쳤다).
+    tmp + os.replace: 중간에 죽으면 원본이 깨지지 않는다.
+    Windows 는 os.rename 이 대상 존재 시 실패하므로 os.replace 를 쓴다.
+    """
+    try:
+        d = os.path.dirname(path)
+        if d:
+            os.makedirs(d, exist_ok=True)
+        tmp = path + '.tmp'
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump(sorted(ids)[-3000:], f, ensure_ascii=False)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, path)
+        return True
+    except Exception as e:
+        print('   ⚠ seen 저장 실패 — 다음 실행에서 중복 발행 가능: %s' % e)
+        return False
 
 
 def today_count(d, today_str):
@@ -252,6 +272,94 @@ def published_meta(dirs):
                 if p:
                     ids.add('play:%s' % p.group(1))
     return urls, slugs, ids
+
+
+# ---------------------------------------------------------------------------
+# 디스크 기반 중복 방어선 (상태 파일 유실 대비)
+#
+# 왜 이게 필요한가:
+#   app_radar_seen.json 이 git merge 로 한 번 유실된 적이 있다(같은 저장소의
+#   game_daily.py 도 같은 사고). 상태 파일만 믿으면 유실 순간 같은 앱이 다시
+#   발행된다. 그래서 '실제로 발행된 원고를 디스크에서 직접 읽어' 막는다.
+#   아래 3개는 전부 순수 함수 — 네트워크 불필요, 단위 테스트 가능.
+# ---------------------------------------------------------------------------
+
+def _fm_value(head, key):
+    """프론트매터에서 key 값을 문자열로. 큰따옴표/작은따옴표 both 처리."""
+    m = re.search(r'^%s:[ \t]*(.+)$' % re.escape(key), head, re.M)
+    if not m:
+        return ''
+    v = m.group(1).strip()
+    if len(v) >= 2 and v[0] == v[-1] and v[0] in '"\'':
+        v = v[1:-1]
+    return v.strip()
+
+
+def norm_title(t):
+    """제목 정규화 — 대소문자/공백/구두점을 지운 비교용 키.
+
+    LLM 이 '같은 문장부호만 바꿔' 제목을 다시 만들면 norm_title 이 같아진다.
+    """
+    if not t:
+        return ''
+    t = str(t).casefold()
+    t = re.sub(r'[^\w]+', '', t, flags=re.UNICODE)
+    return t.strip()
+
+
+def scan_published_sources(dirs):
+    """이미 발행된 원고에서 (sourceUrl 집합, 언어별 정규화 제목 집합)을 뽑는다.
+
+    반환: (urls: set[str], titles_by_lang: dict[str, set[str]])
+    · urls 에는 정규화(sourceUrl) 와 스토어 식별자('apple:123') 를 함께 넣는다
+      → 쿼리스트링(uo=2/uo=4)이 달라도 같은 앱으로 걸린다.
+    · 제목은 '언어별'로 나눠 담는다. 같은 제목이라도 다른 언어면 정상적인
+      다언어 중복이므로 전 언어 비교하면 오탐이 된다.
+    """
+    urls = set()
+    titles_by_lang = {}
+    for d in dirs or []:
+        if not os.path.isdir(d):
+            continue
+        for root, _dirs, files in os.walk(d):
+            for fn in files:
+                if not fn.endswith('.md'):
+                    continue
+                try:
+                    head = open(os.path.join(root, fn),
+                                encoding='utf-8').read(4000)
+                except Exception:
+                    continue
+                u = _fm_value(head, 'sourceUrl')
+                if u:
+                    urls.add(u)
+                    a = re.search(r'/id(\d+)', u)
+                    if a:
+                        urls.add('apple:%s' % a.group(1))
+                    p = re.search(r'[?&]id=([A-Za-z0-9_.\-]+)', u)
+                    if p:
+                        urls.add('play:%s' % p.group(1))
+                t = norm_title(_fm_value(head, 'title'))
+                if t:
+                    lang = (_fm_value(head, 'lang')
+                            or os.path.basename(root)).lower()
+                    titles_by_lang.setdefault(lang, set()).add(t)
+    return urls, titles_by_lang
+
+
+def find_published_source_url(url, published_urls):
+    """후보 sourceUrl 이 이미 발행되었는지. 스토어 식별자로도 비교한다."""
+    if not url or not published_urls:
+        return False
+    if url in published_urls:
+        return True
+    a = re.search(r'/id(\d+)', url)
+    if a and 'apple:%s' % a.group(1) in published_urls:
+        return True
+    p = re.search(r'[?&]id=([A-Za-z0-9_.\-]+)', url)
+    if p and 'play:%s' % p.group(1) in published_urls:
+        return True
+    return False
 
 
 # ---------------------------------------------------------------- Apple
@@ -2137,6 +2245,13 @@ def main():
     pub_urls, taken, pub_ids = published_meta(
         [game_dir, os.path.join(base, 'content', 'posts')])
 
+    # 디스크 기반 방어선 — seen 상태 파일이 유실돼도 여기로 막는다.
+    # (실측 2026-09-30: Zephyria 가 같은 날 두 번 발행됨. 같은 sourceUrl.)
+    disk_urls, disk_titles = scan_published_sources(
+        [game_dir, os.path.join(base, 'content', 'posts')])
+    print('   디스크 방어선: 발행된 sourceUrl %d개 / 제목 %d언어'
+          % (len(disk_urls), len(disk_titles)))
+
     print('App Radar v3 — 오늘 %s / 총 %d건 (%s)'
           % (today_str, target,
              ', '.join('%s×%d' % (r[0], order.count(r)) for r in wanted) if order else '0건'))
@@ -2219,6 +2334,12 @@ def main():
             if is_upcoming_cand(cand, today) and not allow_upcoming:
                 print('   건너뜀(출시예정 할당 소진): %s' % cname)
                 continue
+            # 디스크 방어선: 이미 발행된 sourceUrl 은 선택 자체를 막는다.
+            # (pub_urls 는 slug URL 기준이라 sourceUrl 정본과 다를 수 있다)
+            if find_published_source_url(cand.get('url'), disk_urls):
+                print('   제외(이미 발행된 sourceUrl): %s — %s'
+                      % (cname, (cand.get('url') or '')[:70]))
+                continue
             if strict_lang:
                 ok, why = lang_gate(cand, lang, cc, hl, gl)
                 if ok is False:
@@ -2256,7 +2377,6 @@ def main():
                   % (item.get('name'), item['store'], item.get('_tier', ''),
                      upcoming_used, upcoming_quota))
         else:
-            reserved.add(item['key'])
             print('   선정: %s (%s / %s)' % (item.get('name'), item['store'],
                                               item.get('_tier', '')))
         if args.dry:
@@ -2374,6 +2494,13 @@ def main():
                     title = (app_nm if len(app_nm) <= tmax_eff
                              else app_nm[:tmax_eff - 1].rstrip() + '…')
             print('   제목 초과 → %d자로 교체: %s' % (len(title), title))
+        # 제목 중복 방어선 — 같은 앱이 아니어도 LLM 이 같은 제목을 만들 수 있다.
+        # 실측 2026-09-30: Zephyria 두 글이 제목이 완전히 같았다(|sourceUrl 도 동일).
+        # 같은 언어 안에서만 비교한다 — 다른 언어면 정상적인 다언어 중복이므로 통과.
+        _nt = norm_title(title)
+        if _nt and _nt in disk_titles.get(lang, set()):
+            print('   제외(이미 발행된 동일 제목): %s — %s' % (app_nm, title))
+            continue
         # SEO 설명: 300자 이상(로이 지시) ~ desc_max 이하. 넘으면 잘라내지 않고 재시도 대상으로 본다.
         desc = re.sub(r'"', "'", (obj.get('description') or '').strip())
         slug = slugify(title, item['key'], taken)
@@ -2457,8 +2584,21 @@ def main():
                             fm_langs.replace('"', "'"),
                             fm_iap.replace('"', "'"),
                             fm_req.replace('"', "'"))
-        open(os.path.join(outdir, slug + '.md'), 'w', encoding='utf-8').write(
-            fm + img_md + body + '\n')
+        path = os.path.join(outdir, slug + '.md')
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(fm + img_md + body + '\n')
+        # 저장에 성공한 다음에 등록한다.
+        #   · 먼저 등록하면 → 저장 실패 시 영구 누락(그 실행에서 다른 언어로도 못 씀)
+        #   · 나중 등록하면 → 저장했는데 미등록이면 같은 앱이 두 번 발행됨
+        # 어제 실제로 후자가 일어났던 사고이므로 '저장 성공 직후'가 유일하게 안전하다.
+        reserved.add(item['key'])
+        # 이번 실행에서 방금 쓴 글도 다음 언어의 디스크 방어선에 즉시 반영한다.
+        disk_urls.add(item['url'])
+        if item['store'] == 'apple':
+            disk_urls.add('apple:%s' % item['ident'])
+        else:
+            disk_urls.add('play:%s' % item['ident'])
+        disk_titles.setdefault(lang, set()).add(_nt)
         seen.add(item['key'])
         save_seen(seen_file, seen)
         print('   발행[%s]: %s (%d자)' % (lang, slug, len(body)))

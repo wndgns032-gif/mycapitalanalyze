@@ -365,15 +365,111 @@ def save_image(url, slug):
 def load_seen():
     if os.path.exists(SEEN_FILE):
         try:
-            return json.load(open(SEEN_FILE, encoding='utf-8'))
-        except Exception:
-            pass
+            data = json.load(open(SEEN_FILE, encoding='utf-8'))
+        except Exception as e:
+            # 손상돼도 파이프라인은 계속 — 아래 is_url_published()의 파일시스템 방어선이 지킨다
+            print('   ⚠ seen 파일 손상(무시): %s' % e)
+            data = None
+        if isinstance(data, dict):
+            data.setdefault('dates', {})
+            data.setdefault('urls', {})
+            return data
+        if data is not None:
+            print('   ⚠ seen 파일 형식 이상(무시): %s' % type(data).__name__)
     return {'dates': {}, 'urls': {}}
 
 
 def save_seen(seen):
-    os.makedirs(os.path.dirname(SEEN_FILE), exist_ok=True)
-    json.dump(seen, open(SEEN_FILE, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    """원자적 쓰기 + 실패 로그. 예외를 삼키지 않는다(조용한 실패가 중복 발행의温床이 됨)."""
+    try:
+        os.makedirs(os.path.dirname(SEEN_FILE), exist_ok=True)
+        tmp = SEEN_FILE + '.tmp'
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump(seen, f, ensure_ascii=False, indent=1)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, SEEN_FILE)   # Windows에서 rename 실패를 피하려고 replace 사용
+        return True
+    except Exception as e:
+        print('   ⚠ seen 저장 실패 — 다음 실행에서 중복 발행 가능: %s' % e)
+        return False
+
+
+# ------------------------------------------------- 중복 판정 (순수 함수 — 단위 테스트 가능)
+def url_in_seen(seen, url):
+    """seen 상태에 이미 발행된 URL 인지. seen 为 None/损坏时安全返回 False."""
+    if not url or not isinstance(seen, dict):
+        return False
+    return url in (seen.get('urls') or {})
+
+
+def _fm_field(head, key):
+    """frontmatter 텍스트에서 key: 값을 大小문자 무시하고 추출(따옴표/공백 허용)."""
+    m = re.search(r'^%s:[ \t]*(.+?)[ \t]*$' % re.escape(key), head, re.M | re.I)
+    if not m:
+        return ''
+    return m.group(1).strip().strip('"').strip("'").strip()
+
+
+def scan_published():
+    """content/game/**/*.md frontmatter 를 훑어 (sourceUrl 집합, {lang: title 집합}) 반환.
+
+    2026-10-02 재발事故의 진짜 근원: seen.json 이 git merge 로 유실되어
+    '이미 발행함' 상태가 사라졌기 때문에 파일시스템이 진짜 유일한 진실이다.
+    measured: 183 files / 1.2MB → 약 0.2초 (ネットワーク不要).
+    """
+    urls, titles = set(), {}
+    if not os.path.isdir(GAME_DIR):
+        return urls, titles
+    for lang in sorted(os.listdir(GAME_DIR)):
+        d = os.path.join(GAME_DIR, lang)
+        if not os.path.isdir(d):
+            continue
+        tset = set()
+        for f in os.listdir(d):
+            if not f.endswith('.md'):
+                continue
+            try:
+                # frontmatter 는 파일 머리 20줄 안에만 있다 — 본문 전체를 읽지 않는다
+                with open(os.path.join(d, f), encoding='utf-8') as fh:
+                    head = ''.join([next(fh, '') for _ in range(20)])
+            except (OSError, UnicodeDecodeError):
+                continue
+            su = _fm_field(head, 'sourceUrl')
+            if su:
+                urls.add(su)
+            ti = _fm_field(head, 'title')
+            if ti:
+                tset.add(norm_title(ti))
+        if tset:
+            titles[lang] = tset
+    return urls, titles
+
+
+def norm_title(t):
+    """제목 비교용 정규화 — 공백/대소문자/구두점 제거."""
+    return re.sub(r'[\s　]+', '', (t or '')).strip().lower()
+
+
+def find_published_url(url, fs_urls=None):
+    """파일시스템에 같은 sourceUrl 원고가 이미 있는가.
+
+    fs_urls 를 넘기면 디스크 스캔을 건너뛴다(단위 테스트용).
+    """
+    if not url:
+        return False
+    if fs_urls is None:
+        fs_urls = scan_published()[0]
+    return url in fs_urls
+
+
+def find_published_title(title, lang, fs_titles=None):
+    """같은 언어 디렉터리에 동일 제목(H1)이 이미 있는가 — 다언어 중복은 정상이라 lang scopes."""
+    if not title or not lang:
+        return False
+    if fs_titles is None:
+        fs_titles = scan_published()[1]
+    return norm_title(title) in (fs_titles.get(lang) or set())
 
 
 # ---------------------------------------------------------------- LLM
@@ -587,8 +683,15 @@ def main():
                 return 1
             print('    선정: %s / %s / %s' % (art['title'][:40], art.get('author'), art['date']))
 
-    if art['url'] in seen.get('urls', {}):
-        print('    이미 처리한 기사 (%s) → 종료' % seen['urls'][art['url']])
+    # 원문 1개 확정 후 — seen 상태 + 실제 디스크 양쪽으로 중복 검사.
+    # (seen.json 은 git merge 로 유실될 수 있어 파일시스템을 진짜 방어선으로 삼는다)
+    # --force 는 seen 기록만 무시한다. 디스크에 이미 있는 원문은 --force 로도 덮어쓰지 않는다
+    # (같은 원문을 다른 날짜로 재발행하면 H1 중복 SEO 페이지가 생긴다 — 2026-10-02 사고).
+    if not args.force and url_in_seen(seen, art['url']):
+        print('    이미 처리한 기사(seen, %s) → 종료' % seen['urls'][art['url']])
+        return 0
+    if find_published_url(art['url']):
+        print('    이미 발행된 원문(파일시스템 중복) → 종료: %s' % art['url'])
         return 0
 
     print('    원문 %d자 / 출처 %s' % (len(art['text']), art['url']))
@@ -629,6 +732,26 @@ def main():
     if not slug:  # en 실패 시 다른 언어 slug 로 대체
         slug = unique_slug(slugify(next(iter(results.values())).get('slug')), seen_slugs)
 
+    # 발행 직전 최종 방어선 ① — 같은 언어 디렉터리에 동일 H1 이 이미 있으면 아예 발행하지 않는다.
+    # 다른 각도로 다시 쓰게 하는 대신 종료한다(기존 원고 보존이 SEO 에도 안전).
+    # 같은 언어 안에서만 비교한다 — 전 언어 비교는 정상적인 다언어 중복을 잡기 때문이다.
+    dup_titles = []
+    for lang, obj in results.items():
+        if find_published_title(obj.get('title'), lang):
+            dup_titles.append('%s: %s' % (lang, obj.get('title')))
+    if dup_titles:
+        print('    ⚠ 동일 제목(H1)이 이미 존재 — 발행 취소: %s' % '; '.join(dup_titles))
+        return 0
+
+    # 발행 직전 최종 방어선 ② — 저장 경로가 이미 있으면 덮어쓰지 않는다.
+    # 위 title 검사 이후지만 slug 충돌 변형까지 이最後の 순간에 한 번 더 확인한다.
+    for lang in results:
+        out = os.path.join(GAME_DIR, lang, slug + '.md')
+        if os.path.exists(out):
+            print('    ⚠ 동일 slug 파일이 이미 존재 — 발행 취소: content/game/%s/%s.md'
+                  % (lang, slug))
+            return 0
+
     # 이미지 저장 (en 메타 og:image)
     img_rel = save_image(art.get('image', ''), slug)
 
@@ -668,7 +791,10 @@ def main():
 
     seen.setdefault('dates', {})[today_str] = art['url']
     seen.setdefault('urls', {})[art['url']] = today_str
-    save_seen(seen)
+    if not save_seen(seen):
+        # 저장 실패해도 원고는 이미 발행됨. 다음 실행이 중복을 막을 수 있도록 즉시 로그로 남긴다.
+        print('   ⚠ seen 기록이 저장되지 않았습니다 — 다음 실행은 파일시스템 방어선으로만 '
+              '중복을 막습니다 (%s)' % SEEN_FILE)
     print('완료: %d개 언어 / %s / 원문: %s' % (len(results), slug, art['url']))
     return 0
 

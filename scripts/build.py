@@ -270,6 +270,25 @@ LANG_STR = {
 }
 DEFAULT_STR = LANG_STR['en']
 
+# 언어별 "페이지 N" 표현 — build_index 가 2페이지 이후 meta description을 고유하게 만들 때 쓴다.
+# (홈 1페이지는 기존 home_desc 를 그대로 유지한다)
+PAGE_STR = {
+    'en': 'page {n}',
+    'ko': '{n}페이지',
+    'zh': '第{n}页',
+    'ja': '{n}ページ',
+    'es': 'página {n}',
+    'fr': 'page {n}',
+    'de': 'Seite {n}',
+    'pt': 'página {n}',
+    'ru': 'страница {n}',
+    'hi': 'पृष्ठ {n}',
+    'id': 'halaman {n}',
+    'ar': 'صفحة {n}',
+    'bn': 'পৃষ্ঠা {n}',
+}
+DEFAULT_PAGE_STR = PAGE_STR['en']
+
 # 제휴 UI 문자열: [박스제목, 면책문구, 라벨, 페이지제목, 페이지서문]
 AFF_STR = {
     'en': ['Recommended resources',
@@ -681,12 +700,17 @@ def header_html(current):
 
 
 def footer_html(lang):
+    # 통계 대시보드(stats.html)는 noindex 개인용 페이지라 한국어에서만foot 링크를 건다.
+    # 13개 언어 전체에 노출시키지 않고, 그래도 인바운드 링크 0건인 고아 상태는 막는다.
+    stats_link = ('<a class="inline-block py-2.5 underline hover:text-brand-600" '
+                  'href="/stats.html">통계</a>') if lang == 'ko' else ''
+    stats_line = f'      <p class="text-xs">{stats_link}</p>\n' if stats_link else ''
     return f'''<footer class="border-t border-slate-200 dark:border-slate-800 mt-16">
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 {SITE_NAME}. All rights reserved.</p>
       <p class="text-xs leading-relaxed">{strs(lang)[6]}</p>
       <p class="text-xs pt-2"><a class="inline-block py-2.5 underline hover:text-brand-600" href="{(home_path(lang)) + AFF_CFG.get('disclosure_path', 'disclosure.html')}">{htmllib.escape(AFF_STR.get(lang, DEFAULT_AFF)[3])}</a></p>
-    </div>
+{stats_line}    </div>
   </footer>'''
 
 
@@ -901,7 +925,7 @@ def alternates_html(lang, slug, available, section=None):
 
 def layout(lang, title, description, canonical, content_html, og_type='website',
            jsonld_blocks=None, slug=None, available=None, switcher_slug=None, section=None,
-           image=None, noindex=False, plain=False):
+           image=None, noindex=False, plain=False, head_links=''):
     dir_ = LANG_META[lang][1]
     og_img = ''
     if image:
@@ -922,7 +946,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
 {robots}  <link rel="canonical" href="{canonical}" />
 {verify_html()}
 {head_extra}
-  <link rel="alternate" type="application/rss+xml" href="{DOMAIN}/feed.xml" />
+{head_links}  <link rel="alternate" type="application/rss+xml" href="{DOMAIN}/feed.xml" />
   <meta property="og:title" content="{htmllib.escape(title)}" />
   <meta property="og:description" content="{htmllib.escape(description)}" />
   <meta property="og:type" content="{og_type}" />
@@ -1662,6 +1686,23 @@ def pager_html(lang, page, pages):
             'aria-label="Pagination">' + prev + ''.join(nums) + nxt + '</nav>')
 
 
+def pager_rel_links(lang, page, pages):
+    """<head> 용 <link rel="prev"> / <link rel="next">.
+
+    rel=prev/next 는 <link> 태그라 반드시 head 에 있어야 하므로 pager_html()(body 안의 <a>)과
+    분리한다. 없는 쪽(1페이지의 prev, 마지막 페이지의 next)은 태그 자체를 내보내지 않고,
+    page 1 이 prev 를 가리켜 자기 루프가 되는 것도 막는다.
+    """
+    if pages <= 1:
+        return ''
+    tags = []
+    if page > 1:
+        tags.append('  <link rel="prev" href="%s" />' % (DOMAIN + home_page_path(lang, page - 1)))
+    if page < pages:
+        tags.append('  <link rel="next" href="%s" />' % (DOMAIN + home_page_path(lang, page + 1)))
+    return '\n'.join(tags) + '\n' if tags else ''
+
+
 def build_index(lang, posts, available, game_list=None):
     """홈(경제+앱/게임 통합, 최신순) + 2페이지 이후를 페이지 단위로 생성."""
     s = strs(lang)
@@ -1694,15 +1735,46 @@ def build_index(lang, posts, available, game_list=None):
 </div>'''
         canonical = DOMAIN + home_page_path(lang, page)
         title = f'{SITE_NAME} — {s[0]}' + ('' if page == 1 else f' (Page {page})')
-        html_doc = layout(lang, title, s[1], canonical, content, 'website', [website_ld(lang)],
-                          slug=None, available=available, switcher_slug=None)
+        # 2페이지 이후는 홈과 같은 description 을 그대로 쓰면 161개 페이지가 한 문자열을 공유한다.
+        #현지화된 "페이지 N" 을 덧붙여 페이지마다 고유하게 만든다 (홈 1페이지는 기존 문구 유지).
+        desc = s[1] if page == 1 else '%s — %s' % (
+            s[1], PAGE_STR.get(lang, DEFAULT_PAGE_STR).format(n=page))
+        html_doc = layout(lang, title, desc, canonical, content, 'website', [website_ld(lang)],
+                          slug=None, available=available, switcher_slug=None,
+                          head_links=pager_rel_links(lang, page, pages))
         rel = home_page_path(lang, page).lstrip('/') or ''
         out_path = os.path.join(BASE, rel, 'index.html') if rel else os.path.join(BASE, 'index.html')
         os.makedirs(os.path.dirname(out_path), exist_ok=True)
         open(out_path, 'w', encoding='utf-8').write(html_doc)
         written.append(out_path)
+    prune_stale_pages(lang, pages)
     HOME_PAGES[lang] = pages
     return written[0]
+
+
+def prune_stale_pages(lang, pages):
+    """페이지 수가 줄었을 때 남은 낡은 page/N 디렉터리를 지운다.
+
+    왜 필요하냐 (2026-10-08 실측):
+      원고 7개를 삭제하니 fr·id·ru의 首页 글 수가 줄면서 page 수가 8→7 로 내려갔다.
+      그런데 build_index() 는 1..pages 만 새로 쓰기 때문에 **page/8/index.html 이
+      디스크에 그대로 남았다.** 남은 파일은 (a) 사이트맵엔 없는데 Vercel 이 서빙하고
+      (b) window.__POSTS__ 페이로드에 이미 삭제된 글을 그대로 들고 있어
+      클라이언트 검색에서 404 링크가 노출된다. 콘텐츠 삭제 때마다 재발한다.
+    """
+    import shutil
+    base = os.path.join(BASE, 'page') if lang == 'en' else os.path.join(BASE, lang, 'page')
+    if not os.path.isdir(base):
+        return
+    removed = []
+    for name in sorted(os.listdir(base)):
+        if not name.isdigit():
+            continue
+        if int(name) > pages:
+            shutil.rmtree(os.path.join(base, name), ignore_errors=True)
+            removed.append('%s/page/%s' % (lang, name))
+    if removed:
+        print('   [stale] 삭제된 페이지 정리: %s' % ', '.join(removed))
 
 
 def game_tabs(lang, active):
@@ -1886,7 +1958,9 @@ def build_sitemap(posts, avail_by_slug, langs_with_home, game=None):
             emit(DOMAIN + game_home_path(c) + 'apps/', [(c, DOMAIN + game_home_path(c) + 'apps/')])
             emit(DOMAIN + game_home_path(c) + 'games/', [(c, DOMAIN + game_home_path(c) + 'games/')])
             for p in game[c]:
-                emit(p['url'], [(c, p['url'])])
+                # 게임 개별 글은 HTML head(alternates_html)와 동일하게 self + x-default(자기 자신) 2개.
+                # SECTION HUB 위의 g_alts 는 전 언어 alternates 이므로 그대로 둔다.
+                emit(p['url'], [(c, p['url']), ('x-default', p['url'])])
 
     xml.append('</urlset>')
     open(os.path.join(BASE, 'sitemap.xml'), 'w', encoding='utf-8').write('\n'.join(xml) + '\n')
