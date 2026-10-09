@@ -15,8 +15,12 @@ SEO: 페이지별 hreflang 상호 링크, NewsArticle/BreadcrumbList/FAQPage JSO
 """
 import json, os, re, glob, html as htmllib
 import datetime
+import sys
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# 오토 어필리에이트 슬롯 모듈을 scripts/ 안에서 찾기 위해 경로 등록
+sys.path.insert(0, os.path.join(BASE, 'scripts'))
+
 def _load_config():
     """공개 설정(config.public.json)을 기본으로 하고, 시크릿 설정(config.json)이
     비어 있지 않은 값일 때만 덮어쓴다.
@@ -806,6 +810,67 @@ def conversion_tracking_js():
   </script>"""
 
 
+def ae_autoslot_html(lang, category, title, body_md, kind=None):
+    """🤖 오토 어필리에이트 슬롯 (2026-10-08, 로이 지시).
+
+    포스트 본문 중간에 카테고리 적합 상품을 자동 삽입한다.
+    config.public.json 의 `auto_affiliate.enabled` 가 true 일 때만 동작한다.
+    API 세션이 없거나 실패하면 빈 문자열을 반환하므로 **사이트는 절대 죽지 않는다.**
+
+    왜 하단 박스가 아니라 본문 중간인가
+      * AdSense 정책상 본문 중간 삽입이 하단 배너보다 위험이 낮다
+      * 독자가 "이 정보 쓰려면 이게 필요하다"고 느끼는 지점에 놓여 CTR 이 높다
+
+    `kind` = 'app' | 'game'. 게임 리뷰면 게임 액세서리(패드/지문링커)로 조회한다.
+    """
+    cfg = CONFIG.get('auto_affiliate') or {}
+    if not cfg.get('enabled'):
+        return ''
+
+    # md frontmatter 의 category 값이 '"Apps & Games"' 처럼 따옴표가 붙어 오는 경우가
+    # 있다 (2026-10-08 실측). 정규화 없이 비교하면 화이트리스트를 통과하지 못한다.
+    category = (category or '').strip().strip('"\'').strip()
+
+    # 카테고리 화이트리스트 — 지정된 카테고리에만 넣는다.
+    # "*" 면 전 카테고리 허용 (2026-10-09 로이 지시 "다 넣으라고").
+    only = cfg.get('only_categories')
+    if only and '*' not in only \
+            and category not in [c.strip().strip('"\'') for c in only]:
+        return ''
+
+    # 화이트리스트가 "*" 이고 매핑이 없는 카테고리면 넣지 않는다.
+    # (임의 카테고리에 기본 앱용 상품을 넣으면 맥락이 안 맞는다)
+    if (only and '*' in only) and not cfg.get('allow_unmapped'):
+        try:
+            import ae_autoslot as _ae
+        except ImportError:
+            return ''
+        if category not in _ae.CATEGORY_MAP and category not in _ae.ECON_MAP \
+                and category not in ('Apps & Games', 'Apps & Games (game)'):
+            return ''
+
+    # 너무 짧은 글에는 넣지 않는다 (맥락 없이 광고로 보이면 이탈+리스크)
+    if len(body_md or '') < cfg.get('min_body_chars', 1800):
+        return ''
+
+    try:
+        import ae_autoslot
+    except ImportError:
+        return ''
+
+    # ⚠️ 2026-10-08: 포스트 키워드로 상품을 검색하지 않는다.
+    #   게임 포스트("Arknights 리뷰")에서 게임명을 검색하면 코슬패·배지가 나와
+    #   CTR 이 오히려 떨어지고 API 호출만 느려진다(빌드 9분 소요).
+    #   → ae_autoslot 가 카테고리 고정 키워드로만 조회한다.
+    try:
+        picks = ae_autoslot.recommend(category, None,
+                                      limit=cfg.get('limit', 4),
+                                      game_post=(kind == 'game'))
+    except Exception:
+        return ''      # 어떤 예외든 삼킨다. 빌드는 계속돼야 한다.
+    return ae_autoslot.render_html(picks, lang)
+
+
 def offers_for(category):
     """카테고리에 맞는 실제 제휴 상품. 비활성/빈 링크는 제외."""
     if not AFF_ENABLED or not AFF_LIVE:
@@ -818,27 +883,14 @@ def offers_for(category):
     return out
 
 
-def affiliate_box(lang, category):
-    """포스트 하단 제휴 추천 박스 (FTC/표시광고법 준수: rel=sponsored + 고지 동일 화면)."""
-    offers = offers_for(category)
-    if not offers:
-        return ''
-    s = AFF_STR.get(lang, DEFAULT_AFF)
-    items = '\n'.join(
-        '    <li><a class="inline-block py-2 font-medium underline hover:text-brand-600" '
-        'rel="sponsored nofollow noopener" target="_blank" '
-        f'data-affiliate="{htmllib.escape(o["id"])}" href="{htmllib.escape(o["url"])}">'
-        f'{htmllib.escape(o["name"])}</a>'
-        f' — <span class="text-slate-600 dark:text-slate-400">{htmllib.escape(o["blurb"])}</span></li>'
-        for o in offers)
-    return f'''<aside class="mt-10 border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-slate-50 dark:bg-slate-900">
-  <p class="text-xs uppercase tracking-wide text-slate-500 mb-2">{htmllib.escape(s[2])}</p>
-  <h2 class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(s[0])}</h2>
-  <ul class="space-y-2 text-sm text-slate-700 dark:text-slate-300">
-{items}
-  </ul>
-  <p class="mt-4 text-xs text-slate-500 leading-relaxed">{htmllib.escape(s[1])}</p>
-</aside>'''
+# 🔴 2026-10-09 로이 지시로 `affiliate_box()` 삭제 (호출부 0건).
+#    하단 별도 제휴 박스 → 본문 안에만 상품 카드를 노출한다 (`ae_autoslot_html`).
+#    삭제 이유:
+#      ① 본문 카드와 하단 박스가 같은 상품을 이중 노출 → 신뢰 하락 + 중복 광고 판정
+#      ② AdSense '관련성 낮은 콘텐츠' 정책상 광고 블록 남발이 감점
+#      ③ offers 배열이 TradingView 밖에 없어 실제로는 빈 박스였음
+#    참고: `offers_for()` 와 `affiliates.offers` 설정은 disclosure 페이지에서
+#    제휴 고지를 렌더링하는 데 여전히 쓰인다. 함수는 건드리지 말 것.
 
 
 def build_disclosure(lang, available):
@@ -1371,8 +1423,10 @@ def related_html(lang, slug, posts_in_lang, label, href_fn=None):
 
 
 def build_post(lang, slug, title, desc, category, date, body_md, source_name, source_url,
-               posts_in_lang, available, section='post', facts=None):
-    """section='post' → /post/{slug}.html (경제), section='game' → /game/post/{slug}.html"""
+               posts_in_lang, available, section='post', facts=None, kind=None):
+    """section='post' → /post/{slug}.html (경제), section='game' → /game/post/{slug}.html
+    `kind` = 'app' | 'game' (앱/게임 구분). 오토 어필리에이트는 앱 리뷰에만 넣는다.
+    """
     is_game = (section == 'game')
     url_fn = game_post_url if is_game else post_url
     href_fn = game_post_href if is_game else post_href
@@ -1388,9 +1442,13 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     # 앱·게임 글: 첫 화면에 팩트박스 + 스토어 버튼을 먼저 보여주고 광고는 그 아래로 내린다.
     box = fact_box_html(lang, f) if is_game else ''
     toc = toc_html(body_html, lang) if is_game else ''
-    # 게임 상세 첫 화면은 무광고(post_top 제외) — 트래픽이 적을 때 광고를 늘려도
-    # 수익이 늘지 않고 체류·정책 리스크만 커진다(로이 지시 2026-10-06).
-    top_ad = '' if is_game else ad_unit('post_top')
+    # 🔑 2026-10-09 로이 지시 "광고가 본문 내용에만 나와야 한다":
+    #   포스트 상단(post_top)·하단(post_bottom) 배너를 끈다.
+    #   근거: ① 제휴 상품 카드와 광고 블록이 붙으면 초점이 흩어져 CTR 이 떨어진다
+    #        ② AdSense '관련성 낮은 콘텐츠' 정책 — 광고 블록 남발은 감점
+    #        ③ 게임 상세는 이미 post_top 제외 상태였음 (2026-10-06 로이 지시)
+    #   인아티클(post_mid, in-article 레이아웃)만 남겨 본문 흐름에 자연스럽게 놓는다.
+    top_ad = ''
     # 스토어 CTA ① 결정표 바로 아래 (주 버튼)
     cta_top = (store_cta_html(lang, source_url, source_name, news=bool(f.get('news')))
                if is_game else '')
@@ -1404,16 +1462,38 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
             half = max(3, len(parts) // 2)
             body_html = ('</p>'.join(parts[:half]) + '</p>\n' + mid_ad + '\n'
                          + '</p>'.join(parts[half:]))
+    # 🤖 오토 어필리에이트 슬롯 (2026-10-08, 로이 지시: "자동광고처럼 자연스럽게")
+    # mid_ad 와 같은 문단 경계에 삽입한다. AdSense 정책상 '본문 중간 삽입'이
+    # 하단 배너보다 위험이 낮고, 독자 이탈도 적다.
+    #
+    # 2026-10-09 수정: 앱뿐 아니라 **게임 리뷰에도 넣는다.**
+    #   게임 리뷰 독자는 게임기용 하드웨어(쿨링 패드·패드·지문링커)를 실제로 산다.
+    #   어제처럼 앱에만 제한하니 188개 중 22개에만 카드가 들어갔다.
+    #   → 게임은 `game_post=True` 로 게임 액세서리 매핑을 사용한다.
+    ae_slot = ae_autoslot_html(lang, category, title, body_md, kind=kind)
+    if ae_slot:
+        parts = body_html.split('</p>')
+        if len(parts) >= 5:
+            # 🔑 AdSense(mid_ad)와 겹치지 않게 위치를 분리한다 (2026-10-09).
+            #   mid_ad = 1/2 지점, 상품 카드 = 2/3 지점.
+            #   두 광고가 붙으면 하나가 밀려서 아무도 안 본다.
+            third = max(2, (len(parts) * 2) // 3)
+            body_html = ('</p>'.join(parts[:third]) + '</p>\n' + ae_slot + '\n'
+                         + '</p>'.join(parts[third:]))
     # 스토어 CTA ② 두 번째 h2 섹션 뒤 — 중립 텍스트 링크
     if is_game:
         body_html = insert_after_h2(body_html, 2, store_text_link_html(lang, source_url))
-    # 스토어 CTA ③ 문말 카드
+    # 🤖 2026-10-09 로이 지시: 제휴 상품은 **본문 안에만** 나온다.
+    #   아래쪽 별도 제휴 박스(affiliate_box)는 더 이상 렌더링하지 않는다.
+    #   근거: ① 같은 상품이 본문과 하단에 이중 노출되면 신뢰 하락 + 중복 광고 판정
+    #        ② AdSense '관련성 낮은 콘텐츠' 정책상 광고 블록 남발이 감점 요소
+    #        ③ 상품 카드가 이미 그 카테고리에 맞는 것만 고르므로 하단 복제본은 불필요
     bottom = (store_cta_html(lang, source_url, source_name, news=bool(f.get('news')))
-              if is_game else affiliate_box(lang, category))
-    # 게임 상세 광고는 post_mid·post_bottom·post_related 최대 3개.
-    # 광고와 스토어 CTA 사이에는 120px 이상 띄운다(오클릭·정책 리스크 완화).
-    bottom_ad = (ad_unit('post_bottom', wrap_class='mt-10 mb-[120px]') if is_game
-                 else ad_unit('post_bottom'))
+              if is_game else '')
+    # 🔑 2026-10-09 로이 지시 "본문에만" — 하단 배너도 끈다.
+    #   AdSense 는 인아티클(post_mid) 하나만 남긴다.
+    #   post_related 는 '관련 글' 영역이라 본문이 아니라서 유지 (188게임 페이지 전부).
+    bottom_ad = ''
     # 상세 빵부스러기: 홈 › 앱 & 게임 › 제목
     crumb = ''
     if is_game:
@@ -2496,7 +2576,7 @@ def main():
                 continue  # 옛 영문 앱 글은 기존 URL(/post/) 유지
             build_post(lang, p['slug'], p['title'], p['desc'], p['category'], p['date'],
                        p['body'], p['sourceName'], p['sourceUrl'], plist, {lang},
-                       section='game', facts=p.get('facts'))
+                       section='game', facts=p.get('facts'), kind=p.get('kind'))
             game_total += 1
         build_game_index(lang, plist, set(game_langs))
         build_game_index(lang, plist, set(game_langs), 'app')

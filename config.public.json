@@ -53,16 +53,17 @@
   "affiliates": {
     "enabled": true,
     "_note": "url이 비어 있으면 렌더링되지 않는다. rel=sponsored nofollow로 출력되어 FTC/표시광고법 고지를 만족한다.",
-    "offers": [
-      {
-        "id": "tradingview",
-        "name": "TradingView",
-        "url": "https://www.tradingview.com/?aff_id=1171086",
-        "blurb": "Advanced charts, screeners and real-time market data. Free plan available.",
-        "categories": [
-          "*"
-        ]
-      }
-    ]
+    "offers": [],
+    "_removed": "TradingView 링크 2026-10-08 로이 지시로 제거 (알리익스프레스 어필리에이트로 대체 예정)"
+  },
+  "auto_affiliate": {
+    "enabled": true,
+    "_note": "포스트 본문 중간에 AliExpress 어필리에이트 상품을 자동 삽입 (2026-10-08, 전면 적용 2026-10-09). only_categories=[\"*\"] 는 전 카테고리 허용. 매핑 없는 카테고리는 allow_unmapped=false 라 안전하게 건너뛴다. 카테고리별 상품군: Apps&Games=휴대폰용품, 게임=게임액세서리, 금융/매크로=방송·홈오피스·정확도도구.",
+    "limit": 4,
+    "only_categories": [
+      "*"
+    ],
+    "min_body_chars": 1800,
+    "allow_unmapped": false
   }
 }

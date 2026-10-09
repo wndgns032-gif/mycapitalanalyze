@@ -1,0 +1,20 @@
+{
+  "_note": "정적 폴백 풀. API 세션이 없어도 이 링크들로 상품 카드가 나온다.",
+  "_usage": "포털 Tools > Link Generator 에서 상품 URL 넣고 나온 추적링크를 여기에 추가한다. {p} 자리에 상품 URL 이 들어간다. price/image 는 선택.",
+  "_generated": "2026-10-08",
+
+  "offers": [
+    {
+      "id": "placeholder-1",
+      "title": "Shockproof Clear Case for iPhone 15 Pro",
+      "url": "",
+      "price": "4.29",
+      "currency": "USD",
+      "image": "",
+      "commission": "6.5",
+      "rating": "4.8",
+      "orders": "10000",
+      "categories": ["Apps & Games"]
+    }
+  ]
+}
