@@ -988,7 +988,18 @@ _I18N = {
 
 
 def render_html(products, lang="en", title=None, blurb=None):
-    """상품 카드 HTML. rel=sponsored nofollow + 고지 동시 표기."""
+    """상품 카드 HTML. rel=sponsored nofollow + 고지 동시 표기.
+
+    📱 모바일 최적화 (2026-10-09, 로이 지시 "모바일버전도 보기 쉽도록"):
+       390px 화면에서 아래 문제가 있었다 → 모두 수정.
+       ① 상품명에 공백 없는 긴 문자열(URL·모델명)이 있으면
+          가로로 넘쳐 **페이지 전체가 좌우로 스크롤** 된다.
+          → 제목에 `break-words` + `overflow-wrap:anywhere`.
+       ② 이미지가 항상 64px 고정 → 좁은 화면에서 텍스트 영역만 250px.
+          → 모바일 56px / sm 이상 64px 로 반응형 처리.
+       ③ 카테고리 라벨이 줄 중간에 깨졌다 → `whitespace-nowrap`.
+       ④ 가격·평점·주문 수가 한 줄에 못 들어가 밀렸다 → `flex-wrap gap-x`.
+    """
     if not products:
         return ""
     t, d = _I18N.get(lang, _I18N["en"])
@@ -999,33 +1010,43 @@ def render_html(products, lang="en", title=None, blurb=None):
     for p in products:
         if not p.get("url") or not p.get("title"):
             continue
-        img = ('<img src="%s" alt="" loading="lazy" class="w-16 h-16 '
+        # 📱 모바일에서 56px, sm 이상(640px)에서 64px
+        img = ('<img src="%s" alt="" loading="lazy" '
+               'class="w-14 h-14 sm:w-16 sm:h-16 '
                'object-cover rounded flex-shrink-0">'
                % p["image"]) if p.get("image") else ""
         # 🔑 zh 는 상품명 번역을 지원하지 않으므로 카테고리 라벨로当地어 안내.
         label = _localized_category(p, lang)
         label_html = ('<span class="inline-block text-[11px] px-1.5 py-0.5 '
                       'rounded bg-brand-50 text-brand-700 dark:bg-brand-900/40 '
-                      'dark:text-brand-300 mr-1.5">%s</span>' % label) if label else ""
+                      'dark:text-brand-300 mr-1.5 whitespace-nowrap">%s</span>'
+                      % label) if label else ""
         meta = []
         if p.get("price"):
-            meta.append('<span class="font-semibold text-brand-600">%s %s</span>'
+            meta.append('<span class="font-semibold text-brand-600 '
+                        'whitespace-nowrap">%s %s</span>'
                         % (p["price"], p["currency"]))
         if p.get("rating"):
-            meta.append("★ %s" % p["rating"])
+            meta.append('<span class="whitespace-nowrap">★ %s</span>'
+                        % p["rating"])
         if p.get("orders"):
             # 🔑 주문 수 표기도 해당 언어로 (2026-10-09).
             #   예전엔 모든 언어가 '%s orders' 로 영어 → 일본어 글에 orders 노출.
-            meta.append(_ORDERS_WORD.get(lang, "%s orders") % p["orders"])
+            meta.append('<span class="whitespace-nowrap">%s</span>'
+                        % (_ORDERS_WORD.get(lang, "%s orders") % p["orders"]))
+        # 📱 메타는 줄바꿈 되도록 flex-wrap (좁은 화면에서 밀림 방지)
+        meta_html = ('<p class="text-xs text-slate-500 mt-1 flex flex-wrap '
+                     'gap-x-2 gap-y-0.5">%s</p>' % " · ".join(meta))
         cards.append(
             '<li class="flex gap-3 items-start">%s'
-            '<div class="min-w-0">'
+            '<div class="min-w-0 flex-1">'
             '%s<a rel="sponsored nofollow noopener" target="_blank" href="%s" '
             'class="block font-medium text-slate-900 dark:text-slate-100 '
-            'hover:text-brand-600 leading-snug">%s</a>'
-            '<p class="text-xs text-slate-500 mt-1">%s</p>'
+            'hover:text-brand-600 leading-snug break-words" '
+            'style="overflow-wrap:anywhere">%s</a>'
+            '%s'
             '</div></li>'
-            % (img, label_html, p["url"], p["title"], " · ".join(meta))
+            % (img, label_html, p["url"], p["title"], meta_html)
         )
     if not cards:
         return ""
@@ -1036,7 +1057,7 @@ def render_html(products, lang="en", title=None, blurb=None):
         'dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-4 sm:p-5">'
         '<h2 class="text-sm font-semibold text-slate-900 dark:text-slate-100 '
         'mb-3">%s</h2>'
-        '<ul class="space-y-3">%s</ul>'
+        '<ul class="space-y-3 sm:space-y-3">%s</ul>'
         '<p class="mt-3 text-xs text-slate-500">%s</p>'
         '</aside>' % (title, "".join(cards), blurb)
     )

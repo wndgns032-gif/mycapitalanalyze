@@ -1458,16 +1458,12 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     # 스토어 CTA ① 결정표 바로 아래 (주 버튼)
     cta_top = (store_cta_html(lang, source_url, source_name, news=bool(f.get('news')))
                if is_game else '')
-    # 인아티클(본문 중간) 광고 — 문단 경계 중간 지점에 끼워 넣는다.
-    # 문단이 7개 미만이면 본문이 짧아 광고를 끼우지 않는다(2026-10-01 로이: 애드센스 승인 후 도입).
-    mid_ad = ''  # 2026-10-09 로이 지시: AdSense 는 상단·하단에만 (본문 중간 제거)
-    if False and mid_ad:  # 2026-10-09 비활성화
-        parts = body_html.split('</p>')
-        # 글 분량이 3000자 이내로 줄어 문단 기준을 7→5 로 완화(2026-10-02)
-        if len(parts) >= 5:
-            half = max(3, len(parts) // 2)
-            body_html = ('</p>'.join(parts[:half]) + '</p>\n' + mid_ad + '\n'
-                         + '</p>'.join(parts[half:]))
+    # 인아티클(본문 중간) 광고 — 2026-10-09 로이 지시로 **삭제**.
+    #   "글 내용에서 상단 및 하단에만 그 구글 애드센스가 나오도록"
+    #   → post_top / post_bottom 만 사용한다.
+    #   (지시 변경 시 되돌리기 쉽도록 슬롯 코드는 통째로 제거하지 않고
+    #    여기 빈 문자열로 두고 위쪽 top_ad / bottom_ad 만 살린다)
+    mid_ad = ''
     # 🤖 오토 어필리에이트 슬롯 (2026-10-08, 로이 지시: "자동광고처럼 자연스럽게")
     # mid_ad 와 같은 문단 경계에 삽입한다. AdSense 정책상 '본문 중간 삽입'이
     # 하단 배너보다 위험이 낮고, 독자 이탈도 적다.
