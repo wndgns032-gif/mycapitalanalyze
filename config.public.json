@@ -63,7 +63,7 @@
     "only_categories": [
       "*"
     ],
-    "min_body_chars": 1800,
+    "min_body_chars": 1200,
     "allow_unmapped": false
   }
 }

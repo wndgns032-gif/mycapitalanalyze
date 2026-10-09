@@ -850,7 +850,18 @@ def ae_autoslot_html(lang, category, title, body_md, kind=None):
             return ''
 
     # 너무 짧은 글에는 넣지 않는다 (맥락 없이 광고로 보이면 이탈+리스크)
-    if len(body_md or '') < cfg.get('min_body_chars', 1800):
+    #
+    # 🔑 2026-10-09 수정: md 원문 전체가 아니라 **frontmatter 를 뺀 본문**으로 잰다.
+    #   frontmatter 에는 title/description/sourceUrl 이 들어가고 그게 600자 이상이다.
+    #   예전엔 원문 길이로 재서, 실제로는 1,600자짜리 본문이 "2306자" 라고 통과해
+    #   성긴 글에 카드가 붙었다. 반대로 설명문이 긴 글은 본문이 짧아도 통과했다.
+    #   → 기준을 실제 본문 길이로 통일한다.
+    _probe = body_md or ''
+    if '---' in _probe[:600] and _probe.count('---') >= 2:
+        # md frontmatter 형식이면 제거 후 측정
+        _parts = _probe.split('---', 2)
+        _probe = _parts[2] if len(_parts) >= 3 else _probe
+    if len(_probe.strip()) < cfg.get('min_body_chars', 1800):
         return ''
 
     try:
@@ -1475,8 +1486,12 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     ae_slot = ae_autoslot_html(lang, category, title, body_md, kind=kind)
     if ae_slot:
         parts = body_html.split('</p>')
-        if len(parts) >= 5:
-            # 🔑 AdSense(mid_ad)와 겹치지 않게 위치를 분리한다 (2026-10-09).
+        # 🔑 2026-10-09 수정: 기준을 5 → **3** 으로 완화.
+        #   5개 미만이면 카드 미삽입이라, 문단 3~4개인 짧은 리뷰(게임 리뷰 다수)
+        #   에는 카드가 아예 붙지 않았다 (실측 13개 누락).
+        #   카드 HTML 은 이미 여러 줄이므로 문단 3개면 충분히 그럴듯하게 들어간다.
+        if len(parts) >= 3:
+            # AdSense(mid_ad)와 겹치지 않게 위치를 분리한다 (2026-10-09).
             #   mid_ad = 1/2 지점, 상품 카드 = 2/3 지점.
             #   두 광고가 붙으면 하나가 밀려서 아무도 안 본다.
             third = max(2, (len(parts) * 2) // 3)

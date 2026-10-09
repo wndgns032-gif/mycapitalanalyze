@@ -619,6 +619,13 @@ def search(keyword, ship_to="US", currency="USD", page_size=20, lang="en"):
                                  lang)
     cached = _cache_get(key)
     if cached is not None:
+        # 🔑 2026-10-09 되돌림.
+        #   여기서 _FAIL_STREAK 를 리셋하면 안 된다 (실측).
+        #   빌드는 언어가 순서대로 돌아가므로, 각 언어의 첫 검색어는
+        #   캐시가 없어 실제 API 호출이 필요하다. 그때 연속 실패가 쌓이면
+        #   **그 언어 전체가 통째로 누락**된다 (카드 없는 글이 언어 단위로 발생).
+        #   캐시 히트로 되돌리는 게 오히려 누락을 확대했다.
+        #   → 정정은 "실패해도 다음 포스트에서 재시도" 하는 쪽이다.
         return cached
 
     # 🔑 연속 실패 카운터 — 전체가 느려지는 것 방지 (2026-10-09).
