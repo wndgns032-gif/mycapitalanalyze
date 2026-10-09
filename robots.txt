@@ -1,4 +1,20 @@
+# robots.txt — MyCapital Analyze
+# 색인 허용. AdSense·제휴 링크는 rel=sponsored 로 처리되므로 크롤 차단 안 함.
+
 User-agent: *
+Allow: /
+Disallow: /search/
+Disallow: /*/search/
+
+# IndexNow 참여 엔진 (Bing / Naver / Yandex / Seznam / Yep)
+# scripts/submit_index.py 로 매일 새 URL 을 즉시 통지한다.
+User-agent: Bingbot
+Allow: /
+
+User-agent: NaverBot
+Allow: /
+
+User-agent: YandexBot
 Allow: /
 
 Sitemap: https://www.mycapitalanalyze.com/sitemap.xml
