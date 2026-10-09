@@ -32,6 +32,15 @@ jobs:
       - name: Submit new URLs to IndexNow (Bing / Naver / Yandex / Seznam / Yep)
         run: python scripts/submit_index.py
 
+      - name: Submit new URLs to Google Indexing API
+        # Google은 IndexNow에 참여하지 않는다 → 별도 통로가 필요.
+        # 시크릿이 없으면 스크립트가 조용히 건너뛴다(실패로 처리하지 않음).
+        env:
+          GOOGLE_SA_JSON: ${{ secrets.GOOGLE_SA_JSON }}
+        run: |
+          pip install --quiet google-auth
+          python scripts/submit_google_index.py
+
       - name: Commit index state
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
