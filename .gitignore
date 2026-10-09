@@ -6,6 +6,10 @@ config.json.*
 .env
 .env.*
 
+# Google 서비스 계정 키 (로컬 보관용 — GitHub Secret 으로만 주입한다)
+google-sa.json
+.secrets/
+
 # Python
 __pycache__/
 *.pyc
