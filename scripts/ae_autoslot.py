@@ -34,7 +34,7 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 🔑 캐시 버전 — 필터/매핑 규칙을 바꾸면 이 숫자를 올린다.
 #    그러면 예전 캐시를 **삭제하지 않고도** 자동으로 무효화된다.
 #    (파일 삭제는 위험하므로 버전 스위치를 쓴다)
-CACHE_VERSION = "v2"
+CACHE_VERSION = "v4"
 CACHE_DIR = os.path.join(BASE, ".cache", "aliexpress")
 CACHE_TTL = 24 * 3600          # 캐시 24시간
 # API 세션이 없을 때 쓰는 정적 폴백 풀 (포털 Link Generator 로 손으로 채운다)
@@ -107,6 +107,405 @@ ECON_MAP = {
 
 # 이 카테고리들에 속하면 ECON_MAP 을 우선 사용한다.
 _ECON_ALIASES = tuple(ECON_MAP.keys())
+
+# 🔑 본문 주제 → 상품 검색어 매핑 (2026-10-09, 로이 지시 "글 내용에 맞춰서 추천")
+#
+# 왜 화이트리스트인가 (실측 실패 사례):
+#   게임 포스트에서 제목 단어 'arknights' 를 그대로 검색하면
+#   코슬패·인형·복권 같은 쓰레기가 나온다. 게임명은 상품으로 이어지지 않는다.
+#   → **상품으로 이어질 수 있는 주제어만 등록**하고, 본문에서 그 주제어가
+#     실제로 등장할 때만 검색한다. 안 잡히면 카테고리 기본값으로 폴백.
+TOPIC_QUERY = {
+    # ── 파일/문서 정리 (금융·행정 포스트 다수)
+    "file": "file folder set",
+    "folder": "file folder set",
+    "document": "document organizer",
+    "paper": "document organizer",
+    "archive": "file folder set",
+    "desk": "desk organizer set",
+    "calculator": "accounting calculator",
+    "calculate": "accounting calculator",
+    "budget": "accounting calculator",
+    "tax": "accounting calculator",
+    "invoice": "accounting calculator",
+    "cable": "cable management tray",
+    "wire": "cable management tray",
+    # ── 재택·생산성 구성
+    "remote": "desk organizer set",
+    "home office": "desk organizer set",
+    "laptop": "cable management tray",
+    "monitor": "desk organizer set",
+    # ── 통화/물가
+    "inflation": "file folder set",
+    "currency": "accounting calculator",
+    "dollar": "accounting calculator",
+    # ── 앱/태블릿 사용
+    "phone": "phone stand",
+    "tablet": "phone stand",
+    "screen": "screen protector",
+    "display": "screen protector",
+    "charging": "usb charger",
+    "battery": "power bank",
+    "earphone": "earbuds",
+    "earbud": "earbuds",
+    "headphone": "earbuds",
+    # ── 게임 포스트
+    "game": "mobile game controller",
+    "gaming": "mobile game controller",
+    "controller": "mobile game controller",
+    "fps": "gaming headset",
+    "playtime": "phone cooler",
+    "overheat": "phone cooler",
+    "heat": "phone cooler",
+    "cool": "phone cooler",
+    # ── 생활/쇼핑 (앱 리뷰 본문에서 자주 나옴)
+    "water": "water bottle",
+    "bottle": "water bottle",
+    "coffee": "coffee mug",
+    "mug": "coffee mug",
+    "bag": "travel bag",
+    "backpack": "backpack",
+    "wallet": "card holder",
+    "card holder": "card holder",
+    "umbrella": "umbrella",
+    "shoes": "sports shoes",
+    "footwear": "sports shoes",
+    "shirt": "t shirt",
+    "clothing": "hoodie",
+    "watch": "wrist watch",
+    "bagpack": "travel bag",
+    "snack": "snack box",
+    "food": "food container",
+    "kitchen": "kitchen organizer",
+    "cook": "kitchen utensil set",
+    "clean": "cleaning brush",
+    "travel": "travel organizer",
+    "trip": "travel organizer",
+    "hotel": "travel organizer",
+    "flight": "travel organizer",
+    "money": "cash wallet",
+    "coin": "coin holder",
+    "safe": "document safe",
+    "lock": "combination lock",
+    "sensor": "motion sensor",
+    "light": "led light strip",
+    "lamp": "led desk lamp",
+    "chair": "memory foam seat cushion",
+    "posture": "memory foam seat cushion",
+    "sleep": "memory foam pillow",
+    "pillow": "memory foam pillow",
+    "plant": "self watering planter",
+    "garden": "garden tool set",
+    "pet": "pet grooming brush",
+    "dog": "pet grooming brush",
+    "cat": "pet grooming brush",
+    "baby": "baby feeding bottle",
+    "camera": "phone tripod",
+    "photo": "phone tripod",
+    "video": "phone tripod",
+    "edit": "phone tripod",
+    "music": "portable speaker",
+    "audio": "portable speaker",
+    "speaker": "portable speaker",
+    "microphone": "usb microphone",
+    "stream": "usb microphone",
+    "record": "usb microphone",
+    "office": "file folder set",
+    "school": "document organizer",
+    "study": "file folder set",
+    "student": "file folder set",
+    "write": "gel pen set",
+    "note": "gel pen set",
+    "pen": "gel pen set",
+    "book": "book stand",
+    "read": "book stand",
+    "exercise": "resistance band",
+    "workout": "resistance band",
+    "fitness": "yoga mat",
+    "yoga": "yoga mat",
+    "run": "sports water bottle",
+    "health": "digital scale",
+    "weight": "digital scale",
+    "diet": "digital scale",
+    "calorie": "kitchen scale",
+    "sleep tracker": "sleep mask",
+    "bluetooth": "bluetooth speaker",
+    "wireless": "wireless mouse",
+    "typing": "mechanical keyboard",
+    "keyboard": "keyboard stand",
+    "printer": "printer stand",
+    "scanner": "portable scanner",
+}
+
+# 🔑 다국어 주제어 사전 (2026-10-09).
+#   실측: 번역본 197개가 영어 어휘가 없어 전부 카테고리 기본값으로 폴백했다
+#   → 같은 상품이 수백 번 반복 노출. (다양성 3%)
+#   → 9개 언어의 자주 쓰이는 주제어를 매핑한다.
+#   원문(post/*.md)에는 영어가 쓰이므로 이 사전을 안 쓰면 다국어만 상품이 안 갈라진다.
+TOPIC_QUERY_I18N = {
+    # ── 한국어
+    "파일": "file folder set", "서류": "document organizer",
+    "문서": "document organizer", "책상": "desk organizer set",
+    "계산기": "accounting calculator", "예산": "accounting calculator",
+    "세금": "accounting calculator", "케이블": "cable management tray",
+    "책": "book stand", "공책": "gel pen set", "필통": "gel pen set",
+    "물": "water bottle", "텀블러": "water bottle", "커피": "coffee mug",
+    "가방": "travel bag", "백팩": "backpack", "지갑": "card holder",
+    "카드": "card holder", "우산": "umbrella", "신발": "sports shoes",
+    "옷": "hoodie", "티셔츠": "t shirt", "시계": "wrist watch",
+    "밥": "food container", "식기": "food container",
+    "주방": "kitchen organizer", "요리": "kitchen utensil set",
+    "청소": "cleaning brush", "여행": "travel organizer",
+    "호텔": "travel organizer", "항공": "travel organizer",
+    "동전": "coin holder", "금고": "document safe",
+    "자물쇠": "combination lock", "감지": "motion sensor",
+    "전등": "led light strip", "조명": "led desk lamp",
+    "의자": "memory foam seat cushion", "자세": "memory foam seat cushion",
+    "베개": "memory foam pillow", "수면": "memory foam pillow",
+    "화분": "self watering planter", "정원": "garden tool set",
+    "반려": "pet grooming brush", "강아지": "pet grooming brush",
+    "고양이": "pet grooming brush", "아기": "baby feeding bottle",
+    "카메라": "phone tripod", "사진": "phone tripod",
+    "영상": "phone tripod", "동영상": "phone tripod",
+    "편집": "phone tripod", "음악": "portable speaker",
+    "스피커": "portable speaker", "마이크": "usb microphone",
+    "사무": "file folder set", "학교": "document organizer",
+    "공부": "file folder set", "학생": "file folder set",
+    "운동": "resistance band", "다이어트": "digital scale",
+    "체중": "digital scale", "영양": "kitchen scale",
+    "게임": "mobile game controller", "겜": "mobile game controller",
+    "그래픽": "phone cooler", "발열": "phone cooler",
+    "쿨링": "phone cooler", "패드": "mobile game controller",
+    "휴대폰": "phone stand", "스마트폰": "phone stand",
+    "태블릿": "phone stand", "화면": "screen protector",
+    "배터리": "power bank", "충전": "usb charger",
+    "이어폰": "earbuds", "헤드폰": "earbuds",
+    "이어버드": "earbuds", "블루투스": "bluetooth speaker",
+    "키보드": "keyboard stand", "마우스": "wireless mouse",
+    "인쇄": "printer stand", "스캐너": "portable scanner",
+    "通胀": "file folder set", "물가": "file folder set",
+    # ── 中文
+    "文件": "file folder set", "文件夹": "file folder set",
+    "文档": "document organizer", "桌面": "desk organizer set",
+    "计算器": "accounting calculator", "预算": "accounting calculator",
+    "税": "accounting calculator", "线缆": "cable management tray",
+    "书": "book stand", "笔记本": "gel pen set", "笔": "gel pen set",
+    "水": "water bottle", "水杯": "water bottle", "咖啡": "coffee mug",
+    "包": "travel bag", "背包": "backpack", "钱包": "card holder",
+    "伞": "umbrella", "鞋": "sports shoes", "衣服": "hoodie",
+    "手表": "wrist watch", "饭": "food container",
+    "厨房": "kitchen organizer", "旅行": "travel organizer",
+    "灯": "led light strip", "椅子": "memory foam seat cushion",
+    "枕头": "memory foam pillow", "睡眠": "memory foam pillow",
+    "游戏": "mobile game controller", "手柄": "mobile game controller",
+    "散热": "phone cooler", "手机": "phone stand",
+    "屏幕": "screen protector", "电池": "power bank",
+    "充电": "usb charger", "耳机": "earbuds",
+    "相机": "phone tripod", "照片": "phone tripod",
+    "视频": "phone tripod", "音乐": "portable speaker",
+    "音箱": "portable speaker", "麦克风": "usb microphone",
+    "办公": "file folder set", "学校": "document organizer",
+    "学习": "file folder set", "学生": "file folder set",
+    "健身": "resistance band", "减肥": "digital scale",
+    "体重秤": "digital scale", "通胀": "file folder set",
+    # ── 日本語
+    "ファイル": "file folder set", "書類": "document organizer",
+    "デスク": "desk organizer set", "電卓": "accounting calculator",
+    "予算": "accounting calculator", "ケーブル": "cable management tray",
+    "本": "book stand", "ペン": "gel pen set",
+    "水筒": "water bottle", "コーヒー": "coffee mug",
+    "バッグ": "travel bag", "財布": "card holder",
+    "傘": "umbrella", "靴": "sports shoes", "シャツ": "t shirt",
+    "時計": "wrist watch", "台所": "kitchen organizer",
+    "旅行": "travel organizer", "ライト": "led light strip",
+    "椅子": "memory foam seat cushion", "枕": "memory foam pillow",
+    "ゲーム": "mobile game controller", "_pad": "mobile game controller",
+    "スマホ": "phone stand", "画面": "screen protector",
+    "バッテリー": "power bank", "充電": "usb charger",
+    "イヤホン": "earbuds", "カメラ": "phone tripod",
+    "写真": "phone tripod", "動画": "phone tripod",
+    "音楽": "portable speaker", "スピーカー": "portable speaker",
+    "マイク": "usb microphone", "オフィス": "file folder set",
+    "学校": "document organizer", "学習": "file folder set",
+    "学生": "file folder set", "運動": "resistance band",
+    "体重計": "digital scale", "REDI": "file folder set",
+    # ── Español
+    "archivo": "file folder set", "carpeta": "file folder set",
+    "documento": "document organizer", "escritorio": "desk organizer set",
+    "calculadora": "accounting calculator", "presupuesto": "accounting calculator",
+    "impuesto": "accounting calculator", "cable": "cable management tray",
+    "libro": "book stand", "cuaderno": "gel pen set",
+    "agua": "water bottle", "botella": "water bottle",
+    "café": "coffee mug", "taza": "coffee mug",
+    "bolso": "travel bag", "mochila": "backpack",
+    "cartera": "card holder", "paraguas": "umbrella",
+    "zapatos": "sports shoes", "camisa": "t shirt",
+    "reloj": "wrist watch", "cocina": "kitchen organizer",
+    "viaje": "travel organizer", "hotel": "travel organizer",
+    "lampara": "led desk lamp", "silla": "memory foam seat cushion",
+    "almohada": "memory foam pillow", "juego": "mobile game controller",
+    "mando": "mobile game controller", "móvil": "phone stand",
+    "teléfono": "phone stand", "pantalla": "screen protector",
+    "batería": "power bank", "cargador": "usb charger",
+    "auriculares": "earbuds", "cámara": "phone tripod",
+    "foto": "phone tripod", "vídeo": "phone tripod",
+    "música": "portable speaker", "altavoz": "portable speaker",
+    "micrófono": "usb microphone", "oficina": "file folder set",
+    "escuela": "document organizer", "estudio": "file folder set",
+    "estudiante": "file folder set", "fitness": "resistance band",
+    "peso": "digital scale", "inflación": "file folder set",
+    # ── Français
+    "fichier": "file folder set", "dossier": "file folder set",
+    "document": "document organizer", "bureau": "desk organizer set",
+    "calculatrice": "accounting calculator", "budget": "accounting calculator",
+    "taxe": "accounting calculator", "câble": "cable management tray",
+    "livre": "book stand", "cahier": "gel pen set",
+    "eau": "water bottle", "gourde": "water bottle",
+    "café": "coffee mug", "tasse": "coffee mug",
+    "sac": "travel bag", "cartable": "backpack",
+    "portefeuille": "card holder", "parapluie": "umbrella",
+    "chaussures": "sports shoes", "chemise": "t shirt",
+    "montre": "wrist watch", "cuisine": "kitchen organizer",
+    "voyage": "travel organizer", "lampe": "led desk lamp",
+    "chaise": "memory foam seat cushion", "oreiller": "memory foam pillow",
+    "jeu": "mobile game controller", "manette": "mobile game controller",
+    "téléphone": "phone stand", "écran": "screen protector",
+    "batterie": "power bank", "chargeur": "usb charger",
+    "écouteurs": "earbuds", "appareil photo": "phone tripod",
+    "photo": "phone tripod", "vidéo": "phone tripod",
+    "musique": "portable speaker", "micro": "usb microphone",
+    "école": "document organizer", "étudiant": "file folder set",
+    "sport": "resistance band", "poids": "digital scale",
+    "inflation": "file folder set",
+    # ── Русский
+    "файл": "file folder set", "папка": "file folder set",
+    "документ": "document organizer", "стол": "desk organizer set",
+    "калькулятор": "accounting calculator", "бюджет": "accounting calculator",
+    "налог": "accounting calculator", "кабель": "cable management tray",
+    "книга": "book stand", "тетрадь": "gel pen set",
+    "вода": "water bottle", "бутылка": "water bottle",
+    "кофе": "coffee mug", "чашка": "coffee mug",
+    "сумка": "travel bag", "рюкзак": "backpack",
+    "кошелёк": "card holder", "зонт": "umbrella",
+    "обувь": "sports shoes", "рубашка": "t shirt",
+    "часы": "wrist watch", "кухня": "kitchen organizer",
+    "путешествие": "travel organizer", "лампа": "led desk lamp",
+    "стул": "memory foam seat cushion", "подушка": "memory foam pillow",
+    "игра": "mobile game controller", "геймпад": "mobile game controller",
+    "телефон": "phone stand", "экран": "screen protector",
+    "батарея": "power bank", "зарядка": "usb charger",
+    "наушники": "earbuds", "камера": "phone tripod",
+    "фото": "phone tripod", "видео": "phone tripod",
+    "музыка": "portable speaker", "микрофон": "usb microphone",
+    "офис": "file folder set", "школа": "document organizer",
+    "учёба": "file folder set", "студент": "file folder set",
+    "спорт": "resistance band", "весы": "digital scale",
+    "инфляция": "file folder set",
+    # ── Português
+    "arquivo": "file folder set", "pasta": "file folder set",
+    "documento": "document organizer", "mesa": "desk organizer set",
+    "calculadora": "accounting calculator", "orçamento": "accounting calculator",
+    "imposto": "accounting calculator", "cabo": "cable management tray",
+    "livro": "book stand", "caderno": "gel pen set",
+    "água": "water bottle", "garrafa": "water bottle",
+    "café": "coffee mug", "caneca": "coffee mug",
+    "bolsa": "travel bag", "mochila": "backpack",
+    "carteira": "card holder", "chuva": "umbrella",
+    "tênis": "sports shoes", "camisa": "t shirt",
+    "relógio": "wrist watch", "cozinha": "kitchen organizer",
+    "viagem": "travel organizer", "lâmpada": "led desk lamp",
+    "cadeira": "memory foam seat cushion", "travesseiro": "memory foam pillow",
+    "jogo": "mobile game controller", "controle": "mobile game controller",
+    "celular": "phone stand", "tela": "screen protector",
+    "bateria": "power bank", "carregador": "usb charger",
+    "fone": "earbuds", "câmera": "phone tripod",
+    "foto": "phone tripod", "vídeo": "phone tripod",
+    "música": "portable speaker", "microfone": "usb microphone",
+    "escola": "document organizer", "estudo": "file folder set",
+    "estudante": "file folder set", "fitness": "resistance band",
+    "peso": "digital scale", "inflação": "file folder set",
+    # ── Deutsch
+    "datei": "file folder set", "ordner": "file folder set",
+    "dokument": "document organizer", "schreibtisch": "desk organizer set",
+    "taschenrechner": "accounting calculator", "budget": "accounting calculator",
+    "steuer": "accounting calculator", "kabel": "cable management tray",
+    "buch": "book stand", "notizbuch": "gel pen set",
+    "wasser": "water bottle", "flasche": "water bottle",
+    "kaffee": "coffee mug", "tasse": "coffee mug",
+    "tasche": "travel bag", "rucksack": "backpack",
+    "geldbörse": "card holder", "regenschirm": "umbrella",
+    "schuhe": "sports shoes", "hemd": "t shirt",
+    "uhr": "wrist watch", "küche": "kitchen organizer",
+    "reise": "travel organizer", "lampe": "led desk lamp",
+    "stuhl": "memory foam seat cushion", "kissen": "memory foam pillow",
+    "spiel": "mobile game controller", "controller": "mobile game controller",
+    "telefon": "phone stand", "bildschirm": "screen protector",
+    "akku": "power bank", "ladegerät": "usb charger",
+    "kopfhörer": "earbuds", "kamera": "phone tripod",
+    "foto": "phone tripod", "video": "phone tripod",
+    "musik": "portable speaker", "mikrofon": "usb microphone",
+    "büro": "file folder set", "schule": "document organizer",
+    "studium": "file folder set", "student": "file folder set",
+    "fitness": "resistance band", "waage": "digital scale",
+    "inflation": "file folder set",
+    # ── 中文/한국어 이외 나머지 언어는 본문이 영어 원문과 같은 경우 많음.
+    #    (예: hi / id / bn / ar 게임글) → 영어 TOPIC_QUERY 로 충분.
+}
+
+# 일반 명사지만 상품으로 이어지지 않아 무시할 단어
+_TOPIC_STOP = {
+    "the", "and", "for", "with", "that", "this", "from", "have", "has",
+    "are", "was", "were", "will", "would", "could", "should", "can",
+    "but", "not", "you", "your", "its", "they", "their", "them",
+    "app", "apps", "play", "google", "apple", "store", "free", "new",
+    "review", "version", "update", "android", "ios", "price", "dollar",
+}
+
+
+def extract_topics(body_md, title=""):
+    """본문+제목에서 상품으로 이어질 주제어를 뽑는다.
+
+    ⚠️ 영문 + CJK(한/일/중) 를 모두 대상으로 한다.
+       다국어 번역본을 위해 `TOPIC_QUERY_I18N` 도 함께 본다.
+    Returns: 검색어 리스트 (최대 3개)
+    """
+    text = ((title or "") + " " + (body_md or "")).lower()
+    text = re.sub(r"<[^>]+>", " ", text)      # HTML 태그 제거
+
+    hits = []
+    # 1) 영문 단어
+    for word in re.findall(r"[a-z][a-z\-]{2,}", text):
+        if word in _TOPIC_STOP:
+            continue
+        query = TOPIC_QUERY.get(word)
+        if query and query not in hits:
+            hits.append(query)
+    # 2) CJK 2~6자 구 (한글/일본어/한자가 모두 2~4자로 잘림)
+    #    2자부터 6자까지 슬라이딩 — "calculadora" 처럼 긴 단어의 일부만 사전에 있어도
+    #    부분 일치로 잡히게 한다 (스페인어 적용률이 8%였음).
+    cjk_runs = re.findall(
+        r"[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uac00-\ud7af]{2,}", text)
+    for run in cjk_runs:
+        for size in (2, 3, 4):
+            for i in range(len(run) - size + 1):
+                token = run[i:i + size]
+                query = TOPIC_QUERY_I18N.get(token)
+                if query and query not in hits:
+                    hits.append(query)
+    # 3) 라틴 확장어 (스페인어/포르투갈어/프랑스어/독어 — 어간 포함 매칭)
+    for word in re.findall(r"[a-záéíóúãõçüöàèäëîïôûùêÿñ]{4,}", text):
+        if word in _TOPIC_STOP:
+            continue
+        query = TOPIC_QUERY.get(word)
+        if not query:
+            for key, val in TOPIC_QUERY.items():
+                # 라틴어 어간 일치 (inflation/inflación, calculadora/calculadora)
+                if len(key) >= 5 and word.startswith(key[:5]):
+                    query = val
+                    break
+        if query and query not in hits:
+            hits.append(query)
+    return hits[:3]
 
 # 검색 결과에서 반드시 버려야 할品类 (CTR·브랜드 안전).
 # 게임 키워드로 검색하면 복권 티켓·코스프레·수집품이 섞여 나온다.
@@ -208,7 +607,7 @@ def _normalize(product, ship_to="US"):
     }
 
 
-def search(keyword, ship_to="US", currency="USD", page_size=6):
+def search(keyword, ship_to="US", currency="USD", page_size=20):
     """키워드 1건으로 상품 목록. 실패하면 빈 리스트(throw하지 않음)."""
     key = "%s_q_%s_%s_%s" % (CACHE_VERSION, keyword, ship_to, currency)
     cached = _cache_get(key)
@@ -241,20 +640,56 @@ def search(keyword, ship_to="US", currency="USD", page_size=6):
     return out
 
 
-def recommend(category, keywords=None, limit=4, game_post=False):
+def _rotate(pool, limit, variant):
+    """후보 풀에서 limit 개를 고르되, 포스트마다 다른 구간을 쓴다.
+
+    🔑 2026-10-09: 같은 카테고리 글이 500개면 상위 4개 상품이 500페이지에
+       그대로 반복된다 (실측: A4 파일폴더 223회 반복). variant 로 슬라이스
+       오프셋을 줘서 같은 독자가 같은 상품만 보지 않게 한다.
+    """
+    if not pool:
+        return pool
+    if len(pool) <= limit or not variant:
+        return pool[:limit]
+    n_chunks = max(1, len(pool) // limit)
+    offset = (variant % n_chunks) * limit
+    rotated = pool[offset:offset + limit]
+    return rotated if len(rotated) >= min(limit, 2) else pool[:limit]
+
+
+def recommend(category, keywords=None, limit=4, game_post=False, body_md="",
+              title="", variant=0):
     """포스트용 상품 추천.
 
-    🔑 2026-10-08 수정 — 포스트에서 뽑은 키워드는 **쓰지 않는다.**
-       게임 포스트("Arknights 리뷰")에서 'arknights' 를 검색하면
-       코슬패·_BADGE 같은 전혀 무관한 상품이 나온다. readers 는 게임을 사지 않는다.
-       → 카테고리 고정 키워드만 써서 **어차피 상품은 같은 4~6개**이고,
-         포스트별 keyword 로 API 를 때리는 것 자체가 시간 낭비였다.
+    🔑 2026-10-09 로이 지시: "글 내용과 알아서 비슷하게 맞춰서 추천"
+       → 본문 주제를 읽고 **그 주제에 맞는 상품**을 고른다.
+
+    ⚠️ 검색어를 아무거나 쓰면 안 된다 (실측 실패 사례):
+       게임 포스트("Arknights 리뷰")에서 제목 단어 'arknights' 를 그대로 검색하면
+       코슬패·인형·복권 같은 쓰레기가 나온다.
+    → 그래서 **화이트리스트** 방식으로 바꾼다:
+         1) 본문에서 상품으로 이어질 수 있는 일반 명사만 추린다
+         2) 그 명사가 `TOPIC_QUERY` 에 등록된 경우에만 검색한다
+         3) 하나도 안 잡히면 카테고리 기본값으로 폴백한다
+       게임명·앱명은 명사 추출 단계에서 자연스럽게 탈락한다
+       (专有名詞·고유명사 패턴 제외).
 
     `game_post=True` 면 게임 액세서리 매핑을 쓴다 (패드·지문링커·냉각기).
 
     전략: 카테고리 매핑 키워드로만 조회 → 쓰레기品类 제외 → 커미션율·평점 순 정렬.
     """
     category = (category or '').strip().strip('"\'').strip()
+    # 🔑 본문에서 상품으로 이어질 주제어를 먼저 뽑는다 (로이 지시 2026-10-09).
+    #   게임명·앱명은 TOPIC_QUERY 에 없으므로 자연스럽게 무시된다.
+    topics = extract_topics(body_md, title)
+
+    # 🔑 게임 포스트는 게임 액세서리 매핑을 무조건 먼저 쓴다 (2026-10-09).
+    #   게임 글에 'phone cooler' 가 뽑혀도 "폰 타이어" 같은 엉뚱한 상품이
+    #   나올 수 있어, 게임 전용 검색어를 맨 앞에 둔다.
+    if game_post:
+        topics = ["mobile game controller"] + [t for t in topics
+                                              if t != "mobile game controller"]
+
     # 게임 포스트는 별도 매핑을 쓴다 (게임 액세서리)
     if category in ("Apps & Games", "Apps & Games (game)"):
         conf = CATEGORY_MAP["Apps & Games (game)"] if game_post \
@@ -267,14 +702,25 @@ def recommend(category, keywords=None, limit=4, game_post=False):
     ship_to = conf["ship_to"]
 
     pool, seen = [], set()
-    # 🔑 카테고리별 결과를 프로세스 동안 메모리에 고정 (2026-10-09).
-    #   562개 포스트가 같은 카테고리면 같은 상품 4~6개만 필요하다.
-    #   포스트마다 API 를 부르는 순간 빌드가 10분 넘게 걸린다.
-    mem_key = "%s|%s|%s" % (category, game_post, limit)
+    # 🔑 카테고리별 **후보 풀**을 프로세스 동안 고정 (2026-10-09).
+    #   포스트마다 API 를 부르면 빌드가 10분 넘게 걸린다.
+    #   ⚠️ `variant` 는 여기 넣지 않는다 → 후보 풀만 캐시하고,
+    #      최종 4개 선택은 그때마다 variant 로 회전시킨다.
+    mem_key = "%s|%s|%s|%s" % (category, game_post, limit, ",".join(topics))
     if mem_key in _MEMO:
-        return _MEMO[mem_key]
+        pool = _MEMO[mem_key]
+        return _rotate(pool, limit, variant)
 
-    for term in conf["keywords"][:4]:        # 쿼터 절약: 최대 4개
+    # 🔑 본문 주제를 먼저 쓰고, 부족하면 카테고리 기본값으로 보충한다.
+    #   (로이 지시 2026-10-09: "글 내용과 알아서 비슷하게 맞춰서 추천")
+    terms = list(topics)[:3] or list(conf["keywords"][:2])
+    for extra in conf["keywords"][:2]:          # 보충용 (중복 제거)
+        if len(terms) >= 4:
+            break
+        if extra not in terms:
+            terms.append(extra)
+
+    for term in terms[:4]:                      # 쿼터 절약: 최대 4개
         for item in search(term, ship_to=ship_to):
             if _JUNK_PAT.search(item.get("title") or ""):
                 continue          # 복권/코스프레/수집품 제외
@@ -286,6 +732,16 @@ def recommend(category, keywords=None, limit=4, game_post=False):
                 seen.add(item["id"])
             if item["title"]:
                 pool.append(item)
+
+    # 🔑 본문 주제 일치 가산점 (2026-10-09).
+    #   같은 카테고리라도 어떤 검색어로 나왔는지에 따라 관련도가 다르다.
+    #   본문에서 직접 뽑힌 검색어(topics)의 상품에 보너스를 준다.
+    #   안 그러면 USB 케이블(커미션 7%)이 게임패드(9%)를 밀어낸다.
+    topic_words = set()
+    for t in topics:
+        for w in re.findall(r"[a-z]+", t):
+            if len(w) > 2:
+                topic_words.add(w)
 
     def score(item):
         try:
@@ -300,13 +756,15 @@ def recommend(category, keywords=None, limit=4, game_post=False):
             vol = float(item["orders"] or 0)
         except ValueError:
             vol = 0
-        # 커미션 60% + 평점 30% + 판매량 10%
-        return (comm * 0.6) + (rate * 0.3) + (min(vol, 100000) / 100000 * 10)
+        base = (comm * 0.6) + (rate * 0.3) + (min(vol, 100000) / 100000 * 10)
+        # 본문 주제어 일치 보너스 (최대 +6). 가중치가 커야 커미션 차이를 이긴다.
+        title_words = set(re.findall(r"[a-z]+", (item.get("title") or "").lower()))
+        overlap = topic_words & title_words
+        return base + min(len(overlap), 3) * 2.0
 
     pool.sort(key=score, reverse=True)
-    result = pool[:limit]
-    _MEMO[mem_key] = result      # 같은 카테고리 재조회는 메모리에서 즉시 응답
-    return result
+    _MEMO[mem_key] = pool        # 후보 풀 전체를 캐시 (회전은 _rotate 에서)
+    return _rotate(pool, limit, variant)
 
 
 # ------------------------------------------------------------------ 렌더링

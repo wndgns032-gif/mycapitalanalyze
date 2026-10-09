@@ -863,9 +863,15 @@ def ae_autoslot_html(lang, category, title, body_md, kind=None):
     #   CTR 이 오히려 떨어지고 API 호출만 느려진다(빌드 9분 소요).
     #   → ae_autoslot 가 카테고리 고정 키워드로만 조회한다.
     try:
+        # 🔑 variant: 같은 카테고리 글이 수백 개면 상위 상품이 그대로 반복된다.
+        #   포스트 순번을 넘겨 상품 조합을 회전시킨다 (ae_autoslot._rotate).
+        import hashlib as _hl
+        variant = int(_hl.md5(("%s|%s" % (category, title)).encode("utf-8")).hexdigest()[:8], 16)
         picks = ae_autoslot.recommend(category, None,
                                       limit=cfg.get('limit', 4),
-                                      game_post=(kind == 'game'))
+                                      game_post=(kind == 'game'),
+                                      body_md=body_md, title=title,
+                                      variant=variant)
     except Exception:
         return ''      # 어떤 예외든 삼킨다. 빌드는 계속돼야 한다.
     return ae_autoslot.render_html(picks, lang)
