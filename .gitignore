@@ -22,3 +22,6 @@ Thumbs.db
 # 로컬 진단·스크린샷 (커밋하지 않는다)
 _shared/
 _shots/
+
+# API 응답 캐시 (재생성 가능, 커밋 불필요)
+.cache/
