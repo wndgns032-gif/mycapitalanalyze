@@ -684,11 +684,17 @@ def recommend(category, keywords=None, limit=4, game_post=False, body_md="",
     topics = extract_topics(body_md, title)
 
     # 🔑 게임 포스트는 게임 액세서리 매핑을 무조건 먼저 쓴다 (2026-10-09).
-    #   게임 글에 'phone cooler' 가 뽑혀도 "폰 타이어" 같은 엉뚱한 상품이
-    #   나올 수 있어, 게임 전용 검색어를 맨 앞에 둔다.
+    #   실측 실패: 게임 본문의 'file'(파일 저장)을 사무용어로 잡아
+    #   "Hanging File Folder" 가 게임패드보다 앞에 나왔다.
+    #   → 게임 글에서는 사무·문서 계열 주제어를 통째로 버린다.
+    _OFFICE_QUERIES = {
+        "file folder set", "document organizer", "desk organizer set",
+        "accounting calculator", "cable management tray", "gel pen set",
+        "book stand", "led desk lamp", "led light strip",
+    }
     if game_post:
-        topics = ["mobile game controller"] + [t for t in topics
-                                              if t != "mobile game controller"]
+        filtered = [t for t in topics if t not in _OFFICE_QUERIES]
+        topics = ["mobile game controller"] + filtered
 
     # 게임 포스트는 별도 매핑을 쓴다 (게임 액세서리)
     if category in ("Apps & Games", "Apps & Games (game)"):
@@ -713,12 +719,22 @@ def recommend(category, keywords=None, limit=4, game_post=False, body_md="",
 
     # 🔑 본문 주제를 먼저 쓰고, 부족하면 카테고리 기본값으로 보충한다.
     #   (로이 지시 2026-10-09: "글 내용과 알아서 비슷하게 맞춰서 추천")
-    terms = list(topics)[:3] or list(conf["keywords"][:2])
-    for extra in conf["keywords"][:2]:          # 보충용 (중복 제거)
-        if len(terms) >= 4:
-            break
-        if extra not in terms:
-            terms.append(extra)
+    if game_post:
+        # 게임 글은 게임 액세서리로만 채운다 (사무용어 혼입 방지).
+        pool_terms = ["mobile game controller", "gaming headset", "phone cooler"]
+        terms = list(topics) or pool_terms[:2]
+        for extra in pool_terms:            # 보충용 (중복 제거)
+            if len(terms) >= 4:
+                break
+            if extra not in terms:
+                terms.append(extra)
+    else:
+        terms = list(topics)[:3] or list(conf["keywords"][:2])
+        for extra in conf["keywords"][:2]:   # 보충용 (중복 제거)
+            if len(terms) >= 4:
+                break
+            if extra not in terms:
+                terms.append(extra)
 
     for term in terms[:4]:                      # 쿼터 절약: 최대 4개
         for item in search(term, ship_to=ship_to):
