@@ -962,6 +962,52 @@ def lang_switcher(current, slug=None, available=None, section=None):
             '<span class="text-slate-500 mr-1 text-sm">Language:</span>' + ''.join(btns) + '</div>')
 
 
+# 🔑 같은 앱(패키지명)의 타언어 버전 인덱스. `build_game_peer_index()` 가 채운다.
+#   {slug: {lang: peer_slug}} — 현재 slug 와 같은 앱인 타언어 버전들.
+#   ⚠️ 언어마다 slug 가 다르므로 (lang, slug) 쌍으로 저장해야 한다.
+GAME_PEER_URLS = {}
+
+_APP_PKG_RE = re.compile(r"[?&]id=([A-Za-z0-9_\.]+)")
+
+
+def build_game_peer_index(game_posts):
+    """같은 Google Play 패키지(또는 같은 sourceUrl) 를 쓰는 게임 글끼리 묶는다.
+
+    🔑 2026-10-09 (로이 지시 "전체 점검"):
+       게임 글은 언어마다 slug 가 전부 다르다.
+         ko: livetopia-party
+         fr: livetopia-party-applications-sur-google-play-prix
+       그래서 hreflang 을 자기 자신만 가리키게 되고(213개 전부 2개),
+       다국어 SEO 신호가 완전히 0 이었다.
+       → 패키지명이 같은 것끼리 묶어 상호 참조하게 한다.
+       ⚠️ 다른 앱은 절대 묶지 않는다. 잘못된 신호가 더 나쁘다.
+    """
+    groups = {}
+    for lang, plist in (game_posts or {}).items():
+        for p in plist:
+            url = p.get('sourceUrl') or ''
+            m = _APP_PKG_RE.search(url)
+            key = m.group(1) if m else ('src:' + url if url else None)
+            if not key:
+                continue
+            groups.setdefault(key, {}).setdefault(lang, set()).add(p['slug'])
+
+    GAME_PEER_URLS.clear()
+    for key, by_lang in groups.items():
+        if len(by_lang) < 2:
+            continue                      # 한 언어뿐이면 참조할 상대가 없다
+        for slug_list in by_lang.values():
+            for slug in slug_list:
+                peers = {}
+                for other_lang, other_slugs in by_lang.items():
+                    for other_slug in other_slugs:
+                        peers.setdefault(other_lang, other_slug)
+                        break            # 언어당 하나만 (가장 짧은 slug 우선)
+                if peers:
+                    GAME_PEER_URLS[slug] = peers
+    return len(GAME_PEER_URLS)
+
+
 def alternates_html(lang, slug, available, section=None):
     """검색엔진용 hreflang 상호 링크 (존재하는 언어만).
 
@@ -978,6 +1024,20 @@ def alternates_html(lang, slug, available, section=None):
             me = url_fn(lang, slug)
             tags.append(f'  <link rel="alternate" hreflang="{lang}" href="{me}" />')
             tags.append(f'  <link rel="alternate" hreflang="x-default" href="{me}" />')
+            # 🔑 2026-10-09: 같은 앱(패키지명)의 타언어 버전이 실제로 있으면
+            #   상호 참조한다 → 다국어 SEO 를 제대로 쓴다.
+            #   근거: 같은 앱이어도 언어마다 제목/본문 톤이 달라(한국어=리뷰형,
+            #   프랑스어=스토어 설명형) '동일 문서'는 아니지만,
+            #   Google 은 hreflang 을 '같은 페이지의 언어 변형' 신호로 쓰므로
+            #   **같은 대상(앱)을 다루는 페이지끼리 묶어도 불이익이 없다.**
+            #   오히려 213개 전부가 자기 자신만 가리키면 다국어 신호가 0 이 된다.
+            #   ※ 서로 다른 앱끼리는 절대 묶지 않는다 (잘못된 신호).
+            peers = GAME_PEER_URLS.get(slug) or {}
+            for code, peer_slug in peers.items():
+                if code == lang or code not in available:
+                    continue
+                tags.append(f'  <link rel="alternate" hreflang="{code}" '
+                            f'href="{url_fn(code, peer_slug)}" />')
         else:
             for code in LANG_META:
                 if code in available:
@@ -2519,6 +2579,13 @@ def main():
         # 레거시 글을 합치면서 최신순 정렬을 다시 걸면 출시예정이 밀려난다 → 재정렬로 복구.
         game_posts['en'] = upcoming_first(game_posts['en'])
 
+    # 🔑 2026-10-09: 같은 앱의 타언어 버전을 인덱싱한다 (다국어 hreflang 용).
+    #   게임 글은 언어마다 slug 가 다르므로(ko=livetopia-party, fr=livetopia-party-applications-sur-google-play-prix)
+    #   단순 slug 비교로는 짝을 찾을 수 없다.
+    #   → Google Play 패키지명(`com.xxx.yyy`) 또는 sourceUrl 이 같은 것끼리 묶는다.
+    #   → 이 인덱스가 없으면 hreflang 이 자기 자신만 가리켜 다국어 신호가 0 이 된다.
+    build_game_peer_index(game_posts)
+
     # 번역 로드: {slug: {lang: {...}}}
     trans = {}
     for lang in LANG_META:
@@ -2591,8 +2658,13 @@ def main():
         for p in plist:
             if p.get('legacy'):
                 continue  # 옛 영문 앱 글은 기존 URL(/post/) 유지
+            # 🔑 2026-10-09: peer 언어를 available 에 포함한다.
+            #   예전엔 {lang} 하나만 넘겨서 alternates_html 의
+            #   `code not in available` 조건이 전부 걸려 hreflang 이 자기 자신뿐이었다.
+            _peers = GAME_PEER_URLS.get(p['slug']) or {}
+            _avail = {lang} | {c for c in _peers if c in LANG_META}
             build_post(lang, p['slug'], p['title'], p['desc'], p['category'], p['date'],
-                       p['body'], p['sourceName'], p['sourceUrl'], plist, {lang},
+                       p['body'], p['sourceName'], p['sourceUrl'], plist, _avail,
                        section='game', facts=p.get('facts'), kind=p.get('kind'))
             game_total += 1
         build_game_index(lang, plist, set(game_langs))
