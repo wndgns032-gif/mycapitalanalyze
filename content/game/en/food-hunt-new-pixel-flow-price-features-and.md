@@ -14,7 +14,7 @@ price: ""
 developer: "芸芸 张"
 genre: "Games, Casual, Puzzle"
 kind: "game"
-upcoming: "true"
+upcoming: false
 ---
 
 ![Food Hunt : New Pixel Flow](/assets/img/apps/app-4f6b6f9beb.jpg)
