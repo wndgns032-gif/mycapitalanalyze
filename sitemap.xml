@@ -621,6 +621,11 @@
     <xhtml:link rel="alternate" hreflang="hi" href="https://www.mycapitalanalyze.com/hi/page/9/" />
   </url>
   <url>
+    <loc>https://www.mycapitalanalyze.com/hi/page/10/</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.mycapitalanalyze.com/hi/page/10/" />
+  </url>
+  <url>
     <loc>https://www.mycapitalanalyze.com/es/page/2/</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.mycapitalanalyze.com/es/page/2/" />
@@ -826,6 +831,11 @@
     <xhtml:link rel="alternate" hreflang="pt" href="https://www.mycapitalanalyze.com/pt/page/9/" />
   </url>
   <url>
+    <loc>https://www.mycapitalanalyze.com/pt/page/10/</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.mycapitalanalyze.com/pt/page/10/" />
+  </url>
+  <url>
     <loc>https://www.mycapitalanalyze.com/ru/page/2/</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="ru" href="https://www.mycapitalanalyze.com/ru/page/2/" />
@@ -904,6 +914,11 @@
     <loc>https://www.mycapitalanalyze.com/de/page/9/</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mycapitalanalyze.com/de/page/9/" />
+  </url>
+  <url>
+    <loc>https://www.mycapitalanalyze.com/de/page/10/</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.mycapitalanalyze.com/de/page/10/" />
   </url>
   <url>
     <loc>https://www.mycapitalanalyze.com/ja/page/2/</loc>
@@ -8150,10 +8165,10 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mycapitalanalyze.com/game/games/" />
   </url>
   <url>
-    <loc>https://www.mycapitalanalyze.com/game/post/food-hunt-new-pixel-flow-price-features-and.html</loc>
+    <loc>https://www.mycapitalanalyze.com/game/post/icey-sequel-crowdfunding-30-million-yuan.html</loc>
     <lastmod>2026-10-08</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.mycapitalanalyze.com/game/post/food-hunt-new-pixel-flow-price-features-and.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/game/post/food-hunt-new-pixel-flow-price-features-and.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mycapitalanalyze.com/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
   </url>
   <url>
     <loc>https://www.mycapitalanalyze.com/game/post/wechat-mini-game-top-100-september-2026.html</loc>
@@ -8178,6 +8193,12 @@
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mycapitalanalyze.com/game/post/dunecrawl-price-features-and-who-should-skip.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/game/post/dunecrawl-price-features-and-who-should-skip.html" />
+  </url>
+  <url>
+    <loc>https://www.mycapitalanalyze.com/game/post/food-hunt-new-pixel-flow-price-features-and.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mycapitalanalyze.com/game/post/food-hunt-new-pixel-flow-price-features-and.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/game/post/food-hunt-new-pixel-flow-price-features-and.html" />
   </url>
   <url>
     <loc>https://www.mycapitalanalyze.com/game/post/juicy-journey-merge-amp-cook-price-features-and.html</loc>
@@ -8434,6 +8455,12 @@
     <xhtml:link rel="alternate" hreflang="hi" href="https://www.mycapitalanalyze.com/hi/game/games/" />
   </url>
   <url>
+    <loc>https://www.mycapitalanalyze.com/hi/game/post/icey-sequel-crowdfunding-30-million-yuan.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.mycapitalanalyze.com/hi/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/hi/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+  </url>
+  <url>
     <loc>https://www.mycapitalanalyze.com/hi/game/post/wechat-mini-game-top-100-september-2026.html</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="hi" href="https://www.mycapitalanalyze.com/hi/game/post/wechat-mini-game-top-100-september-2026.html" />
@@ -8550,6 +8577,12 @@
     <loc>https://www.mycapitalanalyze.com/es/game/games/</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.mycapitalanalyze.com/es/game/games/" />
+  </url>
+  <url>
+    <loc>https://www.mycapitalanalyze.com/es/game/post/icey-sequel-crowdfunding-30-million-yuan.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.mycapitalanalyze.com/es/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/es/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
   </url>
   <url>
     <loc>https://www.mycapitalanalyze.com/es/game/post/wechat-mini-game-top-100-september-2026.html</loc>
@@ -8670,6 +8703,12 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://www.mycapitalanalyze.com/ar/game/games/" />
   </url>
   <url>
+    <loc>https://www.mycapitalanalyze.com/ar/game/post/icey-sequel-crowdfunding-30-million-yuan.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.mycapitalanalyze.com/ar/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/ar/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+  </url>
+  <url>
     <loc>https://www.mycapitalanalyze.com/ar/game/post/wechat-mini-game-top-100-september-2026.html</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="ar" href="https://www.mycapitalanalyze.com/ar/game/post/wechat-mini-game-top-100-september-2026.html" />
@@ -8780,6 +8819,12 @@
     <loc>https://www.mycapitalanalyze.com/fr/game/games/</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="fr" href="https://www.mycapitalanalyze.com/fr/game/games/" />
+  </url>
+  <url>
+    <loc>https://www.mycapitalanalyze.com/fr/game/post/icey-sequel-crowdfunding-30-million-yuan.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.mycapitalanalyze.com/fr/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/fr/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
   </url>
   <url>
     <loc>https://www.mycapitalanalyze.com/fr/game/post/wechat-mini-game-top-100-september-2026.html</loc>
@@ -8894,6 +8939,12 @@
     <xhtml:link rel="alternate" hreflang="bn" href="https://www.mycapitalanalyze.com/bn/game/games/" />
   </url>
   <url>
+    <loc>https://www.mycapitalanalyze.com/bn/game/post/icey-sequel-crowdfunding-30-million-yuan.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="bn" href="https://www.mycapitalanalyze.com/bn/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/bn/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+  </url>
+  <url>
     <loc>https://www.mycapitalanalyze.com/bn/game/post/wechat-mini-game-top-100-september-2026.html</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="bn" href="https://www.mycapitalanalyze.com/bn/game/post/wechat-mini-game-top-100-september-2026.html" />
@@ -9004,6 +9055,12 @@
     <loc>https://www.mycapitalanalyze.com/pt/game/games/</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="pt" href="https://www.mycapitalanalyze.com/pt/game/games/" />
+  </url>
+  <url>
+    <loc>https://www.mycapitalanalyze.com/pt/game/post/icey-sequel-crowdfunding-30-million-yuan.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.mycapitalanalyze.com/pt/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/pt/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
   </url>
   <url>
     <loc>https://www.mycapitalanalyze.com/pt/game/post/wechat-mini-game-top-100-september-2026.html</loc>
@@ -9130,6 +9187,12 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://www.mycapitalanalyze.com/ru/game/games/" />
   </url>
   <url>
+    <loc>https://www.mycapitalanalyze.com/ru/game/post/icey-sequel-crowdfunding-30-million-yuan.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.mycapitalanalyze.com/ru/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/ru/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+  </url>
+  <url>
     <loc>https://www.mycapitalanalyze.com/ru/game/post/wechat-mini-game-top-100-september-2026.html</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="ru" href="https://www.mycapitalanalyze.com/ru/game/post/wechat-mini-game-top-100-september-2026.html" />
@@ -9248,6 +9311,12 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/de/game/post/the-apocalypsnake-release-features-vorschau.html" />
   </url>
   <url>
+    <loc>https://www.mycapitalanalyze.com/de/game/post/icey-sequel-crowdfunding-30-million-yuan.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.mycapitalanalyze.com/de/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/de/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+  </url>
+  <url>
     <loc>https://www.mycapitalanalyze.com/de/game/post/wechat-mini-game-top-100-september-2026.html</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mycapitalanalyze.com/de/game/post/wechat-mini-game-top-100-september-2026.html" />
@@ -9364,6 +9433,12 @@
     <loc>https://www.mycapitalanalyze.com/ja/game/games/</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="ja" href="https://www.mycapitalanalyze.com/ja/game/games/" />
+  </url>
+  <url>
+    <loc>https://www.mycapitalanalyze.com/ja/game/post/icey-sequel-crowdfunding-30-million-yuan.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.mycapitalanalyze.com/ja/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/ja/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
   </url>
   <url>
     <loc>https://www.mycapitalanalyze.com/ja/game/post/wechat-mini-game-top-100-september-2026.html</loc>
@@ -9496,6 +9571,12 @@
     <xhtml:link rel="alternate" hreflang="id" href="https://www.mycapitalanalyze.com/id/game/games/" />
   </url>
   <url>
+    <loc>https://www.mycapitalanalyze.com/id/game/post/icey-sequel-crowdfunding-30-million-yuan.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="id" href="https://www.mycapitalanalyze.com/id/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/id/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+  </url>
+  <url>
     <loc>https://www.mycapitalanalyze.com/id/game/post/wechat-mini-game-top-100-september-2026.html</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="id" href="https://www.mycapitalanalyze.com/id/game/post/wechat-mini-game-top-100-september-2026.html" />
@@ -9612,6 +9693,12 @@
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="ko" href="https://www.mycapitalanalyze.com/ko/game/post/nba-rise.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/ko/game/post/nba-rise.html" />
+  </url>
+  <url>
+    <loc>https://www.mycapitalanalyze.com/ko/game/post/icey-sequel-crowdfunding-30-million-yuan.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://www.mycapitalanalyze.com/ko/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/ko/game/post/icey-sequel-crowdfunding-30-million-yuan.html" />
   </url>
   <url>
     <loc>https://www.mycapitalanalyze.com/ko/game/post/play-com-freedust-lastcampdefense2.html</loc>

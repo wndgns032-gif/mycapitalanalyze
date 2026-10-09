@@ -2,11 +2,13 @@
  "dates": {
   "2026-09-30": "http://news.yxrb.net/2026/0930/7654.html",
   "2026-10-01": "http://www.gamelook.com.cn/2026/09/603302/",
-  "2026-10-08": "http://www.gamelook.com.cn/2026/10/603357/"
+  "2026-10-08": "http://www.gamelook.com.cn/2026/10/603357/",
+  "2026-10-09": "http://www.gamelook.com.cn/2026/10/603445/"
  },
  "urls": {
   "http://news.yxrb.net/2026/0930/7654.html": "2026-09-30",
   "http://www.gamelook.com.cn/2026/09/603302/": "2026-10-01",
-  "http://www.gamelook.com.cn/2026/10/603357/": "2026-10-08"
+  "http://www.gamelook.com.cn/2026/10/603357/": "2026-10-08",
+  "http://www.gamelook.com.cn/2026/10/603445/": "2026-10-09"
  }
 }
