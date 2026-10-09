@@ -2076,8 +2076,16 @@ def build_sitemap(posts, avail_by_slug, langs_with_home, game=None):
         xml.append('  <url>')
         xml.append(f'    <loc>{loc}</loc>')
         xml.append(f'    <lastmod>{lastmod or build_day}</lastmod>')
-        for code, href in alternates:
-            xml.append(f'    <xhtml:link rel="alternate" hreflang="{code}" href="{href}" />')
+        # 🔑 2026-10-09 수정 (Search Console "기록을 수정" 경고 해결).
+        #   Google 은 sitemap 안의 xhtml:link 를 **hreflang annotation** 으로 해석한다.
+        #   그런데 자기 자신만 가리키는 링크(self + x-default)를 넣으면
+        #   "이 페이지에 진짜 다른 언어 버전이 없다" 는 뜻이 되어
+        #   오히려 오류로 본다 → 155개 URL 이 '기록을 수정' 로 떠 있었다.
+        #   → 실제 다국어 버전이 2개 이상일 때만 xhtml:link 를 출력한다.
+        if len(alternates) >= 2:
+            for code, href in alternates:
+                xml.append(f'    <xhtml:link rel="alternate" '
+                           f'hreflang="{code}" href="{href}" />')
         xml.append('  </url>')
 
     # 정적 페이지
