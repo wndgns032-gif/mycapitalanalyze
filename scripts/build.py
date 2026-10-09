@@ -871,7 +871,7 @@ def ae_autoslot_html(lang, category, title, body_md, kind=None):
                                       limit=cfg.get('limit', 4),
                                       game_post=(kind == 'game'),
                                       body_md=body_md, title=title,
-                                      variant=variant)
+                                      variant=variant, lang=lang)
     except Exception:
         return ''      # 어떤 예외든 삼킨다. 빌드는 계속돼야 한다.
     return ae_autoslot.render_html(picks, lang)
@@ -1454,14 +1454,14 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     #        ② AdSense '관련성 낮은 콘텐츠' 정책 — 광고 블록 남발은 감점
     #        ③ 게임 상세는 이미 post_top 제외 상태였음 (2026-10-06 로이 지시)
     #   인아티클(post_mid, in-article 레이아웃)만 남겨 본문 흐름에 자연스럽게 놓는다.
-    top_ad = ''
+    top_ad = ad_unit('post_top')  # 2026-10-09 로이 지시: 상단 배너 복귀
     # 스토어 CTA ① 결정표 바로 아래 (주 버튼)
     cta_top = (store_cta_html(lang, source_url, source_name, news=bool(f.get('news')))
                if is_game else '')
     # 인아티클(본문 중간) 광고 — 문단 경계 중간 지점에 끼워 넣는다.
     # 문단이 7개 미만이면 본문이 짧아 광고를 끼우지 않는다(2026-10-01 로이: 애드센스 승인 후 도입).
-    mid_ad = ad_unit('post_mid')
-    if mid_ad:
+    mid_ad = ''  # 2026-10-09 로이 지시: AdSense 는 상단·하단에만 (본문 중간 제거)
+    if False and mid_ad:  # 2026-10-09 비활성화
         parts = body_html.split('</p>')
         # 글 분량이 3000자 이내로 줄어 문단 기준을 7→5 로 완화(2026-10-02)
         if len(parts) >= 5:
@@ -1499,7 +1499,7 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     # 🔑 2026-10-09 로이 지시 "본문에만" — 하단 배너도 끈다.
     #   AdSense 는 인아티클(post_mid) 하나만 남긴다.
     #   post_related 는 '관련 글' 영역이라 본문이 아니라서 유지 (188게임 페이지 전부).
-    bottom_ad = ''
+    bottom_ad = ad_unit('post_bottom')  # 2026-10-09 로이 지시: 하단 배너 복귀
     # 상세 빵부스러기: 홈 › 앱 & 게임 › 제목
     crumb = ''
     if is_game:

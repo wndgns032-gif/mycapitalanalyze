@@ -34,7 +34,7 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 🔑 캐시 버전 — 필터/매핑 규칙을 바꾸면 이 숫자를 올린다.
 #    그러면 예전 캐시를 **삭제하지 않고도** 자동으로 무효화된다.
 #    (파일 삭제는 위험하므로 버전 스위치를 쓴다)
-CACHE_VERSION = "v4"
+CACHE_VERSION = "v5"
 CACHE_DIR = os.path.join(BASE, ".cache", "aliexpress")
 CACHE_TTL = 24 * 3600          # 캐시 24시간
 # API 세션이 없을 때 쓰는 정적 폴백 풀 (포털 Link Generator 로 손으로 채운다)
@@ -607,9 +607,16 @@ def _normalize(product, ship_to="US"):
     }
 
 
-def search(keyword, ship_to="US", currency="USD", page_size=20):
-    """키워드 1건으로 상품 목록. 실패하면 빈 리스트(throw하지 않음)."""
-    key = "%s_q_%s_%s_%s" % (CACHE_VERSION, keyword, ship_to, currency)
+def search(keyword, ship_to="US", currency="USD", page_size=20, lang="en"):
+    """키워드 1건으로 상품 목록. 실패하면 빈 리스트(throw하지 않음).
+
+    🔑 `lang` (2026-10-09): Aliexpress 는 `target_language` 를 주면
+       `product_title` 을 그 언어로 번역해 준다 (실측: ko → "샤오미 레드미 7 휴대폰...").
+       → 한국어 글에 영어 상품명이 나오던 문제의 정답.
+       → 캐시 키에도 lang 을 넣어 언어별 결과를 분리한다.
+    """
+    key = "%s_q_%s_%s_%s_%s" % (CACHE_VERSION, keyword, ship_to, currency,
+                                 lang)
     cached = _cache_get(key)
     if cached is not None:
         return cached
@@ -623,7 +630,7 @@ def search(keyword, ship_to="US", currency="USD", page_size=20):
     try:
         resp = aliexpress.search_products(
             keyword, page_size=page_size, currency=currency,
-            country=ship_to or None,
+            country=ship_to or None, language=lang,
         )
     except Exception:
         _FAIL_STREAK += 1
@@ -638,6 +645,177 @@ def search(keyword, ship_to="US", currency="USD", page_size=20):
     if out:
         _cache_put(key, out)
     return out
+
+
+# 주문 수 표기 언어별 (2026-10-09 추가).
+# "%s" 자리에 숫자가 들어간다.
+_ORDERS_WORD = {
+    "ko": "%s개 구매",
+    "en": "%s orders",
+    "ja": "%s 点 購入",
+    "zh": "已售 %s 件",
+    "es": "%s pedidos",
+    "fr": "%s commandes",
+    "hi": "%s ऑर्डर",
+    "ar": "%s طلب",
+    "ru": "заказов: %s",
+    "id": "%s pesanan",
+    "de": "%s Bestellungen",
+    "pt": "%s pedidos",
+    "bn": "%sটি অর্ডার",
+}
+
+
+# 🔑 zh / bn / hi 는 Aliexpress 가 상품명 번역을 지원하지 않는다 (2026-10-09 실측).
+#   ko/ja/de/es/fr/ru/pt/id 는 target_language 로 번역되지만,
+#   zh/bn/hi 는 영문 상품명이 그대로 온다 → 글 언어와 불일치.
+#   → 이 세 언어는 **카테고리 라벨을当地어로 따로 표시**해
+#     독자에게 "이게 무슨 물건인지" 를当地어로 안내한다.
+#   영어 상품명은 그대로 두되 (상세는 영어가 더 정확) 라벨로 보완한다.
+_CATEGORY_LABEL = {
+    "Games & Accessories": {
+        "ko": "게임 액세서리",
+        "ja": "ゲームアクセサリー",
+        "zh": "游戏配件",
+        "bn": "গেমিং অ্যাকসেসরি",
+        "hi": "गेमिंग एक्सेसरीज़",
+    },
+    "Desk Accessories & Organizer": {
+        "ko": "책상 정리용품",
+        "ja": "デスク収納用品",
+        "zh": "桌面收纳用品",
+        "bn": "ডেস্ক সংগ্রহের সামগ্রী",
+        "hi": "डेस्क संग्रहण सामग्री",
+    },
+    "Filing Products": {
+        "ko": "파일 정리용품",
+        "ja": "ファイル整理用品",
+        "zh": "文件整理用品",
+        "bn": "ফাইলিং পণ্য",
+        "hi": "फ़ाइलिंग उत्पाद",
+    },
+    "Office Electronics": {
+        "ko": "사무 전자기기",
+        "ja": "オフィス電子機器",
+        "zh": "办公电子设备",
+        "bn": "অফিস ইলেকট্রনিক্স",
+        "hi": "ऑफिस इलेक्ट्रॉनिक्स",
+    },
+    "Mobile Phone Accessories": {
+        "ko": "휴대폰 액세서리",
+        "ja": "スマホアクセサリー",
+        "zh": "手机配件",
+        "bn": "মোবাইল ফোন আনুষঙ্গিক",
+        "hi": "मोबाइल फ़ोन एक्सेसरीज़",
+    },
+    "Home Storage & Organization": {
+        "ko": "가정용 정리용품",
+        "ja": "家庭収納用品",
+        "zh": "家居收纳用品",
+        "bn": "গৃহস্থালী সঞ্চয় ও সংগঠন",
+        "hi": "होम स्टोरेज और संगठन",
+    },
+    "Electrical Equipment & Supplies": {
+        "ko": "전기 기기",
+        "ja": "電気機器",
+        "zh": "电气设备",
+        "bn": "বৈদ্যুতিক সরঞ্জাম",
+        "hi": "विद्युत उपकरण",
+    },
+    "Action & Toy Figures": {
+        "ko": "피규어·토이",
+        "ja": "フィギュア・トイ",
+        "zh": "手办与玩具",
+        "bn": "অ্যাকশন ও খেলনা চরিত্র",
+        "hi": "एक्शन और खिलौने आकृतियाँ",
+    },
+    "Accessories & Parts": {
+        "ko": "부품·액세서리",
+        "ja": "部品・アクセサリー",
+        "zh": "零件与配件",
+        "bn": "আনুষঙ্গিক ও যন্ত্রাংশ",
+        "hi": "सामान और भाग",
+    },
+    "Holders & Stands": {
+        "ko": "거치대",
+        "ja": "ホルダー・スタンド",
+        "zh": "支架与底座",
+        "bn": "হোল্ডার ও স্ট্যান্ড",
+        "hi": "होल्डर और स्टैंड",
+    },
+    "Mobile Phone Cases & Covers": {
+        "ko": "휴대폰 케이스",
+        "ja": "スマホケース",
+        "zh": "手机保护壳",
+        "bn": "মোবাইল কেস ও কভার",
+        "hi": "मोबाइल केस और कवर",
+    },
+    "Household Merchandises": {
+        "ko": "생활용품",
+        "ja": "生活用品",
+        "zh": "生活用品",
+        "bn": "গৃহস্থালি পণ্য",
+        "hi": "घरेलू सामान",
+    },
+    "Smart Electronics": {
+        "ko": "스마트 기기",
+        "ja": "スマートデバイス",
+        "zh": "智能电子设备",
+        "bn": "স্মার্ট ইলেকট্রনিক্স",
+        "hi": "स्मार्ट इलेक्ट्रॉनिक्स",
+    },
+    "Watches Accessories": {
+        "ko": "시계 액세서리",
+        "ja": "時計アクセサリー",
+        "zh": "手表配件",
+        "bn": "ঘড়ির আনুষঙ্গিক",
+        "hi": "घड़ी सामान",
+    },
+    "Hardware": {
+        "ko": "하드웨어",
+        "ja": "ハードウェア",
+        "zh": "五金件",
+        "bn": "হার্ডওয়্যার",
+        "hi": "हार्डवेयर",
+    },
+    "ACG Goods": {
+        "ko": "서브컬처 굿즈",
+        "ja": "サブカルチャーグッズ",
+        "zh": "二次元周边",
+        "bn": "এসিজি পণ্য",
+        "hi": "ACG सामान",
+    },
+    "Tool Parts": {
+        "ko": "공구 부품",
+        "ja": "工具部品",
+        "zh": "工具零件",
+        "bn": "টুল পার্টস",
+        "hi": "टूल पार्ट्स",
+    },
+    "Electrical Equipment": {
+        "ko": "전기 기기",
+        "ja": "電気機器",
+        "zh": "电气设备",
+        "bn": "বৈদ্যুতিক সরঞ্জাম",
+        "hi": "विद्युत उपकरण",
+    },
+}
+
+
+def _localized_category(product, lang):
+    """zh 는 상품명 번역을 지원하지 않으므로 카테고리 라벨로 보완.
+
+    ⚠️ 테이블 구조: { "English Category": {"ko": ..., "ja": ..., "zh": ...} }
+       → `table.get(lang)` 이 아니라 **카테고리명을 먼저 찾고** 그 안에서 lang 을 꺼낸다.
+    """
+    raw = (product.get("category") or "").lower()
+    if not raw:
+        return ""
+    for en, per_lang in _CATEGORY_LABEL.items():
+        if en.lower() in raw:
+            return per_lang.get(lang, "")
+    return ""
+    return ""
 
 
 def _rotate(pool, limit, variant):
@@ -658,7 +836,7 @@ def _rotate(pool, limit, variant):
 
 
 def recommend(category, keywords=None, limit=4, game_post=False, body_md="",
-              title="", variant=0):
+              title="", variant=0, lang="en"):
     """포스트용 상품 추천.
 
     🔑 2026-10-09 로이 지시: "글 내용과 알아서 비슷하게 맞춰서 추천"
@@ -712,7 +890,8 @@ def recommend(category, keywords=None, limit=4, game_post=False, body_md="",
     #   포스트마다 API 를 부르면 빌드가 10분 넘게 걸린다.
     #   ⚠️ `variant` 는 여기 넣지 않는다 → 후보 풀만 캐시하고,
     #      최종 4개 선택은 그때마다 variant 로 회전시킨다.
-    mem_key = "%s|%s|%s|%s" % (category, game_post, limit, ",".join(topics))
+    mem_key = "%s|%s|%s|%s|%s" % (category, game_post, limit,
+                                  ",".join(topics), lang)
     if mem_key in _MEMO:
         pool = _MEMO[mem_key]
         return _rotate(pool, limit, variant)
@@ -737,7 +916,7 @@ def recommend(category, keywords=None, limit=4, game_post=False, body_md="",
                 terms.append(extra)
 
     for term in terms[:4]:                      # 쿼터 절약: 최대 4개
-        for item in search(term, ship_to=ship_to):
+        for item in search(term, ship_to=ship_to, lang=lang):
             if _JUNK_PAT.search(item.get("title") or ""):
                 continue          # 복권/코스프레/수집품 제외
             if _is_junk_price(item.get("price")):
@@ -823,6 +1002,11 @@ def render_html(products, lang="en", title=None, blurb=None):
         img = ('<img src="%s" alt="" loading="lazy" class="w-16 h-16 '
                'object-cover rounded flex-shrink-0">'
                % p["image"]) if p.get("image") else ""
+        # 🔑 zh 는 상품명 번역을 지원하지 않으므로 카테고리 라벨로当地어 안내.
+        label = _localized_category(p, lang)
+        label_html = ('<span class="inline-block text-[11px] px-1.5 py-0.5 '
+                      'rounded bg-brand-50 text-brand-700 dark:bg-brand-900/40 '
+                      'dark:text-brand-300 mr-1.5">%s</span>' % label) if label else ""
         meta = []
         if p.get("price"):
             meta.append('<span class="font-semibold text-brand-600">%s %s</span>'
@@ -830,16 +1014,18 @@ def render_html(products, lang="en", title=None, blurb=None):
         if p.get("rating"):
             meta.append("★ %s" % p["rating"])
         if p.get("orders"):
-            meta.append("%s orders" % p["orders"])
+            # 🔑 주문 수 표기도 해당 언어로 (2026-10-09).
+            #   예전엔 모든 언어가 '%s orders' 로 영어 → 일본어 글에 orders 노출.
+            meta.append(_ORDERS_WORD.get(lang, "%s orders") % p["orders"])
         cards.append(
             '<li class="flex gap-3 items-start">%s'
             '<div class="min-w-0">'
-            '<a rel="sponsored nofollow noopener" target="_blank" href="%s" '
+            '%s<a rel="sponsored nofollow noopener" target="_blank" href="%s" '
             'class="block font-medium text-slate-900 dark:text-slate-100 '
             'hover:text-brand-600 leading-snug">%s</a>'
             '<p class="text-xs text-slate-500 mt-1">%s</p>'
             '</div></li>'
-            % (img, p["url"], p["title"], " · ".join(meta))
+            % (img, label_html, p["url"], p["title"], " · ".join(meta))
         )
     if not cards:
         return ""
