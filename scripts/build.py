@@ -16,6 +16,7 @@ SEO: 페이지별 hreflang 상호 링크, NewsArticle/BreadcrumbList/FAQPage JSO
 import json, os, re, glob, html as htmllib
 import datetime
 import sys
+import time
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 오토 어필리에이트 슬롯 모듈을 scripts/ 안에서 찾기 위해 경로 등록
@@ -2055,15 +2056,26 @@ def build_game_index(lang, plist, available, kind=''):
 
 
 def build_sitemap(posts, avail_by_slug, langs_with_home, game=None):
-    """실제 존재하는 언어 조합만 sitemap에 넣는다 (404 유도 URL 제거)."""
+    """실제 존재하는 언어 조합만 sitemap에 넣는다 (404 유도 URL 제거).
+
+    🔑 2026-10-09 수정 (로이: "검색 색인이 안 된다"):
+       예전엔 **전체 글 중 가장 최근 날짜**를 모든 URL 에 썼다.
+       → sitemap 867개 전부 `<lastmod>2026-10-09</lastmod>` 로 동일했다.
+       → Google 은 "이 사이트의 모든 페이지가 동시에 갱신됐다"로 판단하고
+          크롤 예산을 극히 적게 배분한다. 신규 사이트 색인 지연의 대표적 원인.
+       → **페이지마다 실제 발행일**을 쓴다.
+    """
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">']
     latest = max(p['date'] for p in posts)
+    # 수정 시점 = 빌드 시각. 실제 변경이 없으면 sitemap 이 불필요하게 갱신되므로
+    # '오늘' 만 쓴다 (어제 이전 글은 실제 발행일을 유지).
+    build_day = time.strftime('%Y-%m-%d')
 
-    def emit(loc, alternates):
+    def emit(loc, alternates, lastmod=None):
         xml.append('  <url>')
         xml.append(f'    <loc>{loc}</loc>')
-        xml.append(f'    <lastmod>{latest}</lastmod>')
+        xml.append(f'    <lastmod>{lastmod or build_day}</lastmod>')
         for code, href in alternates:
             xml.append(f'    <xhtml:link rel="alternate" hreflang="{code}" href="{href}" />')
         xml.append('  </url>')
@@ -2101,7 +2113,8 @@ def build_sitemap(posts, avail_by_slug, langs_with_home, game=None):
             alts.append(('x-default', post_url('en', p['slug'])))
         for c in LANG_META:
             if c in avail:
-                emit(post_url(c, p['slug']), alts)
+                # 🔑 페이지별 실제 발행일 (위 build_sitemap docstring 참고)
+                emit(post_url(c, p['slug']), alts, lastmod=p['date'])
 
     # 앱·게임 섹션(/game/) — 언어별 네이티브 글
     if game:
@@ -2115,9 +2128,16 @@ def build_sitemap(posts, avail_by_slug, langs_with_home, game=None):
             emit(DOMAIN + game_home_path(c) + 'apps/', [(c, DOMAIN + game_home_path(c) + 'apps/')])
             emit(DOMAIN + game_home_path(c) + 'games/', [(c, DOMAIN + game_home_path(c) + 'games/')])
             for p in game[c]:
-                # 게임 개별 글은 HTML head(alternates_html)와 동일하게 self + x-default(자기 자신) 2개.
-                # SECTION HUB 위의 g_alts 는 전 언어 alternates 이므로 그대로 둔다.
-                emit(p['url'], [(c, p['url']), ('x-default', p['url'])])
+                # 🔑 2026-10-09: HTML head 와 동일한 hreflang 을 sitemap 에도 쓴다.
+                #   sitemap 의 xhtml:link 와 head 의 link rel=alternate 가
+                #   어긋나면 Google 이 둘 중 하나를 무시한다.
+                g_post_alts = [(c, p['url']), ('x-default', p['url'])]
+                _peers = GAME_PEER_URLS.get(p['slug']) or {}
+                for _code, _pslug in _peers.items():
+                    if _code == c or _code not in LANG_META:
+                        continue
+                    g_post_alts.append((_code, game_post_url(_code, _pslug)))
+                emit(p['url'], g_post_alts, lastmod=p.get('date'))
 
     xml.append('</urlset>')
     open(os.path.join(BASE, 'sitemap.xml'), 'w', encoding='utf-8').write('\n'.join(xml) + '\n')
