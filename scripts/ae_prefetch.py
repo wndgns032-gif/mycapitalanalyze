@@ -91,24 +91,108 @@ def pool_key(keyword, lang, ship):
 
 
 def load_pool():
+    """풀을 읽는다. v2(마스터+제목 분리)면 원형(dict 리스트)으로 복원한다.
+
+    🔑 2026-10-10 수정: 예전엔 `items` 만 그대로 반환했는데,
+       v2 풀에서는 `items[key]` 가 **product_id 리스트** 라
+       `for p in products: p.get(...)` 이 전부 죽었다 (실측).
+       → 스키마를 감지해 항상 dict 리스트로 돌려준다.
+    """
     if not os.path.exists(POOL):
         return {}
     try:
         with open(POOL, encoding="utf-8") as fh:
-            data = json.load(fh)
+            data = json.load(fh) or {}
+        if data.get("_schema") == 2:
+            import ae_autoslot
+            return ae_autoslot._expand_v2(data)
         return data.get("items") or {}
     except (json.JSONDecodeError, OSError):
         return {}
 
 
 def save_pool(items, meta):
+    """풀을 저장한다.
+
+    🔑 2026-10-10: 기존 풀의 스키마를 **보존**해야 한다.
+       v2 풀 위에 v1 형식으로 덮어쓰면 `_master`/`_titles` 가 사라져
+       풀 크기가 1.2MB → 8.5MB 로 되돌아간다(실측 사고).
+    """
     os.makedirs(os.path.dirname(POOL), exist_ok=True)
+    prev = {}
+    if os.path.exists(POOL):
+        try:
+            with open(POOL, encoding="utf-8") as fh:
+                prev = json.load(fh) or {}
+        except (json.JSONDecodeError, OSError):
+            prev = {}
+
     payload = dict(meta)
+    if prev.get("_schema") == 2:
+        # v2 유지: 마스터/제목을 갱신한 뒤 다시 압축해 쓴다
+        merged = _merge_into_v2(prev, items)
+        if merged is not None:
+            os.makedirs(os.path.dirname(POOL), exist_ok=True)
+            tmp = POOL + ".tmp"
+            with open(tmp, "w", encoding="utf-8") as fh:
+                json.dump(merged, fh, ensure_ascii=False,
+                          separators=(",", ":"))
+            os.replace(tmp, POOL)
+            return
+
     payload["items"] = items
     tmp = POOL + ".tmp"
     with open(tmp, "w", encoding="utf-8") as fh:
         json.dump(payload, fh, ensure_ascii=False, separators=(",", ":"))
     os.replace(tmp, POOL)          # 원자적 교체 — 빌드 중 읽혀도 안전
+
+
+def _merge_into_v2(prev, fresh):
+    """dict 리스트(신규)를 v2 풀에 병합해 압축 구조로 되돌린다.
+
+    기존 항목은 유지하고, 새 검색 결과로 등장한 것만 추가한다
+    (재수확은 `--refresh` 로 한두 개만 하므로 나머지는 보존해야 한다).
+    """
+    master = dict(prev.get("_master") or {})
+    titles = dict(prev.get("_titles") or {})
+    ref = {k: list(v or []) for k, v in (prev.get("items") or {}).items()}
+
+    for key, prods in fresh.items():
+        if not isinstance(prods, list):
+            continue
+        parts = key.rsplit("|", 2)
+        if len(parts) != 3:
+            continue
+        lang, ship = parts[1], parts[2]
+        ids = ref.get(key) or []
+        for p in prods:
+            if not isinstance(p, dict):
+                continue
+            pid = str(p.get("id") or "")
+            if not pid or not p.get("url"):
+                continue
+            if pid not in master:
+                master[pid] = {
+                    "id": pid, "url": p.get("url") or "",
+                    "image": p.get("image") or "", "price": p.get("price") or "",
+                    "currency": p.get("currency") or "USD",
+                    "commission": p.get("commission") or "",
+                    "rating": p.get("rating") or "", "orders": p.get("orders") or "",
+                    "category": p.get("category") or "",
+                }
+            if p.get("title"):
+                titles.setdefault(pid, {}).setdefault(lang, p["title"])
+            if pid not in ids:
+                ids.append(pid)
+        ref[key] = ids
+
+    out = dict(prev)
+    out["_schema"] = 2
+    out["_master"] = master
+    out["_titles"] = titles
+    out["items"] = ref
+    out["_generated"] = time.strftime("%Y-%m-%d %H:%M:%S")
+    return out
 
 
 def fetch(keyword, lang, ship):
@@ -134,7 +218,7 @@ def fetch(keyword, lang, ship):
             norm = ae._normalize(item, ship)
             if not norm:
                 continue
-            if ae._JUNK_PAT.search(norm.get("title") or ""):
+            if ae._is_unfit(norm.get("title")):
                 continue
             if ae._is_junk_price(norm.get("price")):
                 continue

@@ -16,13 +16,22 @@ import re
 import sys
 from collections import Counter, defaultdict
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.stdout.reconfigure(encoding="utf-8")
+
+try:
+    import ae_autoslot as _ae
+except ImportError:      # 빌드 밖에서 단독 실행해도 검증은 되게
+    _ae = None
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SLOT_MARK = 'data-affiliate-slot="1"'
 AD_MARK = 's.click.aliexpress.com'
 # ✅ 링크가 실제로 수수료 추적 URL 인지까지 본다.
 LINK_RE = re.compile(r'href="(https://s\.click\.aliexpress\.com/[^"]+)"')
+# 카드 안의 상품명 추출
+TITLE_RE = re.compile(
+    r'rel="sponsored[^"]*"[^>]*href="[^"]*"[^>]*>(.*?)</a>', re.S)
 
 # 언어 루트만 (post/ 하위 디렉터리)
 LANG_DIRS = ["ko", "en", "zh", "ja", "es", "fr", "de", "pt", "ru", "ar",
@@ -78,6 +87,15 @@ def mid_position_pct(h):
     return round(100.0 * head / total)
 
 
+def _card_titles(h):
+    """카드에 노출된 상품명 리스트."""
+    m = re.search(r'<aside data-affiliate-slot="1".*?</aside>', h, re.S)
+    if not m:
+        return []
+    return [re.sub(r"<[^>]+>", "", t).strip()
+            for t in TITLE_RE.findall(m.group(0))]
+
+
 def collect():
     """모든 발행된 포스트 HTML을 긁는다. {path: (lang, n_cards, n_links)}"""
     files = []
@@ -113,6 +131,9 @@ def main():
     missing = []
     bad_link = []
     positions = []
+    unfit = []            # 🔴 카테고리에 부적합한 상품(장난감 등)
+    all_titles = []
+    dup_counter = Counter()
 
     for rel, (lang, cards, links) in sorted(data.items()):
         by_lang_total[lang] += 1
@@ -128,6 +149,15 @@ def main():
             pos = mid_position_pct(html)
             if pos is not None:
                 positions.append((pos, rel))
+            # 상품 적합성 검사 — 게임 글은 액세서리라 예외(코스프레 허용)
+            titles = _card_titles(html)
+            all_titles += titles
+            for t in set(titles):
+                dup_counter[t] += 1
+            if _ae and "game" not in rel.split(os.sep)[0]:
+                bad = [t for t in titles if _ae._is_unfit(t)]
+                if bad:
+                    unfit.append((rel, bad))
         except OSError:
             pass
 
@@ -173,7 +203,25 @@ def main():
     elif ok:
         print("✅ 모든 카드에 s.click.aliexpress.com 추적링크가 실려 있다.")
 
-    if strict and (missing or bad_link):
+    # ── 상품 적합성 (AdSense '광고-콘텐츠 관련성' 저위험 방지)
+    if _ae:
+        if unfit:
+            print("\n🔴 카테고리에 부적합한 상품 %d개 글 (장난감·인형류):" % len(unfit))
+            for rel, bad in unfit[:10]:
+                print("   %s" % rel[:68])
+                print("      → %s" % bad[0][:62])
+        else:
+            print("✅ 경제·금융 글에 부적합한 상품 없음.")
+
+        if all_titles:
+            print("\n상품 다양성: 카드 %d개 / 고유 상품 %d개"
+                  % (len(all_titles), len(set(all_titles))))
+            top = dup_counter.most_common(3)
+            print("  가장 많이 쓰인 상품 (반복 노출은 정상, 상위 노출):")
+            for t, n in top:
+                print("    %3d회  %s" % (n, t[:60]))
+
+    if strict and (missing or bad_link or unfit):
         return 1
     return 0
 

@@ -232,7 +232,14 @@ TOPIC_QUERY = {
     "bluetooth": "bluetooth speaker",
     "wireless": "wireless mouse",
     "typing": "mechanical keyboard",
-    "keyboard": "keyboard stand",
+    "keyboard": "laptop keyboard protector",
+    # ⚠️ 2026-10-10 실측 버그 수정.
+    #   "keyboard stand" 로 검색하면 Aliexpress 가 **서진 일러스트레이터
+    #   케이크 토퍼·아크릴 스탠드** 같은 "stand"(꽂이) 카테고리 상품을
+    #   상위로 밀어준다. (실측: `keyboard stand` 의 1위가 키보드 받침대가 아니라
+    #   "WIND BREAKER Japan Anime … Cake Topper" 였다)
+    #   → 실제 물건을 잘 잡는 **protector**(보호 필름)로 바꾼다.
+    #   이 검색어는 실제 물류를 잘 잡아준다.
     "printer": "printer stand",
     "scanner": "portable scanner",
 }
@@ -281,7 +288,7 @@ TOPIC_QUERY_I18N = {
     "배터리": "power bank", "충전": "usb charger",
     "이어폰": "earbuds", "헤드폰": "earbuds",
     "이어버드": "earbuds", "블루투스": "bluetooth speaker",
-    "키보드": "keyboard stand", "마우스": "wireless mouse",
+    "키보드": "laptop keyboard protector", "마우스": "wireless mouse",
     "인쇄": "printer stand", "스캐너": "portable scanner",
     "通胀": "file folder set", "물가": "file folder set",
     # ── 中文
@@ -513,6 +520,62 @@ _JUNK_PAT = re.compile(
     r'raffle|cosplay|costume|doll|figure|stickers?|poster|'
     r'card\b|coins?\b|replica|prop|collectible|ticket',
     re.I)
+
+# 🔴🔴 2026-10-10 (로이 확인 단계에서 발견) — 다국어 장난감 필터.
+#
+# ⚠️ 진짜 문제: `_JUNK_PAT` 은 **영어/중문 위주**라서 `target_language=ko` 로
+#    번역된 상품명("장난감", "인형")을 걸러내지 못했다.
+#    실측 결과: **영미 중앙은행 정책 글 119개**에
+#      "귀여운 포켓 미니 계산기(Capybara)", "인형의 집 미니어처 파일폴더",
+#      "1 세트 미니 쓰기 보드 … 장난감 … 인형 집 부품" 이 붙어 있었다.
+#    → AdSense '광고-콘텐츠 관련성' 저위험 각도. 클릭률도 안 나온다.
+#
+# 설계 원칙 (실측에서 배운 것)
+#   ❌ "학교|学生|文具|stationery|notepad" 를 막으면 안 된다.
+#      "12자리 전자 계산기 홈 오피스 학교 재무 회계" 는 **정상 제품 설명**이다.
+#      재무 계산기가 학교용으로도 팔린다는 뜻이지 부적합 상품이 아니다.
+#   ✅ **장난감·인형·미니어처만** 막는다. 이것만은 어떤 맥락에서도 부적합하다.
+#      (금융 글은커녕 앱 리뷰 글에서도 신뢰를 깎는다)
+#
+# 전 언어 product_title 을 커버한다 (Aliexpress 는 9개 언어 번역 지원).
+_AI_TOY_PAT = re.compile(
+    # ── 한국어
+    r'장난감|인형|미니어처|모형|피규어|쿠로미|쿠키모돈'
+    # ── 中文
+    r'|玩具|娃娃|公仔|手办|模型|仿真|摆件'
+    # ── 日本語
+    r'|おもちゃ|人形|ドール|フィギュア|ミニチュア'
+    # ── English (Aliexpress 는 ko/ja 만 번역하지만 원본 영어도 대비)
+    r'|\btoy\b|\bdolls?\b|\bfigurine|\bplush|\bpuppet|\bminiature\b'
+    r'|\bmodel kit\b|\bsouvenir\b|\bkeychain\b|\bsticker'
+    # ── Español / Português
+    r'|juguete|muñeca|miniatura|mañeca|brinquedo'
+    # ── Français
+    r'|jouet|poupée|miniature'
+    # ── Deutsch
+    r'|spielzeug|puppe|miniatur'
+    # ── 애니메이션 캐릭터 굿즈 (2026-10-10 추가, 실측 "Mofusand 7종 세트
+    #    애니메이션 아크릴 만화 PP 클립" 이 금융 글에 노출됨)
+    #    ⚠️ 선을 정확히 긋는다: 캐릭터 IP 자체는 AdSense 허용 범위다.
+    #       그래서 IP 이름(hello kitty 등)은 막지 않고,
+    #       **"애니메이션 캐릭터 소재를 표면화한 제품 설명"**만 막는다.
+    #    ⚠️ 실측 실패: `cartoon\s*(?:stand|figure|acrylic|pp)` 는
+    #       "Sanrio Acrylic Stand" 정품까지 잡았다 → 단어 경계를 `\s` 로 강제.
+    r'|애니메이션\s*(?:캐릭터|인형|아크릴)|만화\s*(?:PP|아크릴|키홀더|자료실)'
+    r'|cartoon\s+(?:stand|figure|acrylic|pp)\s+(?:keychain|holder|clip|stand|decoration)'
+    r'|\banime\s+(?:stand|figure)\s+(?:keychain|holder|clip|decoration)',
+    re.I)
+
+
+def _is_unfit(title):
+    """상품이 카테고리(금융 매크로 · 앱 리뷰)에 부적합한가.
+
+    두 가지를 함께 본다:
+      ① 기존 영문 쓰레기 필터 (복권·코스프레·수집품)
+      ② 다국어 장난감 필터 (장난감·인형·미니어처) — 2026-10-10 추가
+    """
+    t = title or ''
+    return bool(_JUNK_PAT.search(t) or _AI_TOY_PAT.search(t))
 
 # 가격이 이 범위 밖이면 버린다.
 #   최저가(0.07달러짜리 케이블)는 클릭해도 수수료가 글자도 안 되고 신뢰를 깎는다.
@@ -794,7 +857,7 @@ def search(keyword, ship_to="US", currency="USD", page_size=20, lang="en"):
     items = _extract_products(resp)
     out = [n for n in (_normalize(it, ship_to) for it in items) if n]
     # 쓰레기品类 제거 (복권/코스프레/수집품). CTR 과 브랜드 안전에 필수.
-    out = [n for n in out if not _JUNK_PAT.search(n.get("title") or "")]
+    out = [n for n in out if not _is_unfit(n.get("title"))]
     out = [n for n in out if not _is_junk_price(n.get("price"))]
     if out:
         _cache_put(key, out)
@@ -1075,7 +1138,7 @@ def recommend(category, keywords=None, limit=4, game_post=False, body_md="",
 
     for term in terms[:4]:                      # 쿼터 절약: 최대 4개
         for item in search(term, ship_to=ship_to, lang=lang):
-            if _JUNK_PAT.search(item.get("title") or ""):
+            if _is_unfit(item.get("title")):
                 continue          # 복권/코스프레/수집품 제외
             if _is_junk_price(item.get("price")):
                 continue          # 0.07달러짜리 케이블 등
@@ -1192,6 +1255,13 @@ def render_html(products, lang="en", title=None, blurb=None):
     cards = []
     for p in products:
         if not p.get("url") or not p.get("title"):
+            continue
+        # 🔴 2026-10-10 — **최종 방어선.**
+        #   풀(`affiliate_pool.json`)에는 이미 장난감 상품이 들어있다.
+        #   `_pool_rebuild.py` 로 풀을 재생성하기 전까지,
+        #   여기서 걸러야 AdSense 관련성 문제가 발행되지 않는다.
+        #   (실측: 영미 중앙은행 정책 글 119개에 인형/장난감 상품이 붙어 있었음)
+        if _is_unfit(p.get("title")):
             continue
         # 📱 모바일에서 56px, sm 이상(640px)에서 64px
         img = ('<img src="%s" alt="" loading="lazy" '
