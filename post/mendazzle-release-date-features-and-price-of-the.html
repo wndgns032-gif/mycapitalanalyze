@@ -19,6 +19,7 @@
   <meta property="og:url" content="https://www.mycapitalanalyze.com/post/mendazzle-release-date-features-and-price-of-the.html" />
   <meta property="og:site_name" content="MyCapital Analyze" />
   <meta name="twitter:card" content="summary_large_image" />
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9243770518153989" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { 50:'#eef4ff',100:'#dbe7ff',200:'#b9d0ff',300:'#8fb0ff',400:'#5f86f5',500:'#1e4fd8',600:'#1a3fb0',700:'#142f85',800:'#122560',900:'#0e1a3d' } } } } };</script>
@@ -36,38 +37,56 @@
 </head>
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
-<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-10">
-    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-      <a class="font-bold text-lg text-slate-900 dark:text-slate-100" href="/">MyCapital Analyze</a>
-      <nav class="flex items-center gap-4 text-sm">
+<header class="border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur z-20">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
+      <a class="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 truncate tap px-1" href="/">MyCapital Analyze</a>
+
+      <nav class="hidden sm:flex items-center gap-4 text-sm">
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/">Home</a>
+        
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/game/apps/">Apps</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/game/games/">Games</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/privacy.html">Privacy</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 hidden sm:block" href="/contact.html">Contact</a>
-        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
-          <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-          <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-        </button>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/contact.html">Contact</a>
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/search/" aria-label="Search"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
       </nav>
+
+      <div class="flex items-center gap-0.5 sm:hidden">
+        <a class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-brand-600" href="/search/" aria-label="Search"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg></a>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle dark mode" class="p-2 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <details class="relative" data-mca-menu>
+          <summary class="mca-menu-btn tap w-11 cursor-pointer text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded" aria-label="Menu">
+            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </summary>
+          <div class="absolute right-0 top-12 w-48 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-1.5 z-30">
+            <a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/">Home</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/game/apps/">Apps</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/game/games/">Games</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/about.html">About</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/privacy.html">Privacy</a><a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="/contact.html">Contact</a>
+          </div>
+        </details>
+      </div>
     </div>
   </header>
-<div class="max-w-5xl mx-auto px-4 pt-3 flex flex-wrap items-center gap-1"><span class="text-slate-500 mr-1 text-sm">Language:</span><a href="/post/mendazzle-release-date-features-and-price-of-the.html" class="px-2 py-0.5 rounded text-sm bg-brand-600 text-white" title="English" hreflang="en">EN</a><a href="/zh/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="中文" hreflang="zh">ZH</a><a href="/hi/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="हिन्दी" hreflang="hi">HI</a><a href="/es/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Español" hreflang="es">ES</a><a href="/ar/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="العربية" hreflang="ar">AR</a><a href="/fr/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Français" hreflang="fr">FR</a><a href="/bn/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="বাংলা" hreflang="bn">BN</a><a href="/pt/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Português" hreflang="pt">PT</a><a href="/ru/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Русский" hreflang="ru">RU</a><a href="/de/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Deutsch" hreflang="de">DE</a><a href="/ja/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="日本語" hreflang="ja">JA</a><a href="/id/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Bahasa Indonesia" hreflang="id">ID</a><a href="/ko/" class="px-2 py-0.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="한국어" hreflang="ko">KO</a></div>
+<div class="max-w-5xl mx-auto px-4 sm:px-6 pt-3 flex flex-wrap items-center gap-1.5"><span class="text-slate-500 mr-1 text-sm">Language:</span><a href="/post/mendazzle-release-date-features-and-price-of-the.html" class="tap px-2.5 rounded text-sm bg-brand-600 text-white" title="English" hreflang="en">EN</a><a href="/zh/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="中文" hreflang="zh">ZH</a><a href="/hi/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="हिन्दी" hreflang="hi">HI</a><a href="/es/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Español" hreflang="es">ES</a><a href="/ar/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="العربية" hreflang="ar">AR</a><a href="/fr/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Français" hreflang="fr">FR</a><a href="/bn/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="বাংলা" hreflang="bn">BN</a><a href="/pt/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Português" hreflang="pt">PT</a><a href="/ru/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Русский" hreflang="ru">RU</a><a href="/de/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Deutsch" hreflang="de">DE</a><a href="/ja/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="日本語" hreflang="ja">JA</a><a href="/id/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="Bahasa Indonesia" hreflang="id">ID</a><a href="/ko/" class="tap px-2.5 rounded text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800" title="한국어" hreflang="ko">KO</a></div>
 
-<main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
+<main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 <article class="max-w-3xl mx-auto">
-  <header class="mb-8">
+  <header class="mb-6">
     <div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
       <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded uppercase tracking-wide">Apps &amp; Games</span>
       <time datetime="2026-09-30">Published: 2026-09-30</time>
       <span class="text-slate-400">&middot;</span>
       <span>Independent Analysis</span>
     </div>
-    <h1 class="text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 mb-4">Mendazzle: Release Date, Features and Price of the Cleaning Game</h1>
+    <h1 class="text-2xl sm:text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 mb-4">Mendazzle: Release Date, Features and Price of the Cleaning Game</h1>
     <p class="text-slate-600 dark:text-slate-400">Mendazzle is a free cleaning and restoration game for iPhone and iPad where you repair damaged phones, scrub gadgets and decorate cases.</p>
-    <p class="mt-4 text-xs text-slate-500">Source: <a class="underline hover:text-brand-600" rel="nofollow noopener" target="_blank" href="https://apps.apple.com/us/app/mendazzle/id6805037328?uo=4">App Store</a></p>
+    <p class="mt-4 text-xs text-slate-500">Source: <a class="inline-block py-2 underline hover:text-brand-600" rel="nofollow noopener" target="_blank" href="https://apps.apple.com/us/app/mendazzle/id6805037328?uo=4">App Store</a></p>
   </header>
+  
+  
+  
   <div class="my-6" data-ad-slot-name="post_top">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9243770518153989" data-ad-slot="9628592280" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9243770518153989" data-ad-slot="5049933469" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
   <div class="prose prose-slate dark:prose-invert max-w-none"><p><img src="/assets/img/apps/app-a5af4b5c.jpg" alt="Mendazzle" loading="lazy" decoding="async" /></p>
@@ -81,6 +100,8 @@
 <p>Customization is the creative side. Once an item is clean and working, you finish it with colors, patterns, stickers and decorative details, which is where the case customization comes in. The description also mentions different gadgets to transform, so the object set is not limited to one type of device.</p>
 <p>Sound and touch are part of the design rather than an afterthought. Satisfying sounds accompany the wiping and scrubbing, and the touch interactions are meant to feel responsive as you work. Finally, the rewarding before-and-after reveals tie each session together, giving you a clear result to look at when the job is done.</p>
 <h2 id="h-10">Who It Is For</h2>
+<aside data-affiliate-slot="1" class="mt-8 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-4 sm:p-5"><h2 class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">Recommended gear</h2><ul class="space-y-3 sm:space-y-3"><li class="flex gap-3 items-start"><img src="https://ae-pic-a1.aliexpress-media.com/kf/Sfefa9886d82a4991a2bdab0240e0ae470.jpg" alt="" loading="lazy" class="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded flex-shrink-0"><div class="min-w-0 flex-1"><a rel="sponsored nofollow noopener" target="_blank" href="https://s.click.aliexpress.com/s/fwx308cRD9Eny963e3KDdYxyIpNj8TXVr7saiF9Um5rMUg1kZtJALLnfa2LNXtiVgnxdD8Og6MmvwBoxhnSYQGM6r0c08U4TfX8DFGo7vviCuu3q62Q60OAhRZcqm3G8PtwM69xY7TOEWRrvulP5ukZQ4uQbBBtaVsdr6EffAqVmp3O5GyUANU2DoA3dJufNhDfh7KOlLgKIvRVhDxRESHLmea6fTE26gLUqKEUuuizJiLENrCbax94DZHDu8WhaXM9vQ86gzlqceNPO5w3vwXm4VrBF3x2lAMEl06wgNdTSMiT7cNG4HIdW0JxHZW3C3nlgLc7UQfkrvOwWunIAA03B9vgS0udPslNu8Uh0y5goAxcMW0IGBllfjcj4BXKZxBW5hjR9J33B9BtNvwzaxmaXaYgHLwW1WgnBoAZZlZ95FAdUWe6DV36dB7AigJ3Rdh7c7bfKAbmlQpd8Z7Lm3q2VTb1TSLSxAIbk9KNrc7USzVtkwyZH3PHtzwfF96vWKYQL5zB5YFf2FQO63NUMkgI8gFGpiZH6BJwBkbwUDEUNP363JLOwgz6wLVjLYxLiN2AeAyjNAEgrTHidO4wg38lyA5jS9crAcNbh0Fk84K0FgTqcSYba34zAPjfzRtrVoHrM0LqoRNqrZaTj5OtX50tyzfYMqR0JPfjN3RawL66x0EKsuDTiqDEt0E6EjOnTfzZDB3SrnRY45yS2Fsv1I9sWP4WyNSoMuSECASohczwWS2LOBr5u46lPqE9mo8UOIJpX2sKrjCGq4VUrDnTjpmmtogTccr1RB2b13S2gLZGl1qjP3iwSIymGI1NwYktO1NyjQlfuSMFCohzDkJPpQRVdsJINhY4GTlxGhpQxSU5uQpEmIHkeQCL7x5CniBlYdIl2UzlGhWww494V8IbGyblD9NlYWF5r0r89DmhEDpRHzco5ZHUsgEBYOn1LuFcE4JnyvVRtP9Q9PuvFuR" class="block font-medium text-slate-900 dark:text-slate-100 hover:text-brand-600 leading-snug break-words" style="overflow-wrap:anywhere">B03F 5 Pair Breathable Mobile Game Controller Finger Sleeve Trigger for PUBG</a><p class="text-xs text-slate-500 mt-1 flex flex-wrap gap-x-2 gap-y-0.5"><span class="font-semibold text-brand-600 whitespace-nowrap">2.89 USD</span> · <span class="whitespace-nowrap">0 orders</span></p></div></li><li class="flex gap-3 items-start"><img src="https://ae-pic-a1.aliexpress-media.com/kf/S2e15a8c4888347c2a1029e7ae30789dfS.jpg" alt="" loading="lazy" class="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded flex-shrink-0"><div class="min-w-0 flex-1"><a rel="sponsored nofollow noopener" target="_blank" href="https://s.click.aliexpress.com/s/fwx308cRD9Eny963e3KDdYxyIpNj8TXVr7saiF9Um5rMUg1kZtJALLnfa2LNXtiVgnxdD8Og6MmvwBoxhnSYQGM6r0c08U4TfX8DFGo7vviCuu3q62Q60OAhRZcqm3G8PtwM69xY7TOEWRrvulP5ukZQ4uQbBBtaVsdr6EffAqVmp3O5GyUANU2DoA3dJufNhDfh7KOlLgKIvRVhDxRESHLmea6fTE26gLUqKEUuuizJiLENrCbax94DZHDu8WhaXM9vQ86gzlqceNPO5w3vwXm4VrBF3x2lAMEl06wgNdTSMiT7cNG4HIdW0JxHyud4egMZmrtK3Q9mBYRQ0T3zpyw6iflR6Dhed5Oja1ggDF3sjdPmyLOm47NhXOSpVOnRHQvMauHG3uHecaxHK7pFBGsITxh3E63x4WRX90TTl6Eh1aIGTyYeyJSlFnafAKtp8AZ3fM4PRmSyW5wzcUe3X0qFRq22OPbqpAJg1CFMbIM57TTM5gEy30MeFeHIY5PC9WIvCNNaV1E6drEWyGW3hvtuEQH8sdsbEgf6Fr4bueTpjc6xM4npUMd4ZLulsC6YeN2jV2iEg2yRMy8ezVuc8KyBDEZ2y3ZBDzFTCxAM0d7ELmS0MNUV9GsCjQwzqavwgGF8oUBsqWUXsyivehnNRAVHJMUmVCAvnVdUvHQ5NlH8r04tIYIfd0Ds2EifH3BBaMTaJZGX231QVPvExtiqg4h2zaSCA002O5oRXrepkQjVqaKNOzlClL6SKOeH2dZ6pQuNuykRSL3XZgLlgWZ3JFo9JAJmrRBih1hB7TiLsSxqOosot6JD0SLesvA6QSXuY8GaQQRFpp2aejZJwhs25Oujrz7elHNtw4GfOos1DOgjYpyYPrqXxKiFoi51PONl271Ye2DJtu7YqNIjGAR5TllAhlCAn7uEXa2XwmlENvyPdiJ7BpTT9WWIrRxB9bK6t3Pac0HvuxjXRAcDuR" class="block font-medium text-slate-900 dark:text-slate-100 hover:text-brand-600 leading-snug break-words" style="overflow-wrap:anywhere">Mobile Phone Game Trigger Fire Button Handle er Gamepad Joystick  Aim Key L1R1 Controller For IOS Android</a><p class="text-xs text-slate-500 mt-1 flex flex-wrap gap-x-2 gap-y-0.5"><span class="font-semibold text-brand-600 whitespace-nowrap">1.47 USD</span> · <span class="whitespace-nowrap">0 orders</span></p></div></li><li class="flex gap-3 items-start"><img src="https://ae-pic-a1.aliexpress-media.com/kf/S0170e726d26b44f99ea1645f277bc6efL.jpg" alt="" loading="lazy" class="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded flex-shrink-0"><div class="min-w-0 flex-1"><a rel="sponsored nofollow noopener" target="_blank" href="https://s.click.aliexpress.com/s/fwx308cRD9Eny963e3KDdYxyIpNj8TXVr7saiF9Um5rMUg1kZtJALLnfa2LNXtiVgnxdD8Og6MmvwBoxhnSYQGM6r0c08U4TfX8DFGo7vviCuu3q62Q60OAhRZcqm3G8PtwM69xY7TOEWRrvulP5ukZQ4uQbBBtaVsdr6EffAqVmp3O5GyUANU2DoA3dJufNhDfh7KOlLgKIvRVhDxRESHLmea6fTE26gLUqKEUuuizJiLENrCbax94DZHDu8WhaXM9vQ86gzlqceNPO5w3vwXm4VrBF3x2lAMEl06wgNdTSMiT7cNG4HIdW0JxfQOcD8T9uwt7wJwW0NbU30FpBsUDNvJUpa44zOMRXCqiK4MQZJyuSJm7BmACyim5kMgRmtKJx5cVLsLVYkC9bOgUPeR0d0KGekT0Wf9qFnRaMiBxL5SLbCz3kv5Dr2T7d4fbPe7Bzp3BPQrJFm5JZDo4oaA61P7Mzw3SZ75UC1p0YvXT8YXcwNtH4gdQcYJ6ocYiFXXOrjwnS2E7RxYsVt2es38IDbWyuJ4XaqrTpNIIq7MMw2U6lD2sHLu9hD5G8zw66yfQjne8l3LS3KjUIFwo1hJUAUTAMnEvnjJbkQ6rqiTeEC11WzVR6CBLtaaiSs1Iz4kOT57wwIg2qS7ZTeLbEZx8HwY6t4OjeNQmu8QexWBQbZNHWGjxo4jZz55XEpFTeDZN8P2blRfsVwUugEKhh8CxTxuyjZFHhnmOKfGfUfAWLnrmeTw1HiYa9CtS8xqK5IhEG7DyxfYvHgqMeeOeyoDU74mDcycRWWac8YS9vSXxBSsCCdpeU4ac1kIee6RzRF8KFjtbFhso0VeF2v3Dgi48IyoRjBuvcvFLx9LqvDA0faEtQf3u81VhXVOUGY5NyYJgcXAtN8xS2hoIu9p6lpKyFkGhr0KWTCkbgEteWIB4aaByKJXKjk7axiiyHCVeeQPt3KCoCv12vWHt2n1" class="block font-medium text-slate-900 dark:text-slate-100 hover:text-brand-600 leading-snug break-words" style="overflow-wrap:anywhere">D9Mobile Creative Button Sensitive Shoot Game Triggers L1R1 keypads Mobile Controller Games Accessories Game Controller Gamepad</a><p class="text-xs text-slate-500 mt-1 flex flex-wrap gap-x-2 gap-y-0.5"><span class="font-semibold text-brand-600 whitespace-nowrap">0.90 USD</span> · <span class="whitespace-nowrap">0 orders</span></p></div></li><li class="flex gap-3 items-start"><img src="https://ae-pic-a1.aliexpress-media.com/kf/S505906c95e744bb1973b44ab962b49e3h.jpg" alt="" loading="lazy" class="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded flex-shrink-0"><div class="min-w-0 flex-1"><a rel="sponsored nofollow noopener" target="_blank" href="https://s.click.aliexpress.com/s/fwx308cRD9Eny963e3KDdYxyIpNj8TXVr7saiF9Um5rMUg1kZtJALLnfa2LNXtiVgnxdD8Og6MmvwBoxhnSYQGM6r0c08U4TfX8DFGo7vviCuu3q62Q60OAhRZcqm3G8PtwM69xY7TOEWRrvulP5ukZQ4uQbBBtaVsdr6EffAqVmp3O5GyUANU2DoA3dJufNhDfh7KOlLgKIvRVhDxRESHLmea6fTE26gLUqKEUuuizJiLENrCbax94DZHDu8WhaXM9vQ86gzlqceNPO5w3vwXm4VrBF3x2lAMEl06wgNdTSMiT7cNG4HIdW0JxfwuVOQu6AkNxoxO6ofhw5zWESNMQXZODQYSg3Y0SEzxDMmbmc5czIaScbHGFF5u2plO98qZiGyt8gjZA5j4wY0IeZC3YKJvTGiRVueI5McvHt72FwSLP6uxAmeG5impkOi3CouB6y8nD8NSNVDWzlQXZTSl8QyDMprB3bQbmMx0O8EUrGyWeIODzvNrs5yGCAuySyOPGc2gsyAjLmnAEyRq27tIJHMSpU6Xv4TCZH9aW83PrpkVEGenPZ8SAO7tOKlTZd6yRFlk1NQdDR3ITg8bCMntv8pCjBurJa40Z5PBg1UpcgA0xpJf4cwYGQRf8IsKNQQ8024bGFNd39IWQx7vATuMUqKbFG2XuQPwgvHlXK1muiHYiegj71DBzDxFuuTqLVKpK9V0JNjZKl1fTmPS6RvxZvAfqMkwkcVz1tWO1X8nLQa9YJqRGIY4q5E16g022qP7cDaBe8H4B5pSzf2yv4xmRTj9qnGGm4MtmrKlzkpB32xK4wqtxaxe0fTyrQvVEAzmWm3uXhbppLALGIZEqCDAtDZVG37yBoAaruesbEoEzh3Zk9ma6JMMhSLhyEKHSv2ChMNyzEE3aUMsAT4TTbDXtJ0fJtSIwJVQeKlEuwt4iXb2iKWg0B5cOhoXEHnPqeLKs6tAfwbxG987vXb5" class="block font-medium text-slate-900 dark:text-slate-100 hover:text-brand-600 leading-snug break-words" style="overflow-wrap:anywhere">K32C Gaming Accessories Controller Mobile Game Controller Gaming Pad Mobile Gamepad Phone Gamepad Joystick</a><p class="text-xs text-slate-500 mt-1 flex flex-wrap gap-x-2 gap-y-0.5"><span class="font-semibold text-brand-600 whitespace-nowrap">0.88 USD</span> · <span class="whitespace-nowrap">0 orders</span></p></div></li></ul><p class="mt-3 text-xs text-slate-500">Affiliate link to AliExpress. We may earn a commission.</p></aside>
+
 <p>This is a game for people who like calm, repetitive tasks with a visible result. If you enjoy cleaning, organizing or restoration games where progress is obvious and there is no pressure to rush, the structure here should feel familiar. The tap, drag and swipe controls also make it approachable for casual players who do not want a steep learning curve.</p>
 <p>It may also appeal to anyone who likes the ASMR side of mobile games, where sound and touch feedback matter as much as the objective. Players looking for competition, timers or heavy strategy will not find those things described in the listing. The focus is relaxation, repair and decoration, played at whatever speed suits you.</p>
 <h2 id="h-13">Pricing and Availability</h2>
@@ -97,36 +118,34 @@
 <h3>When was Mendazzle released?</h3>
 <p>Mendazzle was released on 30 September 2026. The current version listed is 0.0.1, and it is developed by Muarij Mahmood Ramay.</p></div>
   <div class="my-6" data-ad-slot-name="post_bottom">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9243770518153989" data-ad-slot="8776397810" data-ad-format="autorelaxed" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9243770518153989" data-ad-slot="3845915588" data-ad-format="autorelaxed" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
-  <aside class="mt-10 border border-slate-200 dark:border-slate-800 rounded-lg p-5 bg-slate-50 dark:bg-slate-900">
-  <p class="text-xs uppercase tracking-wide text-slate-500 mb-2">Sponsored</p>
-  <h2 class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">Recommended resources</h2>
-  <ul class="space-y-2 text-sm text-slate-700 dark:text-slate-300">
-    <li><a class="font-medium underline hover:text-brand-600" rel="sponsored nofollow noopener" target="_blank" data-affiliate="tradingview" href="https://www.tradingview.com/?aff_id=1171086">TradingView</a> — <span class="text-slate-600 dark:text-slate-400">Advanced charts, screeners and real-time market data. Free plan available.</span></li>
-  </ul>
-  <p class="mt-4 text-xs text-slate-500 leading-relaxed">Some of the links above are affiliate links. If you sign up through them we may earn a commission at no additional cost to you. This never influences our analysis or rankings.</p>
-</aside>
+  
   <nav class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6">
   <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">Related Analysis</h2>
   <ul class="space-y-2 text-slate-700 dark:text-slate-300">
-    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="/post/followers-tracker-for-insta-review-features-price-release.html">Followers Tracker For Insta! Review: Features, Price &amp; Release Date</a></li>
-    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="/post/tideward-upcoming-idle-rpg-release-date-and-features.html">Tideward: Upcoming Idle RPG Release Date and Features</a></li>
-    <li><a class="hover:text-brand-600 underline-offset-2 hover:underline" href="/post/bank-of-england-holds-rates-at-375-as.html">Bank of England Holds Rates at 3.75% as Energy Shock Clouds Policy Path</a></li>
+    <li><a class="inline-block py-1.5 hover:text-brand-600 underline-offset-2 hover:underline" href="/game/post/icey-sequel-crowdfunding-30-million-yuan.html">Icey Sequel Crowdfunding Passes 30 Million Yuan</a></li>
+    <li><a class="inline-block py-1.5 hover:text-brand-600 underline-offset-2 hover:underline" href="/game/post/wechat-mini-game-top-100-september-2026.html">WeChat Mini Game Top 100: Only One New Title Cracked the Top 50 in</a></li>
+    <li><a class="inline-block py-1.5 hover:text-brand-600 underline-offset-2 hover:underline" href="/game/post/blight-war-idle-rpg-price-features-and-who.html">Blight War: Idle RPG — Price, Features and Who Should Skip</a></li>
   </ul>
 </nav>
-</article>
+  <div class="mt-8" data-ad-slot-name="post_related">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9243770518153989" data-ad-slot="8579367514" data-ad-format="autorelaxed" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+  <div id="mca-share" data-share-lang="en" data-str-copy="Copy link" data-str-copied="Copied!" class="mt-5 flex flex-wrap items-center gap-2 text-sm"></div></article>
 </main>
 
 <footer class="border-t border-slate-200 dark:border-slate-800 mt-16">
     <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-slate-500 dark:text-slate-400 space-y-2">
       <p>&copy; 2026 MyCapital Analyze. All rights reserved.</p>
       <p class="text-xs leading-relaxed">Posts on this blog are AI-assisted summaries and independent analysis of public macro and economic data. Content is for informational purposes only and does not constitute investment advice.</p>
-      <p class="text-xs pt-2"><a class="underline hover:text-brand-600" href="/disclosure.html">Affiliate Disclosure</a></p>
+      <p class="text-xs pt-2"><a class="inline-block py-2.5 underline hover:text-brand-600" href="/disclosure.html">Affiliate Disclosure</a></p>
     </div>
   </footer>
-<script src="/assets/js/main.js"></script>
+<script src="/assets/js/main.js?v=5"></script>
   <script>
   (function () {
     if (!document.addEventListener) return;

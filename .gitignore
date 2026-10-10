@@ -29,3 +29,10 @@ _shots/
 
 # API 응답 캐시 (재생성 가능, 커밋 불필요)
 .cache/
+
+# 로컬 실행 로그 (임시 산출물)
+_*.log
+
+# ⚠️ affiliate_pool.json 은 **커밋해야 한다**.
+#    GitHub Actions 러너에는 .secrets/ 가 없어 API 를 못 부른다.
+#    풀을 안 커밋하면 자동 발행 시 카드가 0개가 된다 (2026-10-10).

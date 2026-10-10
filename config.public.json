@@ -58,12 +58,12 @@
   },
   "auto_affiliate": {
     "enabled": true,
-    "_note": "포스트 본문 중간에 AliExpress 어필리에이트 상품을 자동 삽입 (2026-10-08, 전면 적용 2026-10-09). only_categories=[\"*\"] 는 전 카테고리 허용. 매핑 없는 카테고리는 allow_unmapped=false 라 안전하게 건너뛴다. 카테고리별 상품군: Apps&Games=휴대폰용품, 게임=게임액세서리, 금융/매크로=방송·홈오피스·정확도도구.",
+    "_note": "포스트 본문 정중앙에 AliExpress 어필리에이트 상품을 자동 삽입 (2026-10-10 전면 개편). 로이 지시 \"알리익스프레스 제품이 없다면 다 집어넣어줘\". ae_prefetch.py 가 content/affiliate_pool.json 에 상품을 전량 수확해두고 빌드는 그 파일만 읽는다 → 네트워크 0, 100% 확정. 카테고리 화이트리스트·짧은글 제외 로직은 2026-10-10 에 제거됐다(그게 카드 없는 글의 원인이었음).",
     "limit": 4,
     "only_categories": [
       "*"
     ],
-    "min_body_chars": 1200,
-    "allow_unmapped": false
+    "min_body_chars": 0,
+    "_min_body_chars_note": "더 이상 게이트로 쓰지 않는다. 짧은 글에도 카드를 넣되 data-short-post=\"1\" 속성만 찍는다."
   }
 }
