@@ -70,8 +70,22 @@ def parse_md(path):
     return fm, m.group(2).strip()
 
 def char_count(s):
-    """공백 포함 문자 수"""
-    return len(s)
+    """마크다운 기호를 제외한 **실제 노출 텍스트** 길이.
+
+    🔴 2026-10-10 변경. 이전에는 `len(s)` 였다.
+       `##` 헤딩·`**bold**`·링크 문법이 길이에 포함돼 실제 본문보다 20% 가까이
+       부풀려졌다. 그 결과 "3,000자 하한"이 실제로는 2,400자짜리 글을 통과시켰고,
+       실측에서 1,645자짜리 경제 글이 발행돼 있었다 (ko/post/yield-curve-2026).
+       game_daily.py 의 text_len() 과 **반드시 같은 기준**을 유지한다.
+       (두 파이프라인이 다른 자로 재면 한쪽만 얇은 글이 나온다)
+    """
+    t = re.sub(r'```.*?```', ' ', s, flags=re.S)
+    t = re.sub(r'!?\[([^\]]*)\]\([^)]*\)', r'\1', t)
+    t = re.sub(r'^\s{0,3}#{1,6}\s*', '', t, flags=re.M)
+    t = re.sub(r'^\s{0,3}[-*+]\s+', '', t, flags=re.M)
+    t = re.sub(r'^\s{0,3}>\s*', '', t, flags=re.M)
+    t = re.sub(r'[*_`~]', '', t)
+    return len(re.sub(r'\s+', ' ', t).strip())
 
 
 # 한국어 번역 품질 게이트 — 중국어 잔재(번역 안 된 한자) 감지
@@ -151,7 +165,9 @@ def translate_post(slug, lang, lang_name, title, desc, body):
         'You write in the register of a national financial newspaper '
         '(e.g. Hankyoreh/Chosun Biz for Korean, Nikkei for Japanese, FT/Le Monde style for European). '
         'You return valid JSON only, with no extra commentary. '
-        'You strictly obey the character-count requirement for the body.'
+        'You strictly obey the character-count requirement for the body. '
+        'You LOCALIZE rather than merely translate: the output must read as an article '
+        'written for readers in that market, not as a converted English text.'
     )
     density = LANG_DENSITY.get(lang, 'normal')
     # 언어별 현실적인 길이 목표 (영문 원본 대비 문자 밀도 반영)
@@ -204,6 +220,19 @@ TERMINOLOGY RULES (critical):
 - Keep every number, date and unit exactly as in the source. Never invent data.
 
 Keep all key facts and figures. Never invent false data. The goal is a natural, well-developed article of the required length.
+
+LOCALIZATION RULES (this is what separates a kept page from a dropped one):
+Google discards near-identical translations as duplicate documents. A page survives
+in the index only if it is a genuinely distinct document in {lang_name}. So:
+- Open with ONE short paragraph connecting the story to what {lang_name} readers
+  already track — their own central bank, their currency, their inflation or rates.
+- Where the source cites a US or UK figure, add ONE sentence placing the comparable
+  {lang_name}-market figure or institution beside it.
+- Close with a brief "what this means for readers in this market" note.
+- ABSOLUTE RULE: never invent numbers. Every original figure, date and name must stay
+  exactly as given. If you are not certain of a local figure, describe the relationship
+  qualitatively ("a similar gap", "roughly twice as high") instead of stating a value.
+  A wrong number is far worse than a missing one — this is a financial publication.
 
 Original English:
 TITLE: {title}

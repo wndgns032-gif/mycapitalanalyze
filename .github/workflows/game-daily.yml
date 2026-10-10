@@ -104,11 +104,16 @@ jobs:
               # flash 전용 (로이 지시). 'deepseek-v4-flash' 는 없는 모델(404).
               "model": "deepseek-flash"
             },
+            # 게임 수집 대상 언어.
+            # 🔴 2026-10-10 로이 지시 "언어 축소" — bn(벵골어) · id(인도네시아어) 수집 중단.
+            #   경제 파이프라인(auto-publish.yml)과 일관성을 맞춘다.
+            #   ⚠️ 기존 발행분은 유지된다 (build.py LANG_META 는 13개 고정) → 404 없음.
+            #   되돌리려면 다시 넣는다.
             "languages": {
               "zh": "Chinese (Mandarin)", "hi": "Hindi", "es": "Spanish",
-              "ar": "Arabic", "fr": "French", "bn": "Bengali",
+              "ar": "Arabic", "fr": "French",
               "pt": "Portuguese", "ru": "Russian", "de": "German",
-              "ja": "Japanese", "id": "Indonesian", "ko": "Korean"
+              "ja": "Japanese", "ko": "Korean"
             },
             "translate_languages": {
               "ko": "Korean", "zh": "Chinese (Mandarin)",

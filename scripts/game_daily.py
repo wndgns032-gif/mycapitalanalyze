@@ -49,9 +49,14 @@ import app_radar as ar  # noqa: E402
 
 LOCALES = ar.LOCALES
 CJK = ar.CJK
-# 언어별 본문 하한 — 상한(3000자)은 전 언어 공통, 하한만 문자 밀도로 환산(2026-10-02 실측)
-# 실측 분포: 라틴 2400~2700 / ko 2000 / ja 1300 / zh 900~1100
-CJK_LO = {'zh': 1200, 'ja': 1600, 'ko': 1800}
+# 언어별 본문 하한 — 마크다운 기호를 제외한 **노출 텍스트** 기준(text_len 참고).
+# 🔴 2026-10-10 로이 지시 "게임 글 본문 보강": 1,650자대 글이 얇은 콘텐츠로
+#    색인에서 제외됐다. 기준을 텍스트 기준으로 바꾸면서 값도 함께 올린다.
+#    (CJK 는 같은 정보량이 더 짧은 문자 수로 표현된다 — 밀도 환산 유지)
+CJK_LO = {'zh': 1400, 'ja': 1800, 'ko': 2000}
+LATIN_LO = 2200
+CJK_HI = 2800
+LATIN_HI = 2600
 TITLE_MAX = ar.TITLE_MAX
 TITLE_DEFAULT = ar.TITLE_DEFAULT
 SEO_DESC_MIN = ar.SEO_DESC_MIN
@@ -59,6 +64,27 @@ SEO_DESC_MAX = ar.SEO_DESC_MAX
 
 # 소스 본문 길이 상한 — 너무 긴 원문은 잘라 LLM 토큰을 아낀다.
 SRC_CAP = 12000
+
+
+def text_len(md):
+    """마크다운 **기호를 제외한** 실제 노출 텍스트 길이.
+
+    🔴 2026-10-10 추가. 기존에는 `len(body)` 로 재고 있었다.
+       → `##` 헤딩, `**bold**`, 링크 문법이 길이에 포함돼 실제 노출 텍스트보다
+         20% 가까이 부풀려졌다. 그 위에 `n < lo - 400` 이라는 400자 여유까지 있어
+         **하한 2000자짜리 규칙이 실제로는 1,300자 텍스트를 통과시켰다.**
+       실측 피해: ar/cookierun-classic(1,657자) · hi/cookierun-witch-castle(1,673자)
+       가 Google 에서 '크롤링됨 - 현재 색인 생성되지 않음' 으로 제외됐다.
+       → 검증을 "노출 텍스트" 기준으로 바꾼다. 프롬프트의 lo/hi 도 같은 기준이 된다.
+    """
+    t = re.sub(r'```.*?```', ' ', md, flags=re.S)          # 코드블록
+    t = re.sub(r'!?\[([^\]]*)\]\([^)]*\)', r'\1', t)        # 링크·이미지 → 라벨만
+    t = re.sub(r'^\s{0,3}#{1,6}\s*', '', t, flags=re.M)     # 헤딩 기호
+    t = re.sub(r'^\s{0,3}[-*+]\s+', '', t, flags=re.M)      # 목록 기호
+    t = re.sub(r'^\s{0,3}>\s*', '', t, flags=re.M)          # 인용 기호
+    t = re.sub(r'[*_`~]', '', t)                            # 강조 기호
+    t = re.sub(r'\s+', ' ', t).strip()
+    return len(t)
 
 
 # ---------------------------------------------------------------- http utils
@@ -534,15 +560,19 @@ def user_prompt(lang, lang_name, art, lo, hi, slug_hint='', dmin_prompt=None):
         "- Write headings the way a local " + lang_name + " publication would, not word-for-word.\n"
         "- Only proper nouns (game/company names) may stay in their original script.\n\n"
         "LENGTH DISCIPLINE — this is the rule most often failed\n"
-        "- The whole body MUST fit in " + str(hi) + " characters. Budget it before you write:\n"
-        "  opening ~120 words, 'What Happened' ~150, 'Why It Matters' ~140, "
-        "'What To Watch Next' ~120.\n"
+        "- The body must contain " + str(lo) + " to " + str(hi) + " characters of VISIBLE TEXT.\n"
+        "  Count only what a reader sees. Markdown symbols (##, **, -, >) are NOT counted.\n"
+        "- Budget before you write, roughly: opening 18%, 'What Happened' 28%, "
+        "'Why It Matters' 28%, 'What To Watch Next' 26%.\n"
         "- Use SHORT paragraphs (2-3 sentences). No bullet lists of more than 4 items.\n"
-        "- Cut background and restatement. Do not repeat the headline in section 1.\n"
+        "- Reach the minimum by adding CONCRETE material (figures, dates, prices, named\n"
+        "  entities, a comparison the reader can use) — never by restating the headline\n"
+        "  or padding with generic filler. Restatement is what got articles rejected.\n"
         "- If you are running long, compress 'Why It Matters' first — never exceed "
         + str(hi) + " characters.\n\n"
         "CONSTRAINTS\n"
-        "- body length: " + str(lo) + " to " + str(hi) + " characters (count the final text).\n"
+        "- body length: " + str(lo) + " to " + str(hi) + " characters of visible text\n"
+        "  (exclude markdown symbols when counting).\n"
         "- description (SEO meta): " + str(dmin_prompt) + " to " + str(SEO_DESC_MAX)
         + " characters, plain sentences, no clickbait.\n"
         "- title: at most " + str(tmax) + " characters, states the concrete story.\n"
@@ -589,10 +619,10 @@ def gen_lang(lang, lang_name, art, lo, hi, slug_hint=''):
             last_why = 'missing title/description/body fields'
             print('   [%d] 항목 누락' % attempt)
             continue
-        n = len(body)
-        if n < lo - 400:
-            last_why = ('body was %d characters, minimum is %d — expand every section '
-                        'with concrete facts' % (n, lo))
+        n = text_len(body)          # 실제 노출 텍스트 기준 (마크다운 기호 제외)
+        if n < lo - 150:
+            last_why = ('body was %d characters of visible text, minimum is %d — expand '
+                        'every section with concrete facts' % (n, lo))
             print('   [%d] 본문 %d자 < 하한 %d' % (attempt, n, lo))
             continue
         # 상한은 10% 여유만 허용 — 3000자 이내 원칙을 지킨다(로이 2026-10-02)
@@ -715,8 +745,10 @@ def main():
         # 로이 지시(2026-10-02): 게임 뉴스 글은 모든 언어 3000자 이내로.
         # (이전 CJK 3200~5000 / 라틴 3000~5000 → 실제 5800~6900자까지 나와 너무 길었다)
         # 하한은 언어별 문자 밀도 환산 (실측: 라틴 2400~2700 / ko 2000 / ja 1300 / zh 900~1100)
-        lo = CJK_LO.get(lang) if lang in CJK else 2000
-        hi = 3000
+        # 하한·상한 모두 **노출 텍스트 기준**(text_len). 마크다운 기호는 세지 않는다.
+        # 라틴/기타 2200자 / CJK 밀도 환산. 상한은 마크다운 포함 약 3,100자에 해당한다.
+        lo = CJK_LO.get(lang) if lang in CJK else LATIN_LO
+        hi = CJK_HI if lang in CJK else LATIN_HI
         print('[%s] 생성 중…' % lang)
         obj = gen_lang(lang, lang_name, art, lo, hi, slug_hint=slug)
         if not obj:

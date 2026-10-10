@@ -117,12 +117,21 @@ jobs:
               "pt": "Portuguese", "ru": "Russian", "de": "German",
               "ja": "Japanese", "id": "Indonesian", "ko": "Korean"
             },
-            # 번역 12개 언어 전체 (2026-10-03 로이 지시: 콘텐츠 볼륨 확대로 검색 노출 기회 확보)
+            # 번역 대상 언어.
+            # 🔴 2026-10-10 로이 지시 "언어 축소" — 신규 발행만 중단한다.
+            #   제외한 언어와 이유:
+            #     bn(벵골어)  — 애드센스 RPM 최하위권. Search Console '크롤링됨-색인 안됨'에도 잡힘
+            #     id(인도네시아어) — 동일
+            #   ⚠️ 기존 발행분은 **그대로 유지**한다. build.py 의 LANG_META 는 13개 고정이라
+            #      여기서 빼도 파일은 남고 sitemap 에도 남는다 → 404 가 생기지 않는다.
+            #      (언어를 지우는 것과 신규 발행을 멈추는 것은 완전히 다른 일이다)
+            #   되돌리려면 이 목록에 다시 넣으면 된다. 기존 글은 손댈 필요 없다.
+            #   근거: 2026-10-10 '크롤링됨 - 색인 생성되지 않음' 20건 분석
             "translate_languages": {
               "zh": "Chinese (Mandarin)", "hi": "Hindi", "es": "Spanish",
-              "ar": "Arabic", "fr": "French", "bn": "Bengali",
+              "ar": "Arabic", "fr": "French",
               "pt": "Portuguese", "ru": "Russian", "de": "German",
-              "ja": "Japanese", "id": "Indonesian", "ko": "Korean"
+              "ja": "Japanese", "ko": "Korean"
             },
             "translate_exclude_prefixes": ["project-syndicate-"],
             "translate_workers": 5,
