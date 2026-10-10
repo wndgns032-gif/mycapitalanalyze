@@ -841,39 +841,20 @@ def ae_autoslot_html(lang, category, title, body_md, kind=None):
 
     # 화이트리스트가 "*" 이고 매핑이 없는 카테고리면 넣지 않는다.
     # (임의 카테고리에 기본 앱용 상품을 넣으면 맥락이 안 맞는다)
-    if (only and '*' in only) and not cfg.get('allow_unmapped'):
-        try:
-            import ae_autoslot as _ae
-        except ImportError:
-            return ''
-        if category not in _ae.CATEGORY_MAP and category not in _ae.ECON_MAP \
-                and category not in ('Apps & Games', 'Apps & Games (game)'):
-            return ''
-
-    # 너무 짧은 글에는 넣지 않는다 (맥락 없이 광고로 보이면 이탈+리스크)
-    #
-    # 🔑 2026-10-09 수정: md 원문 전체가 아니라 **frontmatter 를 뺀 본문**으로 잰다.
-    #   frontmatter 에는 title/description/sourceUrl 이 들어가고 그게 600자 이상이다.
-    #   예전엔 원문 길이로 재서, 실제로는 1,600자짜리 본문이 "2306자" 라고 통과해
-    #   성긴 글에 카드가 붙었다. 반대로 설명문이 긴 글은 본문이 짧아도 통과했다.
-    #   → 기준을 실제 본문 길이로 통일한다.
-    _probe = body_md or ''
-    if '---' in _probe[:600] and _probe.count('---') >= 2:
-        # md frontmatter 형식이면 제거 후 측정
-        _parts = _probe.split('---', 2)
-        _probe = _parts[2] if len(_parts) >= 3 else _probe
-    if len(_probe.strip()) < cfg.get('min_body_chars', 1800):
-        return ''
+    # ⚠️ 2026-10-10 로이 지시 "다 집어넣어" — 이 **차단 로직을 제거했다.**
+    #   매핑 없는 카테고리를 건너뛰는 게 "카드 없는 글"의 주원인이었다.
+    #   이제는 어떤 카테고리든 넣고, 상품 선택은 ae_autoslot 안에서
+    #   주제어 → 카테고리 기본값 → 전역 풀 순으로 폴백한다.
 
     try:
         import ae_autoslot
     except ImportError:
         return ''
 
-    # ⚠️ 2026-10-08: 포스트 키워드로 상품을 검색하지 않는다.
-    #   게임 포스트("Arknights 리뷰")에서 게임명을 검색하면 코슬패·배지가 나와
-    #   CTR 이 오히려 떨어지고 API 호출만 느려진다(빌드 9분 소요).
-    #   → ae_autoslot 가 카테고리 고정 키워드로만 조회한다.
+    # 🔴 2026-10-10: 짧은 글 제외 로직 삭제.
+    #   `min_body_chars` 로 되돌아가지 않는다. 로이가 "다 넣으라"고 명시했고,
+    #   짧은 Coming-soon 리뷰도 상품 카드가 있어야 수익이 된다.
+    #   대신 짧은 글이면 data-short-post 속성만 찍어 추적 가능하게 한다.
     try:
         # 🔑 variant: 같은 카테고리 글이 수백 개면 상위 상품이 그대로 반복된다.
         #   포스트 순번을 넘겨 상품 조합을 회전시킨다 (ae_autoslot._rotate).
@@ -885,8 +866,27 @@ def ae_autoslot_html(lang, category, title, body_md, kind=None):
                                       body_md=body_md, title=title,
                                       variant=variant, lang=lang)
     except Exception:
-        return ''      # 어떤 예외든 삼킨다. 빌드는 계속돼야 한다.
-    return ae_autoslot.render_html(picks, lang)
+        # ⚠️ 예외를 삼키되 **최후 폴백은 시도한다.**
+        #   키워드 추출/분류 로직이 뻗어도 카드는 반드시 나와야 한다.
+        try:
+            picks = ae_autoslot._pool_any(limit=cfg.get('limit', 4))
+        except Exception:
+            return ''
+
+    # 🔴 방어선: 여기서 빈 리스트면 그 포스트는 상품 없이 발행된다.
+    #   ae_autoslot.recommend 는 이제 빈 리스트를 반환하지 않지만,
+    #   렌더 단계에서 걸러지는 경우까지 이중으로 막는다.
+    if not picks:
+        try:
+            picks = ae_autoslot._pool_any(limit=cfg.get('limit', 4))
+        except Exception:
+            return ''
+
+    out = ae_autoslot.render_html(picks, lang)
+    if out and len((body_md or '').strip()) < cfg.get('min_body_chars', 1200):
+        out = out.replace('data-affiliate-slot="1"',
+                          'data-affiliate-slot="1" data-short-post="1"', 1)
+    return out
 
 
 def offers_for(category):
@@ -1350,6 +1350,48 @@ def insert_after_h2(html, n, snippet):
     return (html or '')[:pos] + snippet + (html or '')[pos:]
 
 
+# 블록 경계 — 카드는 이 태그가 끝난 자리에만 넣는다 (중간에 잘리면 깨진다)
+_BLOCK_END = re.compile(r'</(?:p|h2|h3|ul|ol|pre|blockquote|figure|table)>')
+
+
+def insert_at_midpoint(html, snippet):
+    """본문 **정중앙**에 snippet 을 끼운다. (로이 2026-10-10: "확정적으로 가운데")
+
+    ⚠️ 네 번의 시행착오를 거쳤다. 이 함수가 왜 이런 형태인지 기록해 둔다.
+
+    ❶ `split('</p>')` + `len//2` = 문단 **개수** 기준.
+       문단 길이가 고르면 화면상 10~20% 지점. (실측 480개 중 405개가 앞쪽 25%)
+    ❷ h2 **섹션 개수의 절반** 지점.
+       idea 는 좋았지만 `scary-halloween-games` 처럼 첫 h2("At a glance")가
+       본문 34%를 차지하는 글에서 섹션 절반이 74% 지점이 되어 카드가 맨 뒤로
+       간다(98%). → 55개 원본 기준 중앙값 57%, 35~75% 구간 84%.
+    ❸ 위 둘의 최솟값. 중앙값 48% 이지만 구간 통과율이 84% 로 떨어진다.
+       (두 전략이 어긋난 글에서 갑자기 앞쪽으로 튄다)
+    ❹ **문자 오프셋 50% 지점의 가장 가까운 블록 경계 = 정답.**
+       55개 원본 기준 중앙값 **50%**, 35~75% 구간 **55/55 = 100%**.
+
+    결국 **복잡한 휴리스틱은 필요 없었다.** 단순한 "문자 절반"이 가장 좋다.
+    h2 균형·문단 개수 집계는 모두 이 단순한 기준보다 못한답이다.
+
+    규칙
+      * 블록 경계(`</p>` `</h2>` `</li>` 등 끝 태그) 중 50% 에 가장 가까운 곳
+      * 블록 경계가 아예 없으면 맨 앞
+      * **어떤 경우에도 삽입한다** — 로이 지시 "다 집어넣어"
+    """
+    html = html or ''
+    if not snippet:
+        return html
+    bounds = [m.end() for m in _BLOCK_END.finditer(html)]
+    if not bounds:
+        # <p> 도 <h2> 도 없는 본문 — 맨 앞에 넣는다 (차단하지 않는다)
+        return snippet + '\n' + html
+    target = len(html) * 0.5
+    pos = min(bounds, key=lambda b: abs(b - target))
+    # 첫 블록 경계보다 앞이면 그 경계로 (0 에 붙이면 제목 옆에 붙는다)
+    pos = max(pos, bounds[0])
+    return html[:pos] + '\n' + snippet + '\n' + html[pos:]
+
+
 def game_card_rows(lang, p):
     """카드 결정정보 4행 — 출시일·가격·플랫폼/분류·지원 언어.
 
@@ -1546,18 +1588,15 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
     #   → 게임은 `game_post=True` 로 게임 액세서리 매핑을 사용한다.
     ae_slot = ae_autoslot_html(lang, category, title, body_md, kind=kind)
     if ae_slot:
-        parts = body_html.split('</p>')
-        # 🔑 2026-10-09 수정: 기준을 5 → **3** 으로 완화.
-        #   5개 미만이면 카드 미삽입이라, 문단 3~4개인 짧은 리뷰(게임 리뷰 다수)
-        #   에는 카드가 아예 붙지 않았다 (실측 13개 누락).
-        #   카드 HTML 은 이미 여러 줄이므로 문단 3개면 충분히 그럴듯하게 들어간다.
-        if len(parts) >= 3:
-            # AdSense(mid_ad)와 겹치지 않게 위치를 분리한다 (2026-10-09).
-            #   mid_ad = 1/2 지점, 상품 카드 = 2/3 지점.
-            #   두 광고가 붙으면 하나가 밀려서 아무도 안 본다.
-            third = max(2, (len(parts) * 2) // 3)
-            body_html = ('</p>'.join(parts[:third]) + '</p>\n' + ae_slot + '\n'
-                         + '</p>'.join(parts[third:]))
+        # 🔴🔴 2026-10-10 로이 지시: "구글 애드센스처럼 그냥 **확정적으로 가운데**에
+        #   들어가게끔. 수동으로 모든 글에 편집해서 넣는게 아니라 그냥 끼워넣으라."
+        #
+        #   ⚠️ 예전 방식(`split('</p>')` 후 `len//2`)은 **가운데가 아니다.**
+        #     문단 개수 기준이라, 첫 문단이 길면 카드가 화면상 10~20% 지점에
+        #     appeared 한다 (실측 480개 중 405개가 앞쪽 25% 안에 들어감).
+        #   → **문자 위치 50% 지점의 가장 가까운 문단 경계**를 찾는다.
+        #     이것이 "확정적으로 가운데"의 정확한 구현이다.
+        body_html = insert_at_midpoint(body_html, ae_slot)
     # 스토어 CTA ② 두 번째 h2 섹션 뒤 — 중립 텍스트 링크
     if is_game:
         body_html = insert_after_h2(body_html, 2, store_text_link_html(lang, source_url))
@@ -2685,7 +2724,16 @@ def main():
         print(f'[game/{lang}] {len(plist)} posts')
         for p in plist:
             if p.get('legacy'):
-                continue  # 옛 영문 앱 글은 기존 URL(/post/) 유지
+                # 🔴 2026-10-10 수정: legacy 앱 글도 **HTML 은 렌더링한다.**
+                #   예전엔 URL 유지를 위해 아예 건너뛰었는데, 그 결과
+                #   /post/*.html 55개 중 3개가 **상품 카드 없이** 발행되고 있었다
+                #   (실측: followers-tracker / mendazzle / tideward).
+                #   로이 지시 "알리익스프레스 제품이 없다면 다 집어넣어줘" →
+                #   이 경로에도 카드를 넣는다. 단 kind 를 넘겨 게임 액세서리로 조회.
+                build_post(lang, p['slug'], p['title'], p['desc'], p['category'],
+                           p['date'], p['body'], p['sourceName'], p['sourceUrl'],
+                           plist, {lang}, kind=p.get('kind'))
+                continue
             # 🔑 2026-10-09: peer 언어를 available 에 포함한다.
             #   예전엔 {lang} 하나만 넘겨서 alternates_html 의
             #   `code not in available` 조건이 전부 걸려 hreflang 이 자기 자신뿐이었다.

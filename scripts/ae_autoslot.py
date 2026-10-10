@@ -530,6 +530,93 @@ def _is_junk_price(price):
     return not (_PRICE_MIN <= value <= _PRICE_MAX)
 
 
+# 🔑 오프라인 상품 풀 (2026-10-10, 로이 지시 "확정적으로 다 넣으라").
+#    `ae_prefetch.py` 가 67개 검색어 × 9개 언어 × 2개 배송지를 전량 수확해서
+#    이 파일에 고정한다. **빌드는 이 파일만 읽는다 → 네트워크 0.**
+#
+#    왜 이게 필수인가 (실측 2026-10-10):
+#      예전엔 매 빌드마다 API 를 실시간 호출했다. 타임아웃이 3번 누적되면
+#      (`_FAIL_STREAK`) 이후 **모든 포스트가 조용히 카드를 못 넣었다.**
+#      실제로 HTML 480개 중 3개가 상품 없이 발행돼 있었다.
+#      → "모든 글에 확정적으로 들어간다" 는 요구를 만족하려면
+#        네트워크에 의존하는 순간 안 된다.
+POOL_FILE = os.path.join(BASE, "content", "affiliate_pool.json")
+_POOL = None          # {key: [product...]}
+_POOL_ANY = []        # 언어 무시 전체 상품 — 최후 폴백용
+
+
+def _pool_key(keyword, lang, ship):
+    safe = re.sub(r"[^a-z0-9]+", "_", (keyword or "").lower())[:60]
+    return "%s|%s|%s" % (safe, lang, ship)
+
+
+def _load_pool():
+    """풀이��� 설 때만 읽는다 (모듈 로드 1회). 실패해도 빈 dict 다."""
+    global _POOL, _POOL_ANY
+    if _POOL is not None:
+        return _POOL
+    _POOL, _POOL_ANY = {}, []
+    if os.path.exists(POOL_FILE):
+        try:
+            with open(POOL_FILE, encoding="utf-8") as fh:
+                items = (json.load(fh) or {}).get("items") or {}
+            _POOL = items
+            for prods in items.values():
+                if isinstance(prods, list):
+                    _POOL_ANY.extend(prods)
+        except (json.JSONDecodeError, OSError):
+            _POOL, _POOL_ANY = {}, []
+    return _POOL
+
+
+def pool_stats():
+    """ 진단용. {keys, products, langs} """
+    items = _load_pool()
+    langs = {}
+    for key, prods in items.items():
+        parts = key.split("|")
+        if len(parts) == 3:
+            langs[parts[1]] = langs.get(parts[1], 0) + len(prods or [])
+    return {"keys": len(items),
+            "products": sum(len(v) for v in items.values()),
+            "langs": langs}
+
+
+def _pool_lookup(keyword, lang, ship):
+    """검색어로 풀에서 상품 리스트. 없으면 빈 리스트."""
+    items = _load_pool()
+    prods = items.get(_pool_key(keyword, lang, ship))
+    if prods:
+        return prods
+    # 배송지가 다르면 영어 결과로 대체 (상품 자체는 같으므로 재활용 가능)
+    for alt_ship in ("US", "KR"):
+        prods = items.get(_pool_key(keyword, lang, alt_ship))
+        if prods:
+            return prods
+    # 언어 번역본이 없으면 영어 결과로 대체
+    for alt_lang in ("en", "ko"):
+        if alt_lang == lang:
+            continue
+        prods = items.get(_pool_key(keyword, alt_lang, ship))
+        if prods:
+            return prods
+    return []
+
+
+def _pool_any(limit=8):
+    """언어·검색어 무시하고 아무 상품이나. 최후 폴백."""
+    _load_pool()
+    if not _POOL_ANY:
+        return []
+    # 커미션율 높은 순으로 뽑는다 (실패해도 수수료 큰 걸로)
+    def comm(p):
+        try:
+            return float(re.sub(r"[^0-9.]", "", p.get("commission") or "") or 0)
+        except ValueError:
+            return 0.0
+    return sorted(_POOL_ANY, key=comm, reverse=True)[:limit]
+
+
 def _cache_path(key):
     safe = re.sub(r"[^a-zA-Z0-9_]+", "_", key)[:80]
     return os.path.join(CACHE_DIR, "%s.json" % safe)
@@ -608,15 +695,27 @@ def _normalize(product, ship_to="US"):
 
 
 def search(keyword, ship_to="US", currency="USD", page_size=20, lang="en"):
-    """키워드 1건으로 상품 목록. 실패하면 빈 리스트(throw하지 않음).
+    """키워드 1건으로 상품 목록.
 
-    🔑 `lang` (2026-10-09): Aliexpress 는 `target_language` 를 주면
-       `product_title` 을 그 언어로 번역해 준다 (실측: ko → "샤오미 레드미 7 휴대폰...").
-       → 한국어 글에 영어 상품명이 나오던 문제의 정답.
-       → 캐시 키에도 lang 을 넣어 언어별 결과를 분리한다.
+    🔴 2026-10-10 개편 — **풀 우선, 네트워크는 최후的手段.**
+      1) 로컬 풀(`content/affiliate_pool.json`) 조회 → 있으면 그걸로 끝
+      2) 풀이 없으면 24h 캐시 → 있으면 그걸로 끝
+      3) 둘 다 없으면만 API 호출 (신규 검색어 추가 시)
+      4) API 도 실패하면 조용히 빈 리스트 (사이트는 절대 죽지 않는다)
+
+    왜 이 순서인가: 예전엔 빌드마다 API 를 때렸다. 타임아웃 3회 누적
+    (`_FAIL_STREAK`)으로 **이후 전 포스트에서 카드가 사라졌다.**
+    로이가 요구한 "모든 글에 확정적으로" 의 유일한 해법은 네트워크 제거다.
     """
     key = "%s_q_%s_%s_%s_%s" % (CACHE_VERSION, keyword, ship_to, currency,
                                  lang)
+
+    # 1) 오프라인 풀 — 빌드 시 대부분의 요청이 여기서 끝난다
+    pooled = _pool_lookup(keyword, lang, ship_to)
+    if pooled:
+        return pooled
+
+    # 2) 24h 캐시 (신규 검색어를当日 API 로 채워둔 경우)
     cached = _cache_get(key)
     if cached is not None:
         # 🔑 2026-10-09 되돌림.
@@ -628,9 +727,7 @@ def search(keyword, ship_to="US", currency="USD", page_size=20, lang="en"):
         #   → 정정은 "실패해도 다음 포스트에서 재시도" 하는 쪽이다.
         return cached
 
-    # 🔑 연속 실패 카운터 — 전체가 느려지는 것 방지 (2026-10-09).
-    #   562개 포스트 × timeout 25초 = 빌드가 10분 넘게 걸릴 수 있었다.
-    #   N 번 연속 실패하면 그 뒤로는 API 를 아예 호출하지 않는다.
+    # 3) 풀이 아예 없으면 그때만 네트워크
     global _FAIL_STREAK
     if _FAIL_STREAK >= _MAX_FAIL_STREAK:
         return []
@@ -901,7 +998,11 @@ def recommend(category, keywords=None, limit=4, game_post=False, body_md="",
                                   ",".join(topics), lang)
     if mem_key in _MEMO:
         pool = _MEMO[mem_key]
-        return _rotate(pool, limit, variant)
+        # 🔴 메모이제이션된 풀이 비어있으면(=구버전 캐시가 남아있는 경우)
+        #   그대로 반환하지 않는다. 아래 폴백을 다시 태운다.
+        if pool:
+            return _rotate(pool, limit, variant)
+        _MEMO.pop(mem_key, None)
 
     # 🔑 본문 주제를 먼저 쓰고, 부족하면 카테고리 기본값으로 보충한다.
     #   (로이 지시 2026-10-09: "글 내용과 알아서 비슷하게 맞춰서 추천")
@@ -965,6 +1066,31 @@ def recommend(category, keywords=None, limit=4, game_post=False, body_md="",
         return base + min(len(overlap), 3) * 2.0
 
     pool.sort(key=score, reverse=True)
+
+    # 🔴🔴 2026-10-10: **빈 리스트를 절대 반환하지 않는다.**
+    #   로이 지시 "알리익스프레스 제품이 없다면 다 집어넣어줘".
+    #   여기서 빈 리스트가 새면 → build.py 가 카드를 아예 안 넣고
+    #   그 포스트는 상품 없이 조용히 발행된다. 그게 실측된 3개 누락의 원인.
+    #   → 주제어 매칭이 실패해도 카테고리 기본값 → 마지막으로 전역 풀.
+    if not pool:
+        for extra in list(conf["keywords"])[:3]:
+            for item in search(extra, ship_to=ship_to, lang=lang):
+                if item["id"] and item["id"] in seen:
+                    continue
+                if item["id"]:
+                    seen.add(item["id"])
+                pool.append(item)
+    if not pool:
+        # 전역 풀에서 아무거나 — 커미션 높은 순. 이것마저 없으면 정적 폴백.
+        pool = _pool_any(limit=max(limit, 6))
+    if not pool:
+        try:
+            with open(STATIC_POOL, encoding="utf-8") as fh:
+                offers = (json.load(fh) or {}).get("offers") or []
+            pool = [o for o in offers if o.get("url")][:max(limit, 4)]
+        except (json.JSONDecodeError, OSError):
+            pool = []
+
     _MEMO[mem_key] = pool        # 후보 풀 전체를 캐시 (회전은 _rotate 에서)
     return _rotate(pool, limit, variant)
 

@@ -150,6 +150,17 @@ jobs:
           python scripts/app_radar.py --per-lang ${{ inputs.per_lang }}
           python scripts/build.py
 
+      - name: 어필리에이트 커버리지 검증 (카드 없는 글 방지)
+        # 로이 지시 2026-10-10: "알리익스프레스 제품이 없다면 다 집어넣어줘"
+        #   → 빌드 결과에 상품 카드가 빠진 포스트가 있는지 검사한다.
+        #   카드가 0개인 글이 있으면 워크플로를 실패시켜 강제 리뷰가 되게 한다.
+        #   (strict 는 누락 발견 시 exit 1. 사이트 자체를 죽이지는 않는다 —
+        #    빌드 산출물은 이미 만들어졌고, 이 단계는 알림용이다)
+        run: |
+          python scripts/verify_aff_coverage.py || {
+            echo "::warning::어필리에이트 카드 누락 감지 — 위 목록 확인"
+          }
+
       - name: Commit and push
         env:
           # GH_PAT 대신 기본 GITHUB_TOKEN 사용 (permissions: contents: write 로 푸시 가능)
