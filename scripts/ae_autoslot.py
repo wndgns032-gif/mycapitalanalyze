@@ -551,7 +551,14 @@ def _pool_key(keyword, lang, ship):
 
 
 def _load_pool():
-    """풀이��� 설 때만 읽는다 (모듈 로드 1회). 실패해도 빈 dict 다."""
+    """풀이��� 설 때만 읽는다 (모듈 로드 1회). 실패해도 빈 dict 다.
+
+    🔑 스키마 2 (2026-10-10): 풀을 **상품 마스터 + 언어별 제목** 으로 압축했다.
+       같은 상품이 9언어×2배송지 = 18번 중복 저장돼 8.5MB → 1.2MB 로 줄인 것.
+       v2 는 `items[key]` 가 상품 dict 가 아니라 **product_id 리스트** 다.
+       → 여기서 `_expand()` 로 원래 형태(상품 dict)로 복원한다.
+       빌드 쪽 코드는 v1/v2 를 구분할 필요 없이 항상 dict 리스트를 받는다.
+    """
     global _POOL, _POOL_ANY
     if _POOL is not None:
         return _POOL
@@ -559,14 +566,57 @@ def _load_pool():
     if os.path.exists(POOL_FILE):
         try:
             with open(POOL_FILE, encoding="utf-8") as fh:
-                items = (json.load(fh) or {}).get("items") or {}
+                data = json.load(fh) or {}
+            items = data.get("items") or {}
+            if data.get("_schema") == 2:
+                # _expand_v2 가 _POOL_ANY 를 직접 채운다 (중복 append 금지)
+                items = _expand_v2(data)
+            else:
+                _POOL = items
+                for prods in items.values():
+                    if isinstance(prods, list):
+                        _POOL_ANY.extend(prods)
+                return _POOL
             _POOL = items
-            for prods in items.values():
-                if isinstance(prods, list):
-                    _POOL_ANY.extend(prods)
         except (json.JSONDecodeError, OSError):
             _POOL, _POOL_ANY = {}, []
     return _POOL
+
+
+def _expand_v2(data):
+    """압축 풀(v2)을 商品 dict 리스트 형태로 펼친다.
+
+    키 `term|lang|ship` → 해당 언어 제목 + 공통 필드(URL·가격·이미지…) 합성.
+    `_POOL_ANY`(최후 폴백용)도 채워야 한다.
+    """
+    items = data.get("items") or {}
+    master = data.get("_master") or {}
+    titles = data.get("_titles") or {}
+
+    out = {}
+    any_list = []
+    for key, ids in items.items():
+        # 키 끝의 `|lang|ship` 만 신뢰한다 (검색어에 `|` 가 있을 수 있음)
+        parts = key.rsplit("|", 2)
+        if len(parts) != 3:
+            continue
+        lang, ship = parts[1], parts[2]
+        built = []
+        for pid in ids or []:
+            m = master.get(pid)
+            if not m:
+                continue
+            item = dict(m)
+            item["title"] = (titles.get(pid) or {}).get(lang) or ""
+            if not item["title"] or not item.get("url"):
+                continue
+            item["ship_to"] = ship
+            built.append(item)
+            any_list.append(item)
+        if built:
+            out[key] = built
+    globals()["_POOL_ANY"] = any_list
+    return out
 
 
 def pool_stats():
