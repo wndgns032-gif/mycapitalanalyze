@@ -75,14 +75,32 @@ IndexNow 에 Google 은 참여하지 않는다. 그래서 2단계가 필요하�
 
 ---
 
-## 알아둘 점
+## 🔴 알아둘 점 — 기대치를 낮춰라 (2026-10-10 Google 공식 문서 확인 후 수정)
 
-- **일일 할당량 200개.** 스크립트가 `content/google_index_state.json` 에 일일 사용량을 기록해 넘기지 않는다.
-  867개 전체를 밀어넣으려면 5일 걸린다. 처음엔 `--all` 보다 매일 신규분만 쌓이는 게 낫다.
-- Google Indexing API 의 **공식 지원 범위는 JobPosting / BroadcastEvent 구조화 데이터**다.
-  일반 블로그 글은 문서상 지원 대상이 아니지만, 실무에선 URL_UPDATED 핑이 받아들여진다.
-  안 먹히는 날이 와도 이상하게 생각하지 말 것 — 그땐 sitemap 크롤에 맡기면 된다.
-- **색인 보장 도구가 아니다.** 알림을 보내는 것까지가 내 책임이고, 실제 반영은 구글이 결정한다.
+**Google Search Central 「Indexing API 사용」 원문 (최종수정 2026-07-17):**
+
+> "Indexing API는 **JobPosting 또는 VideoObject에 삽입된 BroadcastEvent가 포함된 페이지를
+>  크롤링하는 데만** 사용할 수 있습니다."
+> "Indexing API는 **테스트를 위한 기본 할당량**을 제공합니다. 사용하려면 **승인 및 할당량을 요청**하세요."
+
+즉:
+
+- **일반 블로그 글은 공식 대상이 아니다.** 요청 자체는 HTTP 200 으로 받아들여질 수 있지만,
+  크롤 우선순위가 실제로 오르는지는 **보장되지 않는다.**
+- JobPosting 스키마를 억지로 넣어 대상으로 만드는 건 **스팸 정책 위반**. 절대 하지 않는다.
+- 기본 할당량은 테스트용이라, 200 개/일 을 기대하면 안 된다. 증설은 승인 심사 대상이다.
+
+**→ 이 스크립트의 위치: "있으면 좋고 없어도 그만."**
+부작용은 0 이고 유지비도 0 이라 남겨둔다. 하지만 **구글 색인의 본류는 Search Console 이다.**
+이거 설정하느라 15분 쓰기 전에 Search Console 등록부터 끝내라. 순서가 뒤바뀌면 손해다.
+
+## 기타
+
 - 상태 파일은 두 개다. 헷갈리지 말 것:
   - `content/indexnow_state.json` — IndexNow(Bing 등)용
   - `content/google_index_state.json` — Google용
+- 소유권 인증 메타 태그는 **이미 실서비스에 전 페이지 삽입돼 있다**
+  (`config.public.json` 의 `analytics.google_site_verification` → `build.py:783` `verify_html()`).
+  값: `DSgNHo4SPmiOp6akCru8PRqv1Mpmvk4vyVCPX2AII6A`
+  Naver / Yandex / Bing 인증 태그도 함께 세팅돼 있다.
+  → Search Console 에 속성만 추가하면 **HTML 태그 인증이 즉시 통과**한다.
