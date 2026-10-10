@@ -1969,7 +1969,8 @@ def build_index(lang, posts, available, game_list=None):
             s[1], PAGE_STR.get(lang, DEFAULT_PAGE_STR).format(n=page))
         html_doc = layout(lang, title, desc, canonical, content, 'website', [website_ld(lang)],
                           slug=None, available=available, switcher_slug=None,
-                          head_links=pager_rel_links(lang, page, pages))
+                          head_links=pager_rel_links(lang, page, pages),
+                          noindex=(page > 1))
         rel = home_page_path(lang, page).lstrip('/') or ''
         out_path = os.path.join(BASE, rel, 'index.html') if rel else os.path.join(BASE, 'index.html')
         os.makedirs(os.path.dirname(out_path), exist_ok=True)
@@ -2238,13 +2239,12 @@ def build_sitemap(posts, avail_by_slug, langs_with_home, game=None):
         alts.append(('x-default', DOMAIN + '/post/index.html'))
         emit(loc, alts)
 
-    # 홈 2페이지 이후 (페이지네이션 — build_index 가 HOME_PAGES 를 채운다)
-    for c in LANG_META:
-        if c not in langs_with_home:
-            continue
-        for n in range(2, HOME_PAGES.get(c, 1) + 1):
-            loc = DOMAIN + home_page_path(c, n)
-            emit(loc, [(c, loc)])
+    # 🔴 2026-10-10 제거: 페이지네이션(홈 2페이지 이후)을 sitemap 에서 뺀다.
+    #   Search Console 실측에서 `/hi/page/5/` 가 "크롤링됨 - 현재 색인 생성되지 않음"
+    #   으로 잡혀 있었다. 목록 페이지는 색인 대상이 아니고, 13개 언어 × 최대 10페이지
+    #   = **128개 URL** 이 sitemap 을 채워 실제 글의 크롤 예산을 잡아먹고 있었다.
+    #   → build_index() 에서 `noindex, follow` 를 걸었으므로 sitemap 에서도 뺀다.
+    #     (sitemap 등록 + noindex 는 서로 충돌하는 신호라 둘 중 하나만 해야 한다)
 
     for p in posts:
         avail = avail_by_slug.get(p['slug'], {'en'})

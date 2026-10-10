@@ -702,6 +702,7 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/post/index.html" />
   </url>
   <url>
+<<<<<<< HEAD
     <loc>https://www.mycapitalanalyze.com/page/2/</loc>
     <lastmod>2026-10-10</lastmod>
   </url>
@@ -1504,6 +1505,8 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mycapitalanalyze.com/post/yankees-max-fried-absence-highlights-contract-risk-and.html" />
   </url>
   <url>
+=======
+>>>>>>> 71e58139 (fix: 페이지네이션 128 URL 을 sitemap 에서 제거 + noindex 적용)
     <loc>https://www.mycapitalanalyze.com/post/fed-greenlights-bancfirst-spirit-bankcorp-merger-what-it.html</loc>
     <lastmod>2026-10-09</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mycapitalanalyze.com/post/fed-greenlights-bancfirst-spirit-bankcorp-merger-what-it.html" />
