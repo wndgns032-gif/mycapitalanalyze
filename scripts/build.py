@@ -963,14 +963,28 @@ def build_disclosure(lang, available):
 
 
 def lang_switcher(current, slug=None, available=None, section=None):
-    """포스트 페이지에서는 해당 글의 번역 URL로, 없으면 홈으로 링크."""
+    """포스트 페이지에서는 해당 글의 번역 URL로, 없으면 홈으로 링크.
+
+    🔴 2026-10-10 수정 (Search Console 404 4건의 원인):
+      게임 글은 **언어마다 slug 가 다르다** (ko=livetopia-party,
+      fr=livetopia-party-applications-sur-google-play-prix).
+      그런데 예전엔 현재 slug 를 그대로 타언어 경로에 붙여
+      `/id/game/post/cookierun-classic-google-play.html` 같은 **없는 URL** 을 만들었다.
+      → 실측 4건이 그대로 Google 에 크롤돼 '찾을 수 없음(404)' 로 보고됐다.
+      → 같은 앱의 그 언어 버전이 있으면 그 slug 를, 없으면 **섹션 홈**으로 보낸다.
+    """
     is_game = (section == 'game')
     href_fn = game_post_href if is_game else post_href
     home_fn = game_home_path if is_game else home_path
+    peers = (GAME_PEER_URLS.get(slug) or {}) if (is_game and slug) else {}
     btns = []
     for code, (name, _) in LANG_META.items():
         if slug and available and code in available:
-            href = href_fn(code, slug)
+            peer = peers.get(code)
+            if is_game and not peer:
+                href = home_fn(code)          # 그 언어 버전이 실제로 없음 → 404 대신 홈
+            else:
+                href = href_fn(code, peer or slug)
         else:
             href = home_fn(code)
         active = 'bg-brand-600 text-white' if code == current else 'text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -1669,7 +1683,7 @@ def build_post(lang, slug, title, desc, category, date, body_md, source_name, so
   {cta_top}
   {toc}
   {top_ad}
-  <div class="prose prose-slate dark:prose-invert max-w-none">{body_html}</div>
+  <div class="prose">{body_html}</div>
   {bottom_ad}
   {bottom}
   {related_html(lang, slug, posts_in_lang, s[5], href_fn)}
@@ -2132,11 +2146,11 @@ def build_post_archive(lang, plist, available):
             cur = ym
             rows.append('<h2 class="mt-6 mb-2 text-base font-semibold '
                         'text-slate-900 dark:text-slate-100">%s</h2>' % htmllib.escape(ym))
-            rows.append('<ul class="space-y-2">')
+            rows.append('<ul class="archive-list space-y-2.5">')
         rows.append(
-            '<li class="text-sm">'
-            '<a class="text-blue-700 dark:text-blue-300 hover:underline" href="%s">%s</a>'
-            ' <span class="text-slate-500 dark:text-slate-400">· %s</span>'
+            '<li>'
+            '<a class="text-brand-600 dark:text-blue-300 hover:underline break-words" href="%s">%s</a>'
+            ' <span class="text-slate-500 dark:text-slate-400 whitespace-nowrap">· %s</span>'
             '</li>' % (post_href(lang, p['slug']), htmllib.escape(p['title']),
                        htmllib.escape(p['date'])))
     if rows:

@@ -22,24 +22,123 @@ body {
   overflow-x: clip;
 }
 
-/* ---------- 모바일 규격 (2026-10-04) ---------- */
-/* 360~430px 기준: 본문은 16px 이상, 제목은 한 단계 낮춰 한 줄에 더 담기게 한다. */
-.prose { overflow-wrap: anywhere; word-break: keep-all; }
-.prose img { max-width: 100%; height: auto; border-radius: 0.5rem; }
-.prose h2 { font-size: 1.25rem; }
-.prose h3 { font-size: 1.1rem; }
-.prose table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.prose th, .prose td { white-space: nowrap; }
+/* ============================================
+   본문 타이포그래피 (개별 포스트)
+   2026-10-10 전면 재작성 — 로이: "폰으로 자주 보는데 정말 읽기 힘들어"
 
+   🔴 이전 파일의 버그:
+     .prose h2 를 두 번 정의했다 (모바일 1.25rem, 뒤에서 1.5rem).
+     명시도가 같아 나중 규칙이 이겨서 **모바일 규격이 조용히 무효화**됐다.
+     → 중복을 없애고 브레이크포인트로만 분기한다.
+
+   실측 기준 폭: 360~430px (iPhone SE ~ Pro Max)
+   ============================================ */
+.prose {
+  font-size: 1.0625rem;      /* 17px — 16px 은 작다 */
+  line-height: 1.85;         /* 한글·아랍어는 라틴보다 행간이 더 필요하다 */
+  color: #334155;
+  overflow-wrap: anywhere;
+  word-break: keep-all;      /* 한글 어절 단위 줄바꿈 */
+  max-width: 68ch;           /* 한 줄 68자 — 넘으면 눈이 줄을 놓친다 */
+  margin-left: auto;
+  margin-right: auto;
+}
+.dark .prose { color: #cbd5e1; }
+
+/* 문단·블록 사이 세로 리듬을 한 곳에서 통일한다 */
+.prose > * + * { margin-top: 1.25rem; }
+.prose p { margin-bottom: 0; }
+
+.prose h2 {
+  font-size: 1.375rem;       /* 22px */
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  margin-top: 2.5rem;
+  margin-bottom: 0.875rem;
+  color: #0f172a;
+}
+.prose h3 {
+  font-size: 1.125rem;       /* 18px */
+  font-weight: 600;
+  line-height: 1.45;
+  margin-top: 2rem;
+  margin-bottom: 0.625rem;
+  color: #0f172a;
+}
+.dark .prose h2, .dark .prose h3 { color: #f1f5f9; }
+
+.prose ul, .prose ol { padding-left: 1.375rem; }
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
+.prose li { margin-top: 0.5rem; }
+.prose li::marker { color: #94a3b8; }
+
+.prose a {
+  color: var(--brand-600);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.dark .prose a { color: #93b4ff; }
+
+.prose strong { font-weight: 700; color: #0f172a; }
+.dark .prose strong { color: #f1f5f9; }
+
+.prose blockquote {
+  border-left: 4px solid var(--brand-500);
+  padding-left: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #64748b;
+  font-style: italic;
+}
+.dark .prose blockquote { color: #94a3b8; }
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 표는 좁은 화면에서 가로 스크롤로 넘긴다 (본문 자체를 밀지 않는다) */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.prose th, .prose td {
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.prose th { font-weight: 600; background: #f8fafc; }
+.prose th, .prose td { white-space: nowrap; }
+.dark .prose th, .dark .prose td { border-color: #1e293b; }
+.dark .prose th { background: #0f172a; }
+
+/* ---- 태블릿 이상: 한 단계 키우고 표는 원래 레이아웃으로 ---- */
 @media (min-width: 640px) {
-  .prose h2 { font-size: 1.5rem; }
-  .prose h3 { font-size: 1.2rem; }
-  .prose table { display: table; }
+  .prose { font-size: 1.125rem; line-height: 1.8; }   /* 18px */
+  .prose h2 { font-size: 1.625rem; margin-top: 3rem; }
+  .prose h3 { font-size: 1.25rem; margin-top: 2.25rem; }
+  .prose table { display: table; overflow-x: visible; }
   .prose th, .prose td { white-space: normal; }
 }
 
+/* ============================================
+   아카이브 목록 (/post/index.html)
+   폰에서 14px 링크는 누르기 어렵다 → 15px + 행간 확보
+   ============================================ */
+.archive-list { max-width: 68ch; margin-left: auto; margin-right: auto; }
+.archive-list li { font-size: 0.9375rem; line-height: 1.6; }
+.archive-list a { text-underline-offset: 2px; }
+
 /* RTL(아랍어)에서 방향성 아이콘·장식만 좌우 반전한다.
-   논리 속성(ms-/me-/start-/end-)으로 이미 처리된 배치는 건드리지 않는다. */
+   논리 속성(ms-/me-/start/end)으로 이미 처리된 배치는 건드리지 않는다. */
 [dir="rtl"] .mca-flip { transform: scaleX(-1); }
 
 /* 터치 목표 최소 44px — 버튼·탭·페이지 번호에 공통 적용 */
@@ -48,34 +147,3 @@ body {
 /* 모바일 메뉴(헤더 details) 안쪽 기본 마커 제거 */
 details > summary.mca-menu-btn { list-style: none; }
 details > summary.mca-menu-btn::-webkit-details-marker { display: none; }
-
-/* 본문 prose 스타일 (개별 포스트) */
-.prose { line-height: 1.75; color: #334155; }
-.dark .prose { color: #cbd5e1; }
-.prose h2 {
-  font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem;
-  color: #0f172a;
-}
-.dark .prose h2 { color: #f1f5f9; }
-.prose h3 {
-  font-size: 1.2rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;
-  color: #0f172a;
-}
-.dark .prose h3 { color: #f1f5f9; }
-.prose p { margin-bottom: 1rem; }
-.prose ul, .prose ol { margin: 1rem 0 1rem 1.5rem; }
-.prose ul { list-style: disc; }
-.prose ol { list-style: decimal; }
-.prose li { margin-bottom: 0.5rem; }
-.prose a { color: var(--brand-600); text-decoration: underline; }
-.dark .prose a { color: #93b4ff; }
-.prose blockquote {
-  border-left: 4px solid var(--brand-500);
-  padding-left: 1rem; margin: 1.5rem 0;
-  color: #64748b; font-style: italic;
-}
-.dark .prose blockquote { color: #94a3b8; }
-.prose strong { font-weight: 700; }
-.prose table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
-.prose th, .prose td { border: 1px solid #e2e8f0; padding: 0.5rem 0.75rem; }
-.dark .prose th, .dark .prose td { border-color: #1e293b; }
