@@ -107,6 +107,22 @@ TAB_STR = {
     'hi': ('सभी', 'ऐप्स', 'गेम्स'), 'ar': ('الكل', 'تطبيقات', 'ألعاب'),
     'bn': ('সব', 'অ্যাপ', 'গেম'),
 }
+ARCHIVE_STR = {
+    'en': ('All articles', 'Every analysis we have published, newest first.'),
+    'ko': ('전체 글', '발행한 모든 분석 글을 최신순으로 모았습니다.'),
+    'zh': ('全部文章', '按发布时间倒序列出所有分析文章。'),
+    'ja': ('すべての記事', '公開した分析記事をすべて新しい順に掲載しています。'),
+    'es': ('Todos los artículos', 'Todos los análisis publicados, del más reciente al más antiguo.'),
+    'de': ('Alle Artikel', 'Alle veröffentlichten Analysen, neueste zuerst.'),
+    'fr': ('Tous les articles', 'Toutes les analyses publiées, de la plus récente à la plus ancienne.'),
+    'pt': ('Todos os artigos', 'Todas as análises publicadas, da mais recente à la mais antiga.'),
+    'ru': ('Все статьи', 'Все опубликованные материалы — от новых к старым.'),
+    'id': ('Semua artikel', 'Semua analisis yang diterbitkan, dari yang terbaru.'),
+    'hi': ('सभी लेख', 'प्रकाशित सभी विश्लेषण, नवीनतम पहले।'),
+    'ar': ('جميع المقالات', 'جميع التحليلات المنشورة، من الأحدث إلى الأقدم.'),
+    'bn': ('সব নিবন্ধ', 'প্রকাশিত সব বিশ্লেষণ, নতুন থেকে পুরনো।'),
+}
+DEFAULT_ARCHIVE = ARCHIVE_STR['en']
 DEFAULT_TAB = TAB_STR['en']
 
 # 홈 화면 위젯 문구 (달력 / 국가별 방문자).
@@ -1919,6 +1935,7 @@ def build_index(lang, posts, available, game_list=None):
   <div>
     <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">{htmllib.escape(s[2])}</h1>
     <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{htmllib.escape(s[1])}</p>
+    <p class="mt-2 text-sm"><a class="text-blue-700 dark:text-blue-300 hover:underline" href="{'/post/index.html' if lang == 'en' else f'/{lang}/post/index.html'}">{htmllib.escape(ARCHIVE_STR.get(lang, DEFAULT_ARCHIVE)[0])}</a></p>
   </div>
   <div class="grid gap-4 sm:grid-cols-2">
 {cards}
@@ -2094,6 +2111,57 @@ def build_game_index(lang, plist, available, kind=''):
     return out_path
 
 
+def build_post_archive(lang, plist, available):
+    """/post/index.html — 경제 포스트 전체 목록(크롤 허브).
+
+    왜 필요한가 (2026-10-10 실측):
+      홈은 **최신 3~8편만** 링크한다. 포스트끼리는 '관련 글' 4개로 연결돼 있지만,
+      그 체인에서 밀려난 오래된 글은 **어느 HTML 페이지에서도 링크되지 않는 고아 URL** 이 된다.
+      sitemap 이 URL 을 알려주긴 하지만, 내부 링크가 없으면 Googlebot 이 중요도를 낮게 잡는다.
+      → 모든 포스트가 **한 번의 클릭**으로 도달 가능한 허브를 만든다. 881개 중 상당수가
+      이 페이지 하나로 크롤러에게 노출된다.
+    """
+    a = ARCHIVE_STR.get(lang, DEFAULT_ARCHIVE)
+    items = sorted(plist, key=lambda p: p['date'], reverse=True)
+    rows, cur = [], None
+    for p in items:
+        ym = p['date'][:7]
+        if ym != cur:
+            if cur is not None:
+                rows.append('</ul>')
+            cur = ym
+            rows.append('<h2 class="mt-6 mb-2 text-base font-semibold '
+                        'text-slate-900 dark:text-slate-100">%s</h2>' % htmllib.escape(ym))
+            rows.append('<ul class="space-y-2">')
+        rows.append(
+            '<li class="text-sm">'
+            '<a class="text-blue-700 dark:text-blue-300 hover:underline" href="%s">%s</a>'
+            ' <span class="text-slate-500 dark:text-slate-400">· %s</span>'
+            '</li>' % (post_href(lang, p['slug']), htmllib.escape(p['title']),
+                       htmllib.escape(p['date'])))
+    if rows:
+        rows.append('</ul>')
+    body = '\n'.join(rows)
+    content = f'''<div class="space-y-6">
+  <div>
+    <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">{htmllib.escape(a[0])}</h1>
+    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{htmllib.escape(a[1])}</p>
+    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{len(items)}</p>
+  </div>
+  {body}
+  {ad_unit('index')}
+</div>'''
+    rel = '/post/index.html' if lang == 'en' else f'/{lang}/post/index.html'
+    canonical = DOMAIN + rel
+    html_doc = layout(lang, f'{a[0]} — {SITE_NAME}', a[1], canonical, content, 'website',
+                      [website_ld(lang, canonical)],
+                      slug=None, available=available)
+    out_path = os.path.join(BASE, rel.lstrip('/'))
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    open(out_path, 'w', encoding='utf-8').write(html_doc)
+    return out_path
+
+
 def build_sitemap(posts, avail_by_slug, langs_with_home, game=None):
     """실제 존재하는 언어 조합만 sitemap에 넣는다 (404 유도 URL 제거).
 
@@ -2144,6 +2212,17 @@ def build_sitemap(posts, avail_by_slug, langs_with_home, game=None):
     for c in LANG_META:
         if c in langs_with_home:
             emit(DOMAIN + home_path(c), home_alts)
+
+    # 포스트 아카이브 허브 (/post/index.html) — build_post_archive 가 생성.
+    #   내부 링크 허브라서 크롤 도달성이 높다. lastmod 는 해당 언어의 최신 발행일.
+    for c in LANG_META:
+        if c not in langs_with_home:
+            continue
+        loc = DOMAIN + ('/post/index.html' if c == 'en' else f'/{c}/post/index.html')
+        alts = [(x, DOMAIN + ('/post/index.html' if x == 'en' else f'/{x}/post/index.html'))
+                for x in LANG_META if x in langs_with_home]
+        alts.append(('x-default', DOMAIN + '/post/index.html'))
+        emit(loc, alts)
 
     # 홈 2페이지 이후 (페이지네이션 — build_index 가 HOME_PAGES 를 채운다)
     for c in LANG_META:
@@ -2713,6 +2792,7 @@ def main():
                            avail_by_slug[p['slug']])
             total += 1
         build_index(lang, plist, home_available, game_posts.get(lang, []))
+        build_post_archive(lang, plist, home_available)
         build_search_page(lang, plist, game_posts.get(lang, []), home_available)
         build_disclosure(lang, home_available)
 
