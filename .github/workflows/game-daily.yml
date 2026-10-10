@@ -134,9 +134,35 @@ jobs:
           PY
 
       - name: Run game daily radar (위챗 게임미디어 → 13개 언어 재각색)
+        id: game_daily
+        # 🔴 2026-10-11: 예전 `python scripts/game_daily.py || echo "..."` 는 return 1 을
+        #   삼켜서 **6일간(10-02~10-07) 0건이면서 Actions 는 success 로 찍혔다.**
+        #   이제 종료 코드로 구분한다 (0=발행성공, 3=새기사 0건, 그 외=진짜 오류).
+        #   단, 아래 스텝이 exit 1 로 끝나도 빌드/커밋은 계속돼야 한다 —
+        #   게임 1절이 안 되는다고 사이트 전체를 죽이면 안 된다.
+        continue-on-error: true
         run: |
-          # 소스 접근 실패는 커밋 없이 종료(1) → Actions 실패로 기록. 다른 스텝은 계속 안 함.
-          python scripts/game_daily.py || echo "game_daily exited nonzero"
+          set +e
+          python scripts/game_daily.py
+          code=$?
+          set -e
+          echo "::group::game_daily 종료 코드 = $code"
+          echo "  0 = 발행 성공 / 이미 오늘 발행 완료"
+          echo "  3 = 새 기사 0건 (소스에 당일 글이 없음 — 오류 아님)"
+          echo "  1 = 진짜 오류 (네트워크/파싱/LLM 전체 실패)"
+          echo "::endgroup::"
+          if [ "$code" -eq 0 ]; then
+            echo "game_daily: 정상 (발행 완료)"
+          elif [ "$code" -eq 3 ]; then
+            # 0건 — 경고로 표시하되 파이프라인은 계속한다.
+            echo "::warning title=game_daily 0건::소스에 새 기사가 없어 오늘 발행 0건 (종료코드 3). 빌드는 정상 진행합니다. 위 로그의 '이미 발행한 기사 N건 건너뜀'을 확인하세요 — N>0 이면 중복 때문에 막힌 것입니다."
+          else
+            # 진짜 오류 — 이건 반드시 눈에 띄어야 한다.
+            echo "::error title=game_daily 실패::game_daily.py 가 종료코드 $code 로 실패했습니다. 로그의 마지막 '선정:' 단계를 확인하세요."
+          fi
+          # 스텝 자체는 항상 0 으로 끝내어 빌드/커밋 스텝이 중단되지 않게 한다.
+          # 진짜 실패는 위 ::error:: annotation 으로 surfaces 된다.
+          exit 0
 
       - name: Build site
         run: python scripts/build.py

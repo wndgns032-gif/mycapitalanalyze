@@ -17,6 +17,11 @@
   python scripts/game_daily.py            # 당일 기사 13개 언어 발행
   python scripts/game_daily.py --dry      # 수집+프롬프트만 확인 (LLM 미호출)
   python scripts/game_daily.py --force    # 당일 발행 여부 무시하고 강제 실행
+
+종료 코드 (workflow 가 이 차이를 구분한다):
+  0 = 발행 성공 / 이미 오늘 발행 완료
+  1 = 진짜 오류 (네트워크 전체 실패, 지정 링크 파싱 실패, LLM 전체 실패)
+  3 = 소스에 새 기사가 없음 — "0건". 파이프라인은 살아 있어야 하므로 오류로 보지 않는다.
 """
 import argparse
 import datetime
@@ -64,6 +69,15 @@ SEO_DESC_MAX = ar.SEO_DESC_MAX
 
 # 소스 본문 길이 상한 — 너무 긴 원문은 잘라 LLM 토큰을 아낀다.
 SRC_CAP = 12000
+
+# 종료 코드 — workflow 의 "0건 vs 진짜 오류" 분기가 이 값을 읽는다.
+EXIT_OK = 0
+EXIT_ERROR = 1
+EXIT_NO_ARTICLE = 3    # 소스에 새 기사가 없음 (공휴일·소스 갱신 지연 포함)
+
+# 후보 탐색 상한. 최신순으로 계속 내려가야 하는데 상한이 작으면 또 조용히 포기한다.
+# 🔴 6 → 12 (2026-10-11): 상한 6 은 "새 기사 4건이 더 있는데 못 봤다"를 조용히 삼킨다.
+CANDIDATE_LIMIT = 12
 
 
 def text_len(md):
@@ -128,9 +142,66 @@ def strip_tags(fragment):
     return htmlmod.unescape(txt)
 
 
+# ---------------------------------------------------------------- 후보 선택 (순수 함수 — 네트워크 없음)
+def pick_candidate(urls, seen_urls, fetch_one, limit=CANDIDATE_LIMIT, label=''):
+    """최신순 후보 목록에서 **이미 발행한 URL 을 건너뛰고** 첫 살아있는 기사를 고른다.
+
+    🔴 2026-10-11 — 이 버그가 2026-10-02~10-07 정확히 6일간 0건의 원인이었다.
+       이전 코드는 중복 여부를 모른 채 후보 1순위를 반환했고, main() 의 사후 검사가
+       "이미 씀"을 발견해 조용히 return 0 했다. 즉 "소스가 없다"가 아니라
+       **"이미 쓴 기사를 고르고 조용히 포기한 것**"이었다.
+       → 판단을 '선택' 단계로 옮긴다. 방어선은 main() 의 사후 검사 하나만 남긴다.
+
+    urls      : 최신순으로 정렬된 후보 URL 리스트 (호출측에서 정렬 responsibility)
+    seen_urls : 이미 발행된 URL 집합 (seen.json + 파일시스템 스캔 합집합)
+    fetch_one : callable(url) -> article dict | None. None 이면 날짜/단문 파싱 실패.
+                (네트워크 접근은 여기에만 갇혀 있고 이 함수는 모듈 단위로 테스트된다)
+
+    반환: (article|None, stats dict)
+      stats = {total, scanned, skipped_seen, failed_parse, selected}
+    """
+    seen_urls = set(seen_urls or ())
+    cands = list(urls or [])
+    stats = {'total': len(cands), 'scanned': 0, 'skipped_seen': 0,
+             'failed_parse': 0, 'selected': None}
+    prefix = '   %s: ' % label if label else '   '
+    print('%s후보 URL %d건 추출 (탐색 상한 %d건)' % (prefix, stats['total'], limit))
+
+    if not cands:
+        print('%s추출된 후보가 없음 — 소스 홈 응답이 비었거나 레이아웃 변경' % prefix)
+        return None, stats
+
+    for url in cands[:limit]:
+        stats['scanned'] += 1
+        # ★ 핵심: 이미 발행한 후보는 "새文章的 확보 경로"에서 아예 제외한다.
+        if url in seen_urls:
+            stats['skipped_seen'] += 1
+            print('%s  [건너뜀-발행됨] %s' % (prefix, url))
+            continue
+        art = fetch_one(url)
+        if art:
+            stats['selected'] = url
+            print('%s선정: %s' % (prefix, url))
+            print('%s  사유: 탐색 %d번째 후보 · 이미 발행 %d건 건너뜀 · 파싱 실패 %d건 탈락'
+                  % (prefix, stats['scanned'], stats['skipped_seen'], stats['failed_parse']))
+            return art, stats
+        stats['failed_parse'] += 1
+        print('%s  [탈락-날짜/단문 파싱 실패] %s' % (prefix, url))
+
+    if stats['skipped_seen']:
+        print('%s이미 발행한 기사 %d건 건너뜀 ← 중복 때문에 막혔던 근거'
+              % (prefix, stats['skipped_seen']))
+    print('%s가용 기사 없음 (후보 %d건 중 발행됨 %d / 파싱실패 %d)'
+          % (prefix, stats['total'], stats['skipped_seen'], stats['failed_parse']))
+    return None, stats
+
+
 # ---------------------------------------------------------------- 소스 1) GameLook (공식 사이트)
-def fetch_gamelook(today_cn):
-    """gamelook.com.cn 에서 당일(중국 시간) 최신 기사 1개. 없으면 48시간 이내."""
+def fetch_gamelook(today_cn, seen_urls=None):
+    """gamelook.com.cn 에서 **아직 발행하지 않은** 최신 기사 1개. 없으면 48시간 이내.
+
+    seen_urls 를 넘기면 이미 쓴 기사는 후보 단계에서 건너뛰고 그 다음으로 내려간다.
+    """
     try:
         home = get(GAMELOOK_HOME)
     except Exception as e:
@@ -143,12 +214,9 @@ def fetch_gamelook(today_cn):
         if l not in uniq:
             uniq.append(l)
     uniq.sort(reverse=True)   # URL 날짜 내림차순 = 최신 우선
-    for url in uniq[:6]:
-        art = fetch_gamelook_article(url, today_cn)
-        if art:
-            return art
-    print('   gamelook에서 가용 기사 없음')
-    return None
+    return pick_candidate(uniq, seen_urls,
+                          lambda u: fetch_gamelook_article(u, today_cn),
+                          limit=CANDIDATE_LIMIT, label='gamelook')[0]
 
 
 def fetch_gamelook_article(url, today_cn):
@@ -274,8 +342,11 @@ def fetch_wechat_article(url):
 
 
 # ---------------------------------------------------------------- 소스 2) 游戏日报 (공식 사이트)
-def fetch_yxrb(today_cn):
-    """news.yxrb.net 에서 당일(중국 시간) 최신 기사 1개. 없으면 48시간 이내 최신."""
+def fetch_yxrb(today_cn, seen_urls=None):
+    """news.yxrb.net 에서 **아직 발행하지 않은** 최신 기사 1개. 없으면 48시간 이내 최신.
+
+    seen_urls 를 넘기면 이미 쓴 기사는 후보 단계에서 건너뛰고 그 다음으로 내려간다.
+    """
     try:
         home = get(YXRB_HOME)
     except Exception as e:
@@ -289,12 +360,11 @@ def fetch_yxrb(today_cn):
             uniq.append(l)
     # 최신 순 정렬(날짜 내림차순) 후 첫 성공 건
     uniq.sort(reverse=True)
-    for rel in uniq[:8]:
-        art = fetch_yxrb_article(YXRB_HOME.rstrip('/') + rel, today_cn)
-        if art:
-            return art
-    print('   yxrb에서 가용 기사 없음')
-    return None
+    # 상대경로 → 절대 URL 로 만든 뒤 seen 과 비교해야 한다 (seen 에는 절대 URL 이 있다)
+    abs_uniq = [YXRB_HOME.rstrip('/') + rel for rel in uniq]
+    return pick_candidate(abs_uniq, seen_urls,
+                          lambda u: fetch_yxrb_article(u, today_cn),
+                          limit=CANDIDATE_LIMIT, label='yxrb')[0]
 
 
 def fetch_yxrb_article(url, today_cn):
@@ -676,6 +746,14 @@ def main():
     today_str = today_cn.isoformat()
     seen = load_seen()
 
+    # 중복 판정 기준선 — seen.json 과 파일시스템 스캔 결과를 **합집합**으로 쓴다.
+    # (seen.json 은 git merge 로 유실될 수 있어 디스크가 진짜 방어선 — 2026-10-02 사고)
+    # 이 집합을 후보 선택 단계에 넘겨야 "이미 쓴 기사를 고르고 조용히 포기"가 사라진다.
+    fs_urls = scan_published()[0]
+    seen_urls = set(seen.get('urls') or {}) | set(fs_urls or set())
+    print('중복 기준선: seen.json %d건 + 파일시스템 %d건 = %d건'
+          % (len(seen.get('urls') or {}), len(fs_urls or ()), len(seen_urls)))
+
     # 로이가 직접 준 링크 (1순위) — 날짜 무관 강제 대상.
     art = None
     if args.url:
@@ -683,11 +761,14 @@ def main():
         art = fetch_wechat_article(args.url)
         if not art:
             print('    지정 링크 파싱 실패')
-            return 1
+            return EXIT_ERROR
         print('    선정: %s / %s / %s' % (art['title'][:40], art.get('author'), art.get('date')))
         if art['url'] in seen.get('urls', {}):
-            print('    이미 처리한 기사 → 종료')
-            return 0
+            # --url 은 사용자가 명시적으로 준 링크다. 조용히 0 으로 끝내면 안 된다.
+            print('    ❌ 지정 링크는 이미 발행됨(seen %s) → 종료. 다른 --url 을 쓰거나 '
+                  '다음 소스 검사를 원하면 --force 를 쓰세요.'
+                  % seen['urls'][art['url']])
+            return EXIT_NO_ARTICLE
         try:
             d = datetime.date.fromisoformat(art.get('date', '') or today_str)
             age = (today_cn - d).days
@@ -697,37 +778,51 @@ def main():
             pass
     elif not args.force and seen['dates'].get(today_str):
         print('[%s] 오늘 이미 발행 완료 (%s) → 종료' % (today_str, seen['dates'][today_str]))
-        return 0
+        return EXIT_OK
 
     if not art:
         # 1순위 GameLook → 2순위 游戏日报 (로이 2026-09-30 지정)
         print('[1] GameLook (공식 사이트) 시도…')
-        art = fetch_gamelook(today_cn)
+        art = fetch_gamelook(today_cn, seen_urls)
         if art:
             print('    선정: %s / %s' % (art['title'][:40], art['date']))
         else:
             print('[2] %s (공식 사이트) 시도…' % YXRB_NAME)
-            art = fetch_yxrb(today_cn)
+            art = fetch_yxrb(today_cn, seen_urls)
             if not art:
-                print('    가용 기사 없음 → 종료 (재시도 필요)')
-                return 1
+                print('')
+                print('    ────────────────────────────────────────────')
+                print('    📭 게시물 0건 — 오늘 발행된 새 기사가 없습니다.')
+                print('       원인은 두 가지뿐입니다:')
+                print('         (a) 소스가 당일 새 기사를 아직 올리지 않음 (정상)')
+                print('         (b) 새 기사가 있는데 후보 상한·파싱 때문에 못 잡음 (조사 필요)')
+                print('       위 "이미 발행한 기사 N건 건너뜀" 로그가 (b)의 증거입니다.')
+                print('       종료 코드 3 = 0건 (오류 아님). 빌드는 계속됩니다.')
+                print('    ────────────────────────────────────────────')
+                return EXIT_NO_ARTICLE
             print('    선정: %s / %s / %s' % (art['title'][:40], art.get('author'), art['date']))
 
-    # 원문 1개 확정 후 — seen 상태 + 실제 디스크 양쪽으로 중복 검사.
-    # (seen.json 은 git merge 로 유실될 수 있어 파일시스템을 진짜 방어선으로 삼는다)
-    # --force 는 seen 기록만 무시한다. 디스크에 이미 있는 원문은 --force 로도 덮어쓰지 않는다
-    # (같은 원문을 다른 날짜로 재발행하면 H1 중복 SEO 페이지가 생긴다 — 2026-10-02 사고).
+    # ▼ 최종 안전장치 (드묾 — 후보 선택에서 이미 걸러졌으므로 진짜 방어선일 뿐이다).
+    #   여기서 걸리면 위 pick_candidate 의 건너뛰기 로직이 뚫렸다는 뜻이므로
+    #   조용히 끝내지 않고 반드시 로깅한다 (2026-10-02~10-07 사고의 형태 방지).
     if not args.force and url_in_seen(seen, art['url']):
-        print('    이미 처리한 기사(seen, %s) → 종료' % seen['urls'][art['url']])
-        return 0
-    if find_published_url(art['url']):
-        print('    이미 발행된 원문(파일시스템 중복) → 종료: %s' % art['url'])
-        return 0
+        print('    ❌ [안전장치] 후보 선택 이후 이미 처리한 기사(seen, %s) → 발행 0건'
+              % seen['urls'][art['url']])
+        print('       URL: %s' % art['url'])
+        print('       ⚠ pick_candidate 의 건너뛰기가 작동하지 않았습니다 — 로직을 점검하세요.')
+        print('    📭 게시물 0건 (중복으로 차단). 종료 코드 3.')
+        return EXIT_NO_ARTICLE
+    if find_published_url(art['url'], fs_urls):
+        print('    ❌ [안전장치] 후보 선택 이후 이미 발행된 원문(파일시스템 중복) → 발행 0건')
+        print('       URL: %s' % art['url'])
+        print('       ⚠ seen.json 과 파일시스템이 어긋나 있습니다 (pick_candidate 가 둘을 합쳐야 함).')
+        print('    📭 게시물 0건 (중복으로 차단). 종료 코드 3.')
+        return EXIT_NO_ARTICLE
 
     print('    원문 %d자 / 출처 %s' % (len(art['text']), art['url']))
     if args.dry:
         print('    본문 미리보기: %s' % art['text'][:300])
-        return 0
+        return EXIT_OK
 
     # 기존 게시물 slug 충돌 방지
     seen_slugs = set()
@@ -759,8 +854,8 @@ def main():
             print('    slug = %s' % slug)
         results[lang] = obj
     if not results:
-        print('모든 언어 생성 실패')
-        return 1
+        print('모든 언어 생성 실패 → 발행 0건 (진짜 오류: LLM 응답 없음/형식 불일치)')
+        return EXIT_ERROR
     if not slug:  # en 실패 시 다른 언어 slug 로 대체
         slug = unique_slug(slugify(next(iter(results.values())).get('slug')), seen_slugs)
 
@@ -773,7 +868,7 @@ def main():
             dup_titles.append('%s: %s' % (lang, obj.get('title')))
     if dup_titles:
         print('    ⚠ 동일 제목(H1)이 이미 존재 — 발행 취소: %s' % '; '.join(dup_titles))
-        return 0
+        return EXIT_NO_ARTICLE
 
     # 발행 직전 최종 방어선 ② — 저장 경로가 이미 있으면 덮어쓰지 않는다.
     # 위 title 검사 이후지만 slug 충돌 변형까지 이最後の 순간에 한 번 더 확인한다.
@@ -782,7 +877,7 @@ def main():
         if os.path.exists(out):
             print('    ⚠ 동일 slug 파일이 이미 존재 — 발행 취소: content/game/%s/%s.md'
                   % (lang, slug))
-            return 0
+            return EXIT_NO_ARTICLE
 
     # 이미지 저장 (en 메타 og:image)
     img_rel = save_image(art.get('image', ''), slug)
@@ -828,7 +923,7 @@ def main():
         print('   ⚠ seen 기록이 저장되지 않았습니다 — 다음 실행은 파일시스템 방어선으로만 '
               '중복을 막습니다 (%s)' % SEEN_FILE)
     print('완료: %d개 언어 / %s / 원문: %s' % (len(results), slug, art['url']))
-    return 0
+    return EXIT_OK
 
 
 if __name__ == '__main__':
