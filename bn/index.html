@@ -275,16 +275,17 @@
   <nav class="mt-8 flex items-center justify-center gap-2 flex-wrap" aria-label="Pagination"><span class="tap px-3.5 rounded text-sm border bg-brand-600 inline-flex items-center justify-center text-white border-brand-600" aria-current="page">1</span><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/bn/page/2/">2</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/bn/page/3/">3</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/bn/page/4/">4</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/bn/page/5/">5</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/bn/page/2/" aria-label="Next">&rsaquo;</a></nav>
   
 <section class="mt-10 grid gap-6 lg:grid-cols-2 items-start">
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
+<!-- ⚠ 2026-10-11: 아래 4개 위젯 박스는 전부 min-w-0 이 필요하다. -->
+  <div class="min-w-0 border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">দৈনিক পোস্ট</h2>
     <div id="mca-cal" data-locale="bn" data-str-none="এই দিনে কোনো নিবন্ধ প্রকাশিত হয়নি।" data-str-wait="সংগ্রহ চলছে…" data-str-unit="টি"></div>
     <div id="mca-cal-out" class="mt-3 text-sm"></div>
   </div>
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
+  <div class="min-w-0 border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">দেশ অনুযায়ী দর্শক — শেষ ৭ দিন</h2>
     <div id="mca-geo" data-locale="bn" data-str-wait="সংগ্রহ চলছে…"></div>
   </div>
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
+  <div class="min-w-0 border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">এই সপ্তাহে জনপ্রিয়</h2>
     <div id="mca-pop" data-locale="bn" data-str-wait="সংগ্রহ চলছে…" data-str-views="বার দেখা"></div>
   </div>
@@ -318,7 +319,8 @@
     </div>
   </footer>
 
-<div id="mca-aepop" class="mca-aepop" data-mca-aepop="1" data-freq="session" hidden>
+<div id="mca-aepop" class="mca-aepop" data-mca-aepop="1" data-freq="session"
+     aria-live="polite" hidden>
   <div class="mca-aepop-backdrop" data-mca-aepop-backdrop="1"></div>
   <aside class="mca-aepop-card" role="dialog" aria-modal="false"
          aria-label="আপনার জন্য প্রস্তাবিত" data-mca-aepop-card="1">
@@ -347,7 +349,7 @@
 </div>
 <script type="application/json" id="mca-aepop-data">{"id": "1005009824867066", "url": "https://s.click.aliexpress.com/s/fwx308cRD9Eny963e3KDdYxyIpNj8TXVr7saiF9Um5rMUg1kZtJALLnfa2LNXtiVgnxdD8Og6MmvwBoxhnSYQGM6r0c08U4TfX8DFGo7vviCuu3q62Q60OAhRZcqm3G8PtwM69xY7TOEWRrvulP5ukZQ4uQbBBtaVsdr6EffAqVmp3O5GyUANU2DoA3dJufNhDfh7KOlLgKIvRVhDxRESHLmea6fTE26gLUqKEUuuizJiLENrCbax94DZHDu8WhaXM9vQ86gzlqceNPO5w3vwXm4VrBF3x2lAMEl06wgNdTSMiT7cNG4HIdW0JxGxzn00g1odLHmvnfv2HBm69P8FHJy1UZmEr6YeQJMLOH05F73NT1UJtCzpk8OgizNibACOrMEa3BbHyyi0j7btB5fZ39JmBxg3Nx3JHzBrReXcctZDO6aiu8Szm5IsMVxEF3WNTyu3l3GimJrKA5S4dbvTvqOltnJYGHhLF041d08E7Mq4Qy5qkMXee7hWk2IWBex1YwYLtc3WUrRcEBKMUos24Rt43oEUWQtbY4wuc81ELXKGGf6d3CX6XW4eaDyPvdsFGjblPHjzUUvmhuKbN11onSAXu8ezU6Fb3kNDJwbUiG5UPlOLvviTiTt2jbDtUY41yl89y7rEwsgX5tK0Vqw5TJuN5VV9rVPI9lGRF53DG89agJ033l73sWza50kVdNxm4fJsJYHz0Nlpeqg7To57gCngZsyuzH0o6QzkfqKpFdxCAyVTkV1RYHGTsuKMjCEORQDHgSAH76mhjXKle6FnrJ0QvzmQmB9pX7OCtmHQq2qgwybdaCu1CrtKbaC8Up2nMyehRJPWC9qRpj4xD7SNg4VXLFdGvZvrfs1bF10wbY2IBh7Nj6iKq8FasoqeKPnWZvbcLafXrwZJbbCDYeu7jIPOQ1Tmg1pW0kaCCy5zsU6LNccmc0eAQXrON3qEGYiDYWafmnVPLPMqM6ihz", "img": "https://ae-pic-a1.aliexpress-media.com/kf/S1029234e449141f3b7079c6873e99f05Q.jpg", "title": "1 Breathable Yoga Mat Storage Mesh Bag - Durable Oxford Fabric, Black with Shoulder Strap, Perfect for Daily Use and Fitness Enthusiasts", "price": "4.07", "cur": "USD", "rating": "88.4%"}</script>
 
-<script src="/assets/js/main.js?v=6"></script>
+<script src="/assets/js/main.js?v=7"></script>
   <script>
   (function () {
     if (!document.addEventListener) return;
