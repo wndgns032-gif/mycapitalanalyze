@@ -7,8 +7,13 @@
 
 (function () {
   // ---------- 다크모드 ----------
+  // 🔴 2026-10-11 로이 지시(모바일 실측) — 여기서uncaught가 터지면 이 파일 전체가 죽는다.
+  //    일반(classic) 스크립트는 최상위에서 예외가 나면 **나머지 코드가 아예 실행되지 않는다.**
+  //    → 아래 달력·인기도·어필리에이트 팝업까지 전부 죽는다(실측: 달력 사라지고 팝업 미표시).
+  //    저장소를 못 읽는 환경(사생활모드·차단 확장·MDM 정책·쿠키 차단)이 실재하므로 반드시 격리한다.
   const KEY = 'mycapital-theme';
-  const stored = localStorage.getItem(KEY);
+  let stored = null;
+  try { stored = localStorage.getItem(KEY); } catch (e) {}
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const isDark = stored ? stored === 'dark' : prefersDark;
 
@@ -21,7 +26,7 @@
   window.toggleTheme = function () {
     const next = !document.documentElement.classList.contains('dark');
     applyTheme(next);
-    localStorage.setItem(KEY, next ? 'dark' : 'light');
+    try { localStorage.setItem(KEY, next ? 'dark' : 'light'); } catch (e) {}
   };
 })();
 
@@ -140,9 +145,9 @@
 
     mount.innerHTML =
       '<div class="flex items-center justify-between mb-3">' +
-      '<button type="button" id="mca-cal-prev" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="prev">&#9664;</button>' +
+      '<button type="button" id="mca-cal-prev" class="tap min-w-11 p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="prev">&#9664;</button>' +
       '<div class="text-sm font-semibold text-slate-800 dark:text-slate-200">' + fmtM.format(first) + '</div>' +
-      '<button type="button" id="mca-cal-next" class="p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="next">&#9654;</button>' +
+      '<button type="button" id="mca-cal-next" class="tap min-w-11 p-1.5 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="next">&#9654;</button>' +
       '</div>' +
       '<div class="grid grid-cols-7 gap-1 mb-1 text-center text-[11px] text-slate-400">' + wnames.map(function (w) { return '<div>' + w + '</div>'; }).join('') + '</div>' +
       rows;
@@ -487,8 +492,25 @@ function mcaPidOf(h) {
   var seenKey = 'mca-aepop-seen-' + freq;
   var seenVal = (freq === 'day') ? kstDay() : '1';
   var storage = (freq === 'day') ? 'localStorage' : 'sessionStorage';
-  try { if (window[storage].getItem(seenKey) === seenVal) { mount.remove(); return; } }
-  catch (e) { /* 프라이빗 모드 등 → 그냥 보여준다 */ }
+
+  /* 🔴 2026-10-11 실측 — 저장소를 못 쓰는 환경(사생활모드·차단 확장·MDM)에서는
+     그냥 "보여준다"로 두면 **모든 페이지 이동마다** 팝업이 다시 뜬다(최악의 UX).
+     그래서 저장이 실패하면 window.name(현재 탭 한정, 같은 탭 이동 시 유지)을
+     대신 기억용으로 쓴다. → 그 탭에서는 한 번만 뜬다. */
+  var MEM = 'mca-aepop-mem:' + freq + '=' + seenVal;
+  function memHas() { return (window.name || '').indexOf(MEM) >= 0; }
+  function memSet() {
+    if (memHas()) return;
+    try { window.name = (window.name ? window.name + '|' : '') + MEM; } catch (e) {}
+  }
+  var seen = null, storeOk = true;
+  try { seen = window[storage].getItem(seenKey); }
+  catch (e) { storeOk = false; }
+  if (storeOk ? (seen === seenVal) : memHas()) { mount.remove(); return; }
+  function markSeen() {
+    if (storeOk) { try { window[storage].setItem(seenKey, seenVal); return; } catch (e) {} }
+    memSet();
+  }
 
   var card = mount.querySelector('[data-mca-aepop-card]');
   var backdrop = mount.querySelector('[data-mca-aepop-backdrop]');
@@ -526,7 +548,7 @@ function mcaPidOf(h) {
     if (closed) return;
     closed = true;
     if (timer) { clearTimeout(timer); timer = null; }
-    try { window[storage].setItem(seenKey, seenVal); } catch (e) {}
+    markSeen();
     // 제거 전에 이미 'closed' 를 세워 두었으므로 중복 호출은 무시된다.
     mount.remove();
     document.removeEventListener('keydown', onKey, true);
@@ -558,7 +580,7 @@ function mcaPidOf(h) {
 
   // CTA 클릭 → 세션 기록 (다음 페이지에서 다시 안 뜨게)
   cta.addEventListener('click', function () {
-    try { window[storage].setItem(seenKey, seenVal); } catch (e) {}
+    markSeen();
   });
 
   // 자동 닫힘 (표시 중에도 X 는 계속 동작한다)

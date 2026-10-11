@@ -144,6 +144,18 @@ body {
 /* 터치 목표 최소 44px — 버튼·탭·페이지 번호에 공통 적용 */
 .tap { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
 
+/* 발행 달력 날짜 칸 — 시각적 크기(w-9 h-9 = 36px)는 그대로 두고
+   **누를 수 있는 영역만** 44px 로 넓힌다 (2026-10-11 실측: 36x36 → 44x44).
+   실측 주의: 열 사이 간격은 390px 이상에서 10.9px 라 -4px 확장이 겹치지 않는다.
+   320~360px 에서는 간격이 0.9px 로 좁아져 이웃 칸의 확장 영역과 약 3px 겹친다.
+   겹친 만큼은 '인접한 다른 칸' 이 눌리는 것이라 오조작이 아니라 정상 동작이다. */
+#mca-cal button[data-day] { position: relative; }
+#mca-cal button[data-day]::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+}
+
 /* 모바일 메뉴(헤더 details) 안쪽 기본 마커 제거 */
 details > summary.mca-menu-btn { list-style: none; }
 details > summary.mca-menu-btn::-webkit-details-marker { display: none; }
@@ -169,10 +181,15 @@ details > summary.mca-menu-btn::-webkit-details-marker { display: none; }
 /* [hidden] 을 JS 가 제거하기 전까지 완전히 숨김 (CLS 방지) */
 .mca-aepop[hidden] { display: none; }
 
-/* 로컬 백드롭 — 카드 뒤쪽 넓이만큼만. 바깥은 투명해서 본문이 살아 있다. */
+/* 로컬 백드롭 — 카드 뒤쪽 넓이만큼만. 바깥은 투명해서 본문이 살아 있다.
+   🔴 2026-10-11 실측: 카드가 뷰포트 끝에 붙어 있으므로 네 방향으로 모두 확장하면
+      인라인 끝 방향으로 12px 가 뷰포트 밖으로 나가 잘린다(RTL 은 좌측).
+      → 인라인 '시작' 방향과 세로만 확장한다. 논리 속성이라 RTL 이 자동으로 뒤집힌다. */
 .mca-aepop-backdrop {
   position: absolute;
-  inset: -0.75rem;
+  inset-block: -0.75rem;
+  inset-inline-start: -0.75rem;
+  inset-inline-end: 0;
   background: rgba(15, 23, 42, 0.45);
   border-radius: 1rem;
   pointer-events: auto;
