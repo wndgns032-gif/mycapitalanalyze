@@ -1351,7 +1351,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
 
 {footer_html(lang)}
 {popup_html}
-<script src="/assets/js/main.js?v=6"></script>
+<script src="/assets/js/main.js?v=7"></script>
 {conversion_tracking_js()}
 </body>
 </html>
@@ -2001,16 +2001,17 @@ def homepage_widgets(lang, posts, game_list):
                htmllib.escape(GAME_STR.get(lang, DEFAULT_GAME)[0])))
     return f'''
 <section class="mt-10 grid gap-6 lg:grid-cols-2 items-start">
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
+<!-- ⚠ 2026-10-11: 아래 4개 위젯 박스는 전부 min-w-0 이 필요하다. -->
+  <div class="min-w-0 border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(w[0])}</h2>
     <div id="mca-cal" {attrs}></div>
     <div id="mca-cal-out" class="mt-3 text-sm"></div>
   </div>
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
+  <div class="min-w-0 border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(w[2])}</h2>
     <div id="mca-geo" data-locale="{lang}" data-str-wait="{htmllib.escape(w[3], quote=True)}"></div>
   </div>
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
+  <div class="min-w-0 border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">{htmllib.escape(u[4])}</h2>
     <div id="mca-pop" {pop_attrs}></div>
   </div>

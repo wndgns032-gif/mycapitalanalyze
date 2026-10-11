@@ -277,16 +277,17 @@
   <nav class="mt-8 flex items-center justify-center gap-2 flex-wrap" aria-label="Pagination"><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/pt/page/3/" aria-label="Previous">&lsaquo;</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/pt/">1</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/pt/page/2/">2</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/pt/page/3/">3</a><span class="tap px-3.5 rounded text-sm border bg-brand-600 inline-flex items-center justify-center text-white border-brand-600" aria-current="page">4</span><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/pt/page/5/">5</a><a class="tap px-3.5 rounded text-sm border transition-colors border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-400" href="/pt/page/5/" aria-label="Next">&rsaquo;</a></nav>
   
 <section class="mt-10 grid gap-6 lg:grid-cols-2 items-start">
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
+<!-- ⚠ 2026-10-11: 아래 4개 위젯 박스는 전부 min-w-0 이 필요하다. -->
+  <div class="min-w-0 border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">Publicações diárias</h2>
     <div id="mca-cal" data-locale="pt" data-str-none="Nenhum artigo publicado neste dia." data-str-wait="Coletando…" data-str-unit="artigos"></div>
     <div id="mca-cal-out" class="mt-3 text-sm"></div>
   </div>
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
+  <div class="min-w-0 border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">Visitantes por país — últimos 7 dias</h2>
     <div id="mca-geo" data-locale="pt" data-str-wait="Coletando…"></div>
   </div>
-  <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
+  <div class="min-w-0 border border-slate-200 dark:border-slate-800 rounded-lg p-4 sm:p-5 bg-white dark:bg-slate-900">
     <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">Populares desta semana</h2>
     <div id="mca-pop" data-locale="pt" data-str-wait="Coletando…" data-str-views="visualizações"></div>
   </div>
@@ -317,7 +318,7 @@
     </div>
   </footer>
 
-<script src="/assets/js/main.js?v=6"></script>
+<script src="/assets/js/main.js?v=7"></script>
   <script>
   (function () {
     if (!document.addEventListener) return;

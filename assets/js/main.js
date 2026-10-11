@@ -281,9 +281,15 @@ function mcaPidOf(h) {
       return;
     }
     mount.innerHTML = '<ol class="space-y-2">' + rows.map(function (r, i) {
-      return '<li class="flex items-baseline gap-2.5 text-sm">'
+      return '<li class="flex items-baseline gap-2.5 text-sm min-w-0">'
         + '<span class="w-5 h-5 shrink-0 rounded-full bg-brand-600 text-white text-[11px] font-bold flex items-center justify-center">' + (i + 1) + '</span>'
-        + '<a class="truncate hover:underline text-slate-800 dark:text-slate-200" href="' + r.p.h + '">'
+        /* 🔴 2026-10-11 실측 버그 — 모바일 가로 스크롤 757px(뷰폭 320)의 **진짜 원인**.
+           <a class="truncate"> 가 flex 자식인데 **min-w-0 이 없어서**
+           min-content 폭 = 제목 전체 길이(≈700px)를 강제한다.
+           truncate(overflow:hidden + white-space:nowrap) 는 min-width:auto 를
+           override 하지 못한다 → min-w-0 이 있어야 ellipsis 가 실제로 먹는다.
+           ⚠️ 이 위젯도 JS fetch 이후에만 채워진다 → 로드 직후 측정은 항상 0 이다. */
+        + '<a class="truncate min-w-0 hover:underline text-slate-800 dark:text-slate-200" href="' + r.p.h + '">'
         + String(r.p.t).replace(/</g, '&lt;') + '</a>' + tagOf(r.p.k)
         + '<span class="ml-auto shrink-0 text-xs text-slate-500 tabular-nums">' + r.n + ' ' + views + '</span></li>';
     }).join('') + '</ol>';
@@ -409,14 +415,29 @@ function mcaPidOf(h) {
       return;
     }
     var max = rows[0][1];
-    mount.innerHTML = '<table class="w-full text-sm"><tbody>' + rows.map(function (r) {
+    /* 🔴 2026-10-11 실측 버그 — 모바일 가로 스크롤 757px (뷰폭 320).
+       원인: <td class="w-1/2"> 를 테이블 안에서 쓰면 **너비에 대한 순환 의존**이 생긴다.
+         (나라명 nowrap 250px) + (막대 50%) + (수치 103px) → W = 250 + 0.5W + 103
+         → 풀이점 W ≈ 706px. 컨테이너(320px)를 tablespec 이 무시하고 부풀린다.
+       해결: table-fixed + colgroup 으로 열 너비를 컨테이너 기준 %로 확정해
+       순환을 끊는다. 나라명은 truncate 로 넘치면 ellipsis.
+       ⚠️ 로컬 빌드 实측에서 이 버그가 안 잡힌 이유: 표가 **JS fetch 이후에만** 채워진다.
+          로드 직후에는 표가 비어 있어 overflow 0. 6초 뒤 데이터를 받으면 폭주한다.
+          → 위젯은 **데이터 도착 후에도 반드시 재측정할 것.** */
+    mount.innerHTML = '<table class="w-full text-sm table-fixed">' +
+      '<colgroup><col style="width:46%"><col style="width:34%">' +
+      '<col style="width:20%"></colgroup><tbody>' + rows.map(function (r) {
       var pct = Math.round(r[1] / total * 100);
       return '<tr class="border-b border-slate-100 dark:border-slate-800">' +
-        '<td class="py-1.5 whitespace-nowrap"><span class="mr-2">' + flag(r[0]) + '</span><span class="text-slate-700 dark:text-slate-300">' +
-        nameOf(r[0]) + '</span></td>' +
-        '<td class="py-1.5 w-1/2"><div class="h-2 rounded bg-slate-100 dark:bg-slate-800"><div class="h-2 rounded bg-brand-500" style="width:' +
+        '<td class="py-1.5 pe-2 max-w-0"><span class="inline-block align-middle">' +
+        flag(r[0]) + '</span>' +
+        '<span class="inline-block align-middle truncate max-w-[calc(100%-1.75rem)] ' +
+        'text-slate-700 dark:text-slate-300">' + nameOf(r[0]) + '</span></td>' +
+        '<td class="py-1.5 pe-2"><div class="h-2 rounded bg-slate-100 dark:bg-slate-800">' +
+        '<div class="h-2 rounded bg-brand-500" style="width:' +
         Math.max(3, Math.round(r[1] / max * 100)) + '%"></div></div></td>' +
-        '<td class="py-1.5 text-right tabular-nums text-slate-600 dark:text-slate-400">' + r[1] + ' <span class="text-xs text-slate-400">(' + pct + '%)</span></td>' +
+        '<td class="py-1.5 text-right tabular-nums text-slate-600 dark:text-slate-400">' +
+        r[1] + ' <span class="text-xs text-slate-400">(' + pct + '%)</span></td>' +
         '</tr>';
     }).join('') + '</tbody></table>';
   }
