@@ -735,14 +735,18 @@ def header_html(current):
     # KO 전용: 오늘의 학습 바로가기 (로이 학습 섹션 진입점)
     study_link = ('<a class="text-slate-600 hover:text-brand-600 dark:text-slate-300 font-semibold" '
                   'href="/ko/study/">오늘의 학습</a>') if current == 'ko' else ''
-    app_lbl = htmllib.escape(TAB_STR.get(current, DEFAULT_TAB)[1])
-    game_lbl = htmllib.escape(TAB_STR.get(current, DEFAULT_TAB)[2])
+    # GNB 는 /game/ 단일 진입점만 노출한다 (2026-10-11).
+    #   예전엔 /game/apps/ 와 /game/games/ 를 데스크톱·모바일 양쪽에서 함께 링크해
+    #   동일 title/description 을 가진 3벌(13언어 × 3 = 39개)이 서로 경쟁했다.
+    #   → GNB 경쟁 채널을 없애고, canonical 통합(A)으로 검색엔진엔 1개 문서로 전달한다.
+    #   라벨은 탭 라벨('Apps'/'게임')이 아니라 섹션명('Games & Apps')을 쓴다 —
+    #   탭 라벨(TAB_STR)은 /game/ 페이지 안의 game_tabs() 용으로 남겨 둔다.
+    game_lbl = htmllib.escape(GAME_STR.get(current, DEFAULT_GAME)[0])
     m_item = ('<a class="block px-3 py-3 rounded text-sm font-medium text-slate-700 dark:text-slate-200 '
               'hover:bg-slate-100 dark:hover:bg-slate-800" href="%s">%s</a>')
     m_study = (m_item % ('/ko/study/', '오늘의 학습')) if current == 'ko' else ''
     menu_items = (m_item % (home, 'Home') + m_study
-                  + m_item % (game_home_for(current, 'app'), app_lbl)
-                  + m_item % (game_home_for(current, 'game'), game_lbl)
+                  + m_item % (game_home_path(current), game_lbl)
                   + m_item % ('/about.html', 'About')
                   + m_item % ('/privacy.html', 'Privacy')
                   + m_item % ('/contact.html', 'Contact'))
@@ -753,8 +757,7 @@ def header_html(current):
       <nav class="hidden sm:flex items-center gap-4 text-sm">
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{home}">Home</a>
         {study_link}
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{game_home_for(current, 'app')}">{app_lbl}</a>
-        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{game_home_for(current, 'game')}">{game_lbl}</a>
+        <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="{game_home_path(current)}">{game_lbl}</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/about.html">About</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/privacy.html">Privacy</a>
         <a class="text-slate-600 hover:text-brand-600 dark:text-slate-300" href="/contact.html">Contact</a>
@@ -2046,8 +2049,13 @@ def build_search_page(lang, posts, game_list, available):
     return out_path
 
 
-# 홈 1페이지에 보여줄 글 수 (로이 지시 2026-10-03: 스크롤 귀찮으니 5개 + 페이지 이동)
-HOME_PAGE_SIZE = 5
+# 홈 1페이지에 보여줄 글 수.
+#   2026-10-03: 5 (스크롤 귀찮으니 5개 + 페이지 이동)
+#   🔑 2026-10-11 (작업 H): 5 → 12.
+#     홈이 글 4편만 링크해서 나머지는 전부 noindex 인 page/* 를 거쳐야 도달 가능했다.
+#     12편으로 늘리면 새 글이 발행되는 즉시 홈에서 1클릭으로 잡힌다.
+#     페이지 수는 (글수 + 11) // 12 로 자동 증가하고, 2페이지 이후는 계속 noindex 다.
+HOME_PAGE_SIZE = 12
 # 언어별 홈 총 페이지 수 — build_index 가 채우고 build_sitemap 이 읽는다.
 HOME_PAGES = {}
 
@@ -2165,7 +2173,7 @@ def build_index(lang, posts, available, game_list=None):
   <div>
     <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">{htmllib.escape(s[2])}</h1>
     <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{htmllib.escape(s[1])}</p>
-    <p class="mt-2 text-sm"><a class="text-blue-700 dark:text-blue-300 hover:underline" href="{'/post/index.html' if lang == 'en' else f'/{lang}/post/index.html'}">{htmllib.escape(ARCHIVE_STR.get(lang, DEFAULT_ARCHIVE)[0])}</a></p>
+    <p class="mt-2 text-sm"><a class="text-blue-700 dark:text-blue-300 hover:underline" href="{post_archive_path(lang)}">{htmllib.escape(ARCHIVE_STR.get(lang, DEFAULT_ARCHIVE)[0])}</a></p>
   </div>
   <div class="grid gap-4 sm:grid-cols-2">
 {cards}
@@ -2329,7 +2337,14 @@ def build_game_index(lang, plist, available, kind=''):
   {ad_unit('index')}
   {ad_unit('index_bottom')}
 </div>'''
-    canonical = DOMAIN + game_home_for(lang, kind)
+    # 🔑 2026-10-11 (작업 A): /game/apps/ · /game/games/ 의 canonical 을 /game/ 로 통합.
+    #   3개 페이지의 title·description 이 완전히 같고 canonical 이 각자 자기 자신을
+    #   가리켜서, 13개 언어 × 3 = 39개가 사실상 동일 문서로 검색엔진에 등록됐다.
+    #   → 생존 URL 은 GNB 에 이미 있던 /game/ 로 정하고, 나머지 둘은 /game/ 를 가리킨다.
+    #   ⚠️ 페이지 자체는 사람이 탭 메뉴로 실제로 쓰는 필터 화면이므로 **지우지 않는다.**
+    #     noindex 도 붙이지 않는다 — 링크는 살아 있고 탭 UI 도 유지된다.
+    #     검색엔진에 1개 문서로 전달되는 것은 canonical 과 sitemap(아래) 쪽에서만 한다.
+    canonical = DOMAIN + (game_home_path(lang) if kind else game_home_for(lang, kind))
     title = f'{g[1]} — {SITE_NAME}'
     html_doc = layout(lang, title, g[2], canonical, content, 'website',
                       [website_ld(lang, canonical)],
@@ -2342,8 +2357,20 @@ def build_game_index(lang, plist, available, kind=''):
     return out_path
 
 
+def post_archive_path(lang):
+    """경제 글 목록 URL — 디렉터리 인덱스 형태(/post/).
+
+    🔑 2026-10-11 (작업 D): 예전엔 '/post/index.html' 형태였다.
+       canonical 과 sitemap 이 서로 어긋난 것은 아니었지만,
+       '/post/' 와 '/post/index.html' 은 같은 리소스를 가리키는 표준 형태 둘이므로
+       크롤러가 별개 URL 로 셀 여지가 있었다.
+       → canonical · 내부 링크 · sitemap 을 모두 '/post/' 로 통일한다.
+    """
+    return '/post/' if lang == 'en' else f'/{lang}/post/'
+
+
 def build_post_archive(lang, plist, available):
-    """/post/index.html — 경제 포스트 전체 목록(크롤 허브).
+    """/post/ — 경제 포스트 전체 목록(크롤 허브).
 
     왜 필요한가 (2026-10-10 실측):
       홈은 **최신 3~8편만** 링크한다. 포스트끼리는 '관련 글' 4개로 연결돼 있지만,
@@ -2382,12 +2409,13 @@ def build_post_archive(lang, plist, available):
   {body}
   {ad_unit('index')}
 </div>'''
-    rel = '/post/index.html' if lang == 'en' else f'/{lang}/post/index.html'
-    canonical = DOMAIN + rel
+    canonical = DOMAIN + post_archive_path(lang)
     html_doc = layout(lang, f'{a[0]} — {SITE_NAME}', a[1], canonical, content, 'website',
                       [website_ld(lang, canonical)],
                       slug=None, available=available)
-    out_path = os.path.join(BASE, rel.lstrip('/'))
+    # URL 은 /post/ 이지만 디스크상 파일은 그대로 post/index.html 에 쓴다
+    # (정적 호스팅이 디렉터리 인덱스로 서빙한다).
+    out_path = os.path.join(BASE, post_archive_path(lang).strip('/'), 'index.html')
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     open(out_path, 'w', encoding='utf-8').write(html_doc)
     return out_path
@@ -2444,15 +2472,15 @@ def build_sitemap(posts, avail_by_slug, langs_with_home, game=None):
         if c in langs_with_home:
             emit(DOMAIN + home_path(c), home_alts)
 
-    # 포스트 아카이브 허브 (/post/index.html) — build_post_archive 가 생성.
+    # 포스트 아카이브 허브 (/post/) — build_post_archive 가 생성.
     #   내부 링크 허브라서 크롤 도달성이 높다. lastmod 는 해당 언어의 최신 발행일.
     for c in LANG_META:
         if c not in langs_with_home:
             continue
-        loc = DOMAIN + ('/post/index.html' if c == 'en' else f'/{c}/post/index.html')
-        alts = [(x, DOMAIN + ('/post/index.html' if x == 'en' else f'/{x}/post/index.html'))
+        loc = DOMAIN + post_archive_path(c)
+        alts = [(x, DOMAIN + post_archive_path(x))
                 for x in LANG_META if x in langs_with_home]
-        alts.append(('x-default', DOMAIN + '/post/index.html'))
+        alts.append(('x-default', DOMAIN + post_archive_path('en')))
         emit(loc, alts)
 
     # 🔴 2026-10-10 제거: 페이지네이션(홈 2페이지 이후)을 sitemap 에서 뺀다.
@@ -2480,9 +2508,10 @@ def build_sitemap(posts, avail_by_slug, langs_with_home, game=None):
             g_alts.append(('x-default', DOMAIN + '/game/'))
         for c in game_langs:
             emit(DOMAIN + game_home_path(c), g_alts)
-            # 앱/게임 분리 인덱스 (신규 URL — 기존 URL 은 건드리지 않는다)
-            emit(DOMAIN + game_home_path(c) + 'apps/', [(c, DOMAIN + game_home_path(c) + 'apps/')])
-            emit(DOMAIN + game_home_path(c) + 'games/', [(c, DOMAIN + game_home_path(c) + 'games/')])
+            # 🔑 2026-10-11 (작업 A): /game/apps/ · /game/games/ 는 sitemap 에 넣지 않는다.
+            #   canonical 이 /game/ 로 통합되었으므로, sitemap 에 다시 광고하면
+            #   "선언만 하고 canonical 은 다른 곳을 가리키는" 형태 불일치가 되살아난다.
+            #   (페이지는 그대로 서빙되지만 sitemap 은 canonical 을 따라야 일관된다.)
             for p in game[c]:
                 # 🔑 2026-10-09: HTML head 와 동일한 hreflang 을 sitemap 에도 쓴다.
                 #   sitemap 의 xhtml:link 와 head 의 link rel=alternate 가

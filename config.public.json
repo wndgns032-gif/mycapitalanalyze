@@ -65,5 +65,16 @@
     ],
     "min_body_chars": 0,
     "_min_body_chars_note": "더 이상 게이트로 쓰지 않는다. 짧은 글에도 카드를 넣되 data-short-post=\"1\" 속성만 찍는다."
+  },
+  "affiliate_popup": {
+    "enabled": true,
+    "_note": "사이트 진입 시 상품 1개를 보여주는 어필리에이트 카드 (2026-10-11 로이 지시). 기존 ae_autoslot 풀만 재사용한다(새 크롤링·하드코딩 없음). 닫기 버튼은 <button> 이고 href 가 없다 — AdSense deceptive clicking 금지 준수. 닫기는 X 버튼 / ESC / 백드롭 클릭 3중. 전체 화면을 덮지 않고 body 스크롤도 잠그지 않는다(intrusive interstitial 회피). noindex 페이지(study/search/stats)에는 노출되지 않는다.",
+    "frequency": "session",
+    "_frequency_options": {
+      "session": "세션당 1회 — 탭을 닫으면 다음 방문에 다시 뜬다(노출 多)",
+      "day": "하루 1회(KST 기준) — 반복 방문자에겐 덜 지루하다(노출 少)"
+    },
+    "ship_to": "US",
+    "seed": "mca-2026-10-11"
   }
 }
