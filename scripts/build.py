@@ -1351,7 +1351,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
 
 {footer_html(lang)}
 {popup_html}
-<script src="/assets/js/main.js?v=7"></script>
+<script src="/assets/js/main.js?v=8"></script>
 {conversion_tracking_js()}
 </body>
 </html>

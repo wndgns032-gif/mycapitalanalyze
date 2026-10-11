@@ -596,6 +596,23 @@ function mcaPidOf(h) {
   // 카드 내부는 백드롭 클릭이 닫히지 않도록 전파를 막는다.
   card.addEventListener('click', function (e) { e.stopPropagation(); });
 
+  /* ─────────────────────────────────────────────────────────────
+     2026-10-11 로이 요청: 전환을 높이려면 카드 어디를 눌러도 상품으로 가야 한다.
+     적용: 카드 **전체**를 어필리에이트 링크로 만든다. (광고 카드 전체 클릭은 표준 패턴)
+     단 하나 例外: **닫기 X**. X 는 어필리에이트 링크가 아니고 언제나 진짜 닫기다.
+       - X 는 z-index 로 카드 링크보다 위에 있어 카드가 아닌 X 를 클릭하게 된다.
+       - AdSense deceptive clicking 금지 → "닫기처럼 보이는 요소"를 유인 링크로 쓰는 건 불가.
+     전환율: 카드 클릭 면적이 CTA 버튼 하나(44px)에서 카드 전체(약 380×250)로 확장.
+     ───────────────────────────────────────────────────────────── */
+  card.style.cursor = 'pointer';
+  card.addEventListener('click', function (e) {
+    if (closed) return;
+    // X 버튼 클릭은 카드 링크를 발동시키지 않는다.
+    if (e.target.closest('[data-mca-aepop-close]')) return;
+    markSeen();
+    window.open(data.url, '_blank', 'noopener');
+  });
+
   // (b) ESC
   document.addEventListener('keydown', onKey, true);
 
@@ -604,8 +621,11 @@ function mcaPidOf(h) {
     markSeen();
   });
 
-  // 자동 닫힘 (표시 중에도 X 는 계속 동작한다)
-  try { timer = setTimeout(close, AUTO_MS); } catch (e) {}
+  /* 자동 닫힘 — 로이 지시 2026-10-11: **12초 자동 닫힘을 제거**한다.
+     사용자가 "닫기"를 누르는 순간이 전환 직전인데, 12초 뒤 카드가 사라지면서
+     클릭 면적을 스스로 없앴다. 이제 사용자가 명시적으로 X 를 누를 때까지 유지된다.
+     (카드가 우측 하단 고정이고 body 스크롤을 잠그지 않아 UX 를 침범하지 않는다) */
+  // try { timer = setTimeout(close, AUTO_MS); } catch (e) {}
 
   // 로드 시 1회 표시. requestAnimationFrame 으로 떠서 CSS 애니메이션이 확실히 타게 한다.
   mount.hidden = false;

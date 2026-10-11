@@ -202,6 +202,9 @@ details > summary.mca-menu-btn::-webkit-details-marker { display: none; }
    (흐린 X 나 가짜 X 를 두는 것 금지 — AdSense deceptive clicking) */
 .mca-aepop-x {
   position: absolute;
+  /* 카드 전체가 어필리에이트 링크가 되었으므로(2026-10-11), X 는 반드시 카드보다
+     위에 있어야 한다. 그렇지 않으면 "닫기"를 눌렀는데 랜딩이 열려버린다. */
+  z-index: 2;
   inset-block-start: 0.5rem;
   inset-inline-end: 0.5rem;
   width: 44px;
