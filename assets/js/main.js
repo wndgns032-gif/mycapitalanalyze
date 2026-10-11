@@ -452,3 +452,119 @@ function mcaPidOf(h) {
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeAll(null); });
   window.addEventListener("resize", function () { if (window.innerWidth >= 640) closeAll(null); });
 })();
+
+/* ============================================
+   진입 시 어필리에이트 카드 (2026-10-11, 로이 지시)
+
+   🔴 AdSense deceptive clicking 금지 준수 — 이 블록의 핵심 제약:
+      · 닫기 X 는 `<button>` 이고 **href 가 없다**. 어필리에이트 URL 을 절대 받지 않는다.
+      · X 를 흐리게/가깝게 두지 않는다. 눈에 확실히 보인다.
+      · 닫기 3중: (a) X 버튼 (b) Escape 키 (c) 백드롭 클릭 — 셋 다 같은 close() 호출.
+      · 전체 화면을 덮지 않고 body 스크롤을 잠그지 않는다 (intrusive interstitial 회피).
+
+   표시 빈도: `affiliate_popup.frequency` 설정에 따라 'session' | 'day'.
+   ============================================ */
+(function () {
+  var mount = document.getElementById('mca-aepop');
+  if (!mount) return;
+
+  var raw = document.getElementById('mca-aepop-data');
+  if (!raw) { mount.remove(); return; }
+
+  var data = null;
+  try { data = JSON.parse(raw.textContent || '{}'); } catch (e) { data = null; }
+  // 상품 정보가 없으면 아예 뜨지 않게 한다 (깨진 카드 노출 방지).
+  if (!data || !data.url || !data.title) { mount.remove(); return; }
+
+  /* ---- 표시 빈도 ---- */
+  var freq = mount.getAttribute('data-freq') || 'session';
+  var AUTO_MS = 12000;
+  function kstDay() {
+    try {
+      return new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+    } catch (e) { return '0'; }
+  }
+  var seenKey = 'mca-aepop-seen-' + freq;
+  var seenVal = (freq === 'day') ? kstDay() : '1';
+  var storage = (freq === 'day') ? 'localStorage' : 'sessionStorage';
+  try { if (window[storage].getItem(seenKey) === seenVal) { mount.remove(); return; } }
+  catch (e) { /* 프라이빗 모드 등 → 그냥 보여준다 */ }
+
+  var card = mount.querySelector('[data-mca-aepop-card]');
+  var backdrop = mount.querySelector('[data-mca-aepop-backdrop]');
+  var closeBtn = mount.querySelector('[data-mca-aepop-close]');
+  var cta = mount.querySelector('[data-mca-aepop-cta]');
+  var thumb = mount.querySelector('[data-mca-aepop-thumb]');
+  var meta = mount.querySelector('[data-mca-aepop-meta]');
+  if (!card || !closeBtn || !cta) { mount.remove(); return; }
+
+  /* ---- 상품 정보 채우기 (프런트엔드 풀 없음 — 빌드가 주입한 JSON 만 사용) ---- */
+  // ⚠️ 서버가 이미 이스케이프해 title 을 HTML 에 넣어뒀다. 여기서는 텍스트로만 다룬다.
+  if (thumb && data.img) thumb.style.backgroundImage = 'url("' + data.img.replace(/"/g, '%22') + '")';
+  if (cta) cta.setAttribute('href', data.url);
+  if (meta) {
+    var bits = [];
+    if (data.price) {
+      var s = document.createElement('span');
+      s.className = 'mca-aepop-price';
+      s.textContent = (data.cur ? data.cur + ' ' : '') + data.price;
+      bits.push(s);
+    }
+    if (data.rating) {
+      var r = document.createElement('span');
+      r.textContent = '★ ' + data.rating;
+      bits.push(r);
+    }
+    meta.textContent = '';
+    bits.forEach(function (n) { meta.appendChild(n); });
+  }
+
+  /* ---- 닫기 ---- */
+  var closed = false;
+  var timer = null;
+  function close() {
+    if (closed) return;
+    closed = true;
+    if (timer) { clearTimeout(timer); timer = null; }
+    try { window[storage].setItem(seenKey, seenVal); } catch (e) {}
+    // 제거 전에 이미 'closed' 를 세워 두었으므로 중복 호출은 무시된다.
+    mount.remove();
+    document.removeEventListener('keydown', onKey, true);
+  }
+  function onKey(e) {
+    if (e.key === 'Escape' || e.key === 'Esc') close();
+  }
+
+  // (a) X 버튼 — 링크가 아닌 <button>. click 만 처리하고 전파를 막는다.
+  closeBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    close();
+  });
+
+  // (c) 백드롭 클릭 — 카드 안쪽 클릭은 닫지 않는다 (아래 전파 차단).
+  if (backdrop) {
+    backdrop.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      close();
+    });
+  }
+  // 카드 내부는 백드롭 클릭이 닫히지 않도록 전파를 막는다.
+  card.addEventListener('click', function (e) { e.stopPropagation(); });
+
+  // (b) ESC
+  document.addEventListener('keydown', onKey, true);
+
+  // CTA 클릭 → 세션 기록 (다음 페이지에서 다시 안 뜨게)
+  cta.addEventListener('click', function () {
+    try { window[storage].setItem(seenKey, seenVal); } catch (e) {}
+  });
+
+  // 자동 닫힘 (표시 중에도 X 는 계속 동작한다)
+  try { timer = setTimeout(close, AUTO_MS); } catch (e) {}
+
+  // 로드 시 1회 표시. requestAnimationFrame 으로 떠서 CSS 애니메이션이 확실히 타게 한다.
+  mount.hidden = false;
+  mount.setAttribute('data-freq', freq);
+})();
