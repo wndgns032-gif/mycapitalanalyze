@@ -1086,7 +1086,8 @@ def affiliate_popup_html(lang):
     # 표시 빈도: 'session'(기본) | 'day'. 로이가 config 로 고른다.
     freq = 'day' if str(cfg.get('frequency') or 'session').lower() == 'day' else 'session'
     return f'''
-<div id="mca-aepop" class="mca-aepop" data-mca-aepop="1" data-freq="{freq}" hidden>
+<div id="mca-aepop" class="mca-aepop" data-mca-aepop="1" data-freq="{freq}"
+     aria-live="polite" hidden>
   <div class="mca-aepop-backdrop" data-mca-aepop-backdrop="1"></div>
   <aside class="mca-aepop-card" role="dialog" aria-modal="false"
          aria-label="{htmllib.escape(heading)}" data-mca-aepop-card="1">
