@@ -976,6 +976,32 @@ def ae_autoslot_html(lang, category, title, body_md, kind=None):
 #     아래는 우측 하단(모바일= 하단 시트) 앵커 카드이며, 백드롭은 카드 주변 국소 영역만
 #     덮는다. 본문 스크롤·클릭은 항상 열려 있고 body 스크롤도 잠기지 않는다.
 
+# 🔴 2026-10-11 로이 승인 — AdSense 관련성 방어선
+#   문제: 팝업은 **사이트 전체 surfaces** 라 본문 카드보다 관련성 기준이 엄격하다.
+#   실측: 영어 홈에 "요가매트 가방 / 콘택트렌즈 / 무선마우스" 같은 소비재가 떴다.
+#   위험: AdSense 는 "광고-콘텐츠 관련성 낮음"으로 계정 Actions 를 열 수 있다.
+#         잃을 돈(AdSense 월 $27) > 버는 돈(어필리 하루 $0.04) → 70배 손실 위험.
+#   조치: 팝업은 **화이트리스트 카테고리만** 고른다. 매크로·경제·테크 블로그에서
+#         방어 가능한 축 = 오피스/회계, IT 액세서리, 게임 하드웨어.
+#   제외 축 = 의류, 수면/좌석 폼, 요가, 아기용품, 주방/식음료, 운동, 반려, 청소, 식물, 여행.
+#   ⚠️ 본문 카드(ae_autoslot)는 문맥이 있으므로 **이 필터를 쓰지 않는다** — 여기만 적용.
+POPUP_CATS = {
+    # 오피스 / 회계 / 문서 — 거시경제·금융 블로그와 가장 방어 쉬운 축
+    'accounting_calculator', 'document_safe', 'document_organizer', 'file_folder_set',
+    'desk_organizer_set', 'printer_stand', 'cable_management_tray', 'keyboard_stand',
+    'book_stand', 'led_desk_lamp', 'storage_box',
+    # IT / 테크 액세서리 — 이 사이트가 다루는 "테크·시장" 축
+    'phone_case', 'screen_protector', 'power_bank', 'usb_charger', 'usb_c_cable',
+    'wireless_mouse', 'mechanical_keyboard', 'laptop_keyboard_protector',
+    'phone_stand', 'phone_holder', 'phone_tripod', 'phone_cooler', 'car_charger',
+    'portable_scanner', 'digital_scale', 'usb_microphone', 'led_light_strip',
+    # 게임 하드웨어 — /game/ 섹션이 있는 사이트에서 방어 가능
+    'mobile_game_controller', 'game_controller', 'thumb_controller', 'gaming_headset',
+    # 소품
+    'tool_set', 'combination_lock', 'card_holder', 'cash_wallet', 'portable_speaker',
+}
+
+
 def popup_pick(lang):
     """진입 카드에 쓸 상품 1개. 결정적(deterministic) 선택.
 
@@ -1016,6 +1042,8 @@ def popup_pick(lang):
                 parts = key.rsplit('|', 2)
                 if len(parts) != 3 or parts[1] != want or parts[2] != ship:
                     continue
+                if parts[0] not in POPUP_CATS:
+                    continue        # ★ 팝업 전용 화이트리스트 (아래 참조)
                 for p in prods or []:
                     if not p.get('url') or not p.get('title'):
                         continue
@@ -1030,7 +1058,9 @@ def popup_pick(lang):
             if cands:
                 break
         if not cands:
-            for prods in pool.values():
+            for key, prods in pool.items():
+                if key.split('|')[0] not in POPUP_CATS:
+                    continue            # 폴백에도 화이트리스트를 건다
                 for p in prods or []:
                     if p.get('url') and p.get('title'):
                         cands.append(p)
