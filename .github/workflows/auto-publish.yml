@@ -148,7 +148,7 @@ jobs:
               # 진입 시 어필리에이트 카드 1개 표시 (로이 지시 2026-10-11).
               # 닫기 버튼은 <button> 이고 href 가 없다 -> 어필리에이트 링크가 아니다.
               # frequency: "session"(세션 1회) | "day"(하루 1회)
-              "enabled": True, "frequency": "session",
+              "enabled": True, "frequency": "day",
               "seed": "mca-2026-10-11", "ship_to": "US"
             },
             "affiliates": aff_cfg

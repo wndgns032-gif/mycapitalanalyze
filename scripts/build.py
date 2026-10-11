@@ -991,12 +991,19 @@ def popup_pick(lang):
 
     cfg = CONFIG.get('affiliate_popup') or {}
     ship = (cfg.get('ship_to') or 'US')
-    # 결정적 시드: 빌드 시각이 아니라 **고정된 값 + 설정 seed** 로 고른다.
-    #   → 언제 빌드해도 같은 상품이 나온다 (재빌드해도 흔들리지 않는다).
+    # 결정적 시드: 빌드 시각이 아니라 **고정된 값 + 설정 seed + KST 날짜** 로 고른다.
+    #   → 하루 안에서는 언제 빌드해도 같은 상품(흔들리지 않는다)
+    #   → 날짜가 바뀌면 다른 상품 = 방문자가 매번 다른 본물을 본다
+    # 2026-10-11 로이: 클릭을 늘리려면 노출 횟수와 상품 교체로 가야 한다.
+    try:
+        import datetime as _dt
+        _kst = (_dt.datetime.utcnow() + _dt.timedelta(hours=9)).strftime('%Y%m%d')
+    except Exception:
+        _kst = '00000000'
     try:
         seed = int(hashlib.md5(
-            ('popup:%s' % (cfg.get('seed') or 'mca-2026-10-11')).encode('utf-8')
-        ).hexdigest()[:8], 16)
+            ('popup:%s:%s' % (cfg.get('seed') or 'mca-2026-10-11', _kst)
+             ).encode('utf-8')).hexdigest()[:8], 16)
     except Exception:
         seed = 0
 
