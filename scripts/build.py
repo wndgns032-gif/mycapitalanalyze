@@ -367,6 +367,64 @@ AFF_STR = {
 }
 DEFAULT_AFF = AFF_STR['en']
 
+# ---------- 진입 시 어필리에이트 카드 (2026-10-11, 로이 지시) ----------
+# 🔴 AdSense 정책 리스크를 감수하지 않기 위한 설계 규칙 (roi's brief):
+#   ① 닫기 버튼은 **링크가 아니다**. 어필리에이트 URL 을 절대 공유하지 않는다.
+#      사용자가 "닫기"로 인식하는 요소를 클릭 유인에 쓰면 deceptive clicking 으로
+#      AdSense 계정이 정지된다. 수익(일 $0.04)보다 리스크가 훨씬 크다.
+#   ② X 버튼은 **눈에 보이게** 배치하고, ESC / 배경 클릭으로도 닫는다 (3중 해제).
+#   ③ **전체 화면을 덮는 강제 인터스티셜은 만들지 않는다.**
+#      AdSense 'intrusive interstitial' 위반 소지가 있기 때문이다.
+#      → 아래는 카드 주변 **국소 백드롭 + 우측 하단 앵커 카드**다.
+#        본문 스크롤·클릭은 계속 열려 있고, 스크롤도 잠기지 않는다.
+#   ④ 카드 안에는 "광고 · 제휴" 라벨을 눈에 보이게 박는다 (프로그램 요건).
+#      CTA 에는 `data-affiliate` 를 달아 기존 GA4 `affiliate_click` 추적을 태운다.
+#   ⑤商品은 **기존 ae_autoslot 풀에서만** 고른다. 새로 크롤하거나 하드코딩하지 않는다.
+#
+# POPUP_STR: (heading, cta, close_aria, auto_note, disclosure_short)
+POPUP_STR = {
+    'en': ('Recommended for you', 'View offer', 'Close',
+           'Closes automatically in 12 seconds',
+           'Affiliate link — we may earn a commission at no extra cost to you.'),
+    'ko': ('오늘의 추천 상품', '상품 보기', '닫기',
+           '12초 후 자동으로 닫힙니다',
+           '제휴 링크입니다. 추가 비용 없이 저희가 수수료를 받을 수 있습니다.'),
+    'zh': ('为你推荐', '查看商品', '关闭',
+           '12 秒后自动关闭',
+           '联盟链接 — 我们可能获得佣金，您无需额外付费。'),
+    'ja': ('おすすめ商品', '商品を見る', '閉じる',
+           '12秒後に自動的に閉じます',
+           'アフリエイティリンクです。追加費用なしで当サイトが報酬を受けることがあります。'),
+    'es': ('Recomendado para ti', 'Ver oferta', 'Cerrar',
+           'Se cierra automáticamente en 12 segundos',
+           'Enlace de afiliado: podemos obtener una comisión sin coste adicional para ti.'),
+    'fr': ('Recommandé pour vous', "Voir l'offre", 'Fermer',
+           'Se ferme automatiquement dans 12 secondes',
+           "Lien d'affiliation : nous pouvons percevoir une commission sans frais supplémentaires."),
+    'de': ('Für Sie empfohlen', 'Angebot ansehen', 'Schließen',
+           'Schließt sich automatisch nach 12 Sekunden',
+           'Affiliate-Link — wir erhalten möglicherweise eine Provision ohne Mehrkosten für Sie.'),
+    'pt': ('Recomendado para você', 'Ver oferta', 'Fechar',
+           'Fecha automaticamente em 12 segundos',
+           'Link de afiliado — podemos receber uma comissão sem custo adicional para você.'),
+    'ru': ('Рекомендуем вам', 'Посмотреть товар', 'Закрыть',
+           'Закроется автоматически через 12 секунд',
+           'Партнёрская ссылка — мы можем получить комиссию без дополнительных расходов для вас.'),
+    'hi': ('आपके लिए सुझाव', 'ऑफर देखें', 'बंद करें',
+           '12 सेकंड में अपने आप बंद हो जाएगा',
+           'एफिलिएट लिंक — हमें बिना किसी अतिरिक्त खर्च के कमीशन मिल सकता है।'),
+    'id': ('Rekomendasi untuk Anda', 'Lihat penawaran', 'Tutup',
+           'Tutup otomatis dalam 12 detik',
+           'Tautan afiliasi — kami mungkin menerima komisi tanpa biaya tambahan bagi Anda.'),
+    'ar': ('مُقترح لك', 'عرض المنتج', 'إغلاق',
+           'يُغلق تلقائيًا خلال 12 ثانية',
+           'رابط تابع — قد نحصل على عمولة دون أي تكلفة إضافية عليك.'),
+    'bn': ('আপনার জন্য প্রস্তাবিত', 'অফার দেখুন', 'বন্ধ করুন',
+           '১২ সেকেন্ডে স্বয়ংক্রিয়ভাবে বন্ধ হবে',
+           'অ্যাফিলিয়েট লিংক — আমরা আপনার অতিরিক্ত খরচ ছাড়াই কমিশন পেতে পারি।'),
+}
+DEFAULT_POPUP_STR = POPUP_STR['en']
+
 # 앱·게임 섹션(/game/) 문구: [네비 라벨, 섹션 제목, 섹션 설명]
 GAME_STR = {
     'en': ('Games & Apps', 'New & Upcoming Apps and Games',
@@ -905,6 +963,157 @@ def ae_autoslot_html(lang, category, title, body_md, kind=None):
     return out
 
 
+# ---------- 진입 시 어필리에이트 카드 (2026-10-11, 로이 지시) ----------
+# 🔴 왜 이렇게 만들었나 (설계 근거):
+#   이 사이트의 실질 매출원은 AdSense 다. AdSense 는 deceptive clicking 을 금지하고,
+#   어필리에이트 수수료(일 $0.04)보다 계정 정지 리스크가 훨씬 크다.
+#   → 그래서 **닫기 버튼을 링크로 만들지 않는다. 가짜 X 도, 흐린 실제 X 도 쓰지 않는다.**
+#     닫기는 3중(눈에 보이는 X / ESC / 배경 클릭)으로 언제든 가능하다.
+#   → 또 AdSense 'intrusive interstitial' 위반을 피하려고 **전체 화면을 덮지 않는다.**
+#     아래는 우측 하단(모바일= 하단 시트) 앵커 카드이며, 백드롭은 카드 주변 국소 영역만
+#     덮는다. 본문 스크롤·클릭은 항상 열려 있고 body 스크롤도 잠기지 않는다.
+
+def popup_pick(lang):
+    """진입 카드에 쓸 상품 1개. 결정적(deterministic) 선택.
+
+    풀은 기존 ae_autoslot 것만 쓴다 (새로 크롤하거나 하드코딩하지 않는다).
+    빌드마다 바뀌면 같은 독자가 매번 다른 걸 봐야 하므로, 빌드 시점 고정 시드로 고른다.
+    ⚠️ 예외가 나면 빈 dict → 카드 자체가 렌더되지 않는다 (사이트는 절대 죽지 않는다).
+    """
+    import hashlib
+    try:
+        import ae_autoslot
+    except ImportError:
+        return {}
+
+    cfg = CONFIG.get('affiliate_popup') or {}
+    ship = (cfg.get('ship_to') or 'US')
+    # 결정적 시드: 빌드 시각이 아니라 **고정된 값 + 설정 seed** 로 고른다.
+    #   → 언제 빌드해도 같은 상품이 나온다 (재빌드해도 흔들리지 않는다).
+    try:
+        seed = int(hashlib.md5(
+            ('popup:%s' % (cfg.get('seed') or 'mca-2026-10-11')).encode('utf-8')
+        ).hexdigest()[:8], 16)
+    except Exception:
+        seed = 0
+
+    try:
+        pool = ae_autoslot._load_pool() or {}
+        cands = []
+        # 해당 언어 우선 → 없으면 영어 → 마지막으로 전체 풀.
+        for want in (lang, 'en'):
+            for key, prods in pool.items():
+                parts = key.rsplit('|', 2)
+                if len(parts) != 3 or parts[1] != want or parts[2] != ship:
+                    continue
+                for p in prods or []:
+                    if not p.get('url') or not p.get('title'):
+                        continue
+                    # 🔴 기존 카드 렌더러와 **같은 방어선** — 장난감 상품이 섞이면
+                    #    AdSense 관련성 문제가 된다. render_html 과 동일한 필터를 쓴다.
+                    try:
+                        if ae_autoslot._is_unfit(p.get('title')):
+                            continue
+                    except Exception:
+                        pass
+                    cands.append(p)
+            if cands:
+                break
+        if not cands:
+            for prods in pool.values():
+                for p in prods or []:
+                    if p.get('url') and p.get('title'):
+                        cands.append(p)
+        if not cands:
+            return {}
+        # 중복 상품 제거 후 결정적 인덱스로 1개 고른다.
+        uniq, seen = [], set()
+        for p in cands:
+            k = p.get('id') or p.get('url')
+            if k in seen:
+                continue
+            seen.add(k)
+            uniq.append(p)
+        return uniq[seed % len(uniq)]
+    except Exception:
+        return {}
+
+
+def popup_json(p):
+    """상품 → JS 가 읽을 JSON 페이로드. 가격이 없으면 통화도 같이 뺀다."""
+    out = {
+        'id': str(p.get('id') or ''),
+        'url': str(p.get('url') or ''),
+        'img': str(p.get('image') or ''),
+        'title': str(p.get('title') or ''),
+    }
+    if p.get('price'):
+        out['price'] = str(p.get('price'))
+        out['cur'] = str(p.get('currency') or '')
+    if p.get('rating'):
+        out['rating'] = str(p.get('rating'))
+    return out
+
+
+def affiliate_popup_html(lang):
+    """진입 시 표시할 어필리에이트 카드. noindex 페이지에는 넣지 않는다.
+
+    ✅ 닫기 버튼과 CTA 는 **서로 다른 요소**다.
+       X 는 <button type="button"> 이고 href 가 없다. CTA 만 <a href> 다.
+       → X 를 어필리에이트 링크로 만들지 않는다 (deceptive clicking 금지).
+    """
+    cfg = CONFIG.get('affiliate_popup') or {}
+    if not cfg.get('enabled'):
+        return ''
+
+    p = popup_pick(lang)
+    if not p or not p.get('url') or not p.get('title'):
+        return ''
+
+    heading, cta, close_aria, auto_note, disclosure = POPUP_STR.get(lang, DEFAULT_POPUP_STR)
+    data = json.dumps(popup_json(p), ensure_ascii=False)
+    # 상품명에 '<' 가 있어도 <script> 안에서 태그로 해석되지 않게 한다.
+    data = data.replace('<', '\\u003c')
+    ttl = htmllib.escape(str(p.get('title') or ''))
+    badge = htmllib.escape(AFF_STR.get(lang, DEFAULT_AFF)[2])   # "광고 · 제휴"
+    aff_id = htmllib.escape(str(p.get('id') or 'popup'))
+
+    # ⚠️ body 스크롤을 잠그지 않는다 (AdSense 'intrusive interstitial' 회피).
+    #   카드는 fixed 앵커고, backdrop 은 카드 주변 국소 영역만 덮는다.
+    # 표시 빈도: 'session'(기본) | 'day'. 로이가 config 로 고른다.
+    freq = 'day' if str(cfg.get('frequency') or 'session').lower() == 'day' else 'session'
+    return f'''
+<div id="mca-aepop" class="mca-aepop" data-mca-aepop="1" data-freq="{freq}" hidden>
+  <div class="mca-aepop-backdrop" data-mca-aepop-backdrop="1"></div>
+  <aside class="mca-aepop-card" role="dialog" aria-modal="false"
+         aria-label="{htmllib.escape(heading)}" data-mca-aepop-card="1">
+    <!-- 🔴 닫기 버튼: <button type="button">, href 없음. 어필리에이트 URL 을 절대 공유하지 않는다. -->
+    <button type="button" class="mca-aepop-x tap" data-mca-aepop-close="1"
+            aria-label="{htmllib.escape(close_aria)}" title="{htmllib.escape(close_aria)}">
+      <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" focusable="false">
+        <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" fill="none"/>
+      </svg>
+    </button>
+    <p class="mca-aepop-badge">{badge}</p>
+    <div class="mca-aepop-body">
+      <div class="mca-aepop-thumb" data-mca-aepop-thumb="1"></div>
+      <div class="mca-aepop-info">
+        <p class="mca-aepop-title" title="{ttl}">{ttl}</p>
+        <p class="mca-aepop-meta" data-mca-aepop-meta="1"></p>
+      </div>
+    </div>
+    <!-- 🔑 CTA 만 링크다. GA4 `affiliate_click` 추적을 태운다. -->
+    <a class="mca-aepop-cta tap" data-mca-aepop-cta="1" data-affiliate="{aff_id}"
+       rel="sponsored nofollow noopener" target="_blank" href="#">{htmllib.escape(cta)}</a>
+    <p class="mca-aepop-note">{htmllib.escape(auto_note)}</p>
+    <p class="mca-aepop-disc">{htmllib.escape(disclosure)}</p>
+  </aside>
+</div>
+<script type="application/json" id="mca-aepop-data">{data}</script>
+'''
+
+
 def offers_for(category):
     """카테고리에 맞는 실제 제휴 상품. 비활성/빈 링크는 제외."""
     if not AFF_ENABLED or not AFF_LIVE:
@@ -1096,6 +1305,12 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
     robots = ('  <meta name="robots" content="noindex, follow" />\n' if noindex else '')
     ld = '\n'.join('  <script type="application/ld+json">' + json.dumps(b, ensure_ascii=False) + '</script>'
                    for b in (jsonld_blocks or []))
+    # 🔴 noindex 페이지(study / search / stats / 페이징)에는 진입 카드를 넣지 않는다.
+    #   robots 를 이미 계산했으므로 그 값을 그대로 재사용한다.
+    try:
+        popup_html = '' if noindex else affiliate_popup_html(lang)
+    except Exception:
+        popup_html = ''
     return f'''<!DOCTYPE html>
 <html lang="{lang}" dir="{dir_}" class="scroll-smooth">
 <head>
@@ -1117,7 +1332,7 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
 {adsense_script_html()}
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config = {{ {TAILWIND_CONFIG} }};</script>
-  <link rel="stylesheet" href="/assets/css/custom.css" />
+  <link rel="stylesheet" href="/assets/css/custom.css?v=2" />
 {ld}
 {ga_html()}
 </head>
@@ -1131,7 +1346,8 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
 </main>
 
 {footer_html(lang)}
-<script src="/assets/js/main.js?v=5"></script>
+{popup_html}
+<script src="/assets/js/main.js?v=6"></script>
 {conversion_tracking_js()}
 </body>
 </html>

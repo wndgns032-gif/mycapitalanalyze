@@ -144,6 +144,13 @@ jobs:
             #   → 언어당 하루 총 4편 = 경제 2 + 게임 2 (전체 일량은 이전과 동일, 조합만 변경)
             "apps_per_lang_per_day": 2,
             "analytics": {"ga4_id": ga4, "google_site_verification": gsc},
+            "affiliate_popup": {
+              # 진입 시 어필리에이트 카드 1개 표시 (로이 지시 2026-10-11).
+              # 닫기 버튼은 <button> 이고 href 가 없다 -> 어필리에이트 링크가 아니다.
+              # frequency: "session"(세션 1회) | "day"(하루 1회)
+              "enabled": True, "frequency": "session",
+              "seed": "mca-2026-10-11", "ship_to": "US"
+            },
             "affiliates": aff_cfg
           }
           json.dump(cfg, open('config.json', 'w'), ensure_ascii=False, indent=2)
