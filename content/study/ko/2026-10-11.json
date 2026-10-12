@@ -1,0 +1,35 @@
+{
+  "day": 8,
+  "date": "2026-10-11",
+  "track": "rest",
+  "track_title": "주간 복습",
+  "rest_note": "새 내용 없이 이번 주 세트만 다시 봅니다. 5문항 이상 틀렸다면 그 과목을 한 번 더 복습하세요.",
+  "vocab": {
+    "words": [
+      {
+        "w": "outstanding",
+        "pos": "형",
+        "mean": "미결제의 · 뛰어난",
+        "ex": "Two invoices are still outstanding."
+      },
+      {
+        "w": "oversee",
+        "pos": "동",
+        "mean": "감독하다",
+        "ex": "She oversees the project."
+      },
+      {
+        "w": "prospective",
+        "pos": "형",
+        "mean": "잠재적인 · 예상되는",
+        "ex": "We met a prospective client."
+      }
+    ],
+    "confusable": {
+      "a": "loose",
+      "b": "lose",
+      "diff": "loose = 헐렁한(형용사) / lose = 잃다(동사)"
+    },
+    "tip": "Part 7은 문서 종류(이메일·공지·광고)를 먼저 파악하면 '목적' 문제가 바로 풀립니다."
+  }
+}
