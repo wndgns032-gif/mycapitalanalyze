@@ -1,0 +1,154 @@
+{
+  "day": 9,
+  "date": "2026-10-14",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "The marketing team has decided to ____ promote the new product through social media.",
+      "choices": [
+        "aggressive",
+        "aggressively",
+        "aggressiveness",
+        "aggression"
+      ],
+      "answer": 1,
+      "explain": "빈칸은 동사 'promote'를 수식하는 부사가 필요합니다. 'aggressively'가 동사를 수식하는 부사이므로 정답입니다. 다른 선택지는 형용사 또는 명사이므로 동사를 수식할 수 없습니다.",
+      "point": "부사의 위치"
+    },
+    {
+      "q": "The CEO spoke ____ about the company's future plans during the meeting.",
+      "choices": [
+        "confident",
+        "confidence",
+        "confidently",
+        "confidential"
+      ],
+      "answer": 2,
+      "explain": "동사 'spoke'를 수식하는 부사가 필요합니다. 'confidently'는 '자신 있게'라는 뜻의 부사로 동사를 수식합니다. 'confident'는 형용사, 'confidence'는 명사, 'confidential'은 형용사입니다.",
+      "point": "부사의 위치"
+    },
+    {
+      "q": "The instructions were ____ clear that even a beginner could follow them.",
+      "choices": [
+        "so",
+        "such",
+        "very",
+        "too"
+      ],
+      "answer": 0,
+      "explain": "'so + 부사 + that' 구문으로 'so clear that'이 되어야 합니다. 'such'는 명사 앞에, 'very'는 that절과 함께 쓰이지 않고, 'too'는 'too ~ to' 구문에 쓰입니다.",
+      "point": "부사의 위치"
+    },
+    {
+      "q": "She completed the project ____ than expected, impressing her supervisor.",
+      "choices": [
+        "more efficiently",
+        "efficient",
+        "efficiency",
+        "most efficiently"
+      ],
+      "answer": 0,
+      "explain": "비교급 'than'과 함께 쓰여 'more efficiently'가 적절합니다. 'most efficiently'는 최상급이므로 'than'과 함께 쓰일 수 없습니다. 다른 선택지는 형용사나 명사입니다.",
+      "point": "부사의 위치"
+    },
+    {
+      "q": "The new software allows users to ____ access their files from any device.",
+      "choices": [
+        "easy",
+        "easily",
+        "ease",
+        "easiness"
+      ],
+      "answer": 1,
+      "explain": "동사 'access'를 수식하는 부사가 필요하므로 'easily'가 정답입니다. 'easy'는 형용사, 'ease'는 명사/동사, 'easiness'는 명사입니다.",
+      "point": "부사의 위치"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "Tech Innovate Inc. Reports Record Profits",
+      "body": "Tech Innovate Inc., a leading technology company, announced yesterday that its quarterly profits have reached a record high. The company reported a net profit of $2.5 billion for the second quarter, a 25% increase compared to the same period last year. CEO Jane Smith attributed the success to the strong sales of their new smartphone, the X20, which was released in April. \"The X20 has been incredibly popular among consumers, and we are thrilled with the response,\" Smith said during a press conference. The company also revealed plans to expand its operations into emerging markets, including Southeast Asia and Latin America, by the end of the year. However, some analysts caution that increased competition from rival companies could pose challenges in the coming months. Despite this, Tech Innovate's stock price rose by 8% following the announcement, reflecting investor confidence in the company's future."
+    },
+    "questions": [
+      {
+        "q": "What is the main topic of the article?",
+        "choices": [
+          "Tech Innovate Inc.'s record profits",
+          "The launch of a new smartphone",
+          "Expansion into Southeast Asia",
+          "Decline in stock price"
+        ],
+        "answer": 0,
+        "explain": "기사는 테크 이노베이트사의 분기 이익이 사상 최고치를 기록했다는 내용을 다루고 있습니다. 따라서 'Tech Innovate Inc.'s record profits'가 주제입니다.",
+        "evidence": "Tech Innovate Inc., a leading technology company, announced yesterday that its quarterly profits have reached a record high."
+      },
+      {
+        "q": "According to the article, what contributed to the increase in profits?",
+        "choices": [
+          "Expansion into new markets",
+          "Government subsidies",
+          "Strong sales of the X20 smartphone",
+          "Lower production costs"
+        ],
+        "answer": 2,
+        "explain": "기사에서 CEO 제인 스미스는 새로운 스마트폰 X20의 강력한 판매 덕분이라고 언급했습니다. 따라서 'Strong sales of the X20 smartphone'이 정답입니다.",
+        "evidence": "CEO Jane Smith attributed the success to the strong sales of their new smartphone, the X20, which was released in April."
+      },
+      {
+        "q": "What does Tech Innovate Inc. plan to do by the end of the year?",
+        "choices": [
+          "Release a new smartphone model",
+          "Expand into emerging markets",
+          "Reduce production costs",
+          "Hire more employees"
+        ],
+        "answer": 1,
+        "explain": "기사에 따르면 회사는 연말까지 신흥 시장으로 사업을 확장할 계획이라고 밝혔습니다. 따라서 'Expand into emerging markets'가 정답입니다.",
+        "evidence": "The company also revealed plans to expand its operations into emerging markets, including Southeast Asia and Latin America, by the end of the year."
+      },
+      {
+        "q": "What concern did analysts mention?",
+        "choices": [
+          "Decreased consumer demand",
+          "Rising production costs",
+          "Lack of investor confidence",
+          "Increased competition"
+        ],
+        "answer": 3,
+        "explain": "기사에서 일부 분석가들은 경쟁사들의 증가된 경쟁이 향후 몇 달 동안 도전 과제가 될 수 있다고 경고했습니다. 따라서 'Increased competition'이 정답입니다.",
+        "evidence": "However, some analysts caution that increased competition from rival companies could pose challenges in the coming months."
+      }
+    ]
+  },
+  "part5_point": "부사의 위치",
+  "part7_type": "기사문",
+  "vocab": {
+    "words": [
+      {
+        "w": "terminate",
+        "pos": "동",
+        "mean": "종료하다",
+        "ex": "The contract was terminated."
+      },
+      {
+        "w": "tentative",
+        "pos": "형",
+        "mean": "잠정적인 · 임시의",
+        "ex": "We set a tentative date."
+      },
+      {
+        "w": "vacancy",
+        "pos": "명",
+        "mean": "공석 · 빈자리",
+        "ex": "There is one vacancy left."
+      }
+    ],
+    "confusable": {
+      "a": "personal",
+      "b": "personnel",
+      "diff": "personal = 개인의 / personnel = 직원(인사)"
+    },
+    "tip": "분사구문은 주절 주어를 확인 — 행위자면 -ing, 대상이면 -ed입니다."
+  }
+}
