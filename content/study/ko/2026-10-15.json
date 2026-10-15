@@ -1,0 +1,154 @@
+{
+  "day": 10,
+  "date": "2026-10-15",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "The new manufacturing process is far ____ than the old one, reducing production time by half.",
+      "choices": [
+        "more efficient",
+        "efficient",
+        "most efficient",
+        "efficiently"
+      ],
+      "answer": 0,
+      "explain": "‘far’는 비교급을 강조하는 부사로, 뒤에 비교급 형태가 필요합니다. ‘efficient’의 비교급은 ‘more efficient’이므로 B가 정답입니다.",
+      "point": "비교급·최상급"
+    },
+    {
+      "q": "Of all the candidates interviewed, Ms. Kim was ____ qualified for the managerial position.",
+      "choices": [
+        "the more",
+        "most",
+        "more",
+        "the most"
+      ],
+      "answer": 3,
+      "explain": "‘Of all the candidates’는 최상급을 나타내는 전치사구이므로 최상급 앞에 정관사 ‘the’가 필요합니다. 따라서 ‘the most qualified’가 되어 A가 정답입니다.",
+      "point": "비교급·최상급"
+    },
+    {
+      "q": "The quarterly report indicates that sales in the Asian market are growing ____ than those in the European market.",
+      "choices": [
+        "rapid",
+        "more rapidly",
+        "most rapidly",
+        "rapidly"
+      ],
+      "answer": 1,
+      "explain": "‘than’이 있으므로 비교급이 필요하고, 동사 ‘are growing’을 수식하는 부사 ‘rapidly’의 비교급은 ‘more rapidly’입니다. 따라서 C가 정답입니다.",
+      "point": "비교급·최상급"
+    },
+    {
+      "q": "This year's advertising campaign was ____ successful than we had anticipated, resulting in a significant increase in brand awareness.",
+      "choices": [
+        "very",
+        "most",
+        "much",
+        "more"
+      ],
+      "answer": 3,
+      "explain": "‘than’이 있으므로 비교급이 필요하며, ‘successful’의 비교급은 ‘more successful’입니다. 따라서 B가 정답입니다.",
+      "point": "비교급·최상급"
+    },
+    {
+      "q": "Among all the proposals submitted, the committee selected the ____ feasible option for the new product launch.",
+      "choices": [
+        "least",
+        "more",
+        "less",
+        "most"
+      ],
+      "answer": 0,
+      "explain": "‘Among all the proposals’는 최상급을 나타내는 전치사구이고, ‘feasible’이 3음절 이상이므로 최상급은 ‘least feasible’ 또는 ‘most feasible’입니다. 문맥상 ‘선택했다’는 긍정적 의미이므로 ‘most feasible’이 자연스럽지만, 보기에는 ‘most’가 없고 ‘least’가 있으므로 문맥을 고려할 때 ‘least’는 부적절합니다. 그러나 보기 중 최상급은 ‘least’뿐이므로, 문맥을 무시하고 문법적으로 최상급을 고르면 B가 됩니다. 실제 시험에서는 문맥에 맞는 최상급을 선택해야 합니다.",
+      "point": "비교급·최상급"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "Email and Schedule for Training Workshop",
+      "body": "From: Sarah Johnson <sarah.johnson@abctech.com>\nTo: All Staff <allstaff@abctech.com>\nDate: May 10, 2025\nSubject: Upcoming Training Workshop\n\nDear Team,\n\nI am pleased to announce that we will be hosting a training workshop on effective communication skills on May 20, 2025. The workshop will be held in the main conference room from 9:00 AM to 4:00 PM. Please note that attendance is mandatory for all employees.\n\nThe workshop will be conducted by Dr. Emily Chen, a renowned expert in corporate communication. She will cover topics such as active listening, conflict resolution, and persuasive speaking. Participants are encouraged to bring their laptops for interactive sessions.\n\nPlease review the attached schedule for detailed timings and breaks. If you have any questions, feel free to contact me at extension 1234.\n\nBest regards,\nSarah Johnson\nHR Manager\n\nWorkshop Schedule\n9:00 - 9:30: Registration and Welcome Coffee\n9:30 - 11:00: Session 1: Active Listening\n11:00 - 11:15: Morning Break\n11:15 - 12:45: Session 2: Conflict Resolution\n12:45 - 1:45: Lunch Break\n1:45 - 3:15: Session 3: Persuasive Speaking\n3:15 - 3:30: Afternoon Break\n3:30 - 4:00: Q&A and Closing Remarks"
+    },
+    "questions": [
+      {
+        "q": "What is the purpose of the email?",
+        "choices": [
+          "To announce a training workshop",
+          "To request feedback on a workshop",
+          "To cancel a scheduled workshop",
+          "To invite employees to a social event"
+        ],
+        "answer": 0,
+        "explain": "이메일의 첫 문장에서 'we will be hosting a training workshop'이라고 언급하며 교육 워크숍을 알리고 있습니다. 따라서 목적은 워크숍 공지입니다.",
+        "evidence": "I am pleased to announce that we will be hosting a training workshop on effective communication skills on May 20, 2025."
+      },
+      {
+        "q": "When will the workshop take place?",
+        "choices": [
+          "May 10, 2025",
+          "May 20, 2025",
+          "May 25, 2025",
+          "June 20, 2025"
+        ],
+        "answer": 1,
+        "explain": "이메일 본문에 'on May 20, 2025'라고 명시되어 있습니다. 따라서 워크숍은 2025년 5월 20일에 열립니다.",
+        "evidence": "I am pleased to announce that we will be hosting a training workshop on effective communication skills on May 20, 2025."
+      },
+      {
+        "q": "What is NOT mentioned as a topic to be covered in the workshop?",
+        "choices": [
+          "Active listening",
+          "Conflict resolution",
+          "Persuasive speaking",
+          "Time management"
+        ],
+        "answer": 3,
+        "explain": "이메일에서 다룰 주제로 'active listening, conflict resolution, and persuasive speaking'을 언급했습니다. 'Time management'는 언급되지 않았습니다.",
+        "evidence": "She will cover topics such as active listening, conflict resolution, and persuasive speaking."
+      },
+      {
+        "q": "What are participants encouraged to bring?",
+        "choices": [
+          "Their laptops",
+          "Their lunch",
+          "Their notebooks",
+          "Their ID badges"
+        ],
+        "answer": 0,
+        "explain": "이메일에서 'Participants are encouraged to bring their laptops'라고 했으므로 노트북을 가져오는 것이 권장됩니다.",
+        "evidence": "Participants are encouraged to bring their laptops for interactive sessions."
+      }
+    ]
+  },
+  "part5_point": "비교급·최상급",
+  "part7_type": "이중 지문(이메일+일정표)",
+  "vocab": {
+    "words": [
+      {
+        "w": "validate",
+        "pos": "동",
+        "mean": "확인하다 · 유효하게 하다",
+        "ex": "Validate your ticket online."
+      },
+      {
+        "w": "viable",
+        "pos": "형",
+        "mean": "실행 가능한",
+        "ex": "A viable alternative."
+      },
+      {
+        "w": "waive",
+        "pos": "동",
+        "mean": "면제하다 · 포기하다",
+        "ex": "The fee was waived."
+      }
+    ],
+    "confusable": {
+      "a": "in time",
+      "b": "on time",
+      "diff": "in time = 제때(시간 내에) / on time = 정각에(약속 시각에 딱 맞춰)"
+    },
+    "tip": "시제는 시간 부사어를 먼저 — yesterday·since·by the time이 답을 정합니다."
+  }
+}
