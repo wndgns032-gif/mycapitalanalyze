@@ -1,0 +1,154 @@
+{
+  "day": 16,
+  "date": "2026-10-21",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "If the shipment ____ tomorrow, we will need to inform the client immediately.",
+      "choices": [
+        "arrives",
+        "will arrive",
+        "arrived",
+        "has arrived"
+      ],
+      "answer": 0,
+      "explain": "가정법에서 if절은 현재 시제로 미래를 나타냅니다. 따라서 'arrives'가 정답입니다. 'will arrive'는 if절에 쓸 수 없습니다.",
+      "point": "가정법"
+    },
+    {
+      "q": "If I ____ you, I would accept the job offer without hesitation.",
+      "choices": [
+        "am",
+        "was",
+        "were",
+        "will be"
+      ],
+      "answer": 2,
+      "explain": "가정법 과거에서 be동사는 주어에 관계없이 'were'를 사용합니다. 따라서 'were'가 정답입니다.",
+      "point": "가정법"
+    },
+    {
+      "q": "Had she ____ the instructions carefully, she would not have made such a mistake.",
+      "choices": [
+        "read",
+        "reads",
+        "reading",
+        "to read"
+      ],
+      "answer": 0,
+      "explain": "가정법 과거완료에서 if가 생략되면 조동사 had가 주어 앞으로 나오고, 동사는 과거분사가 옵니다. 따라서 'read'가 정답입니다.",
+      "point": "가정법"
+    },
+    {
+      "q": "I wish I ____ more time to prepare for the presentation yesterday.",
+      "choices": [
+        "have",
+        "had",
+        "have had",
+        "will have"
+      ],
+      "answer": 1,
+      "explain": "I wish 뒤에 과거 사실에 대한 아쉬움을 나타낼 때는 가정법 과거를 씁니다. 따라서 'had'가 정답입니다.",
+      "point": "가정법"
+    },
+    {
+      "q": "Without your help, we ____ the project on time.",
+      "choices": [
+        "will not finish",
+        "would not finish",
+        "would not have finished",
+        "do not finish"
+      ],
+      "answer": 2,
+      "explain": "Without은 'If it had not been for'와 같은 의미로 가정법 과거완료를 이끕니다. 따라서 'would not have finished'가 정답입니다.",
+      "point": "가정법"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "Email: Conference Schedule Update",
+      "body": "From: Laura Chen <laura.chen@techsolutions.com>\nTo: Daniel Park <daniel.park@techsolutions.com>\nDate: March 15, 2025\nSubject: Conference Schedule Update\n\nDear Daniel,\n\nI am writing to inform you of a change to the schedule for the upcoming Global Business Conference. Due to a last-minute conflict, the keynote speaker, Dr. Emily Carter, has requested to move her presentation from 9:00 a.m. to 11:00 a.m. on the first day.\n\nAs a result, we need to adjust the morning sessions. The panel discussion originally scheduled for 11:00 a.m. will now take place at 9:00 a.m. in Hall B. Please note that the room assignment for the panel remains the same.\n\nCould you please update the conference program and notify the attendees as soon as possible? Also, let me know if you need any assistance with the revisions.\n\nThank you for your cooperation.\n\nBest regards,\nLaura Chen\nConference Coordinator"
+    },
+    "questions": [
+      {
+        "q": "What is the purpose of the email?",
+        "choices": [
+          "To request a change in the conference schedule",
+          "To inform about a schedule change",
+          "To confirm a room reservation",
+          "To invite a keynote speaker"
+        ],
+        "answer": 1,
+        "explain": "이메일의 목적은 일정 변경에 대해 알리는 것입니다. 첫 문단에서 'I am writing to inform you of a change to the schedule'라고 명시되어 있습니다.",
+        "evidence": "I am writing to inform you of a change to the schedule for the upcoming Global Business Conference."
+      },
+      {
+        "q": "What time will the panel discussion take place?",
+        "choices": [
+          "At 9:00 a.m.",
+          "At 10:00 a.m.",
+          "At 11:00 a.m.",
+          "At 12:00 p.m."
+        ],
+        "answer": 0,
+        "explain": "패널 토론은 원래 11시였으나 9시로 변경되었습니다. 지문에서 'The panel discussion originally scheduled for 11:00 a.m. will now take place at 9:00 a.m.'라고 언급되어 있습니다.",
+        "evidence": "The panel discussion originally scheduled for 11:00 a.m. will now take place at 9:00 a.m. in Hall B."
+      },
+      {
+        "q": "What is Daniel asked to do?",
+        "choices": [
+          "Contact Dr. Emily Carter",
+          "Reserve a new room for the panel",
+          "Update the program and notify attendees",
+          "Change the keynote speaker"
+        ],
+        "answer": 2,
+        "explain": "Laura는 Daniel에게 프로그램을 업데이트하고 참석자들에게 알려달라고 요청합니다. 지문에서 'Could you please update the conference program and notify the attendees'라고 되어 있습니다.",
+        "evidence": "Could you please update the conference program and notify the attendees as soon as possible?"
+      },
+      {
+        "q": "What is indicated about the room for the panel discussion?",
+        "choices": [
+          "It has been changed to Hall A.",
+          "It remains the same.",
+          "It is not yet assigned.",
+          "It will be announced later."
+        ],
+        "answer": 1,
+        "explain": "패널 토론의 장소는 변경되지 않았습니다. 지문에서 'the room assignment for the panel remains the same'라고 언급되어 있습니다.",
+        "evidence": "Please note that the room assignment for the panel remains the same."
+      }
+    ]
+  },
+  "part5_point": "가정법",
+  "part7_type": "이메일",
+  "vocab": {
+    "words": [
+      {
+        "w": "eligible",
+        "pos": "형",
+        "mean": "자격이 있는",
+        "ex": "Only full-time staff are eligible."
+      },
+      {
+        "w": "expedite",
+        "pos": "동",
+        "mean": "신속히 처리하다",
+        "ex": "We expedited the shipment."
+      },
+      {
+        "w": "fluctuate",
+        "pos": "동",
+        "mean": "변동하다",
+        "ex": "Prices fluctuate seasonally."
+      }
+    ],
+    "confusable": {
+      "a": "lend",
+      "b": "borrow",
+      "diff": "lend = 빌려주다(lend A to B) / borrow = 빌리다(borrow A from B)"
+    },
+    "tip": "접속사 vs 전치사: 빈칸 뒤에 '주어+동사'가 오면 접속사(Since), 명사만 오면 전치사(Because of)입니다."
+  }
+}
