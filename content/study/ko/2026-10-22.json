@@ -1,0 +1,154 @@
+{
+  "day": 17,
+  "date": "2026-10-22",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "Employees ____ wish to apply for the annual leadership training program must submit their requests before Friday.",
+      "choices": [
+        "who",
+        "which",
+        "whose",
+        "whom"
+      ],
+      "answer": 0,
+      "explain": "선행사가 사람 명사인 Employees이고, 빈칸 뒤에 동사 wish가 바로 이어지므로 주격 관계대명사 who가 정답입니다. which는 사물 선행사에 쓰이며, whose는 소유격, whom은 목적격 관계대명사입니다.",
+      "point": "관계대명사"
+    },
+    {
+      "q": "Mr. Henderson interviewed several candidates ____ previous work experience closely matched the firm's requirements.",
+      "choices": [
+        "who",
+        "whose",
+        "which",
+        "that"
+      ],
+      "answer": 1,
+      "explain": "빈칸 뒤에 완전한 절의 구조(명사 previous work experience + 동사 matched + 목적어)가 이어져 선행사 candidates의 소유 관계를 나타내므로 소유격 관계대명사 whose가 알맞습니다. 주격이나 목적격 관계대명사인 who, which, that은 뒤에 불완전한 절이 와야 하므로 적절하지 않습니다.",
+      "point": "관계대명사"
+    },
+    {
+      "q": "The revised safety protocol outlines the specific procedures by ____ laboratory staff must handle hazardous materials.",
+      "choices": [
+        "that",
+        "which",
+        "what",
+        "whose"
+      ],
+      "answer": 1,
+      "explain": "전치사 by 뒤에서 사물 선행사 procedures를 수식하는 관계절을 이끄는 목적격 관계대명사 which가 정답입니다. 관계대명사 that은 전치사 바로 뒤에 올 수 없으며, what은 선행사를 포함하므로 명사 뒤에 올 수 없습니다.",
+      "point": "관계대명사"
+    },
+    {
+      "q": "Kensington Electronics unveiled a smart thermostat ____ regulates indoor temperature automatically based on occupancy.",
+      "choices": [
+        "who",
+        "whom",
+        "which",
+        "what"
+      ],
+      "answer": 2,
+      "explain": "사물 선행사인 a smart thermostat을 수식하며 동사 regulates의 주어 역할을 해야 하므로 사물 주격 관계대명사 which가 적절합니다. who와 whom은 사람 선행사에 쓰이고, what은 선행사를 수식하지 않고 자체에 포함하는 관계대명사입니다.",
+      "point": "관계대명사"
+    },
+    {
+      "q": "The keynote speaker, ____ our conference planning committee selected last month, has confirmed her attendance.",
+      "choices": [
+        "whom",
+        "whose",
+        "which",
+        "where"
+      ],
+      "answer": 0,
+      "explain": "사람 선행사(The keynote speaker)를 보충 설명하며 관계절 내에서 타동사 selected의 목적어 역할을 하므로 목적격 관계대명사 whom이 정답입니다. whose는 소유격, which는 사물 선행사에 쓰이며, where는 장소를 나타내는 관계부사입니다.",
+      "point": "관계대명사"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "Notice: Upcoming Headquarters Renovation and Desk Relocation",
+      "body": "Please be advised that the fourth-floor administrative offices will undergo scheduled renovations starting Monday, October 14. This project aims to create an open-plan layout and upgrade our network infrastructure to support hybrid working arrangements. Construction is expected to take approximately three weeks, with completion scheduled for Friday, November 1.\n\nDuring this period, all fourth-floor staff members will be temporarily relocated to the vacant conference rooms on the second floor. Information Technology staff will configure workstations and verify Internet connectivity in these temporary spaces this coming weekend. Consequently, employees should pack up personal belongings and secure sensitive documents in their assigned filing cabinets by 5:00 P.M. this Friday.\n\nAll department managers have received floor plans showing temporary seating arrangements. If you have questions regarding desk assignments, please contact your immediate supervisor. For any technical concerns during the transition, the IT Help Desk will remain fully accessible via extension 402."
+    },
+    "questions": [
+      {
+        "q": "What is the main purpose of the notice?",
+        "choices": [
+          "To announce temporary office adjustments due to remodeling",
+          "To recruit staff for an IT infrastructure project",
+          "To introduce a permanent remote work policy",
+          "To schedule an upcoming management training seminar"
+        ],
+        "answer": 0,
+        "explain": "공지문 첫 문장에서 4층 관리 사무실이 10월 14일부터 정기 보수 공사를 시작한다고 밝히며 이에 따른 자리 재배치를 안내하고 있으므로 A가 정답입니다. IT 채용이나 영구 재택근무 정책, 교육 세미나에 관한 내용은 언급되지 않았습니다.",
+        "evidence": "Please be advised that the fourth-floor administrative offices will undergo scheduled renovations starting Monday, October 14."
+      },
+      {
+        "q": "Where will affected employees work during the construction?",
+        "choices": [
+          "At their home offices",
+          "In conference rooms on the second floor",
+          "In a newly leased building downtown",
+          "On the fourth floor in a partitioned section"
+        ],
+        "answer": 1,
+        "explain": "공사 기간 동안 4층 직원 전원이 2층의 비어 있는 회의실로 임시 이전한다고 명시되어 있으므로 B가 정답입니다.",
+        "evidence": "During this period, all fourth-floor staff members will be temporarily relocated to the vacant conference rooms on the second floor."
+      },
+      {
+        "q": "What are employees instructed to do before Friday evening?",
+        "choices": [
+          "Submit their preference for desk locations",
+          "Test their computer network connection",
+          "Pack personal items and lock away confidential files",
+          "Return borrowed equipment to the IT department"
+        ],
+        "answer": 2,
+        "explain": "직원들은 이번 주 금요일 오후 5시까지 개인 소지품을 챙기고 보안 문서를 파일 캐비닛에 보관하라는 안내가 나와 있으므로 C가 정답입니다.",
+        "evidence": "Consequently, employees should pack up personal belongings and secure sensitive documents in their assigned filing cabinets by 5:00 P.M. this Friday."
+      },
+      {
+        "q": "Who should employees contact if they have inquiries about their desk placement?",
+        "choices": [
+          "The building maintenance team",
+          "The human resources director",
+          "An IT technician",
+          "Their direct supervisor"
+        ],
+        "answer": 3,
+        "explain": "좌석 배치에 관한 질문이 있을 경우 직속 상사(immediate supervisor)에게 문의하라고 명시되어 있으므로 D가 정답입니다.",
+        "evidence": "If you have questions regarding desk assignments, please contact your immediate supervisor."
+      }
+    ]
+  },
+  "part5_point": "관계대명사",
+  "part7_type": "사내 공지",
+  "vocab": {
+    "words": [
+      {
+        "w": "incentive",
+        "pos": "명",
+        "mean": "인센티브 · 유인",
+        "ex": "Sales incentives boosted performance."
+      },
+      {
+        "w": "inventory",
+        "pos": "명",
+        "mean": "재고",
+        "ex": "The inventory is checked monthly."
+      },
+      {
+        "w": "itinerary",
+        "pos": "명",
+        "mean": "여행 일정",
+        "ex": "Please review your itinerary."
+      }
+    ],
+    "confusable": {
+      "a": "beside",
+      "b": "besides",
+      "diff": "beside = ~옆에(위치) / besides = ~게다가(추가)"
+    },
+    "tip": "수일치: 주어와 동사 사이 전치사구는 무시하고 핵심 주어만 찾으세요."
+  }
+}
