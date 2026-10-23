@@ -15,7 +15,7 @@ developer: "Cogoo Inc."
 genre: "Games, Entertainment, Puzzle, Strategy"
 kind: "game"
 sourceCollection: ""
-upcoming: "true"
+upcoming: false
 langs: "EN,FR,DE,ID,IT,JA,KO,PT,RU,ZH,ES,TH,ZH,VI"
 iap: ""
 requirements: "iOS 15.0+"
