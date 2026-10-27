@@ -14,7 +14,10 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # 🔴 2026-10-27: 45 → 75분으로 확대.
+    #   10-25·10-27 game-daily 가 **정확히 45분째 cancelled** 로 끝났다.
+    #   (LLM 폴백 체인 전체가 죽어 있어 요청이 지연 → timeout)
+    timeout-minutes: 75
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -84,9 +87,9 @@ jobs:
                                'https://generativelanguage.googleapis.com/v1beta/openai',
                                'gemini-flash-latest'),
             "groq": free_sec('GROQ_API_KEY', 'https://api.groq.com/openai/v1',
-                             'llama-3.3-70b-versatile'),
+                             'openai/gpt-oss-120b'),
             "groq2": free_sec('GROQ_API_KEY_2', 'https://api.groq.com/openai/v1',
-                              'llama-3.3-70b-versatile'),
+                              'openai/gpt-oss-120b'),
             "openrouter": free_sec('OPENROUTER_API_KEY', 'https://openrouter.ai/api/v1',
                                    'openrouter/free'),
             "nvidia": free_sec('NVIDIA_API_KEY', 'https://integrate.api.nvidia.com/v1',

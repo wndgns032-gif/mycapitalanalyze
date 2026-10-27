@@ -23,7 +23,12 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     # 언어 13개 × 레이더 수집(HTTP) + LLM 재시도 → 여유 있게 준다.
-    timeout-minutes: 60
+    # 🔴 2026-10-27: 60 → 90분으로 확대.
+    #   10-25 auto-publish 가 **정확히 60분째에 cancelled** 로 끝났다.
+    #   원인은 LLM 폴백 체인이 죽어 있어서(무료 3곳 전부 429/403) 매 호출마다
+    #   15초씩 낭비한 누적 — 코드는 이제 서킷 브레이커로 즉시 폴백한다.
+    #   그래도 여유를 둔다.
+    timeout-minutes: 90
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -90,10 +95,10 @@ jobs:
                                'https://generativelanguage.googleapis.com/v1beta/openai',
                                'gemini-flash-latest'),
             "groq": free_sec('GROQ_API_KEY', 'https://api.groq.com/openai/v1',
-                             'llama-3.3-70b-versatile'),
+                             'openai/gpt-oss-120b'),
             # 두 번째 Groq 키 — 첫 키가 429(Rate limit)이면 자동으로 넘어간다.
             "groq2": free_sec('GROQ_API_KEY_2', 'https://api.groq.com/openai/v1',
-                              'llama-3.3-70b-versatile'),
+                              'openai/gpt-oss-120b'),
             "openrouter": free_sec('OPENROUTER_API_KEY', 'https://openrouter.ai/api/v1',
                                    'openrouter/free'),
             "nvidia": free_sec('NVIDIA_API_KEY', 'https://integrate.api.nvidia.com/v1',

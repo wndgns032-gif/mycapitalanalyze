@@ -103,6 +103,13 @@ def collect():
         files.extend(glob.glob(os.path.join(BASE, lang, "post", "*.html")))
     files.extend(glob.glob(os.path.join(BASE, "post", "*.html")))
 
+    # 🔴 2026-10-27: 'post/index.html' 은 **포스트가 아니라 아카이브 허브**다
+    #   (build_post_archive() 가 만드는 목록 페이지). 여긴 어필리언트 카드가
+    #   들어갈 이유가 없고, 넣으면 목록 전체에 광고가 반복된다.
+    #   → 검증 대상에서 제외. (제외 전엔 커버리지가 98.5% 로 허위로 보고되고
+    #     '카드 없음 13개' 가 매 실행마다 scary 출력으로 떴다)
+    files = [f for f in files if os.path.basename(f) != 'index.html']
+
     out = {}
     for path in files:
         try:

@@ -48,14 +48,35 @@ DEFAULT_FLASH = {
     'glm': 'glm-5.3-flash',
     # 무료 제공자 기본 모델 (2026-10-02 로이 지시: 무료 API 우선 → 실패 시 DeepSeek)
     'gemini': 'gemini-flash-latest',        # Google AI Studio 무료 티어 (별칭이라 항상 최신 flash)
-    'groq': 'openai/gpt-oss-20b',           # Groq 무료 개발자 티어 (30 RPM / 1,000 RPD)
+    'groq': 'openai/gpt-oss-120b',           # Groq 무료 티어 (2026-10-27 실측 가용)
+    # ⚠️ 2026-10-27 실측: Groq 무료 티어에서 'llama-3.3-70b-versatile' 은
+    #   **404 "model does not exist or you do not have access"** 이었다.
+    #   실제로 접근 가능한 것: openai/gpt-oss-120b / -20b, qwen/qwen3.8-27b 등.
+    #   gpt-oss 는 reasoning 모델이라 content 가 빈 응답을 낼 때가 있어
+    #   chat() 이 "Answer with at least five words" 를 붙여 재시도한다.
     'openrouter': 'openrouter/free',        # OpenRouter 무료 모델 라우터 (하루 50회)
     'nvidia': 'nvidia/deepseek-v4-flash',   # NVIDIA NIM 무료 티어 (일일 토큰 상한 없음)
 }
 
 # 무료 제공자 — 비용이 0원이므로 flash 전용 정책(비용 통제 목적)을 적용하지 않는다.
 # config 의 섹션에 "free": true 로 표시하거나 이름이 이 목록에 있으면 예외 처리한다.
-FREE_PROVIDERS = {'gemini', 'groq', 'openrouter', 'nvidia', 'cloudflare', 'mistral', 'cohere'}
+FREE_PROVIDERS = {'gemini', 'groq', 'groq2', 'openrouter', 'nvidia', 'cloudflare',
+                  'mistral', 'cohere'}
+
+# 🔴 2026-10-27 실측: User-Agent 를 안 보내면 Groq(그리고 Cloudflare 앞단 프록시)가
+#   **403 "error code: 1010"** 으로 전부 막는다. 같은 키에 UA만 붙이면 정상 응답했다.
+#   → 모든 API 요청에 브라우저 UA 를 붙인다.
+UA = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+      '(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36')
+
+# 🔴 2026-10-27: 연속 실패한 제공자는 이번 프로세스에서 건너뛴다 (서킷 브레이커).
+#   이유: 무료 제공자가 죽어 있으면 (429 쿼터 소진 / 403 차단) 호출마다
+#   "실패 → 5초 대기 → 재시도 → 실패 → 5초 대기 → 재시도" 를 반복한다.
+#   번역 40건 × 2회 호출 × 15초 = 20분 낭비 → 워크플로가 timeout 으로 취소된다.
+#   (실측: 10-25 auto-publish, 10-25·10-27 game-daily 가 정확히 timeout 분에 cancelled)
+#   PROVIDER_FAILS[name] >= FAIL_LIMIT 이면 그 제공자는 나머지 실행에서 건너뛴다.
+FAIL_LIMIT = 2
+PROVIDER_FAILS = {}
 
 # config 에 순서가 없을 때의 기본 사슬 — 무료 → GLM → DeepSeek(유료 폴백)
 DEFAULT_WRITE_ORDER = ['gemini', 'groq', 'openrouter', 'nvidia', 'glm', 'deepseek']
@@ -173,6 +194,11 @@ def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,
 
     last_err = None
     for name, base_url, api_key, model, is_free in providers:
+        # 🔴 서킷 브레이커: 이 프로세스에서 이미 여러 번 죽은 제공자는 건너뛴다.
+        if PROVIDER_FAILS.get(name, 0) >= FAIL_LIMIT:
+            log('  [llm] %s 스킵 (연속 실패 %d회 — 이번 실행에서는 생략)'
+                % (name, PROVIDER_FAILS[name]))
+            continue
         body = {
             'model': model,
             'messages': messages,
@@ -189,7 +215,8 @@ def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,
             req = urllib.request.Request(
                 base_url + '/chat/completions', data=data,
                 headers={'Content-Type': 'application/json',
-                         'Authorization': 'Bearer ' + api_key},
+                         'Authorization': 'Bearer ' + api_key,
+                         'User-Agent': UA},
             )
             try:
                 with urllib.request.urlopen(req, timeout=timeout) as resp:
@@ -206,6 +233,10 @@ def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,
                         messages = list(messages) + [
                             {'role': 'user',
                              'content': 'Answer with at least five words of plain text.'}]
+                    # 🔴 2026-10-27: reasoning 모델(gpt-oss 등)은 max_tokens 가 작으면
+                    #   reasoning 에 토큰을 다 쓰고 content 가 빈 문자열이 된다.
+                    #   → content 가 비면 토큰 예산을 2배로 늘려 한 번 더 시도한다.
+                    max_tokens = min(max_tokens * 2, 32768)
                     time.sleep(1)
                     continue
                 _stat(name, True)
@@ -220,6 +251,18 @@ def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,
                 #   유료 DeepSeek 이 대부분을 처리했다(로이: "무료 API도 이용해줘").
                 #   → 무료 제공자는 짧은 백오프 후 같은 제공자를 한 번 더 시도한다.
                 if e.code in (429, 503) and is_free:
+                    # 🔴 2026-10-27: 429 라고 다 같은 성격이 아니다.
+                    #   - "Rate limit exceeded" (분당 제한) → 5초 뒤에 회복된다 → 재시도 OK
+                    #   - "exceeded your current quota" (일일/월간 쿼터 소진) → 5초 뒤에도 그대로
+                    #     → 재시도 3번 = 15초 낭비. 워크플로가 timeout 으로 죽는 주범이었다.
+                    #   영구 쿼터 소진은 즉시 폴백(서킷 브레이커가 이후 호출을 건너뛴다).
+                    permanent = ('current quota' in detail.lower()
+                                 or 'quota exceeded' in detail.lower()
+                                 or 'billing' in detail.lower()
+                                 or 'insufficient' in detail.lower())
+                    if permanent:
+                        log('  [llm] %s 429 영구 쿼터 소진 → 즉시 폴백' % name)
+                        break
                     wait = 5 if e.code == 429 else 3
                     log('  [llm] %s %s → %d초 대기 후 재시도(무료 티어)' % (name, e.code, wait))
                     time.sleep(wait)
@@ -236,6 +279,7 @@ def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,
                 log('  [llm] %s 네트워크 오류(%d/%d)' % (name, attempt, retries + 1))
                 time.sleep(3)
         _stat(name, False, last_err or '')
+        PROVIDER_FAILS[name] = PROVIDER_FAILS.get(name, 0) + 1
         log('  [llm] %s 포기 → 다음 제공자로 폴백' % name)
 
     raise RuntimeError('모든 LLM 제공자 실패: %s' % last_err)

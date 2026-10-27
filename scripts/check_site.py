@@ -11,6 +11,7 @@ import os
 import re
 import ssl
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -63,10 +64,25 @@ REQUIRED = [
 FORBIDDEN = ['adsbygoogle', 'pagead2.googlesyndication']
 
 
-def fetch(url, timeout=30):
-    req = urllib.request.Request(url, headers={'User-Agent': UA})
-    with urllib.request.urlopen(req, timeout=timeout, context=CTX) as r:
-        return r.status, r.read().decode('utf-8', 'ignore')
+def fetch(url, timeout=30, retries=2):
+    """HTTP GET. 일시적 네트워크 오류(URLError 등)는 재시도한다.
+
+    2026-10-27 실측: robots.txt 는 curl 로는 200 이었는데 점검 스크립트에서
+    URLError 가 났다. 일시적 DNS/TLS 문제 → 1회 재시도면 충분하다.
+    """
+    last = None
+    for i in range(retries + 1):
+        req = urllib.request.Request(url, headers={'User-Agent': UA})
+        try:
+            with urllib.request.urlopen(req, timeout=timeout, context=CTX) as r:
+                return r.status, r.read().decode('utf-8', 'ignore')
+        except urllib.error.HTTPError:
+            raise
+        except Exception as e:
+            last = e
+            if i < retries:
+                time.sleep(2)
+    raise last
 
 
 def main():
@@ -99,9 +115,19 @@ def main():
             if not ok:
                 problems.append(f'{label} {tag} 누락')
         if ADS_ENABLED:
-            row.append(f'광고={"OK" if "adsbygoogle" in body else "누락(활성설정인데 없음)"}')
-            if 'adsbygoogle' not in body and '/post/' in url:
-                problems.append(f'{label} 애드센스 활성인데 코드 없음')
+            # ⚠️ 2026-10-27: about / privacy / contact 는 **광고가 없어도 정상**이다.
+            #   AdSense 정책상 개인정보·법적 고지 페이지에 광고를 넣는 게 오히려
+            #   저품질 판정 위험이 있다. 이전 코드는 '광고 없음'만 보고 문제를
+            #   올려서 매주 점검 리포트에 잡음 항목이 되어 있었다.
+            #   → 게시글·홈·목록에만 광고 존재를 요구한다.
+            needs_ad = ('/post/' in url) or url.rstrip('/').endswith(
+                DOMAIN) or ('/category/' in url)
+            if needs_ad:
+                row.append(f'광고={"OK" if "adsbygoogle" in body else "누락(활성설정인데 없음)"}')
+                if 'adsbygoogle' not in body:
+                    problems.append(f'{label} 애드센스 활성인데 코드 없음')
+            else:
+                row.append('광고=없음(정상)')
         else:
             hits = [f for f in FORBIDDEN if f in body]
             row.append(f'광고={"0(정상)" if not hits else "잔존!"}')
