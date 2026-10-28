@@ -1,0 +1,154 @@
+{
+  "day": 22,
+  "date": "2026-10-28",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "The new software update ____ by the engineering team last night.",
+      "choices": [
+        "releases",
+        "has releasing",
+        "was released",
+        "released"
+      ],
+      "answer": 2,
+      "explain": "정답은 A) was released 입니다. ‘by the engineering team’이라는 행위자를 나타내는 전치사구가 뒤에 오므로 수동태 형태인 ‘was released’가 필요합니다.",
+      "point": "수동태"
+    },
+    {
+      "q": "All employee manuals ____ in both English and Spanish by the end of the quarter.",
+      "choices": [
+        "are translating",
+        "will be translated",
+        "have translated",
+        "will translate"
+      ],
+      "answer": 1,
+      "explain": "정답은 A) will be translated 입니다. ‘by the end of the quarter’라는 미래 시점을 나타내는 부사구와 함께 미래 수동태 형태가 맞습니다.",
+      "point": "수동태"
+    },
+    {
+      "q": "The conference rooms ____ regularly for cleaning by the facilities staff.",
+      "choices": [
+        "are being cleaned",
+        "have been cleaned",
+        "clean",
+        "were cleaned"
+      ],
+      "answer": 0,
+      "explain": "정답은 A) are being cleaned 입니다. 현재 진행형 수동태를 사용해 ‘현재 청소 중이다’라는 의미를 전달합니다.",
+      "point": "수동태"
+    },
+    {
+      "q": "A special discount ____ to all members who renew their subscription before December 1.",
+      "choices": [
+        "is offering",
+        "offers",
+        "offered",
+        "will be offered"
+      ],
+      "answer": 3,
+      "explain": "정답은 A) will be offered 입니다. ‘to all members’라는 수동의 의미와 미래 시제를 나타내기 위해 미래 수동태가 필요합니다.",
+      "point": "수동태"
+    },
+    {
+      "q": "The annual report ____ by the finance department and will be distributed next week.",
+      "choices": [
+        "has been prepared",
+        "prepared",
+        "will prepare",
+        "prepares"
+      ],
+      "answer": 0,
+      "explain": "정답은 A) has been prepared 입니다. 현재완료 수동태를 사용해 ‘이미 준비되었다’는 의미를 전달합니다.",
+      "point": "수동태"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "Morning Brew Café Grand Opening",
+      "body": "Morning Brew Café is excited to announce the grand opening of its new downtown location on November 15. To celebrate, the café will offer a 20% discount on all beverages during the first week, from Monday through Friday, 8:00 a.m. to 11:00 a.m. In addition, customers who sign up for the Brew Club loyalty program will receive a complimentary pastry with any coffee purchase. The loyalty program also provides members with exclusive monthly promotions and early access to seasonal drinks. Free Wi‑Fi and ample seating are available for both individuals and groups. For more information, visit our website at www.morningbrew.com or call (555) 123‑4567."
+    },
+    "questions": [
+      {
+        "q": "What discount is offered on all beverages during the first week?",
+        "choices": [
+          "10% discount",
+          "15% discount",
+          "20% discount",
+          "25% discount"
+        ],
+        "answer": 2,
+        "explain": "정답은 C) 20% discount 입니다. 지문에 ‘the café will offer a 20% discount on all beverages during the first week’라고 명시되어 있습니다.",
+        "evidence": "the café will offer a 20% discount on all beverages during the first week"
+      },
+      {
+        "q": "During which days and times is the discount available?",
+        "choices": [
+          "Saturday and Sunday, 9:00 a.m.–12:00 p.m.",
+          "Monday through Friday, 8:00 a.m.–11:00 a.m.",
+          "Every day, 7:00 a.m.–10:00 a.m.",
+          "Monday through Thursday, 10:00 a.m.–2:00 p.m."
+        ],
+        "answer": 1,
+        "explain": "정답은 B) Monday through Friday, 8:00 a.m.–11:00 a.m. 입니다. 지문에 ‘from Monday through Friday, 8:00 a.m. to 11:00 a.m.’라고 적혀 있습니다.",
+        "evidence": "from Monday through Friday, 8:00 a.m. to 11:00 a.m."
+      },
+      {
+        "q": "What do customers receive when they join the Brew Club loyalty program?",
+        "choices": [
+          "A free coffee each month",
+          "A complimentary pastry with any coffee purchase",
+          "A discount on all food items",
+          "A gift card worth $10"
+        ],
+        "answer": 1,
+        "explain": "정답은 B) A complimentary pastry with any coffee purchase 입니다. 지문에 ‘customers who sign up for the Brew Club loyalty program will receive a complimentary pastry with any coffee purchase’라고 명시되어 있습니다.",
+        "evidence": "will receive a complimentary pastry with any coffee purchase"
+      },
+      {
+        "q": "How can customers obtain more information about the café?",
+        "choices": [
+          "Only by visiting the website",
+          "Only by calling the phone number",
+          "By visiting the website or calling the phone number",
+          "By sending a fax to the café"
+        ],
+        "answer": 2,
+        "explain": "정답은 C) By visiting the website or calling the phone number 입니다. 지문에 ‘visit our website at www.morningbrew.com or call (555) 123‑4567’라고 적혀 있습니다.",
+        "evidence": "visit our website at www.morningbrew.com or call (555) 123‑4567"
+      }
+    ]
+  },
+  "part5_point": "수동태",
+  "part7_type": "광고·전단",
+  "vocab": {
+    "words": [
+      {
+        "w": "vacancy",
+        "pos": "명",
+        "mean": "공석 · 빈자리",
+        "ex": "There is one vacancy left."
+      },
+      {
+        "w": "validate",
+        "pos": "동",
+        "mean": "확인하다 · 유효하게 하다",
+        "ex": "Validate your ticket online."
+      },
+      {
+        "w": "viable",
+        "pos": "형",
+        "mean": "실행 가능한",
+        "ex": "A viable alternative."
+      }
+    ],
+    "confusable": {
+      "a": "complement",
+      "b": "compliment",
+      "diff": "complement = 보완하다 / compliment = 칭찬하다"
+    },
+    "tip": "관계대명사: 빈칸 뒤가 불완전하면 which·that, 완전하면 where·when·why입니다."
+  }
+}
