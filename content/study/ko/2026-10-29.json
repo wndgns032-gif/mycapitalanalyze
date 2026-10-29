@@ -1,0 +1,154 @@
+{
+  "day": 23,
+  "date": "2026-10-29",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "The company encourages employees ____ professional development courses.",
+      "choices": [
+        "to attend",
+        "to attending",
+        "attending",
+        "attend"
+      ],
+      "answer": 0,
+      "explain": "‘encourage’ 뒤에는 to부정사가 올 때가 많습니다. 따라서 ‘to attend’가 올바른 형태입니다.",
+      "point": "to부정사와 동명사"
+    },
+    {
+      "q": "She denied ____ the documents before the meeting.",
+      "choices": [
+        "read",
+        "to reading",
+        "reading",
+        "to read"
+      ],
+      "answer": 2,
+      "explain": "‘deny’는 뒤에 동명사를 취합니다. ‘reading’이 문법적으로 맞습니다.",
+      "point": "to부정사와 동명사"
+    },
+    {
+      "q": "We plan ____ the new software next month.",
+      "choices": [
+        "to implementing",
+        "implementing",
+        "to implement",
+        "implement"
+      ],
+      "answer": 2,
+      "explain": "‘plan’ 뒤에는 보통 to부정사가 따라옵니다. ‘to implement’가 정답입니다.",
+      "point": "to부정사와 동명사"
+    },
+    {
+      "q": "He admitted ____ the error in the calculation.",
+      "choices": [
+        "making",
+        "to making",
+        "make",
+        "to make"
+      ],
+      "answer": 0,
+      "explain": "‘admit’는 동명사를 요구합니다. 따라서 ‘making’이 올바른 형태입니다.",
+      "point": "to부정사와 동명사"
+    },
+    {
+      "q": "The board decided ____ the proposal after reviewing the data.",
+      "choices": [
+        "to reject",
+        "reject",
+        "to rejecting",
+        "rejecting"
+      ],
+      "answer": 0,
+      "explain": "‘decide’ 뒤에는 to부정사가 쓰입니다. ‘to reject’가 문법에 맞습니다.",
+      "point": "to부정사와 동명사"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "City Launches Bike‑Share Program to Ease Traffic",
+      "body": "The municipal government announced today the launch of a new bike‑share program aimed at easing traffic congestion in the downtown area. The primary goal of the program is to reduce traffic congestion and promote environmentally friendly transportation. The city will deploy 2,500 bicycles across 150 stations, strategically placed near office complexes, shopping centers, and transit hubs. Senior citizens can receive a 30% discount on monthly memberships, while university students and regular commuters will pay the standard rate. The service will operate 24 hours a day, with bikes equipped with GPS tracking and electric assist for uphill routes. The program is expected to be fully operational by the end of March, with a promotional event scheduled for next week. Officials hope that the initiative will encourage more residents to choose biking over driving, thereby improving air quality and reducing commute times."
+    },
+    "questions": [
+      {
+        "q": "What is the primary goal of the new bike‑share program?",
+        "choices": [
+          "Reduce traffic congestion",
+          "Expand subway lines",
+          "Promote car sales",
+          "Increase tourism"
+        ],
+        "answer": 0,
+        "explain": "지문에 ‘The primary goal of the program is to reduce traffic congestion…’이라고 명시되어 있어, 교통 혼잡 감소가 목표임을 알 수 있습니다.",
+        "evidence": "The primary goal of the program is to reduce traffic congestion and promote environmentally friendly transportation."
+      },
+      {
+        "q": "How many bikes will be available at the start of the program?",
+        "choices": [
+          "2,500",
+          "5,000",
+          "3,800",
+          "1,200"
+        ],
+        "answer": 0,
+        "explain": "본문에 ‘The city will deploy 2,500 bicycles across 150 stations…’이라는 문장이 있어, 초기 배치 수는 2,500대임을 확인할 수 있습니다.",
+        "evidence": "The city will deploy 2,500 bicycles across 150 stations, strategically placed near office complexes, shopping centers, and transit hubs."
+      },
+      {
+        "q": "Which group is offered a discounted membership?",
+        "choices": [
+          "Public school teachers",
+          "University students",
+          "All residents",
+          "Senior citizens"
+        ],
+        "answer": 3,
+        "explain": "‘Senior citizens can receive a 30% discount on monthly memberships’라는 문장에서 해당 할인 대상이 시니어 시민임을 알 수 있습니다.",
+        "evidence": "Senior citizens can receive a 30% discount on monthly memberships,"
+      },
+      {
+        "q": "When will the program be fully operational?",
+        "choices": [
+          "By the end of the year",
+          "In June",
+          "In September",
+          "By the end of March"
+        ],
+        "answer": 3,
+        "explain": "‘The program is expected to be fully operational by the end of March’라는 구절이 정확한 시점을 제시합니다.",
+        "evidence": "The program is expected to be fully operational by the end of March,"
+      }
+    ]
+  },
+  "part5_point": "to부정사와 동명사",
+  "part7_type": "기사문",
+  "vocab": {
+    "words": [
+      {
+        "w": "waive",
+        "pos": "동",
+        "mean": "면제하다 · 포기하다",
+        "ex": "The fee was waived."
+      },
+      {
+        "w": "warranty",
+        "pos": "명",
+        "mean": "보증",
+        "ex": "The warranty lasts two years."
+      },
+      {
+        "w": "appraise",
+        "pos": "동",
+        "mean": "평가하다 · 감정하다",
+        "ex": "The property was appraised."
+      }
+    ],
+    "confusable": {
+      "a": "advice",
+      "b": "advise",
+      "diff": "advice = 명사 '조언' / advise = 동사 '조언하다'"
+    },
+    "tip": "오답은 '지문에 없는 정보' — 그럴듯해도 지문 근거가 없으면 오답입니다."
+  }
+}
