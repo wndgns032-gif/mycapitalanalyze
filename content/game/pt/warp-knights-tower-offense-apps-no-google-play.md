@@ -1,7 +1,7 @@
 ---
-slug: warp-knights-tower-offense-apps-no-google-play
-title: "Warp Knights: Tower Offense – Apps no Google Play — preço"
-description: "Warp Knights: Tower Offense – Apps no Google Play é um RPG tático 3D de ficção científica em que você comanda um esquadrão de Operativos e transforma a defesa em ataque. É gratuito e está em pré-registro, sem data de lançamento confirmada. Quem busca um jogo pronto para jogar agora deve evitar."
+slug: "warp-knights-tower-offense-apps-no-google-play"
+title: "Warp Knights: Tower Offense: RPG tático 3D em pré-registro grátis"
+description: "Warp Knights: Tower Offense é um RPG tático 3D de ficção científica com foco em torres, disponível na Google Play para Android em pré-registro. O jogo é gratuito e confirma posicionamento do esquadrão na vanguarda, ataques pelas laterais, montagem de Operativos, evolução de personagens e armas, além de itens de exibição organizáveis na mesa. Deve evitar quem não gosta de RPG tático com gestão de esquadrão, e a maior limitação é a ausência de data de lançamento e de qualquer i"
 category: "Apps & Games"
 date: "2026-10-26"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Warp Knights: Tower Offense – Apps no Google Play](/assets/img/apps/app-7c0e687051.jpg)
+![Warp Knights: Tower Offense](/assets/img/apps/app-7c0e687051.jpg)
 
-Warp Knights: Tower Offense – Apps no Google Play é um RPG tático 3D de ficção científica com foco em torres, desenvolvido pela GENMUGAME CO., LTD. A proposta é inverter a lógica do gênero: em vez de segurar a linha, você posiciona seu esquadrão na vanguarda e rompe as defesas inimigas. A página oficial não mostra data de lançamento nem data da última atualização.
+Warp Knights: Tower Offense –  é um RPG tático 3D de ficção científica com foco em torres, desenvolvido pela GENMUGAME CO., LTD. A proposta é inverter a lógica do gênero: em vez de segurar a linha, você posiciona seu esquadrão na vanguarda e rompe as defesas inimigas. A página oficial não mostra data de lançamento nem data da última atualização.
 
 O jogo ainda não foi lançado e aparece na Google Play apenas como pré-registro. Isso significa que ninguém pode jogá-lo neste momento, e não há avaliações de usuários disponíveis. O texto da loja descreve combate em tempo real, montagem de esquadrão e momentos fora de serviço com as personagens.
 
-## O que é Warp Knights: Tower Offense – Apps no Google Play
+## O que é Warp Knights: Tower Offense –  
 
 É um RPG tático de ficção científica em 3D no qual você comanda um esquadrão de Operativos de ataque. A jogabilidade gira em torno de escolher posições, usar cobertura e atacar pelas laterais para encontrar brechas na formação inimiga. Cada movimento de posicionamento pode mudar o rumo da batalha, segundo a descrição oficial.
 

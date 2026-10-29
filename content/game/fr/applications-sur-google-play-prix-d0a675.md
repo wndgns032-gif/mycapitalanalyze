@@ -1,7 +1,7 @@
 ---
-slug: applications-sur-google-play-prix-d0a675
-title: "三国大戦スマッシュ！ – Applications sur Google Play — prix"
-description: "三国大戦スマッシュ！ – Applications sur Google Play est un jeu d'action gratuit édité par Ateam Entertainment Inc., où l'on fauche des soldats et affronte des commandants des Trois Royaumes en tirant sur l'écran. La fiche Google Play ne précise ni le prix des achats intégrés ni la date de sortie. À éviter si vous cherchez un jeu sans achats intégrés ou sans affrontements en ligne."
+slug: "applications-sur-google-play-prix-d0a675"
+title: "三国大戦スマッシュ！ : jeu d'action gratuit sur les Trois Royaumes"
+description: "三国大戦スマッシュ！ est un jeu d'action gratuit édité par Ateam Entertainment Inc., où l'on fauche des soldats et affronte des commandants des Trois Royaumes en tirant sur l'écran. La fiche Google Play ne précise ni le prix des achats intégrés ni la date de sortie. À éviter si vous cherchez un jeu sans achats intégrés ou sans affrontements en ligne."
 category: "Apps & Games"
 date: "2026-10-21"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![三国大戦スマッシュ！ – Applications sur Google Play](/assets/img/apps/app-d0a67590dd.jpg)
+![三国大戦スマッシュ！](/assets/img/apps/app-d0a67590dd.jpg)
 
-三国大戦スマッシュ！ – Applications sur Google Play est un jeu d'action gratuit édité par Ateam Entertainment Inc. Il transpose l'univers de Romance of the Three Kingdoms dans des combats où l'on tire sur l'écran pour faucher les petits soldats et vaincre le commandant ennemi. La fiche Google Play affiche une note de 4,6 sur 5 pour 64705 évaluations.
+三国大戦スマッシュ！ –  est un jeu d'action gratuit édité par Ateam Entertainment Inc. Il transpose l'univers de Romance of the Three Kingdoms dans des combats où l'on tire sur l'écran pour faucher les petits soldats et vaincre le commandant ennemi. La fiche Google Play affiche une note de 4,6 sur 5 pour 64705 évaluations.
 
 Le titre est disponible dès maintenant en téléchargement, sans préinscription ni précommande. Le matériel fourni ne donne ni la date de sortie ni la date de dernière mise à jour. Il ne précise pas non plus le nombre d'installations.
 
-## Qu'est-ce que 三国大戦スマッシュ！ – Applications sur Google Play ?
+## Qu'est-ce que 三国大戦スマッシュ！ –  ?
 
 Il s'agit d'un jeu mobile où le joueur constitue une armée de commandants militaires issus des Trois Royaumes. Le principe repose sur des tirs à l'écran pour éliminer les vagues de soldats avant d'atteindre le chef adverse. Chaque commandant dispose de mouvements spéciaux, dont un mouvement super spécial nommé « Ranbu », activé en associant un personnage et un équipement. Le jeu propose aussi de la lecture automatique pour obtenir des objets et des batailles en temps réel avec des joueurs de tout le pays.
 

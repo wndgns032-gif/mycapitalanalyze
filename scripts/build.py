@@ -678,8 +678,13 @@ def md_to_html(text):
 def inline(s):
     s = htmllib.escape(s)
     # 이미지 먼저 치환 — 아래 링크 정규식이 이미지의 ](...) 를 잘못 물지 않게 한다
-    s = re.sub(r'!\[(.+?)\]\((.+?)\)',
-               r'<img src="\2" alt="\1" loading="lazy" decoding="async" />', s)
+    # ⚠️ 앱 이름에 대괄호가 들어간 경우(예: "[Premium] RPG Isekai Rondo")
+    #    마크다운 alt 에서 `\[` `\]` 로 이스케이프하는데, 그대로 넣으면
+    #    alt="\[Premium\] ..." 로 렌더된다 → 이스케이프를 풀어 넣는다.
+    def _img(m):
+        alt = m.group(1).replace('\\[', '[').replace('\\]', ']')
+        return '<img src="%s" alt="%s" loading="lazy" decoding="async" />' % (m.group(2), alt)
+    s = re.sub(r'!\[(.+?)\]\((.+?)\)', _img, s)
     s = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', s)
     s = re.sub(r'\*(.+?)\*', r'<em>\1</em>', s)
     s = re.sub(r'\[(.+?)\]\((.+?)\)', r'<a href="\2">\1</a>', s)
@@ -1001,13 +1006,28 @@ POPUP_CATS = {
     'tool_set', 'combination_lock', 'card_holder', 'cash_wallet', 'portable_speaker',
 }
 
+# 🔴 2026-10-27: 게임 섹션 전용 팝업 화이트리스트.
+#   실측: 게임 글 43편 전부에 오피스 상품(메쉬 파일 선반)이 동일 노출됐다.
+#   게임 독자에게 책꽂이를 띄우면 관련성·클릭률 둘 다 죽는다.
+#   → /game/ 안에서는 게임 액세서리만 팝업으로 노출한다.
+POPUP_CATS_GAME = {
+    'mobile_game_controller', 'game_controller', 'thumb_controller', 'gaming_headset',
+    'phone_cooler', 'phone_tripod',
+}
 
-def popup_pick(lang):
+
+def popup_pick(lang, section=None):
     """진입 카드에 쓸 상품 1개. 결정적(deterministic) 선택.
 
     풀은 기존 ae_autoslot 것만 쓴다 (새로 크롤하거나 하드코딩하지 않는다).
     빌드마다 바뀌면 같은 독자가 매번 다른 걸 봐야 하므로, 빌드 시점 고정 시드로 고른다.
     ⚠️ 예외가 나면 빈 dict → 카드 자체가 렌더되지 않는다 (사이트는 절대 죽지 않는다).
+
+    🔴 2026-10-27 section 인자 추가 (로이: "게임 글 퀄리티가 매우 안 좋다").
+      실측: 게임 글 43편 **전부** 동일 상품(메쉬 파일 선반)이 팝업으로 떴다.
+      원인은 팝업이 `lang` 만 보고 상품을 뽑아서, /game/ 섹션에도 오피스 상품이
+      나갔던 것. 게임 글에 책꽂이가 뜨는 건 관련성·클릭률 둘 다 죽는다.
+      → section='game' 이면 게임 액세서리 카테고리만 후보로 삼는다.
     """
     import hashlib
     try:
@@ -1028,10 +1048,16 @@ def popup_pick(lang):
         _kst = '00000000'
     try:
         seed = int(hashlib.md5(
-            ('popup:%s:%s' % (cfg.get('seed') or 'mca-2026-10-11', _kst)
-             ).encode('utf-8')).hexdigest()[:8], 16)
+            ('popup:%s:%s:%s' % (cfg.get('seed') or 'mca-2026-10-11', _kst,
+                                 section or 'all')).encode('utf-8')).hexdigest()[:8], 16)
     except Exception:
         seed = 0
+
+    # 🔴 섹션별 후보 화이트리스트 — 게임 섹션에는 게임 액세서리만.
+    if section == 'game':
+        cats = POPUP_CATS_GAME
+    else:
+        cats = POPUP_CATS
 
     try:
         pool = ae_autoslot._load_pool() or {}
@@ -1042,7 +1068,7 @@ def popup_pick(lang):
                 parts = key.rsplit('|', 2)
                 if len(parts) != 3 or parts[1] != want or parts[2] != ship:
                     continue
-                if parts[0] not in POPUP_CATS:
+                if parts[0] not in cats:
                     continue        # ★ 팝업 전용 화이트리스트 (아래 참조)
                 for p in prods or []:
                     if not p.get('url') or not p.get('title'):
@@ -1059,7 +1085,7 @@ def popup_pick(lang):
                 break
         if not cands:
             for key, prods in pool.items():
-                if key.split('|')[0] not in POPUP_CATS:
+                if key.split('|')[0] not in cats:
                     continue            # 폴백에도 화이트리스트를 건다
                 for p in prods or []:
                     if p.get('url') and p.get('title'):
@@ -1095,18 +1121,20 @@ def popup_json(p):
     return out
 
 
-def affiliate_popup_html(lang):
+def affiliate_popup_html(lang, section=None):
     """진입 시 표시할 어필리에이트 카드. noindex 페이지에는 넣지 않는다.
 
     ✅ 닫기 버튼과 CTA 는 **서로 다른 요소**다.
        X 는 <button type="button"> 이고 href 가 없다. CTA 만 <a href> 다.
        → X 를 어필리에이트 링크로 만들지 않는다 (deceptive clicking 금지).
+
+    🔴 section='game' 이면 게임 액세서리만 고른다 (popup_pick 참고).
     """
     cfg = CONFIG.get('affiliate_popup') or {}
     if not cfg.get('enabled'):
         return ''
 
-    p = popup_pick(lang)
+    p = popup_pick(lang, section=section)
     if not p or not p.get('url') or not p.get('title'):
         return ''
 
@@ -1348,8 +1376,10 @@ def layout(lang, title, description, canonical, content_html, og_type='website',
                    for b in (jsonld_blocks or []))
     # 🔴 noindex 페이지(study / search / stats / 페이징)에는 진입 카드를 넣지 않는다.
     #   robots 를 이미 계산했으므로 그 값을 그대로 재사용한다.
+    #   section 을 넘겨서 게임 섹션에는 게임 액세서리만 팝업으로 뜨게 한다
+    #   (2026-10-27: 게임 글 43편 전부에 책꽂이가 떴던 문제).
     try:
-        popup_html = '' if noindex else affiliate_popup_html(lang)
+        popup_html = '' if noindex else affiliate_popup_html(lang, section=section)
     except Exception:
         popup_html = ''
     return f'''<!DOCTYPE html>

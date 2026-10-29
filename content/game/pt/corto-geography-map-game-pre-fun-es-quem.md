@@ -1,6 +1,6 @@
 ---
-slug: corto-geography-map-game-pre-fun-es-quem
-title: "Corto: Geography Map Game — preço, funções e quem deve evitar"
+slug: "corto-geography-map-game-pre-fun-es-quem"
+title: "Corto: Geography Map Game: jogo de mapa grátis com pacotes à parte"
 description: "Corto: Geography Map Game é um jogo de geografia grátis para iPhone e iPad: você toca no mapa onde fica o lugar pedido e soma pontos por precisão e velocidade. A entrada é gratuita, com 164 pacotes temáticos vendidos à parte como compra vitalícia, sem assinatura e sem anúncios. Quem quer campanha longa ou multiplayer online deve evitar."
 category: "Apps & Games"
 date: "2026-10-01"

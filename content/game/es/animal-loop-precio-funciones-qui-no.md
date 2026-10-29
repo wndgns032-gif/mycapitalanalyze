@@ -1,7 +1,7 @@
 ---
-slug: animal-loop-precio-funciones-qui-no
-title: "Animal Loop — precio, funciones y a quién no"
-description: "Animal Loop es un juego de carreras de un solo toque para iOS en el que animales diminutos ruedan por circuitos. Se puede reservar gratis, con compras dentro de la app opcionales para desbloquear corredores antes. Debería saltárselo quien busque multijugador en línea o jugar ya mismo."
+slug: "animal-loop-precio-funciones-qui-no"
+title: "Animal Loop: carreras de un toque gratis con reserva para 2026"
+description: "Animal Loop es un juego de carreras de un solo toque desarrollado por wOzy Technologies LLC para iOS, en el que animales diminutos ruedan dentro de sus bolas por circuitos con curvas, puentes y túneles. Es gratis de descargar y jugar, con tres mundos, 27 circuitos, ciclo de día y noche, Grand Prix, tiempos fantasma de Game Center y 18 corredores desbloqueables, sin cajas de botín. Debería saltárselo quien quiera carreras en línea contra desconocidos o jugar hoy mismo, ya que"
 category: "Apps & Games"
 date: "2026-10-16"
 sourceName: "App Store"
@@ -15,7 +15,7 @@ developer: "wOzy Technologies LLC"
 genre: "Juegos, Carreras, Recreativos"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: ""
 iap: ""
 requirements: "iOS 26.0+"

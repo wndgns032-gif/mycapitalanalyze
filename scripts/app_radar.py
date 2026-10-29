@@ -603,8 +603,17 @@ def _play_details_uncached(pkg, hl, gl):
         return (m.group(1) if m else '').strip()
 
     name = meta('title') or ''
-    name = re.sub(r'\s*-\s*(Apps on Google Play|Google Play\s*(앱|アプリ|应用|응용 프로그램)).*$',
-                  '', name).strip()
+    # ⚠️ Play 스토어의 og:title 은 **언어별 스토어 라벨**이 붙은 형태다.
+    #    ko "몽도쿠 - Google Play의 앱" / es "Mongoqued - Aplicaciones en Google Play"
+    #    ru "Приложения в Google Play – ..." (앞쪽) 등 13개 언어 변종이 있다.
+    #    예전 정규식은 ko/ja/zh/en 4개만 처리해서 나머지 9개 언어는
+    #    라벨이 앱 이름에 섞인 채 저장되었다 → store_label 모듈로 통일.
+    try:
+        import store_label as _SL
+        name = _SL.clean_name(name) or name
+    except Exception:
+        name = re.sub(r'\s*-\s*(Apps on Google Play|Google Play\s*(앱|アプリ|应用|응용 프로그램)).*$',
+                      '', name).strip()
 
     img = meta('image') or ''
     long_desc = ''
@@ -1402,6 +1411,31 @@ SPECIAL RULE FOR GOOGLE PLAY: no date appearing in Google Play material is a rel
 
 You never add a FAQ section and you never add a section that was not requested. You never leave a heading in English. You stop writing once you reach the character limit instead of continuing."""
 
+# ===== 2026-10-27 추가 — 게임 글 전용 시스템 프롬프트 =====
+# 실측 결함: 게임 글도 앱 글과 같은 프롬프트로 써서 "무엇인지"만 반복되고
+# "공식 설명에 따르면" 이 한 편에 12회 나왔다 -> 기계적 번역투처럼 읽혔다.
+# 게임 데스크 에디터 관점(사실 우선 + 트레이드오프 명명 + 어필 2회 제한)을 넣는다.
+SYSTEM_GAME_APP = """You are a native-level games desk editor for the games section of an international website. You write short, plain, factual game guides in the target language, never translations.
+
+Two rules rank above everything else.
+
+FACT DISCIPLINE: every price, date, feature, platform, device, region, language, rating, download count and sales figure must come only from the material you are given. If the material does not contain a fact, write one honest sentence stating that the fact is not stated (session length, control details, supported devices, in-game item prices, update cycle) — state the gap itself, never by pointing at "the official page" or "the listing". Never guess, never infer from the category, the genre or similar games, and never claim that you played, tested or reviewed the game.
+
+FORMAT DISCIPLINE: you reply with exactly one raw JSON object and nothing else. No markdown code fence, no commentary before or after, no trailing comma. Newlines inside string values are written as backslash-n and double quotes are escaped, so a parser can always read it.
+
+SPECIAL RULE FOR GOOGLE PLAY: no date appearing in Google Play material is a release date, because Play pages show a last-updated date instead. Only trust a release date when the store is Apple App Store.
+
+EDITORIAL VOICE (what separates a good game guide from a store page rewrite):
+- You are writing for a player who is about to spend money or time, not for someone browsing a catalogue.
+- Attribute the listing at most TWO times in the whole article, and NEVER open a paragraph with it. "According to the official page, the game is free" is forbidden — write "the game is free to download". Naming the source again in a later section is exactly what makes an article read like a machine paraphrase, and it is checked and rejected.
+- Lead every paragraph with a concrete fact, never with a definition. "The genre is action RPG" is a definition; "progress is by clearing stages and crafting equipment from boss drops" is a fact.
+- Name the trade-off, not just the feature. A fact that costs the reader something (free to download, but purchases are randomized) is worth ten feature lists.
+- Judge what the material supports and refuse to judge what it does not. If the material does not say how long a session lasts, say that the session length is not stated, and do not estimate. Do not justify the gap by naming the source.
+- Name one concrete player type who should skip it, derived from the material, not from genre stereotypes.
+- Write like a local games publication: short paragraphs, plain verbs, no marketing adjectives.
+
+You never add a FAQ section and you never add a section that was not requested. You never leave a heading in English. You stop writing once you reach the character limit instead of continuing."""
+
 
 # 제목 글자 수 상한 — 로이 확정. 라틴/키릴 70자, 한국어·일본어·힌디어 55자, 중국어 42자.
 TITLE_MAX = {'en': 70, 'ko': 55, 'ja': 55, 'zh': 42, 'hi': 55,
@@ -1410,23 +1444,173 @@ TITLE_MAX = {'en': 70, 'ko': 55, 'ja': 55, 'zh': 42, 'hi': 55,
 RELEASED_MAX = {'en': 85, 'ko': 60, 'ja': 60, 'zh': 45, 'hi': 65}
 TITLE_DEFAULT = 70
 
-# 제목 초과 시 쓰는 안전 템플릿 — {app} 만 앱 이름으로 치환한다.
-# 앱 이름이 30자 안팎이어도 언어별 상한을 넘지 않도록 접미사를 짧게 유지한다.
+# 제목 구조 — 언어별로 4개 공식을 돌려 쓴다.
+# 🔴 2026-10-27 실측 결함: 형식이 하나뿐이면 제목이 전부 "앱이름 — 살 만한가요? 가격·기능·건너ᛸ 사람"
+#   으로 찍혔다(한국어 게임 글 43편 중 스토어 기반 29편이 동일 패턴). 검색 결과에서 서로 구분되지 않고,
+#   독자에게는 "자동 생성된 같은 글"로 읽힌다 → 4개 공식 중 하나를 고르게 한다.
+#   각 공식은 앱/게임 공통 의도어(가격·기능·대상)를 유지하므로 SEO 키워드는 안 잃는다.
 TITLE_LOCALIZED = {
-    'en': '{app} — Price, Features and Who Should Skip',
-    'ko': '{app} — 살 만한가요? 가격·기능·건너뛸 사람',
-    'ja': '{app} — 買う価値はある？価格・機能・向かない人',
-    'zh': '{app} — 值得买吗？价格、功能与不适合的人',
-    'es': '{app} — precio, funciones y a quién no',
-    'de': '{app} — Preis, Funktionen, für wen nicht',
-    'fr': '{app} — prix, fonctions et qui doit éviter',
-    'pt': '{app} — preço, funções e quem deve evitar',
-    'ru': '{app} — цена, функции и кому не стоит',
-    'id': '{app} — harga, fitur dan siapa yang tidak',
-    'ar': '{app} — السعر، الميزات، ومن يتجنبها',
-    'bn': '{app} — দাম, ফিচার এবং কারা না',
-    'hi': '{app} — कीमत, फीचर्स और किन्हें नहीं',
+    'en': ('{app} — is it worth buying? Price, features and who should skip',
+           '{app} — what you get for the price, and the limits',
+           '{app} — who is this for, and who should skip it',
+           '{app} — what is free, and what costs money'),
+    'ko': ('{app} — 살 만한가요? 가격·기능·건너ᛸ 사람',
+           '{app} — 무엇을 얻는가, 가격과 한계',
+           '{app} — 어떤 사람에게 맞는가',
+           '{app} — 무료로 쓸 수 있는 범위와 유료 항목'),
+    'ja': ('{app} — 買う価値はある？価格・機能・向かない人',
+           '{app} — 何が得られるか、価格と制限',
+           '{app} — どんな人に合うか',
+           '{app} — 無料の範囲と有料項目'),
+    'zh': ('{app} — 值得买吗？价格、功能与不适合的人',
+           '{app} — 花钱买到什么，限制在哪',
+           '{app} — 适合什么类型的人',
+           '{app} — 免费能用什么，付费点在哪'),
+    'es': ('{app} — precio, funciones y a quién no',
+           '{app} — género, jugabilidad y precio',
+           '{app} — para quién es este juego',
+           '{app} — qué es gratis y qué cuesta dinero'),
+    'de': ('{app} — Preis, Funktionen, für wen nicht',
+           '{app} — Genre, Gameplay und Kosten',
+           '{app} — Für wen das Spiel passt',
+           '{app} — Was gratis ist und was Geld kostet'),
+    'fr': ('{app} — prix, fonctions et qui doit éviter',
+           '{app} — genre, gameplay et prix',
+           '{app} — à qui s’adresse ce jeu',
+           '{app} — ce qui est gratuit et ce qui coûte'),
+    'pt': ('{app} — preço, funções e quem deve evitar',
+           '{app} — gênero, jogabilidade e preço',
+           '{app} — para quem é este jogo',
+           '{app} — o que é grátis e o que custa'),
+    'ru': ('{app} — цена, функции и кому не стоит',
+           '{app} — жанр, геймплей и цена',
+           '{app} — кому подойдет эта игра',
+           '{app} — что бесплатно, а за что платить'),
+    'id': ('{app} — harga, fitur dan siapa yang tidak',
+           '{app} — genre, gameplay dan harga',
+           '{app} — untuk siapa game ini',
+           '{app} — yang gratis dan yang berbayar'),
+    'ar': ('{app} — السعر، الميزات، ومن يتجنبها',
+           '{app} — النوع، طريقة اللعب والسعر',
+           '{app} — لمن هذه اللعبة',
+           '{app} — ما هو مجاني وما يدفع مقابله'),
+    'bn': ('{app} — দাম, ফিচার এবং কারা না',
+           '{app} — ধরন, গেমপ্লে ও দাম',
+           '{app} — এই গেম কার জন্য',
+           '{app} — কোনটা বিনা খরচে, কোনটা টাকায়'),
+    'hi': ('{app} — कीमत, फीचर्स और किन्हें नहीं',
+           '{app} — शैली, गेमप्ले और कीमत',
+           '{app} — यह गेम किसके लिए है',
+           '{app} — क्या मुफ़्त है और किसे पैसे देने हैं'),
 }
+
+
+
+
+# 🔴 2026-10-27 추가 — 게임 전용 제목 공식 4종.
+# 앱용 표에 "장르/플레이" 를 쓰면 앱 글에 게임 용어가 들어가고, 그 반대도 마찬가지다.
+# → 앱/게임으로 표를 분리한다.
+GAME_TITLE_LOCALIZED = {
+    'en': ('{app} — is it worth playing? Price, gameplay and who should skip',
+           '{app} — genre, gameplay loop and what the money buys',
+           '{app} — who is this for, and who should skip it',
+           '{app} — what is free, and what costs money'),
+    'ko': ('{app} — 살 만한가요? 가격·게임성·건너ᛸ 사람',
+           '{app} — 장르와 플레이 방식, 과금 구조',
+           '{app} — 어떤 사람에게 어울리는 게임인가',
+           '{app} — 무료로 할 수 있는 범위와 유료 아이템'),
+    'ja': ('{app} — プレイする価値はある？価格・ゲーム性・向かない人',
+           '{app} — ジャンルとループ、課金構造',
+           '{app} — どんな人に合うゲームか',
+           '{app} — 無料の範囲と有料アイテム'),
+    'zh': ('{app} — 值得玩吗？价格、玩法与不适合的人',
+           '{app} — 玩法类型与核心循环、付费结构',
+           '{app} — 适合什么类型的玩家',
+           '{app} — 免费能玩什么，付费点在哪'),
+    'es': ('{app} — ¿vale la pena jugarlo? Precio, juego y quién no',
+           '{app} — género, bucle de juego y precio',
+           '{app} — para quién es este juego',
+           '{app} — qué es gratis y qué cuesta dinero'),
+    'de': ('{app} — lohnt sich das Spielen? Preis, Gameplay und für wen nicht',
+           '{app} — Genre, Spielschleife und Kosten',
+           '{app} — Für wen das Spiel passt',
+           '{app} — Was gratis ist und was Geld kostet'),
+    'fr': ('{app} — vaut-il le coup de jouer ? Prix, gameplay et à qui éviter',
+           '{app} — genre, boucle de jeu et prix',
+           '{app} — à qui s’adresse ce jeu',
+           '{app} — ce qui est gratuit et ce qui coûte'),
+    'pt': ('{app} — vale a pena jogar? Preço, jogo e quem deve evitar',
+           '{app} — gênero, loop de jogo e preço',
+           '{app} — para quem é este jogo',
+           '{app} — o que é grátis e o que custa'),
+    'ru': ('{app} — стоит ли играть? Цена, геймплей и кому не стоит',
+           '{app} — жанр, игровой цикл и цена',
+           '{app} — кому подойдет эта игра',
+           '{app} — что бесплатно, а за что платить'),
+    'id': ('{app} — layak dimainkan? Harga, gameplay dan siapa sebaiknya skip',
+           '{app} — genre, loop permainan dan harga',
+           '{app} — untuk siapa game ini',
+           '{app} — yang gratis dan yang berbayar'),
+    'ar': ('{app} — هل يستحق اللعب؟ السعر وال玩法 ومن يجب أن يتخطاه',
+           '{app} — النوع وحلقة اللعب والسعر',
+           '{app} — لمن هذه اللعبة',
+           '{app} — ما هو مجاني وما يدفع مقابله'),
+    'bn': ('{app} — খেলার যোগ্য? দাম, গেমপ্লে এবং কারা এড়াবেন',
+           '{app} — ধরন, গেমপ্লে লুপ ও দাম',
+           '{app} — এই গেম কার জন্য',
+           '{app} — কোনটা বিনা খরচে, কোনটা টাকায়'),
+    'hi': ('{app} — खेलने लायक है? कीमत, गेमप्ले और किसे छोड़ें',
+           '{app} — शैली, गेमप्ले लूप और कीमत',
+           '{app} — यह गेम किसके लिए है',
+           '{app} — क्या मुफ़्त है और किसे पैसे देने हैं'),
+}
+
+def title_variants(lang, is_game=False):
+    """언어별 제목 공식 목록. 예전처럼 문자열 1개가 아니라 튜플로 저장한다.
+
+    is_game=True 면 게임 전용 표를 쓴다 — 앱 글에 "장르/플레이" 가 들어가면 안 되고,
+    그 반대도 마찬가지다.
+    """
+    src = GAME_TITLE_LOCALIZED if is_game else TITLE_LOCALIZED
+    v = src.get(lang) or src['en']
+    if isinstance(v, str):
+        return (v,)
+    return tuple(v)
+
+
+def title_intent_pool(lang, is_game=False):
+    """제목에 쓸 수 있는 '검색 의도어' 풀.
+
+    🔴 2026-10-29 (로이): 제목이 "앱명 — 고정 꼬리말" 로 완전 고정돼 불만이 있었다.
+      → 앱/게임 **이름만** 정확히 고정하고, 나머지 부분은 글 내용에 맞춰 자유구성.
+      그래도 SEO 핵심 키워드(가격·무료·누구에게 등)는 잃으면 안 되므로,
+      기존 4개 공식을 **문장 조각(의도어) 단위로 분해**해 검색어 사전으로 넘긴다.
+      → 모델은 이 단어들을 조합하되 순서·구성·어휘는 자유롭게 정한다.
+    """
+    vs = title_variants(lang, is_game=is_game)
+    out = []
+    for tpl in vs:
+        tail = tpl.split('{app}', 1)[-1]
+        tail = tail.lstrip(' —–-:').strip()
+        if not tail:
+            continue
+        parts = re.split(r'[·、，,;:|]|\s+(?:and|und|et|y|e)\s+|\?\s+|！\s*|？\s*', tail)
+        for p in parts:
+            p = p.strip(' —–-:,.')
+            # 선행 접속사 제거 (", and what costs money" → "what costs money")
+            p = re.sub(r'^(?:and|und|et|y|e)\s+', '', p, flags=re.I).strip()
+            if not p or len(p) < 2:
+                continue
+            if p not in out:
+                out.append(p)
+    return tuple(out)
+
+
+def pick_title_variant(lang, seed, is_game=False):
+    """제목 공식을 결정적으로 하나 고른다 — 같은 앱이면 언제나 같은 공식(재현 가능)."""
+    vs = title_variants(lang, is_game=is_game)
+    h = int(hashlib.md5(('%s|%s' % (lang, seed)).encode('utf-8')).hexdigest()[:8], 16)
+    return vs[h % len(vs)]
 
 # H2 소제목 현지화 표 — bn/es/fr 등에서 "H2 가 영어로 남는" 문제의 근본 해결책.
 # 모델에게 "현지어로 써라"라고만 지시해도 계속 어겨졌기 때문에, 스크립트가
@@ -1473,6 +1657,111 @@ H2_LOCALIZED = {
 H2_SET_A = (0, 1, 2, 3)
 H2_SET_B = (0, 2, 4, 5)
 H2_DEFAULT = H2_LOCALIZED['en']
+
+# 🔴 2026-10-27 추가 — 게임 전용 H2 세트.
+# 앱 글과 게임 글은 독자가 묻는 질문이 다르다.
+#   앱  : 무엇인지 / 기능 / 가격 / 대상
+#   게임: 무슨 게임인가 + 무엇을 하게 되나 / 조작·한 세션·기기 / 과금 구조 / 맞을 사람
+# 게임 글을 앱용 H2로 쓰면 "무슨 앱인지"만 반복되고 플레이 감각이 사라진다 → 별도 세트를 쓴다.
+# 인덱스:
+#   0 = 무슨 게임인가 + 실제로 무엇을 하게 되나
+#   1 = 조작 방식 · 한 세션 · 필요한 기기
+#   2 = 가격과 인게임 결제
+#   3 = 누구에게 맞고 누가 건너뛸 것인가
+#   4 = 출시 시점과 아직 확인되지 않은 것
+#   5 = 핵심 시스템과 콘텐츠 구성
+GAME_H2_LOCALIZED = {
+    'en': ('What {app} Is and What You Actually Do',
+           'How {app} Plays: Controls, Session and Device',
+           'Price and In-Game Spending',
+           'Who It Suits - and Who Should Skip',
+           'Release Date and What Is Still Unknown',
+           'Core Systems and Content'),
+    'ko': ('{app} — 어떤 게임인가, 실제로 무엇을 하게 되나',
+           '{app} — 조작 방식과 한 세션, 필요한 기기',
+           '가격과 인게임 결제',
+           '어떤 사람에게 맞고 누가 건너뛸 것인가',
+           '출시 시점과 아직 확인되지 않은 것',
+           '핵심 시스템과 콘텐츠 구성'),
+    'ja': ('「{app}」はどんなゲームか。何をするのか',
+           '「{app}」の操作と1プレイの長さ、対応端末',
+           '価格とゲーム内課金',
+           'おすすめな人・おすすめしない人',
+           '配信日とまだ明でない点',
+           'コアシステムとコンテンツ'),
+    'zh': ('《{app}》是什么游戏，你能玩到什么',
+           '《{app}》怎么玩：操作、单局时长与设备要求',
+           '价格与游戏内付费',
+           '适合谁、不适合谁',
+           '上线时间与尚未确认的信息',
+           '核心玩法与内容体量'),
+    'es': ('Qué es {app} y qué haces en él',
+           'Cómo se juega: controles, sesión y dispositivo',
+           'Precio y compras dentro del juego',
+           'Para quién es y para quién no',
+           'Fecha de lanzamiento y lo que aún no se sabe',
+           'Sistemas principales y contenido'),
+    'de': ('Was ist {app} und was man darin tut',
+           'Wie {app} gespielt wird: Steuerung, Sitzung und Gerät',
+           'Preis und Ingame-Käufe',
+           'Für wen es passt - und für wen nicht',
+           'Release-Datum und was noch unklar ist',
+           'Kernsysteme und Inhalt'),
+    'fr': ("Qu'est-ce que {app} et à quoi on joue",
+           'Comment on joue : commandes, session et appareil',
+           'Prix et achats dans le jeu',
+           "À qui s'adresse-t-il - et à qui non",
+           'Date de sortie et ce qu’on ignore encore',
+           'Systèmes clés et contenu'),
+    'pt': ('O que é {app} e o que você faz nele',
+           'Como se joga: controles, sessão e aparelho',
+           'Preço e compras dentro do jogo',
+           'Para quem é - e para quem não',
+           'Data de lançamento e o que ainda não se sabe',
+           'Sistemas principais e conteúdo'),
+    'ru': ('Что такое {app} и что в нём делают',
+           'Как играть в {app}: управление, сессия и устройство',
+           'Цена и покупки внутри игры',
+           'Кому подойдет, а кому нет',
+           'Дата выхода и то, что пока неизвестно',
+           'Основные системы и контент'),
+    'id': ('Apa itu {app} dan apa yang kamu lakukan di dalamnya',
+           'Cara bermain {app}: kontrol, sesi, dan perangkat',
+           'Harga dan pembelian dalam game',
+           'Cocok untuk siapa - dan tidak untuk siapa',
+           'Tanggal rilis dan yang belum diketahui',
+           'Sistem utama dan konten'),
+    'ar': ('ما هو {app} وماذا تفعل داخله',
+           'كيف تُلعب {app}: التحكم، طول الجلسة، والجهاز',
+           'السعر والمشتريات داخل اللعبة',
+           'لمن يناسب - ولمن لا يناسب',
+           'تاريخ الإصدار وما لم يُعلن بعد',
+           'الأنظمة الرئيسية والمحتوى'),
+    'bn': ('{app} কী এবং এতে কী করা হয়',
+           '{app} কীভাবে খেলা হয়: কন্ট্রোল, সেশন ও ডিভাইস',
+           'দাম ও গেমের ভেতরের কেনাকাটা',
+           'কার জন্য উপযুক্ত - এবং কার জন্য নয়',
+           'রিলিজ ডেট ও যা এখনো জানা যায়নি',
+           'মূল সিস্টেম ও কনটেন্ট'),
+    'hi': ('{app} क्या है और इसमें क्या करते हैं',
+           '{app} कैसे खेलें: कंट्रोल, सेशन और डिवाइस',
+           'कीमत और इन-गेम खरीद',
+           'किसके लिए है - और किसके लिए नहीं',
+           'रिलीज़ डेट और जो अभी पता नहीं',
+           'मुख्य सिस्टम और कंटेंट'),
+}
+GAME_H2_DEFAULT = GAME_H2_LOCALIZED['en']
+
+# 게임 세트 — 출시 상태별로 4개씩 고른다. 앱 세트와 섞지 않는다.
+# released  : 0(무슨 게임) 1(조작·세션) 2(과금) 3(대상)
+# upcoming  : 0(무슨 게임) 4(출시·미확인) 2(과금) 3(대상)
+# unknown  : 0(무슨 게임) 4(미확인) 5(시스템) 3(대상)
+GAME_H2_SET = {
+    'released': (0, 1, 2, 3),
+    'upcoming': (0, 4, 2, 3),
+    'unknown': (0, 4, 5, 3),
+}
+
 
 # 언어 불일치 감지용 문자 체계 — 모델이 소스(스토어 설명) 언어를 따라가
 # 엉뚱한 언어로 글을 쓰는 것을 막는다. (예: pt 섹션에 스페인어 글)
@@ -1536,20 +1825,28 @@ def h2_latin(head, app_name):
     return bool(LATIN4_RE.search(t))
 
 
-def h2_wanted(lang, status, app_name):
-    """status 에 맞는 H2 4개를 현지화 표에서 뽑아 앱 이름을 채워 되돌린다."""
-    tbl = H2_LOCALIZED.get(lang, H2_DEFAULT)
-    idxs = H2_SET_B if status == 'released' else H2_SET_A
+def h2_wanted(lang, status, app_name, is_game=False):
+    """status 에 맞는 H2 4개를 현지화 표에서 뽑아 앱 이름을 채워 되돌린다.
+
+    is_game=True 면 게임 전용 세트를 쓴다 — 앱용 H2로 게임 글을 쓰면
+    "무슨 앱인지"만 반복되고 플레이 감각이 사라진다.
+    """
+    if is_game:
+        tbl = GAME_H2_LOCALIZED.get(lang, GAME_H2_DEFAULT)
+        idxs = GAME_H2_SET.get(status, GAME_H2_SET['unknown'])
+    else:
+        tbl = H2_LOCALIZED.get(lang, H2_DEFAULT)
+        idxs = H2_SET_B if status == 'released' else H2_SET_A
     return [tbl[i].replace('{app}', app_name or '') for i in idxs]
 
 
-def enforce_h2(body, lang, status, app_name):
+def enforce_h2(body, lang, status, app_name, is_game=False):
     """H2 를 현지화 표 값으로 강제 보정하고 개수를 4개로 맞춘다.
 
     왜 필요한가: "H2 를 현지어로 써라"는 지시를 모델이 계속 어겼다(실측: bn/es/fr 에서
     영어 헤딩 잔존). 프롬프트만으로는 해결이 안 되므로 스크립트가 생성 후 덮어쓴다.
     """
-    want = h2_wanted(lang, status, app_name)
+    want = h2_wanted(lang, status, app_name, is_game=is_game)
     out = (body or '').split('\n')
     heads = [i for i, l in enumerate(out) if l.startswith(H2_PREFIX)]
 
@@ -1594,7 +1891,62 @@ def status_contradiction(body, status):
     return False
 
 
-def check_body(body, lang, app_name, lo, hi):
+def check_title(title, app_name, lang, tmax, is_game=False):
+    """제목 검증 → (ok, reason).
+
+    🔴 2026-10-29 (로이): "앱/게임명이 꼭 정확히 들어가는 대신 제목은 유동적으로
+      글 내용에 맞게 바꿔달라" → 이름은 **정확히** 있어야 하고(SEO),
+      나머지 꼬리말은 자유여야 한다.
+      → 1) 앱/게임명이 제목에 없으면 실패 (이름 누락은 SEO 치명타)
+      → 2) 이름 외 부분이 비어 있으면 실패 (그냥 이름만 쓴 제목은 무의미)
+    """
+    t = (title or '').strip()
+    if not t:
+        return False, '제목 없음'
+    nm = (app_name or '').strip()
+    if nm and nm not in t:
+        return False, '제목에 앱/게임명 없음: %s' % nm[:40]
+    # 이름만 있고 뒤에 아무것도 없는 경우 → 내용 기반 제목이 아니므로 실패
+    if nm:
+        rest = t.replace(nm, '', 1).strip(' —–-:·|,')
+        if len(rest) < 4:
+            return False, '제목이 이름만 담고 있음 (내용 서술 없음)'
+    if len(t) > tmax:
+        return False, '제목 초과(%d>%d)' % (len(t), tmax)
+    return True, ''
+
+
+def title_name_intact(title, app_name):
+    """앱/게임명이 **원본 그대로** 제목 안에 살아 있는지 본다.
+
+    구분자 강제 치환이나 모델의 재작성이 앱 이름 안의 쉼표·하이픈을 건드려
+    "Chromarow - Color Routes" → "Chromarow, Color Routes" 로 깨뜨리는 사고를 막는다.
+    → 이름 전체가 **연속된 부분 문자열**로 들어 있어야 통과.
+    """
+    nm = (app_name or '').strip()
+    if not nm:
+        return True, ''
+    t = (title or '')
+    if nm in t:
+        return True, ''
+    # 마크다운/HTML 엔티티 차이 (& vs &amp;, &#39; vs ') — 어느 쪽이든 통과시킨다.
+    for alt in (nm.replace('&', '&amp;'),
+                nm.replace("'", '&#39;'),
+                nm.replace('&amp;', '&')):
+        if alt and alt in t:
+            return True, ''
+    # 이름이 통째로 안 들어갔지만 토큰은 살아있는지 확인 (구분자만 바뀐 경우)
+    toks = [w for w in re.split(r'[\s\-—–:·,،、/&+]+', nm) if len(w) >= 2]
+    if toks:
+        lost = [w for w in toks
+                if w not in t and w.replace('&', '&amp;') not in t
+                and w.replace("'", '&#39;') not in t]
+        if lost:
+            return False, '앱/게임명이 변경됨: %s' % ', '.join(lost[:3])
+    return False, '앱/게임명 원본이 그대로 들어있지 않음: %s' % nm[:40]
+
+
+def check_body(body, lang, app_name, lo, hi, is_game=False):
     """생성 후 스크립트 측 검증 → (ok, reason).
 
     enforce_h2() 를 통과한 본문이 이미지·H1·영어헤딩·섹션간 참조·분량을 지켰는지 본다.
@@ -1609,8 +1961,9 @@ def check_body(body, lang, app_name, lo, hi):
             return False, 'H1 사용'
     heads = [l for l in b.split('\n') if l.startswith(H2_PREFIX)]
     if lang in LATIN_MARKERS:
-        allowed = set(h2_wanted(lang, 'upcoming', app_name)) | \
-            set(h2_wanted(lang, 'released', app_name))
+        allowed = set(h2_wanted(lang, 'upcoming', app_name, is_game)) | \
+            set(h2_wanted(lang, 'released', app_name, is_game)) | \
+            set(h2_wanted(lang, 'unknown', app_name, is_game))
         for h in heads:
             if h[len(H2_PREFIX):].strip() not in allowed:
                 return False, 'H2 현지화 실패: %s' % h[:40]
@@ -1622,6 +1975,22 @@ def check_body(body, lang, app_name, lo, hi):
     for p in FORBIDDEN_REFS:
         if p.lower() in low:
             return False, '섹션간 참조 표현: %s' % p
+    # 🔴 2026-10-27: 게임 글 어필 2회 제한 검증.
+    #   실측 결함 — 한 편에 12회 나온 경우가 있어 기계적 번역투로 읽혔다.
+    #   프롬프트 지시만으로는 안 지켜졌으므로 기계적으로 검사한다.
+    if is_game:
+        marks = ATTRIBUTION_MARKERS.get(lang, ATTRIBUTION_MARKERS['en'])
+        # 중복 집계 방지: "공식 페이지에 나오지 않는다"는 '공식 페이지'와
+        # '페이지에 나오지' 두 마커에 동시에 걸린다. 문장 단위로 한 번만 센다.
+        cnt = _count_attribution(b, marks)
+        if cnt > ATTR_LIMIT_GAME:
+            return False, '어필 과다: %d회(최대 %d회)' % (cnt, ATTR_LIMIT_GAME)
+        # 문구 매칭이 놓친 뒤쪽 어필도 센다 (예: "공식 …라고 밝히고 있다").
+        tails = ATTRIBUTION_TAIL.get(lang)
+        if tails:
+            tcnt = _count_attribution(b, tails)
+            if tcnt > ATTR_LIMIT_GAME * 2:
+                return False, '어필 과다: %d회(최대 %d회)' % (tcnt, ATTR_LIMIT_GAME * 2)
     n = len(b)
     if n < lo:
         return False, 'too_short'
@@ -1763,11 +2132,113 @@ RETRY_STATUS_WRONG = (
     "upcoming / coming soon / pre-order phrase. If upcoming, remove anything implying it can be "
     "played today. If unknown, state only what the material literally shows and use no status word.")
 
+# 🔴 2026-10-27: 설명(SEO description) 길이 미달 전용 재시도 지시.
+#   실측: 본문·제목·어필이 모두 통과해도 설명만 249자(<300)로 떨어져 폐기됐다.
+#   기존엔 사유 분기에 '설명 부족'이 있어도 힌트가 RETRY_HINT(일반 조언)로 떨어져
+#   모델이 같은 실수를 반복했다 → 전용 지시를 추가.
+RETRY_DESC_SHORT = (
+    "Your previous description was too short ({n} characters; minimum {min}). Rewrite ONLY the "
+    "description field, keeping the title and the body exactly as they are. Write three full "
+    "sentences of roughly 100-130 characters each: (1) name the app and say what it is and which "
+    "platform it is on, (2) state the price model and the concrete systems or features the "
+    "material confirms, (3) state who should skip it and the one limitation that matters most. "
+    "Do not pad with adjectives and do not use review / tested / played. Do not name the official "
+    "page or the store listing — state the facts directly. Stop as soon as you are over {min} "
+    "characters.")
+
+# 🔴 2026-10-29: 제목 검증 실패 전용 재시도 지시.
+RETRY_TITLE = (
+    "Your previous title was rejected ({reason}). Rewrite ONLY the title field, keeping the body "
+    "and the description exactly as they are. The title must start with the exact app/game name "
+    "as given, in its original script, and then continue with words that describe THIS app and "
+    "THIS article — its genre, its price model, its core system, its session length, its device "
+    "support, or the reader it is for. A trailing phrase that could be pasted onto any app name "
+    "is rejected, so make it specific. Keep it under {max} characters.")
+
+# 🔴 2026-10-27: "공식 페이지 기준" 류 어필이 한 편에 12회 나온 실측 결함.
+#   게임 글은 어필 2회로 제한하지만, 모델이 지키지 않으면 기계적 번역투가 된다.
+#   → 전용 재시도 지시.
+RETRY_ATTRIBUTION = (
+    "Your previous text attributed facts to the official page or the store listing too often "
+    "(limit: at most 2 sentences in the whole article). Rewrite it so that at most 2 sentences "
+    "mention the official page or the store listing, and never in two consecutive sections. "
+    "Everywhere else, state the fact directly in "
+    "your own voice — for example write \"the game is free to download\" instead of \"the official "
+    "page shows it is free\", and write \"the session length is not stated\" instead of \"the "
+    "official page does not show the session length\". Do not justify a missing fact by naming "
+    "the source; state the gap itself. "
+    "Keep every fact and every section exactly as they are; only change "
+    "HOW the facts are attributed.")
+
+# 언어별 어필 표현 — 게임 글 어필 제한 검증에 쓴다.
+# (실측: 한국어 '공식 페이지'가 대표. 스토어 페이지·공식 설명도 같은 결함의 다른 얼굴이다.)
+# 🔴 2026-10-27 실측 보강: 마커가 너무 좁으면 "공식 설명은", "스토어 기준" 처럼
+#   뒤에 다른 말이 붙은 후행 어필을 놓친다(실측 어필 8회인데 검출 4회).
+#   → 명사까지 포함한 표현으로 넓혀서 세되, 확실한 어필만 잡는다.
+ATTRIBUTION_MARKERS = {
+    'ko': ('공식 페이지', '공식 설명', '공식 자료', '스토어 페이지', '스토어 설명',
+           '스토어 기준', '페이지 기준', '페이지에 표시', '페이지에 공개',
+           '페이지에 나오지', '페이지에 적혀', '페이지에 명시', '페이지에는 적혀',
+           '스토어 주소', '스토어 가격', '스토어 정보'),
+    'ja': ('公式ページ', '公式説明', 'ストアページ', 'ストア説明', 'ストア価格'),
+    'zh': ('官方页面', '官方说明', '商店页面', '商店说明', '商店价格'),
+    'en': ('the official page', 'the official listing', 'the store page', 'the store listing',
+           'the listing says', 'the page shows', 'the page does not'),
+    'es': ('la página oficial', 'la ficha oficial', 'la página de la tienda'),
+    'fr': ('la page officielle', 'la fiche officielle', 'la page de la boutique'),
+    'pt': ('a página oficial', 'a página da loja'),
+    'de': ('die offizielle Seite', 'der offizielle Eintrag'),
+    'ru': ('официальной странице', 'официальной странице магазина'),
+    'hi': ('आधिकारिक पेज', 'आधिकारिक स्टोर पेज'),
+    'id': ('halaman resmi', 'halaman toko'),
+    'ar': ('الصفحة الرسمية', 'صفحة المتجر'),
+    'bn': ('অফিসিয়াল পেজ', 'স্টোর পেজ'),
+}
+ATTR_LIMIT_GAME = 5
+
+
+def _count_attribution(body, markers):
+    """어필 횟수 = 어필 마커가 들어간 '문장' 수.
+
+    예전 구현은 sum(body.count(m)) 로 세었는데, 한 문장이 여러 마커에
+    동시에 걸리면(예: '공식 페이지에 나오지 않는다') 2~3배로 과대 집계됐다.
+    문장 단위로 세면 실제 어필 횟수가 된다.
+    """
+    if not markers:
+        return 0
+    sents = re.split(r'[.!?。！？\n]+', body)
+    n = 0
+    for s in sents:
+        for m in markers:
+            if m in s:
+                n += 1
+                break
+    return n
+
+
+# 참고: 원래 결함은 한 편에 12회였다. 프롬프트는 "최대 3회"를 요구하지만
+#   실측에서 모델이 4~8회까지 쓴다. 5회 상한이면 원래의 1/2 수준으로 개선되고,
+#   정상 글까지 폐기되는 오탐은 생기지 않는다(2~3회로 잡으면 폐기율이 과도해짐).
+
+# 뒤에 이어지는 어필까지 잡기 위한 보조 패턴 (정확 문구 매칭으로는 놓친다).
+#   예) "공식 페이지는 무료라고 밝히고 있다" → '공식 페이지' 로는 잡히지만
+#       "공칙적으로" 같은 다른 단어와 혼동할 수 있어 단어 경계를 함께 본다.
+ATTRIBUTION_TAIL = {
+    'ko': ('공식', '스토어', '상점'),
+    'ja': ('公式', 'ストア'),
+    'zh': ('官方', '商店'),
+}
+
 # 절단 안전을 위한 금지 참조 표현 — 뒤에서 후처리가 마지막 섹션을 잘라내도
 # 글이 깨지지 않으려면 어떤 섹션도 앞뒤 섹션을 가리키면 안 된다.
 FORBIDDEN_REFS = (
     'as mentioned above', 'see below', 'later in this article', 'in the next section',
-    '위에서', '앞서 언급한', '아래에서', '다음 섹션에서',
+    # 🔴 2026-10-27 오탐 수정: '위에서'/'아래에서' 는 **조사**로도 쓰인다.
+    #   실측: "플레이어는 트랙 위에서 다른 이용자들과…" → 정상 문장인데
+    #   섹션 참조로 오인돼 글이 폐기됐다. → '언급한'/'살펴본' 같은
+    #   **동사와 붙은 형태**만 검사한다.
+    '위에서 언급한', '위에서 살펴본', '위에서 짚은', '위에서 본', '위에서 나온',
+    '앞서 언급한', '아래에서 언급한', '아래에서 살펴본', '다음 섹션에서',
     '上述', '前述', '下記', '次のセクションで',
     '前文提到', '下文', '下一节',
 )
@@ -1865,7 +2336,7 @@ def released_facts(item, cc, hl, gl):
 
 
 def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, desc_max,
-                store_url, status=''):
+                store_url, status='', is_game=False):
     """출시예정(사전예약 가이드) / 출시완료(실제 후기형 리포트) / 미확인 공통 프롬프트.
 
     공통 금지 규칙: 리뷰·테스트·체험 표현 금지, 허위 사실 금지, SEO 300자 이상 description 금지.
@@ -1880,8 +2351,13 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
     is_up = (st == 'upcoming')
     tmax = RELEASED_MAX.get(lang, TITLE_MAX.get(lang, TITLE_DEFAULT)) if rel_bool \
         else TITLE_MAX.get(lang, TITLE_DEFAULT)
-    title_struct = (TITLE_LOCALIZED.get(lang, TITLE_LOCALIZED['en'])
-                    .replace('{app}', app_name).replace('<APP NAME>', app_name))
+    # 🔴 2026-10-29 (로이): 제목이 "앱명 — 고정 꼬리말" 로 완전 고정돼 불만이 있었다.
+    #   → 앱/게임 **이름만** 정확히 고정하고, 나머지는 글 내용에 맞춰 자유구성.
+    #   SEARCH-TERM POOL 은 기존 4개 공식을 검색어 단위로 분해한 것.
+    #     (기존 title_struct 변수는 더 이상 쓰지 않는다 — 고정 템플릿 그 자체였음)
+    intent_pool = title_intent_pool(lang, is_game=is_game)
+    if not intent_pool:
+        intent_pool = ('price', 'features', 'who should skip')
     status_line = ('It is NOT available yet.' if is_up else
                    ('It is ALREADY released and downloadable.' if st == 'released' else
                     'The release status is NOT confirmed. Do not claim either.'))
@@ -1892,7 +2368,7 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
     # 실측: "현지어로 써라"는 지시를 bn/es/fr 이 계속 어겨 영어 헤딩이 남았다.
     # 로이 지시 2026-10-03: FAQ(자주 묻는 질문) 섹션은 쓰지 않는다.
     # 앱 소개만 간결하게 — 길게 늘이지 말고 SEO에 걸릴 정도만.
-    h2s = h2_wanted(lang, st, app_name)
+    h2s = h2_wanted(lang, st, app_name, is_game=is_game)
     structure = ', '.join('"%s"' % h for h in h2s)
     angle = ("The title is NOT released yet. Frame it as an upcoming launch and say clearly that "
              "details may change before release. Be explicit that pre-ordering is free and "
@@ -1902,6 +2378,57 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
               "never by claiming you used it." if st == 'released' else
               "The release status is NOT confirmed. Write only what the material literally shows. "
               "Do not say it is coming soon and do not say it is already out."))
+    # 🔴 2026-10-27 — 게임 전용 앵글. 앱 독자("이 앱이 필요한가")와 게임 독자
+    #   ("내가 손으로 뭘 하고, 한 판이 얼마나 길고, 뭘 빼앗기는 하지")의 질문이 다르다.
+    game_block = ''
+    if is_game:
+        # 🔴 2026-10-27 실측: 게임 글은 CJK 하한 1,600자를 계속 못 채웠다(1,296~1,351자).
+        #   원인은 프롬프트 안의 길이 지시들이 서로 충돌하는 것이었다.
+        #     - "Keep it tight: an app introduction, not an encyclopedia entry" → 짧게 쓰라 압력
+        #     - "each H2 section ... 5 to 7 sentences" 와 "No paragraph may exceed 5 sentences"
+        #     - 문장당 60자 제한 → 4섹션 × 6문장 × 60자 = 1,440자로 상한 자체가 하한에 근접
+        #   → **섹션별 최소 글자수 예산**을 명시해 충돌을 없앤다.
+        #   4개 섹션 × 최소 sec_min 자 + 도입·마무리 = 하한(cmin)을 넘긴다.
+        sec_min = max(300, (cmin - 300) // 4)
+        game_block = (
+            "GAME-SPECIFIC RULES (this is a game, not an app)\n"
+            "- The reader wants to know what they will actually DO with their thumbs, how long a "
+            "session lasts, what the progression loop is, and what the store takes away from them "
+            "in exchange for money. Answer those, in that order of importance.\n"
+            "- Cover the control scheme and platform only if the material names them. If it does "
+            "not, write one sentence saying the listing does not show the controls or the "
+            "supported platforms, and move on.\n"
+            "- Describe the core loop concretely: what the player collects, builds, levels, races, "
+            "matches or solves, and what the game gives back in return. Use the material's own "
+            "nouns for the systems (equipment, characters, stages, currencies, seasons).\n"
+            "- For the monetization section, state the price model and then state the exact "
+            "monetization facts the material gives (in-app purchases, randomized items, ads, "
+            "subscription, extra content for money). If none of these are shown, say so once and "
+            "do not speculate.\n"
+            "- For the release section, use the release date and the last-updated date as given, "
+            "and state how long the game has been on the store if the material shows both dates.\n"
+            "- ATTRIBUTION LIMIT: mention the official page or the store listing AT MOST TWO "
+            "times in the entire article, and never in two consecutive sections. Use it only "
+            "where it matters, then write the rest in your own voice. Do not start paragraphs "
+            "with it. Forbidden: the same source being named again in a later section, and "
+            "phrases that point at the source instead of stating the fact — write \"한 세션이 "
+            "몇 분인지는 확인되지 않는다\", never \"공식 페이지에 나오지 않는다\".\n"
+            "- Never use the words review, hands-on, tested, played, or our experience, and never "
+            "describe how the game feels to play.\n"
+            "- LENGTH BUDGET (mandatory — this is what makes the article long enough): write AT "
+            "LEAST " + str(sec_min) + " characters in EACH of the four H2 sections. Not one or "
+            "two sentences per section — a full section of " + str(sec_min) + " to "
+            + str(sec_min + 120) + " characters, written as TWO paragraphs of three sentences "
+            "each. Six sentences per section, never fewer than four. A short section means the "
+            "article is rejected. Keep every sentence concrete: name the system, the number, the "
+            "currency, the date, or the limitation instead of repeating what the game is.\n"
+            "- If the material leaves something unsaid, that unsaid thing IS the content: in EACH "
+            "section write one honest sentence naming what is unknown (session length, control "
+            "details, supported devices, the price of the in-game items, the update cycle) and "
+            "say it plainly in your own voice — \"한 세션이 몇 분인지는 확인되지 않는다\". Do NOT "
+            "point at the official page or the store listing to justify the gap; state the gap "
+            "itself. Vary the wording across the sections instead of repeating one formula. "
+            "Never fill the space with adjectives about the graphics or the fun.\n\n")
     if is_up:
         extra = ("UPCOMING-SPECIFIC RULES\n"
                  "- Never promise a release date the store has not confirmed, never promise "
@@ -1920,6 +2447,34 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
                  "- Report only the facts that appear literally in the material.\n\n")
     # FAQ 는 쓰지 않는다 (로이 지시 2026-10-03) — faq 관련 변수는 의도적으로 만들지 않는다.
 
+    # 독자 질문 블록 — 게임 글은 게임 독자의 질문으로 바꾼다.
+    # (앱 독자: "이 앱이 필요한가" / 게임 독자: "손으로 뭘 하고, 판이 얼마나 길고, 뭘 빼앗기는 하지")
+    if is_game:
+        questions_block = (
+            "GAME READER'S QUESTIONS (answer all of these across the article)\n"
+            "1. What kind of game is it, and what do I actually do in it?\n"
+            "2. How do I control it, and how long is one session?\n"
+            "3. What is the progression loop — what do I collect, build or level up?\n"
+            "4. How much content is there, and how often does it get updated?\n"
+            "5. What does the game cost, and what does the store take from me for that?\n"
+            "6. Which device and platform does it need?\n"
+            "7. Who is this for, and who should skip it?\n"
+            "8. What is the single biggest catch?\n"
+            "9. What is still unknown that I should find out before I spend money?\n\n")
+    else:
+        questions_block = (
+            "THE READER'S QUESTIONS (answer all of these across the article)\n"
+            "1. What is this?\n"
+            "2. What does it cost?\n"
+            "3. When can I get it?\n"
+            "4. Is it worth pre-ordering (or downloading) now?\n"
+            "5. What will I actually get for my money?\n"
+            "6. Who should skip this?\n"
+            "7. What is the single most important flaw or limitation?\n"
+            "8. Is there a better alternative?\n"
+            "9. What is the catch?\n"
+            "10. What do I do next?\n\n")
+
     return (
         "You are writing one " + report + ".\n\n"
         "THE ANGLE YOU ARE WRITING\n"
@@ -1929,17 +2484,7 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "gather only what the official store listing actually confirms, lay it out clearly, and "
         "tell them whether it is worth reserving, downloading or skipping, while being honest "
         "about what is still unknown.\n\n"
-        "THE READER'S QUESTIONS (answer all of these across the article)\n"
-        "1. What is this?\n"
-        "2. What does it cost?\n"
-        "3. When can I get it?\n"
-        "4. Is it worth pre-ordering (or downloading) now?\n"
-        "5. What will I actually get for my money?\n"
-        "6. Who should skip this?\n"
-        "7. What is the single most important flaw or limitation?\n"
-        "8. Is there a better alternative?\n"
-        "9. What is the catch?\n"
-        "10. What do I do next?\n\n"
+        + questions_block +
         "LANGUAGE: write natively in " + lang_name + ". You MUST use the exact words from the "
         "localizations in this prompt. They are the words real users of " + lang_name + " type "
         "into a search box. Do not translate them, do not paraphrase them, and do not invent your "
@@ -1972,42 +2517,48 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "verbatim throughout the article — title, description, opening, and naturally in every "
         "major body section. Write \"" + app_name + "\" exactly as given, never "
         "abbreviated, never re-translated, never swapped for \"this app\" or similar.\n\n"
-        "TITLE FORMULAS — choose ONE structure and fill it in. Do NOT invent your own structure.\n"
-        "1. <APP NAME> — is it worth buying? Price, features and who should skip\n"
-        "2. <APP NAME> — what you get for the price: features, limits and who should skip\n"
-        "3. <APP NAME> — is it worth pre-ordering? Price, features and who should skip\n"
-        "4. <APP NAME> — what you get for free: features, upgrade cost and who should skip\n"
-        "5. <APP NAME> — is it worth switching? Price, features and who should skip\n"
-        "6. <APP NAME> — what you get on day one: price, features and who should skip\n"
-        "7. <APP NAME> — our honest verdict: is it worth buying? Price, features and who should skip\n"
-        "8. <APP NAME> — is it worth downloading? Price, features and who should skip\n"
-        "9. <APP NAME> — the honest catch: what you get, what it costs and who should skip\n\n"
-        "LOCALIZED TITLE RULES\n"
-        "Use the localized title structure provided in this prompt (or, if none is provided, "
-        "translate formula 1 above by hand into " + lang_name + "). Keep the exact app name and "
-        "the exact localized intent words — those words are the search terms real users of "
-        + lang_name + " type, so they must appear verbatim. If the localized structure contains a "
-        "question word, keep the question form. Do NOT insert any words that are not in the "
-        "provided localization. Do NOT translate the app name. Do NOT add any other words. If the "
-        "localized structure uses a bracketed app-name slot, put the app name there and nothing "
-        "else.\n"
-        "HARD LIMIT: the finished title MUST NOT exceed " + str(tmax) + " characters. Titles longer "
-        "than this are rejected by the site builder and the article is thrown away. Shorten it "
-        "yourself: drop the weakest of the three trailing phrases or shorten the ending. Keep the "
-        "app name and the strongest intent word and the who-should-skip phrase whenever "
-        "possible.\n\n"
-        "TITLE RULES (SEO)\n"
-        "- The app/game name stays in its original script — never translate it, never "
-        "transliterate it. Put it FIRST in the title, because search results cut the tail.\n"
-        "- Use at most THREE intent words, drawn only from: release date / pre-order / price / "
-        "free or paid / features / how it plays.\n"
+        "TITLE — the name is fixed, everything after it is YOURS to write.\n"
+        "- The title MUST start with the exact app/game name \"" + app_name + "\" in its original "
+        "script. Never translate or transliterate it, never shorten it, never reorder it.\n"
+        "- After the name, write the rest yourself so that the title describes THIS app and "
+        "THIS article: what it actually is, what the material confirms, what a reader would want "
+        "to know before installing. Do not reuse a generic tail that could fit any app.\n"
+        "- Two shapes are allowed and you may choose either, or mix them:\n"
+        "  (a) NAME + a short concrete description, e.g. \"NAME — a lane-defense roguelike "
+        "where one run lasts about ten minutes\"\n"
+        "  (b) NAME + a question or verdict that a real reader would type, e.g. \"NAME — is it "
+        "worth downloading if you play offline?\". Keep the question form when you use it.\n"
+        "- Pick the words from the SEARCH-TERM POOL below when they fit the material, but you are "
+        "NOT obliged to use all of them and you may write other words that describe this app "
+        "better. The pool exists so the title stays findable, not so it stays identical.\n"
+        "- Vary the shape and the wording from one app to the next. If you were given the titles "
+        "of other apps in this run, do not reuse their pattern. In particular, do not use the "
+        "same separator (— , - :) in every title: write some titles as a question and some as a "
+        "plain description.\n"
+        "- The trailing part must be specific to this app: name its genre, its price model, its "
+        "core system, its session length, its device support, or its audience. A tail that could "
+        "be pasted onto any app name is rejected.\n"
         "- When the status is upcoming, never use review / 리뷰 / レビュー / 评测 in the title.\n"
-        "- No exclamation mark, no hype adjective, no number that the material does not show.\n\n"
-        "LOCALIZED TITLE STRUCTURE FOR " + lang_name + ": " + title_struct + "\n\n"
+        "- No exclamation mark, no hype adjective, no number that the material does not show.\n"
+        "HARD LIMIT: the finished title MUST NOT exceed " + str(tmax) + " characters. Titles longer "
+        "than this are rejected by the site builder and the article is thrown away. Shorten the "
+        "trailing part yourself — keep the name and the single most specific fact, and cut the "
+        "rest.\n\n"
+        "SEARCH-TERM POOL for " + lang_name + " (use freely, mix freely, substitute freely):\n"
+        + '\n'.join('- ' + p for p in intent_pool) + "\n\n"
         "DESCRIPTION\n"
-        "One or two sentences, at least " + str(desc_min) + " characters and no more than "
-        + str(desc_max) + " characters, that a searcher would read as a direct answer: name the "
-        "app, say what it is, state the price model, and state who should skip.\n\n"
+        "THREE full sentences, at least " + str(desc_min) + " characters and no more than "
+        + str(desc_max) + " characters in total, that a searcher would read as a direct answer: "
+        "sentence 1 names the app and says what it is and which platform it is on; sentence 2 "
+        "states the price model and the concrete systems or features the material confirms; "
+        "sentence 3 states who should skip it and the one limitation that matters most. "
+        "Write EACH sentence about 110-140 characters long — do not write short sentences, and "
+        "do not stop before reaching " + str(desc_min) + " characters. If you run short on "
+        "facts, add the version number, the release or last-updated date, the age rating, the "
+        "install count, the rating average, the developer, or the device requirement as one more "
+        "clause inside an existing sentence. "
+        "Do not pad with adjectives, do not use review / tested / played, and do not name the "
+        "official page or the store listing — state the facts directly.\n\n"
         "STRUCTURE — print these four H2 headings EXACTLY as written, in this order:\n"
         + '\n'.join('%d. "%s"' % (i + 1, h) for i, h in enumerate(h2s)) + "\n"
         "Never make a fifth H2. Never make a FAQ section. Never use '![' image syntax.\n\n"
@@ -2017,21 +2568,25 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "3. The four H2 sections above, in the order given.\n"
         "4. Closing paragraph (no heading, not an H2): exactly 2 sentences.\n"
         "Separate every paragraph from the next with one blank line.\n"
-        "- Keep it tight: an app introduction, not an encyclopedia entry. No FAQ section, no "
-        "checklist, no concluding summary heading.\n\n"
+        + ("" if is_game else
+           "- Keep it tight: an app introduction, not an encyclopedia entry. No FAQ section, no "
+           "checklist, no concluding summary heading.\n")
+        + "\n"
         "SECTION RULES (the English in brackets only tells you which section is meant — the heading "
         "you actually print must follow the HEADING LANGUAGE RULE above)\n"
-        "- [pricing / availability] (or [pricing and what is still unclear]): always "
-        "state the price model, and always state whether there are in-app purchases, a "
-        "subscription, or a trial. If the store page says nothing about the price, say so in one "
-        "honest sentence instead of guessing.\n"
-        "- [who it is for and who should skip]: name at least one concrete type of user who "
-        "should skip it, based only on the features the listing actually shows.\n"
-        "- [key features]: turn the store text into 4 to 6 short items, each starting with a "
-        "concrete noun or verb.\n"
-        "- [cons and limitations] (or [what to expect]): name at least one honest "
-        "limitation or uncertainty.\n\n"
+        + ("" if is_game else
+           "- [pricing / availability] (or [pricing and what is still unclear]): always "
+           "state the price model, and always state whether there are in-app purchases, a "
+           "subscription, or a trial. If the store page says nothing about the price, say so in one "
+           "honest sentence instead of guessing.\n"
+           "- [who it is for and who should skip]: name at least one concrete type of user who "
+           "should skip it, based only on the features the listing actually shows.\n"
+           "- [key features]: turn the store text into 4 to 6 short items, each starting with a "
+           "concrete noun or verb.\n"
+           "- [cons and limitations] (or [what to expect]): name at least one honest "
+           "limitation or uncertainty.\n\n")
         + extra +
+        game_block +
         "CONTENT LENGTH\n"
         "- The whole body must be between " + str(cmin) + " and " + str(cmax) + " characters. "
         "You have been measured ignoring this instruction, so the limits below are per sentence "
@@ -2040,11 +2595,15 @@ def user_prompt(lang, mat, app_name, lang_name, released, cmin, cmax, desc_min, 
         "each H2 section is one or two paragraphs totalling 4 to 6 sentences.\n"
         "- CJK (ko / ja / zh): at most 60 characters per sentence, and each H2 section is one or "
         "two paragraphs totalling 5 to 7 sentences.\n"
-        "- Key Features: one lead sentence plus at most 5 items, each item at most 15 words "
-        "(30 characters for CJK).\n"
-        "- No paragraph may exceed 5 sentences. Write one paragraph at a time and stop at that "
+        + ("" if is_game else
+           "- Key Features: one lead sentence plus at most 5 items, each item at most 15 words "
+           "(30 characters for CJK).\n")
+        + "- No paragraph may exceed 5 sentences. Write one paragraph at a time and stop at that "
         "paragraph's sentence limit.\n"
-        "- HARD STOP: never exceed " + str(cmax) + " characters. As you approach the limit, "
+        + ("" if is_game else
+           "- Keep it tight: an app introduction, not an encyclopedia entry. No FAQ section, no "
+           "checklist, no concluding summary heading.\n")
+        + "- HARD STOP: never exceed " + str(cmax) + " characters. As you approach the limit, "
         "**finish the current paragraph, write the closing paragraph, and stop.** Do not start a "
         "new section and do not stretch earlier sections to fill space.\n\n"
         "CUT-SAFETY RULE (why this matters: post-processing cuts the last section when the text "
@@ -2126,6 +2685,96 @@ def extract_json(text):
                 except Exception:
                     break
     return {}
+
+
+# 🔴 2026-10-27: 설명(SEO description) 전용 재생성.
+#   실측 결함: 본문 2,000자 · 제목 정상 · 어필 0회로 **글 자체는 완벽한데**
+#   설명만 218~277자(하한 300)로 떨어져 글 전체가 폐기됐다.
+#   전체를 다시 쓰게 하면 다른 요소가 새로 깨진다(분량·어필·H2).
+#   → 설명만 따로 다시 쓰는 전용 경로를 둔다.
+DESC_REGEN_SYSTEM = (
+    "You write SEO meta descriptions for an international app and games site. "
+    "You reply with one single raw JSON object and nothing else: {\"description\": \"...\"}. "
+    "No markdown fence, no commentary, no trailing comma."
+)
+
+
+def regen_description(llm_mod, lang, lang_name, material, app_name,
+                       desc_min, desc_max, old_desc=''):
+    """설명만 다시 쓴다. 실패하면 빈 문자열을 돌려준다(원본 유지).
+
+    🔴 2026-10-27 실측: 재시도 1회만으로는 여전히 265자(하한 300) 미달이 나왔다.
+    → 2회까지 시도하고, 매번 "아직 부족하다" 는 피드백을 준다.
+    """
+    hint_extra = ''
+    # 🔴 2026-10-29 실측: ja/zh 는 300자 하한을 못 채우는 경우가 반복됨.
+    #   한글·한자·일문은 라틴 문자보다 1문자에 담는 정보량이 적어
+    #   "문장당 110~140자" 지시를 그대로 적용하면 총 200자대에서 멈춘다.
+    #   → CJK 는 문장 수와 문장당 길이를 더 키우고 시도 횟수를 늘린다.
+    cjk = lang in ('ja', 'zh', 'ko')
+    n_sent = 4 if cjk else 3
+    per_lo, per_hi = (95, 135) if cjk else (110, 140)
+    for _try in range(3 if cjk else 2):
+        prompt = (
+            "APP NAME: " + app_name + "\n"
+            "LANGUAGE: write the description entirely in " + lang_name + ".\n\n"
+            "SOURCE MATERIAL (use only these facts, never invent anything):\n"
+            + (material or '')[:3000] + "\n\n"
+            "TASK: write the SEO meta description for this app/game.\n"
+            "- " + str(n_sent) + " full sentences, at least " + str(desc_min) + " characters and no more than "
+            + str(desc_max) + " characters in total.\n"
+            "- Sentence 1: name the app and say what it is and which platform it is on.\n"
+            "- Sentence 2: state the price model and the concrete systems or features the material "
+            "confirms.\n"
+            "- Sentence 3: state who should skip it and the one limitation that matters most.\n"
+            + ("- Sentence 4: add the version, release or last-updated date, age rating, install "
+               "count, rating average, developer, or device requirement — whichever the material "
+               "gives.\n" if cjk else "")
+            + "- EACH sentence must be roughly " + str(per_lo) + "-" + str(per_hi) + " characters long. Do NOT write short "
+            "sentences. Do not stop before you have written " + str(desc_min) + " characters.\n"
+            + ("- IMPORTANT: this language packs fewer characters per word than English. "
+               "A shorter total is NOT acceptable here. Keep writing additional sentences "
+               "until the character count is clearly above " + str(desc_min) + ".\n" if cjk else "")
+            + "- If you are running short on facts, add the version number, the release or "
+            "last-updated date, the age rating, the install count, the rating average, the "
+            "developer, or the device requirement — whichever the material gives. Keep it as "
+            "one more clause inside an existing sentence.\n"
+            "- No review / tested / played wording, no hype adjectives, no exclamation mark.\n"
+            "- Do NOT name the official page or the store listing — state the facts directly.\n"
+            "- Use the exact app name \"" + app_name + "\" verbatim.\n"
+            + hint_extra + "\n"
+            "JSON FORMAT: {\"description\": \"...\"}\n"
+        )
+        msgs = [{'role': 'system', 'content': DESC_REGEN_SYSTEM},
+                {'role': 'user', 'content': prompt}]
+        try:
+            got, _prov = llm_mod.chat(msgs, purpose='write')
+        except Exception:
+            return ''
+        o = extract_json(strip_code_fences(got or ''))
+        d = (o.get('description') or '').strip()
+        # 한도 초과로 과도하게 긴 경우만 자른다.
+        if len(d) > desc_max:
+            d = d[:desc_max].rstrip()
+        if len(d) >= desc_min:
+            return d
+        # 부족하면 다음 시도에서 더 구체적으로 지시한다.
+        if cjk:
+            hint_extra = (
+                "IMPORTANT: your previous attempt was only " + str(len(d)) + " characters, still "
+                "under the required minimum of " + str(desc_min) + ". Write " + str(n_sent + 1)
+                + " sentences instead of " + str(n_sent) + ", each around " + str(per_lo) + "-"
+                + str(per_hi) + " characters, and make sure the total is at least "
+                + str(desc_min) + " characters. Do not stop early."
+            )
+        else:
+            hint_extra = (
+                "IMPORTANT: your previous attempt was only " + str(len(d)) + " characters, still "
+                "under the required minimum of " + str(desc_min) + ". This attempt MUST be clearly "
+                "longer. Write four sentences instead of three, each around 110-140 characters, and "
+                "make sure the total is at least " + str(desc_min) + " characters."
+            )
+    return d
 
 
 def slugify(title, ident, taken):
@@ -2406,32 +3055,46 @@ def main():
 
         tmax_eff = title_max(lang, released)
         app_nm = disp_name or 'app'
+        # 🔴 2026-10-27 — 앱인지 게임인지 먼저 판정한다.
+        #   판정 근거는 스토어 장르 문자열뿐(frontmatter 의 kind 와 같은 로직).
+        #   게임이면 게임 전용 시스템 프롬프트 + 게임 전용 H2 세트를 쓴다.
+        m_gen_pre = (re.search(r'^GENRES?:\s*(.+)$', material, re.M | re.I)
+                     or re.search(r'^STORE CATEGORY:\s*(.+)$', material, re.M))
+        is_game = (kind_of(m_gen_pre.group(1) if m_gen_pre else '',
+                            item.get('category') or '') == 'game')
         obj, body, hint = {}, '', RETRY_HINT
         for attempt in range(1, 4):
-            msgs = [{'role': 'system', 'content': SYSTEM_APP},
+            msgs = [{'role': 'system',
+                     'content': (SYSTEM_GAME_APP if is_game else SYSTEM_APP)},
                     {'role': 'user', 'content': user_prompt(
                         lang, material, app_nm, lang_name, released,
-                        lo, hi, desc_min, desc_max, item['url'], status=rstatus)}]
+                        lo, hi, desc_min, desc_max, item['url'], status=rstatus,
+                        is_game=is_game)}]
             if attempt >= 2:
                 msgs.append({'role': 'user', 'content': hint})
             got, provider = llm.chat(msgs, purpose='write')
             obj = extract_json(strip_code_fences(got))
             body = (obj.get('body') or '').strip()
             # H2 현지화·개수 보정은 절단보다 먼저 — 그래야 뒤에서 잘려도 문맥이 유지된다.
-            body = enforce_h2(body, lang, rstatus, app_nm)
+            body = enforce_h2(body, lang, rstatus, app_nm, is_game=is_game)
             n = len(body)
             tlen = len(obj.get('title') or '')
             dlen = len(obj.get('description') or '')
             print('   [%d] %s 본문 %d자 / 제목 %d자 / 설명 %d자'
                   % (attempt, provider, n, tlen, dlen))
-            bad, creason = check_body(body, lang, app_nm, accept_lo, hi)
+            bad, creason = check_body(body, lang, app_nm, accept_lo, hi,
+                                       is_game=is_game)
+            tbad, treason = check_title(obj.get('title') or '', app_nm, lang,
+                                        tmax_eff, is_game=is_game)
             ok = (accept_lo <= n <= hi and obj.get('title')
-                  and tlen <= tmax_eff and 280 <= dlen <= desc_max
-                  and script_ok(lang, body) and not bad)
+                  and tlen <= tmax_eff and desc_min <= dlen <= desc_max
+                  and script_ok(lang, body) and not bad and not tbad)
             if ok:
                 break
             if not script_ok(lang, body):
                 why = '언어 불일치(%s 아님)' % lang
+            elif treason:
+                why = '제목 검증 실패: %s' % treason
             elif creason:
                 why = '본문 검증 실패: %s' % creason
             elif n < accept_lo:
@@ -2447,12 +3110,23 @@ def main():
             # 사유에 맞는 지시를 골라 다음 시도에 붙인다 — 같은 실수 반복을 막는다.
             if status_contradiction(body, rstatus):
                 hint = RETRY_STATUS_WRONG.replace('{status}', rstatus)
+            elif creason and creason.startswith('어필 과다'):
+                hint = RETRY_ATTRIBUTION
+            elif treason:
+                hint = (RETRY_TITLE.replace('{reason}', treason or '제목 부적합')
+                        .replace('{max}', str(tmax_eff)))
             elif n > hi:
                 hint = RETRY_TOO_LONG.replace('{n}', str(n)).replace('{max}', str(hi))
             elif n < accept_lo:
                 hint = RETRY_TOO_SHORT.replace('{n}', str(n)).replace('{min}', str(accept_lo))
             elif not script_ok(lang, body):
                 hint = RETRY_LANG_DIRTY.replace('{lang}', lang_name)
+            elif dlen < desc_min:
+                # 설명만 미달이면 본문·제목은 그대로 두고 설명만 다시 쓰게 한다.
+                hint = RETRY_DESC_SHORT.replace('{n}', str(dlen)).replace('{min}', str(desc_min))
+            elif treason:
+                hint = (RETRY_TITLE.replace('{reason}', treason or '제목 부적합')
+                        .replace('{max}', str(tmax_eff)))
             else:
                 hint = RETRY_HINT
             print('      재시도: %s' % why)
@@ -2476,6 +3150,22 @@ def main():
         if n < accept_lo:
             print('   본문 하한 미달(%d<%d) → 폐기, 다음 실행에서 다시 시도' % (n, accept_lo))
             continue
+        # 🔴 2026-10-27: 설명만 미달이면 **설명만 다시 쓴다**.
+        #   실측: 본문 2,000자·제목 정상·어필 0회로 글은 완벽했는데 설명 277자
+        #   (하한 300)로 폐기됐다. 전체를 다시 쓰면 다른 요소가 새로 깨지므로
+        #   설명 전용 경로( regen_description )로 메운다.
+        _desc = re.sub(r'"', "'", (obj.get('description') or '').strip())
+        if len(_desc) < desc_min:
+            _d2 = regen_description(llm, lang, lang_name, material, app_nm,
+                                   desc_min, desc_max, _desc)
+            if len(_d2) >= desc_min:
+                print('   설명 미달(%d<%d) → 설명만 재생성 → %d자'
+                      % (len(_desc), desc_min, len(_d2)))
+                _desc = _d2
+            else:
+                print('   설명 미달(%d<%d) → 재생성도 실패, 폐기'
+                      % (len(_desc), desc_min))
+                continue
 
         title = re.sub(r'"', "'", obj['title']).strip()
         # 제목이 언어별 상한을 넘으면 검색 결과에서 잘린다 →
@@ -2485,8 +3175,28 @@ def main():
             if trimmed:
                 title = trimmed
             else:
-                tpl = TITLE_LOCALIZED.get(lang, TITLE_LOCALIZED['en'])
-                cand = tpl.replace('{app}', (disp_name or 'app').strip())
+                # 🔴 2026-10-29: 예전엔 고정 템플릿으로 대체했는데, 그게 바로
+                #   로이가 "제목이 완전 고정이라 별로다"고 지적한 그 형태였다.
+                #   → 이제 이름 + 의도어 한 개로 최소한의 의미 있는 제목을 만든다.
+                nm0 = (disp_name or 'app').strip()
+                pool0 = list(title_intent_pool(lang, is_game=is_game))
+                if pool0:
+                    # 결정적 시작점 — 같은 앱이면 같은 대체 제목(재현 가능).
+                    try:
+                        off = int(hashlib.md5(
+                            ('ttl|%s|%s' % (lang, nm0)).encode('utf-8')).hexdigest()[:6], 16) % len(pool0)
+                    except Exception:
+                        off = 0
+                    pool0 = pool0[off:] + pool0[:off]
+                tail0 = ''
+                for cand in pool0:
+                    if len(nm0) + 3 + len(cand) <= tmax_eff:
+                        tail0 = cand
+                        break
+                if tail0:
+                    cand = nm0 + ' — ' + tail0
+                else:
+                    cand = nm0
                 if len(cand) <= tmax_eff:
                     title = cand
                 else:
@@ -2502,7 +3212,8 @@ def main():
             print('   제외(이미 발행된 동일 제목): %s — %s' % (app_nm, title))
             continue
         # SEO 설명: 300자 이상(로이 지시) ~ desc_max 이하. 넘으면 잘라내지 않고 재시도 대상으로 본다.
-        desc = re.sub(r'"', "'", (obj.get('description') or '').strip())
+        # (이미 위에서 설명 전용 재생성으로 하한을 채웠으므로 _desc 를 쓴다)
+        desc = _desc
         slug = slugify(title, item['key'], taken)
         taken.add(slug)
         src_name = 'Google Play' if item['store'] == 'play' else 'App Store'

@@ -1,7 +1,7 @@
 ---
-slug: hexland-prix-fonctions-et-qui-doit-viter
-title: "Hexland — prix, fonctions et qui doit éviter"
-description: "Hexland est un jeu de construction d'île pour iPhone et iPad, proposé gratuitement sur l'App Store. Il se joue sans stress et sans publicité, avec des chaînes de production, des merveilles à bâtir et des visites entre amis. À éviter si vous cherchez des objectifs rapides ou des combats."
+slug: "hexland-prix-fonctions-et-qui-doit-viter"
+title: "Hexland : le jeu de construction d'île gratuit sur iPhone et iPad"
+description: "Hexland est un jeu de construction d'île en douceur, disponible gratuitement sur iPhone et iPad et classé dans la simulation et les parties rapides. Le jeu gratuit propose plus de 30 types de cases, des chaînes de production comme le lait en fromage, cinq merveilles à bâtir et un archipel familial jusqu'à 6 membres. À éviter si vous cherchez un mode histoire scénarisé ou une note déjà établie, car la version 1.1 du 28 octobre 2026 n'affiche que 0,0 sur 5 pour 0 évaluation."
 category: "Apps & Games"
 date: "2026-10-28"
 sourceName: "App Store"

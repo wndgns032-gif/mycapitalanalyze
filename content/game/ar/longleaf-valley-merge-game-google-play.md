@@ -1,7 +1,7 @@
 ---
-slug: longleaf-valley-merge-game-google-play
-title: "Longleaf Valley: Merge Game - التطبيقات على Google Play"
-description: "Longleaf Valley: Merge Game - التطبيقات على Google Play هي لعبة ألغاز مجانية من TreesPlease Games Ltd تقوم على دمج الأشياء وترميم وادٍ طبيعي. تتيح اللعبة دعم زراعة أشجار حقيقية عبر شراكة مع Eden: People + Planet، لكنها لا تناسب من يفضّل ألعابًا سريعة الإيقاع أو لا يريد الانتظار بين الحركات."
+slug: "longleaf-valley-merge-game-google-play"
+title: "Longleaf Valley: Merge Game — لعبة دمج مجانية لترميم الطبيعة"
+description: "لعبة Longleaf Valley: Merge Game هي لعبة ألغاز مجانية على Google Play من تطوير TreesPlease Games Ltd تقوم على دمج الأشياء لترميم وادٍ طبيعي. السعر مجاني وتشمل دمج الأشياء لزراعة أشجار حقيقية بالشراكة مع Eden: People + Planet وترميم حديقة وطنية وإنقاذ الحيوانات وجمعها وفعاليات بمكافآت حصرية وتقييم 4.5 من 5. يستبعدها من يفضّل الألعاب السريعة أو القتالية، وأهم قيد أن المشتريات الداخلية وتاريخ التحديث غير موضحين في المصدر الرسمي."
 category: "Apps & Games"
 date: "2026-10-24"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Longleaf Valley: Merge Game - التطبيقات على Google Play](/assets/img/apps/app-bdb5be43fe.jpg)
+![Longleaf Valley: Merge Game](/assets/img/apps/app-bdb5be43fe.jpg)
 
-Longleaf Valley: Merge Game - التطبيقات على Google Play لعبة ألغاز مجانية من تطوير TreesPlease Games Ltd، وتقوم فكرتها على دمج الأشياء لترميم وادٍ طبيعي. تصنّفها المتجر ضمن ألعاب الألغاز، وهي متاحة للتنزيل الآن. تذكر صفحتها الرسمية أن اللعبة تجمع بين الدمج والاسترخاء وترميم البيئة.
+Longleaf Valley: Merge Game -  لعبة ألغاز مجانية من تطوير TreesPlease Games Ltd، وتقوم فكرتها على دمج الأشياء لترميم وادٍ طبيعي. تصنّفها المتجر ضمن ألعاب الألغاز، وهي متاحة للتنزيل الآن. تذكر صفحتها الرسمية أن اللعبة تجمع بين الدمج والاسترخاء وترميم البيئة.
 
 تقول الصفحة إن اللعبة ساهمت في زراعة مليوني شجرة، وإن كل حركة دمج يمكن أن تدعم زراعة أشجار حقيقية بالشراكة مع Eden: People + Planet. ويقيّمها المستخدمون بـ 4.5 من 5 بناءً على 23792 تقييمًا. لا تعرض الصفحة عدد التنزيلات ولا تاريخ آخر تحديث.
 
-## ما هو Longleaf Valley: Merge Game - التطبيقات على Google Play؟
+## ما هو Longleaf Valley: Merge Game -  ؟
 
 هي لعبة دمج تدور حول تحويل حديقة وطنية مُدمرة إلى مساحة طبيعية مزدهرة. تذكر الصفحة أن اللاعب يكتشف أسرار الدمار البيئي مع مجموعة من الشخصيات الجذابة. وتضيف أن اللعب يشمل إيقاف المشاريع الجشعة وإنقاذ الحيوانات وجمعها.
 

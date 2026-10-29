@@ -1,7 +1,7 @@
 ---
-slug: harf-arabic-word-game
-title: "Harf: Arabic Word Game — السعر، الميزات، ومن يتجنبها"
-description: "Harf: Arabic Word Game لعبة كلمات عربية مجانية على App Store: خمّن كلمة من خمسة أحرف في ست محاولات، مع وضع يومي ومستويات لا نهائية وإعلانات. النسخة 1.0 ولا توجد تقييمات بعد، وشراء Harf Premium مرة واحدة يزيل الإعلانات. من يريد لعبة بلا إعلانات من البداية قد يفضّل التجربة قبل الدفع."
+slug: "harf-arabic-word-game"
+title: "Harf: Arabic Word Game: لعبة كلمات عربية مجانية بخمسة أحرف"
+description: "Harf: Arabic Word Game هي لعبة كلمات عربية من تطوير Tariq Al-aqrabawi، متاحة الآن على App Store لأجهزة iPhone وiPad وiPod touch بتصنيف Word وEducation وPuzzle. اللعبة مجانية مع إعلانات، وتقدّم كلمة يومية ومستويات لا نهائية تمنح عملات للتلميحات ووضعاً صعباً وإحصاءات ونتائج قابلة للمشاركة، مع شراء Harf Premium مرة واحدة يزيل الإعلانات. من يكره الإعلانات تماماً أو يريد ضماناً مسبقاً لجودة التجربة قد يفضّل التخطي، إذ لا تملك النسخة 1.0 أي تقييم بعد ولا يذكر سعر Harf Premium."
 category: "Apps & Games"
 date: "2026-10-28"
 sourceName: "App Store"

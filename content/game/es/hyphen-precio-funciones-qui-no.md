@@ -1,7 +1,7 @@
 ---
-slug: hyphen-precio-funciones-qui-no
-title: "Hyphen — precio, funciones y a quién no"
-description: "Hyphen es un juego de puzle y acción de precisión para iOS en el que guías un palo giratorio por laberintos de neón. Cuesta 4,99 € y se puede reservar ya en la App Store, con lanzamiento previsto para el 28 de octubre de 2026. No incluye anuncios, suscripciones ni microtransacciones."
+slug: "hyphen-precio-funciones-qui-no"
+title: "Hyphen, puzle de precisión por 4,99 € y sin anuncios"
+description: "Hyphen es un juego de puzle y acción para iOS en el que guías un palo en rotación constante por laberintos de neón, obra de Aremtec Group Ltd. Cuesta 4,99 € como pago único, sin anuncios ni microtransacciones, con 36 niveles de campaña, niveles de la comunidad, dos minijuegos, controles táctiles y mando. Deberían saltárselo quienes busquen una experiencia relajada, porque su dificultad tensa y frustrante devuelve al inicio del tramo con un solo error."
 category: "Apps & Games"
 date: "2026-10-28"
 sourceName: "App Store"
@@ -15,7 +15,7 @@ developer: "Aremtec Group Ltd"
 genre: "Juegos, Puzle, Acción"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: ""
 iap: ""
 requirements: "iOS 15.0+"

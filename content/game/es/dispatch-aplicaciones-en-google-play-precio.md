@@ -1,7 +1,7 @@
 ---
-slug: dispatch-aplicaciones-en-google-play-precio
-title: "Dispatch - Aplicaciones en Google Play — precio"
-description: "Dispatch - Aplicaciones en Google Play es una comedia de superhéroes de AdHoc Studio en la que gestionas un centro de envío de héroes en Los Ángeles. Es gratis y permite jugar los primeros cuatro episodios sin pagar. Debe saltárselo quien busque acción directa o una historia ya completa."
+slug: "dispatch-aplicaciones-en-google-play-precio"
+title: "Dispatch, comedia de superhéroes con decisiones y cuatro episodios"
+description: "Dispatch es una comedia de superhéroes narrativa para móviles en la que controlas a Robert Robertson, Mecha Man, ahora operador en un centro de envío de héroes en Los Ángeles. Es gratis y los primeros cuatro episodios se juegan sin pagar, con decisiones que cambian relaciones y lealtad, mapa de emergencias, gestión de exsupervillanos y modo cinemático o dinámico en vertical. Deberían omitirlo quienes busquen una fecha de lanzamiento confirmada, porque todavía no está disponib"
 category: "Apps & Games"
 date: "2026-10-28"
 sourceName: "Google Play"
@@ -21,21 +21,21 @@ iap: ""
 requirements: ""
 ---
 
-![Dispatch - Aplicaciones en Google Play](/assets/img/apps/app-de309afa81.jpg)
+![Dispatch](/assets/img/apps/app-de309afa81.jpg)
 
-Dispatch - Aplicaciones en Google Play es una comedia de superhéroes ambientada en una oficina de Los Ángeles. Controlas a Robert Robertson, también conocido como Mecha Man, cuya armadura queda destrozada en un combate contra su némesis. Ahora trabaja como operador en un centro de envío de superhéroes, no como uno de ellos.
+Dispatch -  es una comedia de superhéroes ambientada en una oficina de Los Ángeles. Controlas a Robert Robertson, también conocido como Mecha Man, cuya armadura queda destrozada en un combate contra su némesis. Ahora trabaja como operador en un centro de envío de superhéroes, no como uno de ellos.
 
 El título procede de los guionistas y directores de Tales from the Borderlands y The Wolf Among Us, según la ficha oficial. La propuesta combina narrativa, habilidades tácticas y humor. Todavía no está disponible y la página no confirma una fecha de lanzamiento.
 
-## Qué es Dispatch - Aplicaciones en Google Play
+## Qué es Dispatch -  
 
-Dispatch - Aplicaciones en Google Play es un juego de aventura y narrativa para móviles en el que tus decisiones cambian la historia. Cada elección afecta a tu relación con los héroes, a su lealtad y al desarrollo de la trama. También gestionas una plantilla de exsupervillanos y decides a qué héroe envías a cada emergencia.
+Dispatch -  es un juego de aventura y narrativa para móviles en el que tus decisiones cambian la historia. Cada elección afecta a tu relación con los héroes, a su lealtad y al desarrollo de la trama. También gestionas una plantilla de exsupervillanos y decides a qué héroe envías a cada emergencia.
 
 El reparto incluye voces como Aaron Paul, Laura Bailey, Erin Yvette, Jacksepticeye, Matthew Mercer y Jeffrey Wright, entre otros nombres que aparecen en la descripción oficial. El juego ofrece un modo cinemático y un modo dinámico que gana verticalidad al poner recto el teléfono. La ficha no detalla idiomas disponibles ni requisitos de dispositivo.
 
 ## Fecha de lanzamiento y reserva
 
-La página oficial no muestra una fecha de lanzamiento para Dispatch - Aplicaciones en Google Play. Tampoco indica recompensas por reservar ni ventajas por apuntarse antes. Lo único confirmado es que el título figura como próximo y que aún no se puede descargar.
+La página oficial no muestra una fecha de lanzamiento para Dispatch -  . Tampoco indica recompensas por reservar ni ventajas por apuntarse antes. Lo único confirmado es que el título figura como próximo y que aún no se puede descargar.
 
 La ficha permite preinscribirse, pero no detalla qué ocurre después ni cuándo se abrirá la descarga. Si necesitas una fecha concreta para decidir, la respuesta honesta es que no está publicada. Cualquier ventana de lanzamiento que veas fuera de la ficha oficial no procede de este material.
 
@@ -52,4 +52,4 @@ La descripción menciona un elenco de voces del espectro del entretenimiento, co
 
 ## Precio y lo que aún no se sabe
 
-Dispatch - Aplicaciones en Google Play figura como gratis en la ficha oficial. La descripción confirma que los primeros cuatro episodios se pueden jugar sin pagar. La página no aclara si el resto de episodios se compra por separado, si hay compras integradas, suscripción o prueba limitada.
+Dispatch -  figura como gratis en la ficha oficial. La descripción confirma que los primeros cuatro episodios se pueden jugar sin pagar. La página no aclara si el resto de episodios se compra por separado, si hay compras integradas, suscripción o prueba limitada.

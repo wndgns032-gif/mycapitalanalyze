@@ -1,7 +1,7 @@
 ---
-slug: fold-fire-offline-spiel-preis-funktionen-wen-nicht
-title: "Fold Fire: Offline-Spiel — Preis, Funktionen, für wen nicht"
-description: "Fold Fire: Offline-Spiel ist ein kostenloses Offline-Puzzle von Anna Sadnova, das auf einem Papierspiel basiert. Laut App Store ist es noch nicht erschienen, kostet aber nichts. Wer ein Spiel für lange Sitzungen am großen Bildschirm sucht, sollte es überspringen."
+slug: "fold-fire-offline-spiel-preis-funktionen-wen-nicht"
+title: "Fold Fire: Offline-Spiel: Puzzle gratis, Release 2026"
+description: "Fold Fire: Offline-Spiel ist ein Puzzle-Spiel von Anna Sadnova für das iPhone, das noch nicht erschienen ist, sondern erst am 23. Oktober 2026 erscheinen soll. Das Spiel ist laut Eintrag gratis, läuft offline, bietet kurze Runden von wenigen Minuten, einen Highscore, einen Zweispieler-Modus am selben Gerät und einstellbare Panzeranzahl, Zielgröße und Schüsse. Wer ein umfangreiches Puzzle-Spiel für lange Sitzungen sucht, sollte abwarten, denn der Eintrag nennt keine Levelanzah"
 category: "Apps & Games"
 date: "2026-10-23"
 sourceName: "App Store"
@@ -15,7 +15,7 @@ developer: "Anna Sadnova"
 genre: "Spiele, Puzzle, Reisen, Gelegenheits­spiele"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "EN,DE,JA,PT,RU,ES"
 iap: ""
 requirements: "iOS 17.0+"

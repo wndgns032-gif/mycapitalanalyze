@@ -1,6 +1,6 @@
 ---
-slug: cows-vs-aliens-precio-funciones-qui-no
-title: "Cows vs Aliens — precio, funciones y a quién no"
+slug: "cows-vs-aliens-precio-funciones-qui-no"
+title: "Cows vs Aliens, runner gratis con 30 etapas y 3 jefes, ¿vale la pena?"
 description: "Cows vs Aliens es un runner de acción gratis para iPhone y iPad en el que tu vaca evoluciona de ternerita a leyenda cósmica mientras frena una invasión alienígena. Se descarga sin coste y tiene compras opcionales de monedas. Conviene saltárselo si buscás un juego con reseñas verificables o sin compras dentro de la app."
 category: "Apps & Games"
 date: "2026-10-03"
@@ -14,7 +14,7 @@ price: "Gratis"
 developer: "Adrian Aristegui"
 genre: "Juegos, Acción, Recreativos"
 kind: "game"
-upcoming: false
+upcoming: "false"
 ---
 
 ![Cows vs Aliens](/assets/img/apps/app-503540d1c9.jpg)

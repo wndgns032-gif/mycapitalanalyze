@@ -1,7 +1,7 @@
 ---
-slug: visual-rest-client
-title: "Visual REST Client — السعر، الميزات، ومن يتجنبها"
-description: "Visual REST Client تطبيق أصلي لإدارة واجهات REST على iPhone وiPad، بسعر 17.99 ريال سعودي دفعة واحدة. يفتح ملفات .rest و.http ويحرر JSON وGraphQL ويرسل الطلبات. مناسب للمطورين الذين يعملون على واجهاتهم من الجوال، ويتجنبه من يحتاج أدوات اختبار سطح مكتب كاملة أو من لا يملك جهازًا بنظام iOS 18 أو أحدث."
+slug: "visual-rest-client"
+title: "Visual REST Client, أداة REST للآيفون بـ17.99 ريال، هل تستحق؟"
+description: "Visual REST Client هو تطبيق أصلي من تطوير Pawel Karpinski ضمن أدوات المطورين لإدارة واجهات REST، ويعمل على iPhone وiPad ويتطلب iOS 18 أو أحدث. سعره 17.99 ريال سعودي دفعة واحدة دون اشتراك أو شراء داخل التطبيق، ويقدم فتح ملفات .rest و.http وتحرير الطلبات وعرض الردود ودعم GraphQL والمصادقة والبيئات، في الإصدار 1.1.0 المحدث في 2026-09-28 بتصنيف 4+. يتجنبه من يحتاج بيئة سطح مكتب كاملة لاختبار الواجهات أو يملك جهازًا أقدم من iOS 18 أو يريد واجهة عربية معلنة، وأبرز قيد أن الطلبات وت"
 category: "Apps & Games"
 date: "2026-10-02"
 sourceName: "App Store"
@@ -14,7 +14,7 @@ price: "SAR 17.99"
 developer: "Pawel Karpinski"
 genre: "Developer Tools, Utilities"
 kind: "app"
-upcoming: false
+upcoming: "false"
 ---
 
 ![Visual REST Client](/assets/img/apps/app-da91631eec.jpg)

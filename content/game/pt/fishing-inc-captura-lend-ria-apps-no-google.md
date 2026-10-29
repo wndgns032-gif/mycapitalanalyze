@@ -1,7 +1,7 @@
 ---
-slug: fishing-inc-captura-lend-ria-apps-no-google
-title: "Fishing Inc: Captura Lendária – Apps no Google Play — preço"
-description: "Fishing Inc: Captura Lendária – Apps no Google Play é um jogo casual de pesca incremental da Snapbreak, gratuito para baixar. A página oficial não informa compras dentro do app, assinatura ou teste grátis. Quem espera pesca realista ou progressão rápida deve evitar."
+slug: "fishing-inc-captura-lend-ria-apps-no-google"
+title: "Fishing Inc: Captura Lendária: jogo de pesca incremental grátis"
+description: "Fishing Inc: Captura Lendária é um jogo casual de pesca incremental da Snapbreak, disponível para download no Google Play. É gratuito para baixar, sem informação sobre compras no app ou assinatura, e combina captura de peixes, dinheiro e melhorias de habilidades, equipamentos e locais. Deve evitar quem procura simulação realista de pesca ou não tolera grind, e a maior limitação é a ausência de nota, avaliações e data de lançamento."
 category: "Apps & Games"
 date: "2026-10-11"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Fishing Inc: Captura Lendária – Apps no Google Play](/assets/img/apps/app-83e1e77210.jpg)
+![Fishing Inc: Captura Lendária](/assets/img/apps/app-83e1e77210.jpg)
 
-Fishing Inc: Captura Lendária – Apps no Google Play é um jogo casual de pesca incremental desenvolvido pela Snapbreak. A proposta é capturar peixes, ganhar dinheiro e investir em melhorias até se tornar o maior pescador de todos os tempos. Ele já está disponível para download.
+Fishing Inc: Captura Lendária –  é um jogo casual de pesca incremental desenvolvido pela Snapbreak. A proposta é capturar peixes, ganhar dinheiro e investir em melhorias até se tornar o maior pescador de todos os tempos. Ele já está disponível para download.
 
 A página oficial mostra o jogo como gratuito, sem informar compras dentro do app, assinatura ou teste grátis. A nota exibida é 0,0 de 5 com 0 avaliações, e a página não informa data de lançamento nem contagem de instalações. Por isso, qualquer decisão agora depende só do que a descrição promete.
 
-## O que é Fishing Inc: Captura Lendária – Apps no Google Play
+## O que é Fishing Inc: Captura Lendária –  
 
 É um jogo incremental de pesca: cada captura rende dinheiro, e esse dinheiro vira melhoria de habilidades e equipamentos. Você viaja para novos locais de pesca, encontra espécies diferentes e aprende a lidar com o comportamento de cada uma. A jornada vai de iniciante a maior pescador de todos os tempos, segundo a própria descrição oficial.
 

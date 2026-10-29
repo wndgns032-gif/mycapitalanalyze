@@ -1,7 +1,7 @@
 ---
-slug: zenless-zone-zero-aplikasi-di-google-play-harga
-title: "Zenless Zone Zero - Aplikasi di Google Play — harga"
-description: "Zenless Zone Zero - Aplikasi di Google Play adalah game aksi 3D gratis dari HoYoverse yang berlatar di kota New Eridu. Unduh tanpa biaya, tetapi halaman resminya tidak merinci transaksi dalam aplikasi. Lewati jika kamu tidak menyukai game gacha atau ingin kepastian biaya sebelum mulai."
+slug: "zenless-zone-zero-aplikasi-di-google-play-harga"
+title: "Zenless Zone Zero, aksi 3D gratis dari HoYoverse di New Eridu"
+description: "Zenless Zone Zero adalah game aksi 3D dari HoYoverse berlatar di New Eridu, kota terakhir di tengah bencana Hollow, dan tersedia gratis untuk diunduh di Google Play. Kamu berperan sebagai Proxy yang memandu tim tiga anggota dengan Basic Attack, Special Attack, Dodge, Block, serta Chain Attack untuk menghabisi musuh berstatus Stun. Lewati game ini jika kamu menghindari potensi pengeluaran tambahan, karena rincian pembelian dalam aplikasi tidak dijelaskan dan rating 3,6 dari 16"
 category: "Apps & Games"
 date: "2026-10-20"
 sourceName: "Google Play"
@@ -21,15 +21,15 @@ iap: ""
 requirements: ""
 ---
 
-![Zenless Zone Zero - Aplikasi di Google Play](/assets/img/apps/app-dae492d8f1.jpg)
+![Zenless Zone Zero](/assets/img/apps/app-dae492d8f1.jpg)
 
-Zenless Zone Zero - Aplikasi di Google Play adalah game aksi 3D dari HoYoverse yang berlatar di New Eridu, kota terakhir di tengah bencana Hollow. Kamu berperan sebagai Proxy yang memandu tim melewati wilayah berbahaya itu. Game ini tersedia gratis dan bisa diunduh sekarang.
+Zenless Zone Zero -  adalah game aksi 3D dari HoYoverse yang berlatar di New Eridu, kota terakhir di tengah bencana Hollow. Kamu berperan sebagai Proxy yang memandu tim melewati wilayah berbahaya itu. Game ini tersedia gratis dan bisa diunduh sekarang.
 
 Halaman resminya mencatat rating 3,6 dari 5 berdasarkan 167.407 penilaian pengguna. Jumlah unduhan dan tanggal pembaruan terakhir tidak ditampilkan. Ulasan pengguna di toko bisa dibaca sebagai pendapat pribadi, bukan penilaian resmi.
 
-## Apa itu Zenless Zone Zero - Aplikasi di Google Play
+## Apa itu Zenless Zone Zero -  
 
-Zenless Zone Zero - Aplikasi di Google Play menempatkanmu sebagai Proxy profesional, penghubung antara kota dan Hollow. Ceritanya berpusat pada New Eridu dan berbagai faksi yang hidup di dalamnya. Kamu menyusun tim tiga anggota untuk menghadapi musuh di ruang terdistorsi.
+Zenless Zone Zero -  menempatkanmu sebagai Proxy profesional, penghubung antara kota dan Hollow. Ceritanya berpusat pada New Eridu dan berbagai faksi yang hidup di dalamnya. Kamu menyusun tim tiga anggota untuk menghadapi musuh di ruang terdistorsi.
 
 Pertarungan menekankan Basic Attack dan Special Attack, ditambah Dodge serta Block untuk menghindari serangan. Saat musuh terkena status Stun, Chain Attack jadi cara menghabisinya. Setiap musuh punya karakteristik berbeda, jadi memanfaatkan kelemahan mereka menjadi kunci.
 

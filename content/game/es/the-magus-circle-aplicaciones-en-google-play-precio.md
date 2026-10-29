@@ -1,7 +1,7 @@
 ---
-slug: the-magus-circle-aplicaciones-en-google-play-precio
-title: "The Magus Circle - Aplicaciones en Google Play — precio"
-description: "The Magus Circle - Aplicaciones en Google Play es un roguelite de supervivencia vampírica en el que dibujas sigilos para lanzar hechizos. Es gratis y aún no se ha lanzado: solo admite prerregistro. Debería saltárselo quien no quiera dibujar con ratón, tableta gráfica o pantalla táctil."
+slug: "the-magus-circle-aplicaciones-en-google-play-precio"
+title: "The Magus Circle, roguelite de sigilos dibujados a mano"
+description: "The Magus Circle es un roguelite de acción y supervivencia vampírica para Android en el que dibujas sigilos arcanos para lanzar hechizos, firmado por el desarrollador By Witchlight. Es gratis, sin compras ni suscripciones anunciadas, y confirma 20 hechizos con 600 mejoras, 4 planetas, 6 magos con árboles de habilidades y gestión de familiares, pociones y jardín. Debes saltarlo si necesitas una fecha de lanzamiento, porque la ficha solo ofrece prerregistro y no publica ventana"
 category: "Apps & Games"
 date: "2026-10-11"
 sourceName: "Google Play"
@@ -21,15 +21,15 @@ iap: ""
 requirements: ""
 ---
 
-![The Magus Circle - Aplicaciones en Google Play](/assets/img/apps/app-6f2ace6e87.jpg)
+![The Magus Circle](/assets/img/apps/app-6f2ace6e87.jpg)
 
-The Magus Circle - Aplicaciones en Google Play es un juego de acción y supervivencia vampírica de tipo roguelite en el que dibujas sigilos para lanzar hechizos. Lo firma el desarrollador By Witchlight y la ficha oficial lo sitúa en la categoría de acción. Todavía no está disponible: la página solo ofrece prerregistro.
+The Magus Circle -  es un juego de acción y supervivencia vampírica de tipo roguelite en el que dibujas sigilos para lanzar hechizos. Lo firma el desarrollador By Witchlight y la ficha oficial lo sitúa en la categoría de acción. Todavía no está disponible: la página solo ofrece prerregistro.
 
 La premisa te coloca en medio de una guerra cósmica que no elegiste, con la misión de proteger al Círculo de Magos. El texto oficial insiste en que no hace falta ser un artista, porque incluso los sigilos más toscos contienen magia. Aun así, el propio listado admite que los controles están pensados para dibujar.
 
-## Qué es The Magus Circle - Aplicaciones en Google Play
+## Qué es The Magus Circle -  
 
-The Magus Circle - Aplicaciones en Google Play se presenta como un roguelite de supervivencia vampírica donde el lanzamiento de hechizos depende de dibujar sigilos arcanos. La historia te enfrenta a una guerra cósmica y te encarga proteger al mayor aliado de la humanidad, el Círculo de Magos. Puedes jugar como los 6 magos del Círculo, cada uno con sus propios árboles de habilidades, destrezas y bagaje emocional. Entre partidas exploras la mansión, conoces a tus compañeros magos y descubres los secretos del Círculo.
+The Magus Circle -  se presenta como un roguelite de supervivencia vampírica donde el lanzamiento de hechizos depende de dibujar sigilos arcanos. La historia te enfrenta a una guerra cósmica y te encarga proteger al mayor aliado de la humanidad, el Círculo de Magos. Puedes jugar como los 6 magos del Círculo, cada uno con sus propios árboles de habilidades, destrezas y bagaje emocional. Entre partidas exploras la mansión, conoces a tus compañeros magos y descubres los secretos del Círculo.
 
 ## Fecha de lanzamiento y reserva
 

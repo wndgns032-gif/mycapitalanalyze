@@ -1,6 +1,6 @@
 ---
-slug: starbase-tycoon-base-espacial-precio-funciones-qui-no
-title: "Starbase Tycoon: Base espacial — precio, funciones y a quién no"
+slug: "starbase-tycoon-base-espacial-precio-funciones-qui-no"
+title: "Starbase Tycoon: Base espacial — gestión espacial gratis en 3 sectores"
 description: "Starbase Tycoon: Base espacial es un juego de gestión espacial en pixel art donde construyes y amplías tu propia estación estelar. Se puede reservar ya en el App Store, es gratis y una sola compra desbloquea el juego completo, sin anuncios. Conviene saltárselo si buscas acción rápida o jugar sin pagar nada."
 category: "Apps & Games"
 date: "2026-10-21"
@@ -15,7 +15,7 @@ developer: "Stephen Glasson"
 genre: "Juegos, Simulación, Estrategia"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "EN,FR,DE,IT,JA,KO,PT,RU,ZH,ES"
 iap: ""
 requirements: "iOS 18.0+"

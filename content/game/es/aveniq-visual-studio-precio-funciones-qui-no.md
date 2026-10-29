@@ -1,6 +1,6 @@
 ---
-slug: aveniq-visual-studio-precio-funciones-qui-no
-title: "Aveniq - Visual Studio — precio, funciones y a quién no"
+slug: "aveniq-visual-studio-precio-funciones-qui-no"
+title: "Aveniq - Visual Studio: ¿gratis y útil para crear escenas de"
 description: "Aveniq - Visual Studio es una app gratuita de foto y vídeo para iPhone y iPad que convierte ideas en escenas de movimiento en unos pocos toques. Está pensada para creadores, fundadores, marketers y diseñadores; conviene saltársela si buscas edición profesional avanzada o si necesitas la interfaz en español."
 category: "Apps & Games"
 date: "2026-10-01"

@@ -1,7 +1,7 @@
 ---
-slug: infinite-space-sky-explorer-preis-funktionen-wen-nicht
-title: "Infinite Space Sky Explorer — Preis, Funktionen, für wen nicht"
-description: "Infinite Space Sky Explorer ist ein Weltraumspiel des Entwicklers Muhammad Salman für das iPhone, das noch nicht erschienen ist. Der Preis liegt bei 9,99 €, die Vorbestellung ist bereits möglich. Wer ein fertiges Spiel zum Sofortspielen sucht, sollte jetzt nicht zugreifen."
+slug: "infinite-space-sky-explorer-preis-funktionen-wen-nicht"
+title: "Infinite Space Sky Explorer, Weltraumspiel für 9,99 € im Check"
+description: "Infinite Space Sky Explorer ist ein Weltraum-Simulations- und Rollenspiel vom Entwickler Muhammad Salman, das im Oktober 2026 erscheinen soll. Es kostet einmalig 9,99 € und bietet Ein-Tipp-Steuerung, Ausweichen vor Asteroiden, Sammeln von Sternen und Münzen sowie das Aufrüsten von Raumschiffen. Wer keine Vorbestellung ohne getestete Bewertung und ohne bestätigten Termin eingehen will, sollte vorerst abwarten."
 category: "Apps & Games"
 date: "2026-10-22"
 sourceName: "App Store"
@@ -15,7 +15,7 @@ developer: "Muhammad Salman"
 genre: "Spiele, Simulation, Rollenspiel"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "EN,FR,DE,JA,KO,ZH,ES,ZH"
 iap: ""
 requirements: "iOS 13.0+"

@@ -1,7 +1,7 @@
 ---
-slug: fortress-defense-by-villain-price-features-and-who
+slug: "fortress-defense-by-villain-price-features-and-who"
 title: "Fortress Defense by Villain — Price, Features and Who Should Skip"
-description: "Fortress Defense by Villain is an upcoming 3D strategy defense game for iOS, free to download with optional ads and in-app purchases. You build formations, upgrade units and hold back waves. Skip it if you want a finished game right now or dislike energy-based play. It releases on 2 October 2026."
+description: "Fortress Defense by Villain is a 3D strategy defense game for iOS from Studio Villain Co., Ltd., built around formations and holding back waves. It is free with optional rewarded ads and in-app purchases, and confirms eight base unit types, two promotion paths each, fortress upgrades, bosses every ten rounds and endless play past round 50. Skip it if you want a finished game now or dislike energy timers and ads, since the release date is 2 October 2026."
 category: "Apps & Games"
 date: "2026-10-02"
 sourceName: "App Store"
@@ -14,7 +14,7 @@ price: "Free"
 developer: "Studio Villain Co., Ltd."
 genre: "Games, Strategy"
 kind: "game"
-upcoming: false
+upcoming: "false"
 ---
 
 ![Fortress Defense by Villain](/assets/img/apps/app-d4b819a004.jpg)

@@ -1,7 +1,7 @@
 ---
-slug: arrow-puzzle-tap-escape
-title: "Arrow Puzzle: Tap Escape — 買う価値はある？価格・機能・向かない人"
-description: "Arrow Puzzle: Tap Escapeは、盤面いっぱいに詰まった矢印をタップして出口へ送り出すパズルゲームです。価格は無料で、App Storeの表記では追加課金やタイマーなし、完全オフラインで遊べるとされています。短時間で頭を使いたい人向けですが、派手な演出や対人要素を求める人には向かないかもしれません。"
+slug: "arrow-puzzle-tap-escape"
+title: "Arrow Puzzle: Tap Escapeは無料で遊べる？200レベル・完全オフラインの矢印パズル"
+description: "Arrow Puzzle: Tap Escapeは、盤面を埋め尽くした矢印を1本ずつタップして盤外へ逃がしていくパズルゲームで、iPhoneとiPad、iPod touchに対応しています。ストア表記は無料で、200レベル、完全オフライン、タイマーなし、10言語対応、進行状況の自動保存、システム追従のダークモードが公式説明に記載されています。開発はMustafa Onus、年齢区分は12+、バージョンは1.0、最終更新日は2026-09-24と表示されています。対戦要素やランキング、毎週のイベント更新を求める人には向かず、評価が0.0で評価数も0のため他のプレイヤーの反応を判断材料にできない点が最も気になる限界です。"
 category: "Apps & Games"
 date: "2026-10-02"
 sourceName: "App Store"

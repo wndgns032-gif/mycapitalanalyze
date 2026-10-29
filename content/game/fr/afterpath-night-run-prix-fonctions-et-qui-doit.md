@@ -1,6 +1,6 @@
 ---
-slug: afterpath-night-run-prix-fonctions-et-qui-doit
-title: "Afterpath: Night Run — prix, fonctions et qui doit éviter"
+slug: "afterpath-night-run-prix-fonctions-et-qui-doit"
+title: "Afterpath: Night Run : course paisible gratuite en 104 chapitres"
 description: "Afterpath: Night Run est un jeu de course paisible sur iPhone et iPad : Iskra court seule et vous décidez quand elle saute, à travers huit Nuits et 104 chapitres. Il est gratuit avec des publicités occasionnelles, et un achat unique les supprime. À éviter si vous cherchez de l'action rapide ou un jeu jouable hors connexion avec les traces des autres joueurs."
 category: "Apps & Games"
 date: "2026-10-29"

@@ -1,7 +1,7 @@
 ---
-slug: honkai-impact-3rd-applications-sur-google-play-prix
-title: "Honkai Impact 3rd – Applications sur Google Play — prix"
-description: "Honkai Impact 3rd – Applications sur Google Play est un jeu d'action gratuit de COGNOSPHERE PTE. LTD., noté 4,2 sur 5 pour 458171 notes. La fiche officielle ne détaille pas les achats intégrés. À éviter si vous cherchez un jeu sans mécaniques de tirage ou si vous voulez connaître le prix exact avant de télécharger."
+slug: "honkai-impact-3rd-applications-sur-google-play-prix"
+title: "Honkai Impact 3rd, jeu d'action gratuit, à qui s'adresse-t-il"
+description: "Honkai Impact 3rd est un jeu d'action gratuit édité par COGNOSPHERE PTE. LTD., disponible sur Google Play dans sa version 9.1 intitulée Une nouvelle page dans le temps. Le modèle est gratuit et la fiche confirme des chapitres d'histoire, des armures de combat à collectionner, des armes, des tenues et des événements saisonniers. À éviter si vous refusez les mécaniques de ravitaillement aléatoire, car la fiche ne détaille pas le coût réel de ces tirages."
 category: "Apps & Games"
 date: "2026-10-24"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Honkai Impact 3rd – Applications sur Google Play](/assets/img/apps/app-a0f0fb5f5b.jpg)
+![Honkai Impact 3rd](/assets/img/apps/app-a0f0fb5f5b.jpg)
 
-Honkai Impact 3rd – Applications sur Google Play est un jeu d'action édité par COGNOSPHERE PTE. LTD. et proposé gratuitement sur Google Play. La fiche officielle affiche une note de 4,2 sur 5 calculée sur 458171 avis. Le jeu est disponible dès maintenant, dans sa version 9.1 intitulée « Une nouvelle page dans le temps ».
+Honkai Impact 3rd –  est un jeu d'action édité par COGNOSPHERE PTE. LTD. et proposé gratuitement sur Google Play. La fiche officielle affiche une note de 4,2 sur 5 calculée sur 458171 avis. Le jeu est disponible dès maintenant, dans sa version 9.1 intitulée « Une nouvelle page dans le temps ».
 
 La description officielle met en avant un mélange d'histoire, d'événements saisonniers et de collecte d'armures de combat. Elle ne précise ni le nombre d'installations, ni la date de dernière mise à jour. Aucune mention de test ou de prise en main n'y figure.
 
-## Qu'est-ce que Honkai Impact 3rd – Applications sur Google Play ?
+## Qu'est-ce que Honkai Impact 3rd –  ?
 
 Il s'agit d'un jeu d'action classé dans la catégorie GAME_ACTION sur Google Play. La fiche présente un univers narratif suivi, avec des chapitres d'histoire principale et des épisodes bonus. Le contenu tourne autour d'armures de combat, d'armes et de tenues à collectionner.
 

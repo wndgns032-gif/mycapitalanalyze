@@ -1,7 +1,7 @@
 ---
-slug: wood-grid-puzzle-de-blocos-apps-no-google
-title: "Wood Grid: Puzzle de blocos – Apps no Google Play — preço"
-description: "Wood Grid: Puzzle de blocos – Apps no Google Play é um jogo de quebra-cabeça em que você arrasta blocos de madeira num tabuleiro 8x8 para completar linhas e colunas. O download é gratuito, mas a página oficial não informa se há compras dentro do app. Quem não gosta de jogos de encaixe deve pular."
+slug: "wood-grid-puzzle-de-blocos-apps-no-google"
+title: "Wood Grid: Puzzle de blocos, quebra-cabeça grátis 8x8 sem internet"
+description: "Wood Grid: Puzzle de blocos é um jogo casual de encaixe da SOHI GAMES disponível para download na plataforma Google Play. O download é gratuito e o jogo traz tabuleiro 8x8, blocos de madeira de formatos variados, eliminação de linhas e colunas, Modo Viagem com fases e funcionamento sem internet. Quem procura partidas rápidas com pressão de tempo deve pular, e a maior limitação é que não há informação sobre anúncios, compras internas ou total de fases e imagens do Modo Viagem."
 category: "Apps & Games"
 date: "2026-10-20"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Wood Grid: Puzzle de blocos – Apps no Google Play](/assets/img/apps/app-09746e391b.jpg)
+![Wood Grid: Puzzle de blocos](/assets/img/apps/app-09746e391b.jpg)
 
-Wood Grid: Puzzle de blocos – Apps no Google Play é um jogo casual da SOHI GAMES disponível agora para download. A proposta é arrastar blocos de madeira de formatos diferentes para um tabuleiro 8x8 e completar linhas ou colunas para eliminá-las. O texto oficial descreve a experiência como simples de entender, mas com cada jogada pedindo um pouco de estratégia.
+Wood Grid: Puzzle de blocos –  é um jogo casual da SOHI GAMES disponível agora para download. A proposta é arrastar blocos de madeira de formatos diferentes para um tabuleiro 8x8 e completar linhas ou colunas para eliminá-las. O texto oficial descreve a experiência como simples de entender, mas com cada jogada pedindo um pouco de estratégia.
 
 A página oficial mostra nota de 4,8 de 5 com base em 201 avaliações. O download é gratuito, e a descrição afirma que o jogo funciona sem conexão com a internet. A seguir, o que a página confirma e o que ela deixa em aberto antes de você instalar.
 
-## O que é Wood Grid: Puzzle de blocos – Apps no Google Play
+## O que é Wood Grid: Puzzle de blocos –  
 
 Trata-se de um quebra-cabeça clássico de encaixe: você arrasta peças de madeira para o tabuleiro 8x8 e busca abrir espaço ao eliminar linhas e colunas completas. A descrição oficial destaca que cada bloco muda o tabuleiro, então observar as peças disponíveis e reservar espaço faz parte do desafio.
 
@@ -45,7 +45,7 @@ A página oficial resume o jogo em poucos elementos concretos, listados abaixo.
 
 ## Preço e disponibilidade
 
-O download de Wood Grid: Puzzle de blocos – Apps no Google Play é gratuito, e o jogo está disponível agora na Google Play. A página oficial não informa se existem compras dentro do app, assinatura ou período de teste, então esse ponto segue sem confirmação.
+O download de Wood Grid: Puzzle de blocos –  é gratuito, e o jogo está disponível agora na Google Play. A página oficial não informa se existem compras dentro do app, assinatura ou período de teste, então esse ponto segue sem confirmação.
 
 A página também não mostra contagem de instalações, data da última atualização nem classificação indicativa. A nota de 4,8 de 5 vem de 201 avaliações registradas no momento da consulta, e esses números podem mudar.
 

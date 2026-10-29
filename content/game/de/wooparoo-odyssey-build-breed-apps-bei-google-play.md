@@ -1,7 +1,7 @@
 ---
-slug: wooparoo-odyssey-build-breed-apps-bei-google-play
-title: "Wooparoo Odyssey-Build & Breed – Apps bei Google Play — Preis"
-description: "Wooparoo Odyssey-Build & Breed – Apps bei Google Play ist ein kostenloses Aufbau- und Züchtungsspiel von NHN Corp. für Android. Laut Google-Play-Seite fallen In-App-Käufe an, die genauen Preise zeigt die Seite nicht. Wer keine Zeit für wiederkehrende Züchtungs- und Kampfschleifen hat, sollte es eher überspringen."
+slug: "wooparoo-odyssey-build-breed-apps-bei-google-play"
+title: "Wooparoo Odyssey-Build & Breed: gratis Züchten und Dorf"
+description: "Wooparoo Odyssey-Build & Breed ist ein kostenloses Simulationsspiel von NHN Corp. für Android, das Züchten und Dorfaufbau verbindet. Der Download ist gratis, es gibt In-App-Käufe, und ihr könnt über 500 Wooparoos sammeln, kreuzen, in Gehegen und Farmen unterbringen sowie in Expeditionsstufen, PvP-Arenen und Gilden kämpfen. Überspringen sollten es alle, die keine Lust auf wiederkehrende Züchtungs- und Kampfschleifen haben, denn die fehlende Transparenz bei den Preisen der In-A"
 category: "Apps & Games"
 date: "2026-10-20"
 sourceName: "Google Play"
@@ -21,15 +21,15 @@ iap: ""
 requirements: ""
 ---
 
-![Wooparoo Odyssey-Build &amp; Breed – Apps bei Google Play](/assets/img/apps/app-918d5a9bf7.jpg)
+![Wooparoo Odyssey-Build &amp; Breed](/assets/img/apps/app-918d5a9bf7.jpg)
 
-Wooparoo Odyssey-Build & Breed – Apps bei Google Play ist ein kostenloses Spiel von NHN Corp. für Android, das Züchten und Dorfaufbau verbindet. Laut Google-Play-Seite könnt ihr über 500 Wooparoos sammeln, kreuzen und in eurem eigenen Dorf unterbringen. Die Bewertung liegt bei 3,3 von 5 Punkten aus 2758 Bewertungen.
+Wooparoo Odyssey-Build & Breed –  ist ein kostenloses Spiel von NHN Corp. für Android, das Züchten und Dorfaufbau verbindet. Laut Google-Play-Seite könnt ihr über 500 Wooparoos sammeln, kreuzen und in eurem eigenen Dorf unterbringen. Die Bewertung liegt bei 3,3 von 5 Punkten aus 2758 Bewertungen.
 
 Das Spiel ist bereits verfügbar und lässt sich direkt herunterladen. Die offizielle Seite nennt weder ein Erscheinungsdatum noch eine Installationszahl. Auch das letzte Update wird dort nicht angegeben.
 
-## Was ist Wooparoo Odyssey-Build &amp; Breed – Apps bei Google Play?
+## Was ist Wooparoo Odyssey-Build &amp; Breed –  ?
 
-Wooparoo Odyssey-Build & Breed – Apps bei Google Play ist ein Simulationsspiel, in dem ihr als mystischer Dompteur Wooparoos züchtet und sammelt. Die Seite verspricht über 500 Arten, wobei jede Woche neue hinzukommen sollen. Durch Kreuzungen entstehen laut Beschreibung neue, einzigartige Wesen.
+Wooparoo Odyssey-Build & Breed –  ist ein Simulationsspiel, in dem ihr als mystischer Dompteur Wooparoos züchtet und sammelt. Die Seite verspricht über 500 Arten, wobei jede Woche neue hinzukommen sollen. Durch Kreuzungen entstehen laut Beschreibung neue, einzigartige Wesen.
 
 Dazu kommt ein Bautteil: Ihr errichtet Woopacross, Gehege und Farmen und dekoriert euer Dorf. Abgerundet wird das Ganze durch Kämpfe in Expeditionsstufen und PvP-Arenen sowie Gilden mit Freunden.
 

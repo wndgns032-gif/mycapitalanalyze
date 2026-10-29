@@ -1,7 +1,7 @@
 ---
-slug: zen-arrow-puzzle-panah-aplikasi-di-google-play
-title: "Zen Arrow: Puzzle Panah - Aplikasi di Google Play — harga"
-description: "Zen Arrow: Puzzle Panah - Aplikasi di Google Play adalah game puzzle tap away gratis dari SOHI GAMES. Pemain mengetuk panah untuk membuka jalur dan membersihkan papan dengan tempo santai. Halaman resminya tidak menyebut harga dalam aplikasi, dan game ini sebaiknya dilewati jika kamu mencari tantangan cepat atau kompetisi."
+slug: "zen-arrow-puzzle-panah-aplikasi-di-google-play"
+title: "Zen Arrow: Puzzle Panah — Puzzle Tap Away Gratis yang Santai"
+description: "Zen Arrow: Puzzle Panah adalah game puzzle gratis dari SOHI GAMES yang menggabungkan tap away dengan perencanaan jalur dan tersedia di Google Play. Game ini gratis diunduh, menawarkan ribuan level dengan kesulitan bertahap, suasana Zen lewat suara lembut dan animasi halus, serta koleksi kartu seni alam. Lewati game ini jika mencari tantangan cepat atau aksi kompetitif, dan perlu diketahui halaman resminya tidak mencantumkan rincian pembelian dalam aplikasi."
 category: "Apps & Games"
 date: "2026-10-22"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Zen Arrow: Puzzle Panah - Aplikasi di Google Play](/assets/img/apps/app-131d60f73a.jpg)
+![Zen Arrow: Puzzle Panah](/assets/img/apps/app-131d60f73a.jpg)
 
-Zen Arrow: Puzzle Panah - Aplikasi di Google Play adalah game puzzle gratis dari SOHI GAMES yang menggabungkan gameplay tap away dengan perencanaan jalur. Kamu mengetuk panah, membuka jalurnya, lalu membersihkan papan langkah demi langkah. Suasananya dibuat santai lewat suara lembut, animasi halus, dan visual damai.
+Zen Arrow: Puzzle Panah -  adalah game puzzle gratis dari SOHI GAMES yang menggabungkan gameplay tap away dengan perencanaan jalur. Kamu mengetuk panah, membuka jalurnya, lalu membersihkan papan langkah demi langkah. Suasananya dibuat santai lewat suara lembut, animasi halus, dan visual damai.
 
 Game ini sudah tersedia dan bisa diunduh sekarang di Google Play. Penilaian penggunanya tercatat 4,9 dari 5 berdasarkan 3249 rating. Halaman resminya tidak mencantumkan jumlah unduhan maupun tanggal pembaruan terakhir.
 
-## Apa itu Zen Arrow: Puzzle Panah - Aplikasi di Google Play
+## Apa itu Zen Arrow: Puzzle Panah -  
 
 Inti permainannya sederhana: ketuk panah agar bergerak sesuai arah yang ditunjukkan, dan panah hanya bisa bergerak jika jalurnya kosong. Pemain harus menentukan urutan langkah sebelum mengetuk supaya papan bisa dibersihkan seluruhnya. Tidak ada tekanan waktu, jadi kamu bisa mengamati papan dan menyelesaikan puzzle sesuai ritmemu.
 
@@ -54,4 +54,4 @@ Sebaliknya, lewati game ini jika kamu mencari tantangan cepat, aksi kompetitif, 
 
 Keterbatasan terbesarnya adalah minimnya informasi resmi di luar deskripsi: tidak ada rincian jumlah level, tidak ada keterangan pembelian dalam aplikasi, dan tidak ada tanggal pembaruan. Rating 4,9 dari 3249 pengguna adalah opini pengguna, bukan jaminan bahwa game ini cocok untukmu. Halaman resminya juga tidak menyebut aplikasi lain sebagai pembanding.
 
-Langkah paling aman adalah membuka halaman Google Play-nya, membaca bagian biaya dan ulasan pengguna, lalu memutuskan sendiri. Jika kamu hanya ingin puzzle santai tanpa tekanan waktu, Zen Arrow: Puzzle Panah - Aplikasi di Google Play layak dicoba sekarang.
+Langkah paling aman adalah membuka halaman Google Play-nya, membaca bagian biaya dan ulasan pengguna, lalu memutuskan sendiri. Jika kamu hanya ingin puzzle santai tanpa tekanan waktu, Zen Arrow: Puzzle Panah -  layak dicoba sekarang.

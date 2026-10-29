@@ -1,7 +1,7 @@
 ---
-slug: any-given-sunday-price-features-and-who-should
+slug: "any-given-sunday-price-features-and-who-should"
 title: "Any Given Sunday — Price, Features and Who Should Skip"
-description: "Any Given Sunday is a pro football management sim for iPhone and iPad, priced at $9.99 with no ads or tracking. It launches on 2026-10-22 and is up for pre-order now. Skip it if you want arcade action or a quick pick-up-and-play game, because this is a text-heavy, stat-driven management title."
+description: "Any Given Sunday is a pro football management sim for iPhone and iPad where you run one of 32 clubs as head coach and general manager. Priced at $9.99 with a 2026-10-22 release, it offers a real salary cap, scouts' 1-20 ratings on 32 attributes, and 550+ offensive plays. Skip it if you want action football or Android support, since it is English only, single player, and offline by touch."
 category: "Apps & Games"
 date: "2026-10-22"
 sourceName: "App Store"
@@ -15,7 +15,7 @@ developer: "Eric Nelson"
 genre: "Games, Simulation, Sports"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "EN"
 iap: ""
 requirements: "iOS 16.0+"

@@ -1,7 +1,7 @@
 ---
-slug: hillthorn-apps-no-google-play-pre-fun-es
-title: "Hillthorn – Apps no Google Play — preço, funções e quem deve evitar"
-description: "Hillthorn – Apps no Google Play é um jogo de investigação da Raw Fury em que o mistério é revelado por cartas de pistas, sem diálogo. O download é gratuito e a página oficial não informa preço de compra, assinatura ou compras dentro do app. Quem espera ação rápida ou dicas em português deve evitar por enquanto."
+slug: "hillthorn-apps-no-google-play-pre-fun-es"
+title: "Hillthorn, jogo de investigação sem palavras e grátis no Android"
+description: "Hillthorn é um jogo de investigação da Raw Fury para Android, ainda não lançado, em que você procura uma criança desaparecida numa montanha estranha. O download aparece como gratuito, mas sem confirmação do modelo de cobrança final, e a história avança por cartas de pistas investigadas e exploradas, com o relógio consumindo tempo a cada ação e vários finais. Deve evitar quem prefere ação imediata ou dicas em português, e a maior limitação é a falta de data de lançamento divul"
 category: "Apps & Games"
 date: "2026-10-17"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Hillthorn – Apps no Google Play](/assets/img/apps/app-d1a29bd14a.jpg)
+![Hillthorn](/assets/img/apps/app-d1a29bd14a.jpg)
 
-Hillthorn – Apps no Google Play é um jogo de investigação da Raw Fury para Android, ainda não lançado. A página oficial descreve uma criança desaparecida, uma montanha estranha e um mistério contado sem uma única palavra. O download aparece como gratuito, mas o material não confirma o modelo de cobrança final.
+Hillthorn –  é um jogo de investigação da Raw Fury para Android, ainda não lançado. A página oficial descreve uma criança desaparecida, uma montanha estranha e um mistério contado sem uma única palavra. O download aparece como gratuito, mas o material não confirma o modelo de cobrança final.
 
 A história avança por cartas de pistas, que podem ser investigadas e exploradas durante a busca. O tempo é curto e cada ação consome o relógio, então as escolhas pesam. A seguir, o que a listagem confirma e o que ainda falta saber.
 
-## O que é Hillthorn – Apps no Google Play
+## O que é Hillthorn –  
 
 É um jogo de aventura e investigação em que você procura uma pessoa desaparecida nos caminhos labirínticos de uma montanha. Os habitantes locais relutam em falar com alguém de fora, e a verdade é montada por cartas de pistas, sem diálogo. A página oficial não informa duração, tamanho do download nem idiomas disponíveis.
 

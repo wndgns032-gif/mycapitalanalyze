@@ -1,7 +1,7 @@
 ---
-slug: idle-knight-infinite-duel
-title: "Idle Knight: Infinite Duel — 살 만한가요? 가격·기능·건너뛸 사람"
-description: "Idle Knight: Infinite Duel은 기사가 자동으로 싸우는 판타지 방치형 RPG입니다. 앱스토어 기준 무료로 표시되어 있고 2026년 10월 23일 출시 예정입니다. 직접 전투를 조작하고 싶거나 짧은 세션마다 손으로 성장을 관리하고 싶은 사람은 건너뛰는 편이 낫습니다."
+slug: "idle-knight-infinite-duel"
+title: "Idle Knight: Infinite Duel — 무료 방치형 RPG 사전 주문"
+description: "Idle Knight: Infinite Duel은 기사가 되어 자동 전투로 적을 쓰러뜨리는 판타지 방치형 RPG로, 상점 분류는 게임이고 장르는 시뮬레이션과 어드벤처로 표시되며 개발사는 Mamboo Entertainment입니다. 앱스토어 기준 가격은 무료로 표시되어 있고, 영웅이 자동으로 싸우며 웨이브와 보스를 상대하고 상자에서 나온 무기와 방어구를 희귀도별로 비교해 가장 강한 장비를 착용하는 반복 구조가 공식 설명에 적혀 있습니다. 손으로 전투를 직접 조작하는 액션을 원하는 사람은 건너뛰는 편이 낫고, 가장 중요한 한계는 아직 출시 전이라 실제 플레이 감각이나 후반부 난이도 조정을 확인할 방법이 없다는 점입니다."
 category: "Apps & Games"
 date: "2026-10-23"
 sourceName: "App Store"
@@ -15,7 +15,7 @@ developer: "Mamboo Entertainment"
 genre: "게임, 엔터테인먼트, 시뮬레이션, 어드벤처"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "EN,FR,DE,JA,KO,ZH,ES,ZH"
 iap: ""
 requirements: "iOS 15.0+"

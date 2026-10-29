@@ -1,7 +1,7 @@
 ---
-slug: acropolis-tessera-audio-guide
-title: "Acropolis: Tessera Audio Guide — 值得买吗？价格"
-description: "Acropolis: Tessera Audio Guide 是一款雅典卫城与古阿哥拉的离线语音导览应用，免费下载，含五段永久免费讲解，其余六十段需一次购买解锁，无订阅、无账号、无广告。它适合计划实地游览、想按自己的节奏边走边听的人；如果你近期不去雅典，或只想看图文资料，就不必下载。"
+slug: "acropolis-tessera-audio-guide"
+title: "Acropolis: Tessera Audio Guide 免费下载含5段讲解"
+description: "Acropolis: Tessera Audio Guide 是一款面向雅典卫城与古阿哥拉的离线语音导览应用，支持 iPhone 与 iPad，由开发者 Shahen Grigoryan 发布，版本 1.0，2026 年 9 月 23 日上架，提供含中文的八种语言。它免费下载，开场介绍及另外四个点位永久免费，其余 60 段讲解、四条路线与导航需一次购买解锁，无订阅、无需账号、无广告，内容分级为 12+。全部 65 段讲解每段不到两分钟，配有遗址平面图、本机定位、搜索与完整文字稿，走近点位时只提示而不自动播放。近期不去雅典、不愿为语音内容付费，或需要真人讲解与实时互动的用户可以考虑跳过，最需要注意的是内购价格未披露且评分为 0.0 分、没有任何评分记录可供参考。"
 category: "Apps & Games"
 date: "2026-10-02"
 sourceName: "App Store"

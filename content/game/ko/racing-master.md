@@ -1,7 +1,7 @@
 ---
-slug: racing-master
-title: "레이싱 마스터(Racing Master) — 살 만한가요? 가격·기능·건너뛸 사람"
-description: "레이싱 마스터(Racing Master)는 코드마스터즈와 손잡고 만든 정통 레이싱 게임으로, 100종 이상의 공식 라이선스 명차를 수집·개조해 전 세계 도시와 서킷에서 실시간 경쟁을 즐길 수 있습니다. 기본 무료로 내려받을 수 있지만 인앱 결제 여부는 공식 스토어에 안내되어 있지 않습니다. 사실적인 주행감보다 가벼운 캐주얼 레이싱을 원하거나, 과금 구조가 명확히 공개된 게임만 고르는 사람은 건너뛰는 편이 낫습니다."
+slug: "racing-master"
+title: "레이싱 마스터(Racing Master) 무료 정통 레이싱, 과금 구조는? 100종 차량 수집·실시간 레이스"
+description: "레이싱 마스터(Racing Master)는 Exptional Global이 코드마스터즈와 손잡고 만든 정통 레이싱 게임으로, 모바일에서 100종 이상의 공식 라이선스 차량을 수집하고 개조해 실시간 경쟁을 즐기는 게임입니다. 가격은 무료로 표시되어 있고 람보르기니 아벤타도르SVJ·포르쉐 911·닛산 GT-R 등 실차 라이선스 차량과 페인트·데칼·타이어·휠·서스펜션·브레이크 커스터마이즈, 실제 차량에서 녹음한 사운드와 물리 엔진 기반 주행감을 갖췄으며 평점은 4.6점(평가 17,262개), 최근 업데이트는 2026년 9월 10일입니다. 과금 구조가 명확히 공개된 게임만 고르거나 가벼운 캐주얼 레이싱을 원하는 사람은 건너뛰는 편이 낫고, 가장 큰 한계는 인앱 결제 여부가 공개되지 않아 추가 지출을 미리 알 수 없다는 점입니다."
 category: "Apps & Games"
 date: "2026-10-04"
 sourceName: "Google Play"
@@ -14,7 +14,7 @@ price: "Free"
 developer: "Exptional Global"
 genre: "GAME_RACING"
 kind: "game"
-upcoming: false
+upcoming: "false"
 ---
 
 ![레이싱 마스터(Racing Master)](/assets/img/apps/app-816bf6f885.jpg)

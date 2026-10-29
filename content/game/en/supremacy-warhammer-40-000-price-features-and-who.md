@@ -1,7 +1,7 @@
 ---
-slug: supremacy-warhammer-40-000-price-features-and-who
+slug: "supremacy-warhammer-40-000-price-features-and-who"
 title: "Supremacy: Warhammer 40,000 — Price, Features and Who Should Skip"
-description: "Supremacy: Warhammer 40,000 is a free-to-play multiplayer strategy game from Stillfront Supremacy GmbH, set in the Warhammer 40,000 universe on the world of Vigilus. It is not released yet and is open for pre-registration on Google Play. Skip it if you want a fast, solo campaign."
+description: "Supremacy: Warhammer 40,000 is an upcoming free-to-play multiplayer strategy game from Stillfront Supremacy GmbH, listed on Google Play and set in the Warhammer 40,000 universe. It is free to download and play with optional in-app purchases, and the material confirms four launch factions, 30 or 64-player maps, and matches running over days or weeks. Skip it if you want a finished game or a solo campaign, since the biggest limitation is that no release date is confirmed and it"
 category: "Apps & Games"
 date: "2026-10-11"
 sourceName: "Google Play"

@@ -1,7 +1,7 @@
 ---
-slug: anatolia-merge-of-ages-harga-fitur-dan-siapa
-title: "Anatolia: Merge of Ages — harga, fitur dan siapa yang tidak"
-description: "Anatolia: Merge of Ages adalah game merge-puzzle santai gratis yang membawa Anda menembus sebelas ribu tahun peradaban Anatolia, dari Göbekli Tepe hingga era digital. Tidak ada pembelian dalam aplikasi, iklan, atau pelacakan. Lewati jika Anda mencari game aksi kompetitif atau grafis 3D berat."
+slug: "anatolia-merge-of-ages-harga-fitur-dan-siapa"
+title: "Anatolia: Merge of Ages: puzzle merge sejarah gratis tanpa iklan"
+description: "Anatolia: Merge of Ages adalah game merge-puzzle santai bertema sejarah Anatolia dari tolga banyocu yang tersedia gratis di App Store untuk iPhone, iPad, dan iPod touch. Versi 1.0 dirilis 10 Agustus 2026 untuk usia 4+ dengan seratus level di sepuluh era, pilihan perang atau damai, bangunan sipil permanen, serta mini-game dan museum. Lewati game ini jika Anda mencari multipemain kompetitif atau grafis 3D intens, karena belum ada ulasan pengguna dan penilaiannya masih 0,0 sehin"
 category: "Apps & Games"
 date: "2026-10-01"
 sourceName: "App Store"

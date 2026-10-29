@@ -1,7 +1,7 @@
 ---
-slug: scacchix2-pre-fun-es-quem-deve-evitar
-title: "ScacchiX2 — preço, funções e quem deve evitar"
-description: "ScacchiX2 é um jogo de xadrez para iPhone e iPad com tabuleiro 10×10, peças clássicas e a opção de evocar reforços gastando mana. O download é grátis, mas a ficha da App Store não informa se há compras dentro do app. Quem procura xadrez tradicional, com arrocco e en passant, deve evitar."
+slug: "scacchix2-pre-fun-es-quem-deve-evitar"
+title: "ScacchiX2, xadrez 10×10 grátis com mana e reforços"
+description: "ScacchiX2 é um jogo de xadrez para iPhone e iPad que troca o tabuleiro 8×8 por um de 10×10 e acrescenta mana para evocar reforços nas retrovias. O download é grátis, funciona offline e sem conta, com partidas contra o computador ou com um amigo no mesmo dispositivo, versão 1.0 e classificação +4. Deve ser evitado por quem procura xadrez tradicional com arrocco e en passant ou partidas online, e a ficha não informa se há compras dentro do app."
 category: "Apps & Games"
 date: "2026-10-02"
 sourceName: "App Store"

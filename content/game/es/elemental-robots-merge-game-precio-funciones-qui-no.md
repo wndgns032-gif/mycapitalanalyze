@@ -1,6 +1,6 @@
 ---
-slug: elemental-robots-merge-game-precio-funciones-qui-no
-title: "Elemental Robots : Merge Game — precio, funciones y a quién no"
+slug: "elemental-robots-merge-game-precio-funciones-qui-no"
+title: "Elemental Robots : Merge Game, fusión de robots gratis en pre-reserva"
 description: "Elemental Robots : Merge Game es un juego de fusión de robots con batallas estratégicas, gratis y en pre-reserva en la App Store. Combinas unidades básicas para crear formas más fuertes y las envías a combatir. Conviene saltárselo si buscas un juego ya disponible o compras dentro de la app confirmadas."
 category: "Apps & Games"
 date: "2026-10-23"
@@ -15,7 +15,7 @@ developer: "Gamify Studio FZ-LLC"
 genre: "Juegos, Acción, Entretenimiento, Recreativos"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "AR,CA,NL,EN,FI,FR,DE,HI,ID,IT,JA,KO,NB,PL,PT,RU,ZH,ES,SV,TH,ZH,TR,VI"
 iap: ""
 requirements: "iOS 15.0+"

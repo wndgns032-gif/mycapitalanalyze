@@ -1,7 +1,7 @@
 ---
-slug: applications-sur-google-play-prix
-title: "梦幻西游网页版-来了就是大神 – Applications sur Google Play — prix"
-description: "梦幻西游网页版-来了就是大神 – Applications sur Google Play est un jeu de rôle gratuit signé Exptional Global, jouable directement sur navigateur selon sa fiche Play. La fiche officielle n'indique ni achats intégrés, ni date de mise à jour, ni nombre d'installations. À éviter si vous cherchez un jeu solo posé ou des informations tarifaires détaillées avant de commencer."
+slug: "applications-sur-google-play-prix"
+title: "梦幻西游网页版-来了就是大神 : RPG gratuit aux armes et bêtes mythiques"
+description: "梦幻西游网页版-来了就是大神 est un jeu de rôle gratuit signé Exptional Global, jouable directement sur navigateur selon sa fiche Play. La fiche officielle n'indique ni achats intégrés, ni date de mise à jour, ni nombre d'installations. À éviter si vous cherchez un jeu solo posé ou des informations tarifaires détaillées avant de commencer."
 category: "Apps & Games"
 date: "2026-10-17"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![梦幻西游网页版-来了就是大神 – Applications sur Google Play](/assets/img/apps/app-fb913a9abf.jpg)
+![梦幻西游网页版-来了就是大神](/assets/img/apps/app-fb913a9abf.jpg)
 
-梦幻西游网页版-来了就是大神 – Applications sur Google Play est un jeu de rôle proposé gratuitement par Exptional Global sur Google Play. Sa fiche officielle le présente comme une version web d'un univers de jeu de rôle asiatique, avec armes, montures, partenaires et bêtes invoquées. Le titre est disponible dès maintenant en téléchargement.
+梦幻西游网页版-来了就是大神 –  est un jeu de rôle proposé gratuitement par Exptional Global sur Google Play. Sa fiche officielle le présente comme une version web d'un univers de jeu de rôle asiatique, avec armes, montures, partenaires et bêtes invoquées. Le titre est disponible dès maintenant en téléchargement.
 
 La fiche affiche une note de 0,0 sur 5 pour 0 évaluation, ce qui ne permet pas de se faire une idée de la qualité réelle du jeu. Le nombre d'installations et la date de dernière mise à jour ne sont pas indiqués. Voici ce que la page officielle confirme, et ce qu'elle laisse dans le flou.
 
-## Qu'est-ce que 梦幻西游网页版-来了就是大神 – Applications sur Google Play ?
+## Qu'est-ce que 梦幻西游网页版-来了就是大神 –  ?
 
 Il s'agit d'un jeu de rôle où le joueur incarne un personnage racial doté de compétences polyvalentes, mêlant physique, magie, attaque unique et effets de groupe. La description officielle promet des armes puissantes dès le début, des bêtes mythiques, des partenaires et des montures à collecter. Le jeu se présente comme un mélange de combat, de joueurs contre joueurs et de vie de guilde.
 

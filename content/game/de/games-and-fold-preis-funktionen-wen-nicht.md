@@ -1,6 +1,6 @@
 ---
-slug: games-and-fold-preis-funktionen-wen-nicht
-title: "Games and Fold — Preis, Funktionen, für wen nicht"
+slug: "games-and-fold-preis-funktionen-wen-nicht"
+title: "Games and Fold: Fünf LCD-Minispiele für 3,99 € im Test"
 description: "Games and Fold ist ein kostenpflichtiges iPhone-Spiel für 3,99 €, das fünf LCD-Retros piele in einem Gehäuse aus Metalloptik vereint. Wer Puzzles und Gelegenheitsspiele ohne Werbung sucht, findet hier einen klaren Festpreis ohne Abo. Wer Touch-Steuerung oder Grafik auf heutigem Niveau erwartet, sollte eher nicht zugreifen."
 category: "Apps & Games"
 date: "2026-10-28"

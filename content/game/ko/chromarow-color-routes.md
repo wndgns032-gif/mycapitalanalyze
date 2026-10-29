@@ -1,7 +1,7 @@
 ---
-slug: chromarow-color-routes
-title: "Chromarow - Color Routes — 살 만한가요? 가격·기능·건너뛸 사람"
-description: "Chromarow - Color Routes은(는) 2~5명이 즐기는 주사위 전략 게임입니다. 무료로 제공되며 계정, 광고, 구독, 인앱 결제가 없다고 안내되어 있습니다. 다만 아직 출시 전이고 지원 언어는 영어와 독일어뿐이라 한국어 이용자는 건너뛰는 편이 낫습니다."
+slug: "chromarow-color-routes"
+title: "Chromarow - Color Routes, 무료 주사위 보드게임인데 한국어 지원은?"
+description: "Chromarow - Color Routes은 주사위를 굴려 색깔 경로를 따라 점수를 쌓는 보드·전략 게임으로, 2026년 10월 21일 출시 예정이며 버전 1.0으로 앱스토어에 예약 판매 중입니다. 공식 기준 무료로 내려받는 방식이고 계정, 광고, 구독, 인앱 결제가 없다고 적혀 있으며 개발자는 Konrad Schulte입니다. 한 기기를 나눠 쓰는 2~5명 로컬 대전과 세 단계 봇 대전, 초대 링크와 QR 코드로 여는 비공개 온라인 방, 인터넷 없이 아이폰끼리 블루투스와 와이파이로 연결하는 방식을 지원합니다. 클래식부터 카오스, 콜랩스, 울트라까지 열 가지 모드와 세 가지 시각 스타일, 세 가지 사운드 테마, 흔들어 굴리기와 촉각 피드백도 확인됩니다. 한국어로 편하게 즐기려는 사람은 건너뛰는 편이 낫고, 지원 언어가 영어와 독일어로만 한정되어 있다는 점이 가장 큰 제약입니다."
 category: "Apps & Games"
 date: "2026-10-21"
 sourceName: "App Store"
@@ -15,7 +15,7 @@ developer: "Konrad Schulte"
 genre: "게임, 보드, 전략"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: ""
 iap: ""
 requirements: "iOS 16.0+"

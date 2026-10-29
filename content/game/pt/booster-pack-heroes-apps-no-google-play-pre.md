@@ -1,7 +1,7 @@
 ---
-slug: booster-pack-heroes-apps-no-google-play-pre
-title: "Booster Pack Heroes – Apps no Google Play — preço"
-description: "Booster Pack Heroes – Apps no Google Play é um jogo incremental da Funday Games ApS em que você abre pacotes para descobrir heróis e feitiços e enfrenta hordas de monstros. A inscrição prévia está aberta e o download é gratuito, mas o preço de compras dentro do app não aparece na página oficial. Quem não gosta de jogos incrementais ou de colecionar cartas deve evitar."
+slug: "booster-pack-heroes-apps-no-google-play-pre"
+title: "Booster Pack Heroes: jogo incremental grátis em pré-registro"
+description: "Booster Pack Heroes é um jogo incremental da Funday Games ApS em que você abre pacotes para descobrir heróis e feitiços e enfrenta hordas de monstros. A inscrição prévia está aberta e o download é gratuito, mas o preço de compras dentro do app não aparece na página oficial. Quem não gosta de jogos incrementais ou de colecionar cartas deve evitar."
 category: "Apps & Games"
 date: "2026-10-15"
 sourceName: "Google Play"
@@ -21,21 +21,21 @@ iap: ""
 requirements: ""
 ---
 
-![Booster Pack Heroes – Apps no Google Play](/assets/img/apps/app-79a497ad2d.jpg)
+![Booster Pack Heroes](/assets/img/apps/app-79a497ad2d.jpg)
 
-Booster Pack Heroes – Apps no Google Play é um jogo incremental da Funday Games ApS, publicado na categoria de arcade. A página oficial mostra que a inscrição prévia está aberta e que o download será gratuito. Ainda não há data de lançamento confirmada para o Brasil.
+Booster Pack Heroes –  é um jogo incremental da Funday Games ApS, publicado na categoria de arcade. A página oficial mostra que a inscrição prévia está aberta e que o download será gratuito. Ainda não há data de lançamento confirmada para o Brasil.
 
 O jogo gira em torno de abrir pacotes de melhorias, descobrir heróis e feitiços e sobreviver a ondas de monstros. Cada partida fornece energia à próxima, o que dá mais poder e permite sobreviver por mais tempo. A descrição oficial também cita viagens entre reinos e planos de existência misteriosos.
 
-## O que é Booster Pack Heroes – Apps no Google Play
+## O que é Booster Pack Heroes –  
 
-Booster Pack Heroes – Apps no Google Play é um jogo incremental em que cada pacote pode conter a próxima potência. O jogador descobre heróis e feitiços, melhora as habilidades deles e enfrenta hordas de monstros sem fim enquanto luta pelos reinos. A desenvolvedora listada é a Funday Games ApS, e a categoria oficial é arcade.
+Booster Pack Heroes –  é um jogo incremental em que cada pacote pode conter a próxima potência. O jogador descobre heróis e feitiços, melhora as habilidades deles e enfrenta hordas de monstros sem fim enquanto luta pelos reinos. A desenvolvedora listada é a Funday Games ApS, e a categoria oficial é arcade.
 
 A página não informa idiomas suportados, tamanho do arquivo nem requisitos de dispositivo. Também não há nota, número de avaliações ou contagem de instalações, porque o jogo ainda não foi lançado.
 
 ## Data de lançamento e pré-registro
 
-A página oficial confirma que Booster Pack Heroes – Apps no Google Play está em pré-registro e ainda não foi lançado. Não existe data de lançamento divulgada para o Brasil nem para outras regiões. Como a fonte é a Google Play, qualquer data exibida ali seria de última atualização, e não de lançamento.
+A página oficial confirma que Booster Pack Heroes –  está em pré-registro e ainda não foi lançado. Não existe data de lançamento divulgada para o Brasil nem para outras regiões. Como a fonte é a Google Play, qualquer data exibida ali seria de última atualização, e não de lançamento.
 
 A inscrição prévia é a única ação disponível agora. A página não promete recompensas de pré-registro, bônus de lançamento ou janela de estreia. Quem quiser acompanhar precisa se inscrever e esperar o aviso oficial da loja.
 
@@ -52,7 +52,7 @@ A descrição oficial lista um ciclo de progressão baseado em pacotes, heróis 
 
 ## Preço e o que ainda não se sabe
 
-O download de Booster Pack Heroes – Apps no Google Play será gratuito, segundo a página oficial. A mesma página não informa se existem compras dentro do app, assinatura ou período de teste. Sem essa informação, não dá para saber quanto o jogador pode gastar além do download.
+O download de Booster Pack Heroes –  será gratuito, segundo a página oficial. A mesma página não informa se existem compras dentro do app, assinatura ou período de teste. Sem essa informação, não dá para saber quanto o jogador pode gastar além do download.
 
 A principal limitação é a falta de dados verificáveis antes do lançamento. Não há nota, avaliações, contagem de instalações nem data de estreia. Quem precisa de um jogo com preço final e data definidos deve esperar. Quem gosta de jogos incrementais e de colecionar cartas pode se inscrever agora e decidir depois.
 

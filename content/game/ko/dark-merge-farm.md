@@ -1,7 +1,7 @@
 ---
-slug: dark-merge-farm
-title: "Dark Merge Farm — 살 만한가요? 가격·기능·건너뛸 사람"
-description: "Dark Merge Farm은 안개와 부패로 뒤덮인 저주받은 땅을 배경으로 병합과 농장 경영을 결합한 무료 퍼즐 게임입니다. 가격은 무료이며 인앱 결제 여부는 공식 페이지에 공개되지 않았습니다. 병합과 농사보다 어두운 분위기와 탐험을 기대하는 사람, 그리고 이미 비슷한 병합 게임에 익숙한 사람은 건너뛰는 편이 낫습니다."
+slug: "dark-merge-farm"
+title: "Dark Merge Farm — 무료 병합 농장 게임의 장르와 과금 구조"
+description: "Dark Merge Farm은 ArruGa Corp.가 만든 무료 병합 퍼즐 게임으로, 안개와 살아있는 부패로 뒤덮인 저주받은 땅에서 농장을 되살리는 어두운 판타지 병합 농장 어드벤처입니다. 가격은 무료이며 등불과 횃불, 모닥불로 안개를 걷어내고 단순 도구부터 고급 구조물까지 병합으로 진화시키며 괴물 같은 잡초와 저주받은 뿌리를 정화하고 폐허가 된 건물을 복원하는 시스템이 확인됩니다. 밝고 편안한 농사나 순수한 퍼즐 퍼즐링만 원하는 사람은 건너뛰는 편이 낫고, 가장 큰 한계는 인앱 결제 여부와 실제 플레이 분량이 공개되지 않았다는 점입니다."
 category: "Apps & Games"
 date: "2026-10-04"
 sourceName: "Google Play"
@@ -14,7 +14,7 @@ price: "Free"
 developer: "ArruGa Corp."
 genre: "GAME_PUZZLE"
 kind: "game"
-upcoming: true
+upcoming: "true"
 ---
 
 ![Dark Merge Farm](/assets/img/apps/app-6cab4f2956.jpg)

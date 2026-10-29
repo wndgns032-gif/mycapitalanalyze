@@ -1,6 +1,6 @@
 ---
-slug: tower-truck-cerco-zumbi-pre-fun-es-quem
-title: "Tower Truck: Cerco Zumbi — preço, funções e quem deve evitar"
+slug: "tower-truck-cerco-zumbi-pre-fun-es-quem"
+title: "Tower Truck: Cerco Zumbi, estratégia grátis com torre de 7 andares"
 description: "Tower Truck: Cerco Zumbi é um jogo de estratégia e ação da Haz Studio, grátis para iPhone e iPad, ainda em pré-venda na App Store. Você começa com uma torre de defesa sobre rodas e a transforma em uma fortaleza móvel de sete andares para enfrentar hordas de zumbis. Quem não gosta de tower defense ou de progressão baseada em desbloqueios deve evitar."
 category: "Apps & Games"
 date: "2026-10-16"
@@ -15,7 +15,7 @@ developer: "Haz Studio"
 genre: "Jogos, Estratégia, Ação"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "EN,ID,JA,KO,PT,ZH,ES,TH"
 iap: ""
 requirements: "iOS 15.0+"

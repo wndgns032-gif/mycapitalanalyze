@@ -1,6 +1,6 @@
 ---
-slug: filoute-puzzle-de-rangement-prix-fonctions-et-qui
-title: "Filoute : Puzzle de rangement — prix, fonctions et qui doit éviter"
+slug: "filoute-puzzle-de-rangement-prix-fonctions-et-qui"
+title: "Filoute : Puzzle de rangement, un casse-tête gratuit de 100 niveaux"
 description: "Filoute : Puzzle de rangement est un jeu de réflexion gratuit sur iPhone et iPad. Il propose 100 niveaux, 5 pièces, 22 animaux et plus de 50 objets à collectionner. Le titre contient des publicités et des achats intégrés. À éviter si vous voulez une expérience sans pub ou si vous cherchez un jeu noté et déjà testé par des joueurs."
 category: "Apps & Games"
 date: "2026-10-29"

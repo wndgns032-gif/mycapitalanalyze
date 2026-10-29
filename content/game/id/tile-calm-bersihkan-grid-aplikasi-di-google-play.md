@@ -1,7 +1,7 @@
 ---
-slug: tile-calm-bersihkan-grid-aplikasi-di-google-play
-title: "Tile Calm: Bersihkan Grid - Aplikasi di Google Play — harga"
-description: "Tile Calm: Bersihkan Grid - Aplikasi di Google Play adalah game puzzle match 3 santai dari SOFISH GAMES yang bisa diunduh gratis. Halaman resminya tidak merinci harga pembelian dalam aplikasi, dan game ini sebaiknya dilewati siapa pun yang mencari tantangan kompetitif atau puzzle penuh tekanan waktu."
+slug: "tile-calm-bersihkan-grid-aplikasi-di-google-play"
+title: "Tile Calm: Bersihkan Grid — Puzzle Ubin Gratis Tanpa Timer"
+description: "Tile Calm: Bersihkan Grid adalah game puzzle pencocokan ubin santai yang dikembangkan SOFISH GAMES dan tersedia di Google Play untuk dimainkan sekarang. Game ini bisa diunduh gratis tanpa timer, dengan kontrol ketuk sederhana, desain ubin jelas, dan dukungan bermain tanpa internet, serta rating 4.7 dari 5 berdasarkan 1740 penilaian pengguna. Lewati game ini jika Anda mencari tantangan kompetitif, karena halaman resminya tidak menyebutkan mode multiplayer, peringkat, atau fitu"
 category: "Apps & Games"
 date: "2026-10-21"
 sourceName: "Google Play"
@@ -21,15 +21,15 @@ iap: ""
 requirements: ""
 ---
 
-![Tile Calm: Bersihkan Grid - Aplikasi di Google Play](/assets/img/apps/app-b0c10d43fb.jpg)
+![Tile Calm: Bersihkan Grid](/assets/img/apps/app-b0c10d43fb.jpg)
 
-Tile Calm: Bersihkan Grid - Aplikasi di Google Play adalah game puzzle match 3 santai yang dikembangkan SOFISH GAMES dan sudah bisa diunduh sekarang. Aturan mainnya sederhana, yaitu menemukan tiga ubin yang sama lalu menghapusnya dari papan. Game ini diposisikan sebagai pengisi waktu tenang, bukan tantangan kompetitif.
+Tile Calm: Bersihkan Grid -  adalah game puzzle match 3 santai yang dikembangkan SOFISH GAMES dan sudah bisa diunduh sekarang. Aturan mainnya sederhana, yaitu menemukan tiga ubin yang sama lalu menghapusnya dari papan. Game ini diposisikan sebagai pengisi waktu tenang, bukan tantangan kompetitif.
 
 Halaman resminya mencatat rating 4.7 dari 5 berdasarkan 1740 penilaian pengguna, sementara jumlah unduhan dan tanggal pembaruan terakhir tidak ditampilkan. Ulasan pengguna di toko adalah opini masing-masing pemain, bukan hasil pengujian independen. Uraian berikut hanya merangkum apa yang benar-benar tertulis di halaman resmi tersebut.
 
-## Apa itu Tile Calm: Bersihkan Grid - Aplikasi di Google Play
+## Apa itu Tile Calm: Bersihkan Grid -  
 
-Tile Calm: Bersihkan Grid - Aplikasi di Google Play adalah game kasual bergenre puzzle pencocokan ubin yang dimainkan dengan mengetuk tiga ubin identik untuk membersihkan papan. Deskripsi resminya menyebut permainan ini dirancang agar pemain bisa memperlambat ritme sejenak, fokus pada sesuatu yang sederhana, dan menikmati waktu yang damai. Papan yang lebih menantang disebut memberi rasa puas tersendiri saat berhasil diselesaikan.
+Tile Calm: Bersihkan Grid -  adalah game kasual bergenre puzzle pencocokan ubin yang dimainkan dengan mengetuk tiga ubin identik untuk membersihkan papan. Deskripsi resminya menyebut permainan ini dirancang agar pemain bisa memperlambat ritme sejenak, fokus pada sesuatu yang sederhana, dan menikmati waktu yang damai. Papan yang lebih menantang disebut memberi rasa puas tersendiri saat berhasil diselesaikan.
 
 SOFISH GAMES menempatkan game ini untuk sesi pendek, misalnya saat menikmati kopi, dalam perjalanan, atau sebelum tidur. Tidak ada sistem rumit yang harus dipelajari menurut teks resminya. Halaman toko tidak menyebutkan mode multiplayer, peringkat, atau fitur sosial apa pun.
 
@@ -45,7 +45,7 @@ Deskripsi resmi menyoroti suasana santai tanpa tekanan waktu sebagai daya tarik 
 
 ## Harga dan ketersediaan
 
-Tile Calm: Bersihkan Grid - Aplikasi di Google Play bisa diunduh gratis di Google Play, dan statusnya sudah tersedia untuk dimainkan sekarang. Halaman resminya tidak merinci apakah ada pembelian dalam aplikasi, langganan, atau masa uji coba. Karena itu, biaya tambahan di luar unduhan gratis belum bisa dipastikan dari informasi yang tersedia.
+Tile Calm: Bersihkan Grid -  bisa diunduh gratis di Google Play, dan statusnya sudah tersedia untuk dimainkan sekarang. Halaman resminya tidak merinci apakah ada pembelian dalam aplikasi, langganan, atau masa uji coba. Karena itu, biaya tambahan di luar unduhan gratis belum bisa dipastikan dari informasi yang tersedia.
 
 Jumlah unduhan, versi aplikasi, dan tanggal pembaruan terakhir juga tidak dicantumkan di halaman tersebut. Rating 4.7 dari 5 dengan 1740 penilaian adalah satu-satunya angka yang ditampilkan secara terbuka. Tidak ada informasi soal ketersediaan wilayah atau daftar bahasa yang didukung di luar halaman berbahasa Indonesia ini.
 

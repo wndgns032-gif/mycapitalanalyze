@@ -1,6 +1,6 @@
 ---
-slug: ww2-idle-tank-factory-harga-fitur-dan-siapa
-title: "WW2 Idle Tank Factory — harga, fitur dan siapa yang tidak"
+slug: "ww2-idle-tank-factory-harga-fitur-dan-siapa"
+title: "WW2 Idle Tank Factory: game simulasi pabrik tank gratis di App Store"
 description: "WW2 Idle Tank Factory adalah game kasual dan simulasi gratis dari Solid Games di mana kamu memiliki pabrik tank sendiri, meneliti berbagai jenis tank, lalu menjualnya. Tidak ada harga yang perlu dibayar untuk mengunduhnya, dan pembelian dalam aplikasi tidak diungkapkan di halaman App Store. Lewati saja kalau kamu mencari game aksi tank langsung atau butuh kepastian soal biaya tambahan di dalamnya."
 category: "Apps & Games"
 date: "2026-10-02"

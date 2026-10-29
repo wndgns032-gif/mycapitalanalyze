@@ -1,7 +1,7 @@
 ---
-slug: rejist-employee
-title: "Rejist Employee — 值得买吗？价格、功能与不适合的人"
-description: "Rejist Employee 是一款面向企业访客管理的商务应用，由 WiseLead Solutions Limited 开发，在 App Store 上免费提供，需要雇主提供账号才能使用。它把访客日程放进手机，实时显示预约、到达、签到与签出状态，适合已经使用 Rejist 平台的组织员工。个人用户、没有公司账号的人，以及希望自行配置或免费试用的用户应该跳过。"
+slug: "rejist-employee"
+title: "Rejist Employee, 企业访客日程应用免费下载：需雇主账号"
+description: "Rejist Employee 是一款把访客日程放进手机的商务应用，在 App Store 上可免费下载。它免费提供当天预约查看、实时访客状态、为访客预约以及改期与取消等功能，并与前台接待终端配合使用。个人用户、没有雇主账号的人以及希望自行注册配置应用的人都应跳过，因为它只在组织已使用 Rejist 平台时才能工作。该应用由 WiseLead Solutions Limited 开发，当前版本为 1.0.16，内容分级为 4+，最近更新日期为 2026 年 9 月 30 日。页面显示评分为 0.0 分、0 个评分，目前没有任何用户反馈可供参考，支持设备覆盖多代 iPhone 与 iPad 机型。"
 category: "Apps & Games"
 date: "2026-10-02"
 sourceName: "App Store"
@@ -14,7 +14,7 @@ price: "免费"
 developer: "WiseLead Solutions Limited"
 genre: "商务"
 kind: "app"
-upcoming: false
+upcoming: "false"
 ---
 
 ![Rejist Employee](/assets/img/apps/app-93841ba250.jpg)

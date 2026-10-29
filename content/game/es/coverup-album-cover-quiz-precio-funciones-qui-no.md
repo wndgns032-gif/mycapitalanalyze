@@ -1,6 +1,6 @@
 ---
-slug: coverup-album-cover-quiz-precio-funciones-qui-no
-title: "CoverUp: Album Cover Quiz — precio, funciones y a quién no"
+slug: "coverup-album-cover-quiz-precio-funciones-qui-no"
+title: "CoverUp: Album Cover Quiz: trivia de portadas gratis para iOS en 2026"
 description: "CoverUp: Album Cover Quiz es un juego de trivia musical para iOS que muestra portadas de discos pixeladas y te reta a nombrar el grupo antes de que la imagen se resuelva. Es gratis y aún no está disponible: se puede reservar en la App Store. Quien busque un juego con cuentas, anuncios o modo online debería buscarlo en otro sitio."
 category: "Apps & Games"
 date: "2026-10-17"
@@ -15,7 +15,7 @@ developer: "DAVID THOMAS WAGEMAN"
 genre: "Juegos, Trivia, Música"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: ""
 iap: ""
 requirements: "iOS 17.0+"

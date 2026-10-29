@@ -1,7 +1,7 @@
 ---
-slug: diff-rences-ii-trouvez-les-applications-sur-google
-title: "Différences II : Trouvez-les – Applications sur Google Play — prix"
-description: "Différences II : Trouvez-les – Applications sur Google Play est un jeu de puzzle des différences gratuit et relaxant sur Google Play. Comparez deux images, repérez les différences cachées, sans vies ni chrono. À éviter si vous cherchez un défi chronométré ou des prix clairement affichés : la fiche officielle ne les précise pas."
+slug: "diff-rences-ii-trouvez-les-applications-sur-google"
+title: "Différences II : Trouvez-les — jeu de différences gratuit sans chrono"
+description: "Différences II : Trouvez-les est un jeu de puzzle des différences gratuit et relaxant de Guru Puzzle Game, disponible sur Google Play. Le jeu est gratuit à télécharger et à jouer, avec des indices, le zoom par pincement et des scènes variées, sans vies ni chronomètre. Passez votre chemin si vous cherchez un défi chronométré : la fiche ne détaille pas les achats intégrés, principale incertitude à vérifier."
 category: "Apps & Games"
 date: "2026-10-11"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Différences II : Trouvez-les – Applications sur Google Play](/assets/img/apps/app-f8975e8ad5.jpg)
+![Différences II : Trouvez-les](/assets/img/apps/app-f8975e8ad5.jpg)
 
-Différences II : Trouvez-les – Applications sur Google Play est un jeu de puzzle des différences gratuit et relaxant, édité par Guru Puzzle Game. Il propose de comparer deux images similaires pour repérer les différences cachées, à son propre rythme. La fiche Google Play le présente comme la suite de Differences: Find & Spot It.
+Différences II : Trouvez-les –  est un jeu de puzzle des différences gratuit et relaxant, édité par Guru Puzzle Game. Il propose de comparer deux images similaires pour repérer les différences cachées, à son propre rythme. La fiche Google Play le présente comme la suite de Differences: Find & Spot It.
 
 Le jeu est disponible dès maintenant sur Google Play. Il se destine aux joueurs qui aiment les grandes images, les détails clairs et les défis visuels calmes. Aucune note n'est affichée pour le moment, et la fiche officielle ne précise ni le nombre d'installations ni la date de dernière mise à jour.
 
-## Qu'est-ce que Différences II : Trouvez-les – Applications sur Google Play ?
+## Qu'est-ce que Différences II : Trouvez-les –  ?
 
 C'est un jeu de puzzle des différences où deux images presque identiques sont comparées pour trouver ce qui a changé. Certaines différences sont faciles à repérer, d'autres demandent un examen plus attentif. Le titre mise sur des images plus grandes et une zone de visualisation confortable. Il n'y a ni compte à rebours ni vies, ce qui permet de jouer sans pression.
 
@@ -42,7 +42,7 @@ La fiche officielle met en avant une expérience de recherche visuelle simple et
 
 ## Prix et disponibilité
 
-Différences II : Trouvez-les – Applications sur Google Play est gratuit à télécharger et à jouer, selon la fiche Google Play. Le jeu est disponible dès maintenant sur la plateforme. La fiche officielle ne précise pas s'il existe des achats intégrés, un abonnement ou un essai. Elle n'indique ni le nombre d'installations ni la date de dernière mise à jour.
+Différences II : Trouvez-les –  est gratuit à télécharger et à jouer, selon la fiche Google Play. Le jeu est disponible dès maintenant sur la plateforme. La fiche officielle ne précise pas s'il existe des achats intégrés, un abonnement ou un essai. Elle n'indique ni le nombre d'installations ni la date de dernière mise à jour.
 
 ## À qui s'adresse-t-il - et à qui non
 

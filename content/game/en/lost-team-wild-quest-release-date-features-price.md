@@ -1,7 +1,7 @@
 ---
 slug: "lost-team-wild-quest-release-date-features-price"
-title: "Lost Team: Wild Quest — Release Date, Features & Price"
-description: "Lost Team: Wild Quest is an upcoming roleplaying and sports game where a coach guides a trapped team home through a tribal forest."
+title: "Lost Team: Wild Quest — RPG-Sports Rescue Game Due December 5, 2026"
+description: "Lost Team: Wild Quest is an upcoming roleplaying and sports game from developer Muhammad Nouman, listed on the App Store for iOS with a December 5, 2026 release date and version 1.0.0. The listing confirms no price model details or in-app purchase information, and the described features cover exploring a mysterious tribal forest, controlling the ball, overcoming obstacles and discovering the right paths as a coach seeking his stranded team. Players who want confirmed level co"
 category: "Apps & Games"
 date: "2026-09-30"
 sourceName: "App Store"
@@ -13,7 +13,7 @@ price: "Free"
 developer: "Muhammad Nouman"
 genre: "Games, Roleplaying, Sports"
 kind: "game"
-upcoming: false
+upcoming: "false"
 ---
 
 ![Lost Team: Wild Quest](/assets/img/apps/app-450ead53cf.jpg)

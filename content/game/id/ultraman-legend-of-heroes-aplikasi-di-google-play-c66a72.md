@@ -1,7 +1,7 @@
 ---
-slug: ultraman-legend-of-heroes-aplikasi-di-google-play-c66a72
-title: "Ultraman: Legend Of Heroes - Aplikasi di Google Play — harga"
-description: "Ultraman: Legend Of Heroes - Aplikasi di Google Play adalah game aksi 3D mobile resmi bertema Ultraman dari JoyMore GAME. Aplikasi ini gratis diunduh, tetapi halaman resminya tidak merinci biaya pembelian dalam aplikasi. Ratingnya 4,1 dari 157.015 penilaian, dan pemain yang tidak menyukai aksi bergaya gacha sebaiknya melewatinya."
+slug: "ultraman-legend-of-heroes-aplikasi-di-google-play-c66a72"
+title: "Ultraman: Legend Of Heroes, Game Aksi 3D Gratis dengan Arena PVP"
+description: "Ultraman: Legend Of Heroes adalah game aksi 3D mobile resmi bertema Ultraman dari JoyMore GAME. Aplikasi ini gratis diunduh, tetapi halaman resminya tidak merinci biaya pembelian dalam aplikasi. Ratingnya 4,1 dari 157.015 penilaian, dan pemain yang tidak menyukai aksi bergaya gacha sebaiknya melewatinya."
 category: "Apps & Games"
 date: "2026-10-18"
 sourceName: "Google Play"
@@ -21,15 +21,15 @@ iap: ""
 requirements: ""
 ---
 
-![Ultraman: Legend Of Heroes - Aplikasi di Google Play](/assets/img/apps/app-c66a723ad2.jpg)
+![Ultraman: Legend Of Heroes](/assets/img/apps/app-c66a723ad2.jpg)
 
-Ultraman: Legend Of Heroes - Aplikasi di Google Play adalah game aksi 3D mobile resmi bertema Ultraman yang dikembangkan JoyMore GAME. Pemain bisa memakai pahlawan seperti Taiga, Tiga, Zero, dan Orb untuk melawan monster seperti Zetton, Gomora, dan Godzilla. Aplikasi ini sudah tersedia dan bisa diunduh sekarang di Google Play.
+Ultraman: Legend Of Heroes -  adalah game aksi 3D mobile resmi bertema Ultraman yang dikembangkan JoyMore GAME. Pemain bisa memakai pahlawan seperti Taiga, Tiga, Zero, dan Orb untuk melawan monster seperti Zetton, Gomora, dan Godzilla. Aplikasi ini sudah tersedia dan bisa diunduh sekarang di Google Play.
 
 Halaman resminya mencantumkan harga gratis, tetapi tidak menyebutkan apakah ada pembelian dalam aplikasi, langganan, atau masa uji coba. Rating 4,1 dari 157.015 penilaian menunjukkan banyak pengguna sudah mencobanya, meski jumlah unduhan dan tanggal pembaruan tidak ditampilkan.
 
-## Apa itu Ultraman: Legend Of Heroes - Aplikasi di Google Play
+## Apa itu Ultraman: Legend Of Heroes -  
 
-Ultraman: Legend Of Heroes - Aplikasi di Google Play adalah game aksi 3D mobile yang menghadirkan pertempuran Ultraman melawan monster ikonik. Deskripsi resminya menyebut model karakter, aksi, skill, dan suara diciptakan ulang untuk mengikuti alur cerita asli. Pemain memimpin pahlawan Ultra, menyusun strategi, dan menyelamatkan Bumi dari kehancuran.
+Ultraman: Legend Of Heroes -  adalah game aksi 3D mobile yang menghadirkan pertempuran Ultraman melawan monster ikonik. Deskripsi resminya menyebut model karakter, aksi, skill, dan suara diciptakan ulang untuk mengikuti alur cerita asli. Pemain memimpin pahlawan Ultra, menyusun strategi, dan menyelamatkan Bumi dari kehancuran.
 
 Game ini juga memuat sistem Arena PVP, pertempuran guild Ultra Brothers, dan misi harian berupa pengejaran monster buronan di Penjara Kosmik. Halaman resminya tidak menjelaskan durasi cerita atau jumlah misi yang tersedia.
 
@@ -45,7 +45,7 @@ Deskripsi resmi menyoroti sejumlah mode dan konten yang bisa dipakai pemain baru
 
 ## Harga dan ketersediaan
 
-Ultraman: Legend Of Heroes - Aplikasi di Google Play gratis diunduh di Google Play, dan statusnya sudah tersedia sekarang. Halaman resminya tidak mencantumkan apakah ada pembelian dalam aplikasi, langganan, atau masa uji coba, jadi biaya tambahan di dalam game belum bisa dipastikan.
+Ultraman: Legend Of Heroes -  gratis diunduh di Google Play, dan statusnya sudah tersedia sekarang. Halaman resminya tidak mencantumkan apakah ada pembelian dalam aplikasi, langganan, atau masa uji coba, jadi biaya tambahan di dalam game belum bisa dipastikan.
 
 Jumlah unduhan, tanggal pembaruan terakhir, dan daftar perangkat yang didukung juga tidak ditampilkan. Satu-satunya angka yang tersedia adalah rating 4,1 dari 157.015 penilaian, yang merupakan pendapat pengguna lain, bukan hasil pengujian.
 

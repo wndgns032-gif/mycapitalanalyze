@@ -1,7 +1,7 @@
 ---
-slug: mystic-sort-water-sort-puzzle-apps-no-google
-title: "Mystic Sort: Water Sort Puzzle – Apps no Google Play — preço"
-description: "Mystic Sort: Water Sort Puzzle – Apps no Google Play é um jogo casual gratuito de organizar líquidos coloridos em frascos, com temas mágicos e centenas de fases. A página oficial não informa compras no aplicativo, avaliações nem contagem de downloads. Quem busca progressão profunda ou dados claros de suporte deve evitar."
+slug: "mystic-sort-water-sort-puzzle-apps-no-google"
+title: "Mystic Sort: Water Sort Puzzle, puzzle casual grátis de separar cores"
+description: "Mystic Sort: Water Sort Puzzle é um jogo casual gratuito de organizar líquidos coloridos em frascos, com temas mágicos e centenas de fases. A página oficial não informa compras no aplicativo, avaliações nem contagem de downloads. Quem busca progressão profunda ou dados claros de suporte deve evitar."
 category: "Apps & Games"
 date: "2026-10-18"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Mystic Sort: Water Sort Puzzle – Apps no Google Play](/assets/img/apps/app-6944c1c6b2.jpg)
+![Mystic Sort: Water Sort Puzzle](/assets/img/apps/app-6944c1c6b2.jpg)
 
-Mystic Sort: Water Sort Puzzle – Apps no Google Play é um jogo casual da Lynn Mobile Puzzle Games disponível agora para download. A proposta é organizar líquidos coloridos entre frascos até que cada recipiente contenha apenas uma cor. A página oficial descreve a experiência como relaxante e viciante, com temas mágicos e visuais encantadores.
+Mystic Sort: Water Sort Puzzle –  é um jogo casual da Lynn Mobile Puzzle Games disponível agora para download. A proposta é organizar líquidos coloridos entre frascos até que cada recipiente contenha apenas uma cor. A página oficial descreve a experiência como relaxante e viciante, com temas mágicos e visuais encantadores.
 
 O download é gratuito, segundo a ficha do aplicativo. A mesma página não informa se existem compras no aplicativo, assinatura ou período de teste. Também não há dados de avaliação, número de instalações ou data da última atualização.
 
-## O que é Mystic Sort: Water Sort Puzzle – Apps no Google Play
+## O que é Mystic Sort: Water Sort Puzzle –  
 
 É um quebra-cabeça de separação de cores no estilo water sort, no qual o jogador toca para despejar água entre frascos. O objetivo é combinar as cores até cada frasco ficar com apenas uma tonalidade. A descrição oficial promete centenas de fases divertidas e desafiadoras, cada uma com um novo puzzle.
 

@@ -1,7 +1,7 @@
 ---
-slug: space-rock-breaker-aplikasi-di-google-play-harga
-title: "Space Rock Breaker - Aplikasi di Google Play — harga"
-description: "Space Rock Breaker - Aplikasi di Google Play adalah game arkade tembak-menembak luar angkasa bertema penambangan asteroid, gratis tanpa iklan dan bisa dimainkan offline. Lewati dulu kalau Anda tidak suka game inkremental dengan angka damage yang naik eksponensial atau malas menunggu tanggal rilis yang belum diumumkan."
+slug: "space-rock-breaker-aplikasi-di-google-play-harga"
+title: "Space Rock Breaker: arkade tambang gratis, belum rilis"
+description: "Space Rock Breaker adalah game arkade luar angkasa bertema penambangan asteroid dari Funtaptic yang tersedia di Google Play sebagai versi saku dari game Steam. Modelnya gratis tanpa iklan, tanpa energi, dan tanpa bayar untuk menang, dengan penembakan otomatis, mesin Plinko, peningkatan pesawat, dan reset prestige. Lewati game ini jika Anda butuh tanggal rilis pasti atau tidak sabar dengan progres bertahap, karena statusnya masih pra-registrasi dan belum bisa dimainkan."
 category: "Apps & Games"
 date: "2026-10-05"
 sourceName: "Google Play"
@@ -15,12 +15,12 @@ developer: "Funtaptic"
 genre: "GAME_ARCADE"
 kind: "game"
 sourceCollection: "preregistration"
-upcoming: true
+upcoming: "true"
 ---
 
-![Space Rock Breaker - Aplikasi di Google Play](/assets/img/apps/app-91cc1e163a.jpg)
+![Space Rock Breaker](/assets/img/apps/app-91cc1e163a.jpg)
 
-Space Rock Breaker - Aplikasi di Google Play adalah game arkade luar angkasa bertema penambangan asteroid dari Funtaptic, versi saku dari game Steam yang kurang dikenal. Model harganya gratis, tanpa iklan, tanpa pop-up banner, tanpa mekanisme energi, dan tanpa elemen bayar untuk menang. Game ini cocok untuk pemain yang suka game inkremental santai dengan penembakan otomatis dan mekanisme Plinko. Jawaban singkatnya: daftar dulu kalau konsepnya menarik, tapi jangan berharap bisa langsung memainkannya, karena statusnya masih pra-registrasi dan belum dirilis.
+Space Rock Breaker -  adalah game arkade luar angkasa bertema penambangan asteroid dari Funtaptic, versi saku dari game Steam yang kurang dikenal. Model harganya gratis, tanpa iklan, tanpa pop-up banner, tanpa mekanisme energi, dan tanpa elemen bayar untuk menang. Game ini cocok untuk pemain yang suka game inkremental santai dengan penembakan otomatis dan mekanisme Plinko. Jawaban singkatnya: daftar dulu kalau konsepnya menarik, tapi jangan berharap bisa langsung memainkannya, karena statusnya masih pra-registrasi dan belum dirilis.
 
 - Isinya: game arkade inkremental luar angkasa, Anda mengendalikan pesawat untuk menghindari asteroid sambil menambang bebatuan.
 - Harganya: gratis, tanpa iklan, tanpa mekanisme energi, dan tanpa elemen bayar untuk menang menurut deskripsi resminya.
@@ -28,12 +28,12 @@ Space Rock Breaker - Aplikasi di Google Play adalah game arkade luar angkasa ber
 - Yang belum jelas: tanggal rilis, ukuran unduhan, dan apakah ada pembelian dalam aplikasi tambahan tidak disebutkan sama sekali.
 - Yang sebaiknya lewati: pemain yang menginginkan tanggal rilis pasti atau tidak sabar dengan progres bertahap berbasis angka.
 
-## Apa itu Space Rock Breaker - Aplikasi di Google Play
+## Apa itu Space Rock Breaker -  
 
-Space Rock Breaker - Aplikasi di Google Play adalah game arkade bertema luar angkasa yang menggabungkan penambangan asteroid dengan penembakan otomatis. Anda mengendalikan pesawat ruang angkasa, menjauh dari asteroid berbahaya di ruang angkasa yang dalam, sementara mekanisme penembak penargetan otomatis membuat Anda bisa fokus pada menghindar. Bebatuan luar angkasa yang hancur menghasilkan batu, mineral, dan permata langka, dan ada asteroid mega yang disebut menantang untuk dikalahkan. Deskripsi resminya menyebut game ini sebagai versi saku dari game Steam dengan nama serupa yang kurang dikenal, jadi ini bukan judul yang benar-benar baru dari nol. Kategori resminya di toko aplikasi adalah arkade.
+Space Rock Breaker -  adalah game arkade bertema luar angkasa yang menggabungkan penambangan asteroid dengan penembakan otomatis. Anda mengendalikan pesawat ruang angkasa, menjauh dari asteroid berbahaya di ruang angkasa yang dalam, sementara mekanisme penembak penargetan otomatis membuat Anda bisa fokus pada menghindar. Bebatuan luar angkasa yang hancur menghasilkan batu, mineral, dan permata langka, dan ada asteroid mega yang disebut menantang untuk dikalahkan. Deskripsi resminya menyebut game ini sebagai versi saku dari game Steam dengan nama serupa yang kurang dikenal, jadi ini bukan judul yang benar-benar baru dari nol. Kategori resminya di toko aplikasi adalah arkade.
 
 ## Tanggal rilis dan pra-registrasi
 
-Halaman resmi Space Rock Breaker - Aplikasi di Google Play tidak mencantumkan tanggal rilis sama sekali. Statusnya adalah pra-registrasi, artinya Anda bisa mendaftar sekarang tetapi belum bisa mengunduh dan memainkannya. Tidak ada tanggal pembaruan terakhir yang tertera, dan tidak ada pula informasi soal hadiah pra-registrasi. Karena itu, jangan berpegang pada tanggal apa pun yang beredar di luar halaman resminya. Satu-satunya hal yang bisa Anda lakukan sekarang adalah membuka halaman Space Rock Breaker - Aplikasi di Google Play di Google Play dan menekan tombol pra-registrasi bila tersedia.
+Halaman resmi Space Rock Breaker -  tidak mencantumkan tanggal rilis sama sekali. Statusnya adalah pra-registrasi, artinya Anda bisa mendaftar sekarang tetapi belum bisa mengunduh dan memainkannya. Tidak ada tanggal pembaruan terakhir yang tertera, dan tidak ada pula informasi soal hadiah pra-registrasi. Karena itu, jangan berpegang pada tanggal apa pun yang beredar di luar halaman resminya. Satu-satunya hal yang bisa Anda lakukan sekarang adalah membuka halaman Space Rock Breaker -  di Google Play dan menekan tombol pra-registrasi bila tersedia.
 
 ## Fitur utama

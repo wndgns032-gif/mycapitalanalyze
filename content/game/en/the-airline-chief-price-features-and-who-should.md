@@ -1,7 +1,7 @@
 ---
-slug: the-airline-chief-price-features-and-who-should
+slug: "the-airline-chief-price-features-and-who-should"
 title: "The Airline Chief — Price, Features and Who Should Skip"
-description: "The Airline Chief is a free-to-play airline business simulation for iPhone and iPad, up for pre-order with a release date of 16 October 2026. It shows ads and needs an internet connection when an ad is due, so players who want a fully offline or ad-free experience should skip it."
+description: "The Airline Chief is an upcoming airline business simulation for iPhone and iPad from developer Marco Galvao, listed under Simulation and Strategy with English, French and German support. It is free to download and play, with ads every eighth game week, and it confirms one starting aircraft and a loan, used aircraft trading, cabin configuration, weekly flight planning, route fares and over 1,100 real airports. Skip it if you want a finished, rated game now, since it is only o"
 category: "Apps & Games"
 date: "2026-10-16"
 sourceName: "App Store"
@@ -15,7 +15,7 @@ developer: "Marco Galvao"
 genre: "Games, Simulation, Strategy"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "EN,FR,DE"
 iap: ""
 requirements: "iOS 16.0+"

@@ -1,7 +1,7 @@
 ---
-slug: cookierun-crumble-idle-rpg-applications-sur-google-play
-title: "CookieRun: Crumble - Idle RPG – Applications sur Google Play — prix"
-description: "CookieRun: Crumble - Idle RPG – Applications sur Google Play est un RPG inactif gratuit signé Devsisters, noté 4,5 sur 5 pour 56312 évaluations. On y aligne 12 Cookies, on collectionne plus de 70 héros et familiers et on laisse les combats tourner hors ligne. À éviter si vous voulez un jeu sans progression automatique ni JcJ."
+slug: "cookierun-crumble-idle-rpg-applications-sur-google-play"
+title: "CookieRun: Crumble - Idle RPG : le RPG AFK gratuit à 12 Cookies"
+description: "CookieRun: Crumble - Idle RPG est un RPG inactif AFK de Devsisters Corporation, disponible gratuitement sur Google Play en français. Le jeu repose sur des combats automatiques avec 12 Cookies, plus de 70 héros et familiers à invoquer, une progression hors ligne et des modes Arène JcJ, Tour de la Plaque et guilde. À éviter si vous refusez les combats automatiques ou voulez connaître le coût réel avant de vous engager, car la fiche ne détaille pas les achats intégrés."
 category: "Apps & Games"
 date: "2026-10-04"
 sourceName: "Google Play"
@@ -17,9 +17,9 @@ kind: "game"
 upcoming: "false"
 ---
 
-![CookieRun: Crumble - Idle RPG – Applications sur Google Play](/assets/img/apps/app-72e8d78ac9.jpg)
+![CookieRun: Crumble - Idle RPG](/assets/img/apps/app-72e8d78ac9.jpg)
 
-CookieRun: Crumble - Idle RPG – Applications sur Google Play est un RPG inactif AFK édité par Devsisters Corporation, disponible dès maintenant sur Google Play en français. Le jeu est gratuit et repose sur des combats automatiques : on forme une équipe de 12 Cookies, on collectionne plus de 70 héros et familiers, et la progression continue même hors ligne. Il s'adresse aux joueurs qui aiment optimiser des équipes sans jouer chaque combat à la main. Pour un joueur qui cherche une expérience gratuite à lancer tout de suite, l'essai ne coûte rien ; pour qui veut tout contrôler manuellement, passez votre chemin.
+CookieRun: Crumble - Idle RPG –  est un RPG inactif AFK édité par Devsisters Corporation, disponible dès maintenant sur Google Play en français. Le jeu est gratuit et repose sur des combats automatiques : on forme une équipe de 12 Cookies, on collectionne plus de 70 héros et familiers, et la progression continue même hors ligne. Il s'adresse aux joueurs qui aiment optimiser des équipes sans jouer chaque combat à la main. Pour un joueur qui cherche une expérience gratuite à lancer tout de suite, l'essai ne coûte rien ; pour qui veut tout contrôler manuellement, passez votre chemin.
 
 - Ce que c'est : un RPG inactif AFK où 12 Cookies combattent automatiquement, avec plus de 70 héros et familiers à invoquer.
 - Ce que ça coûte : l'application est affichée comme gratuite sur Google Play ; la fiche ne précise pas si des achats intégrés existent.
@@ -27,9 +27,9 @@ CookieRun: Crumble - Idle RPG – Applications sur Google Play est un RPG inacti
 - Ce qui reste flou : le nombre d'installations, la date de dernière mise à jour et le détail des achats intégrés ne figurent pas dans les informations fournies.
 - Qui doit éviter : ceux qui refusent les combats automatiques, et ceux qui veulent connaître le coût réel avant de s'engager, puisque la fiche ne le dit pas.
 
-## Ce qu'est CookieRun: Crumble - Idle RPG – Applications sur Google Play
+## Ce qu'est CookieRun: Crumble - Idle RPG –  
 
-CookieRun: Crumble - Idle RPG – Applications sur Google Play est un RPG inactif massif dans lequel les Cookies reviennent sous forme d'équipes de combat. L'éditeur Devsisters Corporation le classe dans la catégorie rôle sur Google Play, et la fiche est rédigée en français. Le principe annoncé est simple : on constitue une escouade, on laisse les affrontements se dérouler seuls, et on revient récupérer les ressources accumulées. Le jeu est déjà publié et téléchargeable, il n'y a donc aucune attente à prévoir avant de l'essayer.
+CookieRun: Crumble - Idle RPG –  est un RPG inactif massif dans lequel les Cookies reviennent sous forme d'équipes de combat. L'éditeur Devsisters Corporation le classe dans la catégorie rôle sur Google Play, et la fiche est rédigée en français. Le principe annoncé est simple : on constitue une escouade, on laisse les affrontements se dérouler seuls, et on revient récupérer les ressources accumulées. Le jeu est déjà publié et téléchargeable, il n'y a donc aucune attente à prévoir avant de l'essayer.
 
 ## Fonctions principales
 

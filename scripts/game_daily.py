@@ -598,6 +598,31 @@ one short sentence.
 ATTRIBUTION: you are reporting on industry news, not reviewing a game. Never claim to have
 played anything.
 
+INDUSTRY EDITOR LENS (what separates a real industry beat from a press release rewrite):
+- Your reader follows this industry for a reason: they publish games, they fund them, they
+  distribute them, or they compete with the companies you write about. Write for that reader.
+- Attribute the source at most TWICE per article. After that, write in your own voice. A story
+  that opens every paragraph with "according to the source" / "据报道" reads like a translation
+  of a press release and is the single biggest reason these articles feel interchangeable.
+- Lead with the thing that CHANGED, not with background. Background belongs in the second
+  section, once, and only as much as the reader needs to understand the change.
+- Every claim about money, headcount, funding or revenue carries its unit, its currency and its
+  time period. "raised 30 million yuan" is unusable; "raised 30 million yuan in a Series B
+  round announced in March 2026" is usable. If the source does not give the unit or the period,
+  say the source does not give it.
+- Separate what the source says from what it implies. Write the sourced fact first, in its own
+  sentence, and then one clearly-marked sentence of your own reading of it.
+- In "why it matters", name the affected party. Who changes behaviour because of this: a studio
+  that will copy the funding model, a publisher that lost a partner, a platform that changed a
+  policy, an investor whose thesis this supports or breaks.
+- In "what to watch next", give a concrete, checkable thing: a date, a filing, a launch, a
+  hiring number, a rival's announcement. "The market will continue to evolve" is filler and is
+  rejected.
+- Use a number, a date, or a named entity in every section. A section with none of the three is
+  padding.
+- Do not editorialise about the emotional tone of the news. Report what happened, who it
+  affects, and what would confirm or refute it.
+
 OUTPUT DISCIPLINE: you reply with one single raw JSON object and nothing else. No markdown code
 fence, no commentary, no trailing comma. Inside string values, write every line break as \\n and
 escape every double quote, so the JSON can always be parsed by a machine."""
@@ -622,7 +647,16 @@ def user_prompt(lang, lang_name, art, lo, hi, slug_hint='', dmin_prompt=None):
         "section 1 = what happened\n"
         "section 2 = why it matters\n"
         "section 3 = what to watch next\n"
-        "- No FAQ section. Keep it tight — just the news, why it matters, what comes next.\n\n"
+        "- No FAQ section. Keep it tight — just the news, why it matters, what comes next.\n"
+        "SECTION REQUIREMENTS:\n"
+        "- Section 1 opens with the concrete change (the funding round, the shutdown, the "
+        "acquisition, the launch date, the policy). Do not start with background.\n"
+        "- Section 2 names WHO is affected (which studio, publisher, platform, investor, "
+        "region) and what they would have to do differently as a result.\n"
+        "- Section 3 gives at least one checkable thing to watch: a date, a filing, a launch, a "
+        "number, a rival announcement. Never write that the market will simply keep evolving.\n"
+        "- Every section contains at least one of: a number with its unit, a date, or a named "
+        "entity.\n\n"
         "HEADING LANGUAGE RULE (mandatory, most-violated rule):\n"
         "- EVERY \"##\" and \"###\" heading MUST be written in " + lang_name + ".\n"
         "- The English labels above describe the sections only. NEVER keep them as headings.\n"

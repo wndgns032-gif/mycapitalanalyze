@@ -1,6 +1,6 @@
 ---
-slug: arrow-slip-tap-puzzle-precio-funciones-qui-no
-title: "Arrow Slip: Tap Puzzle — precio, funciones y a quién no"
+slug: "arrow-slip-tap-puzzle-precio-funciones-qui-no"
+title: "Arrow Slip: Tap Puzzle: puzle de flechas gratis con 1.000 tableros"
 description: "Arrow Slip: Tap Puzzle es un puzle de lógica para iOS en el que cada flecha se desliza solo en la dirección que apunta y solo si el camino está libre. Es gratis, con anuncios y sin muros de pago, energía ni vidas de espera, según la ficha oficial. Conviene saltárselo a quien busque juego sin publicidad o puzles narrativos."
 category: "Apps & Games"
 date: "2026-10-11"
@@ -15,7 +15,7 @@ developer: "DAT PHAM VAN"
 genre: "Juegos, Puzle, Juegos de mesa, Entretenimiento"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "EN,FR,DE,ID,JA,KO,PT,RU,ZH,ES,TH,VI"
 iap: ""
 requirements: "iOS 18.0+"

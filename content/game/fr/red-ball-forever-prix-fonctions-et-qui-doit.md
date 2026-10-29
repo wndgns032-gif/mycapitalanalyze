@@ -1,6 +1,6 @@
 ---
-slug: red-ball-forever-prix-fonctions-et-qui-doit
-title: "Red Ball Forever — prix, fonctions et qui doit éviter"
+slug: "red-ball-forever-prix-fonctions-et-qui-doit"
+title: "Red Ball Forever : plateformes 2.5D, 45 niveaux"
 description: "Red Ball Forever est un jeu de plateformes 2.5D gratuit avec achat intégré optionnel pour supprimer les pubs et débloquer tous les niveaux. Prévu le 22 octobre 2026 sur iOS, il cible les familles et les fans de la série, mais les joueurs qui détestent les pubs ou veulent du multijoueur devraient passer leur chemin."
 category: "Apps & Games"
 date: "2026-10-22"
@@ -15,7 +15,7 @@ developer: "FDG Entertainment GmbH & Co.KG"
 genre: "Jeux, Action, Aventure"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "DA,NL,EN,FI,FR,DE,HI,ID,IT,JA,KO,MS,NB,PT,RU,ZH,ES,SV,ZH,TR,UK"
 iap: ""
 requirements: "iOS 15.0+"

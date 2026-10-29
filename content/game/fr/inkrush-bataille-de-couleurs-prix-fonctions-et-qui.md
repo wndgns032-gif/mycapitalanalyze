@@ -1,6 +1,6 @@
 ---
-slug: inkrush-bataille-de-couleurs-prix-fonctions-et-qui
-title: "InkRush: Bataille de couleurs — prix, fonctions et qui doit éviter"
+slug: "inkrush-bataille-de-couleurs-prix-fonctions-et-qui"
+title: "InkRush: Bataille de couleurs, un jeu d'action gratuit en 90 secondes"
 description: "InkRush: Bataille de couleurs est un jeu d'action gratuit signé Shintougen Limited Liability Company, où deux équipes recouvrent une carte de leur encre en 90 secondes. Le titre est disponible dès maintenant sur iPhone et iPad, sans prix affiché ni achat intégré confirmé. À éviter si vous cherchez des parties en ligne contre des inconnus."
 category: "Apps & Games"
 date: "2026-10-03"

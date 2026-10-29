@@ -1,7 +1,7 @@
 ---
-slug: merge-survival-wasteland-aplicaciones-en-google-play-precio
-title: "Merge Survival : Wasteland - Aplicaciones en Google Play — precio"
-description: "Merge Survival : Wasteland - Aplicaciones en Google Play es un juego de puzles y combinación de StickyHands Inc. en el que ayudas a Eden a construir un refugio en un mundo postapocalíptico. Es gratis, con una valoración de 4,4 sobre 5 de 79697 valoraciones, y conviene saltárselo si buscas acción rápida o una experiencia sin combinación de bloques."
+slug: "merge-survival-wasteland-aplicaciones-en-google-play-precio"
+title: "Merge Survival : Wasteland, puzles de fusión gratis en Android"
+description: "Merge Survival : Wasteland es un juego de puzles y combinación de StickyHands Inc. en el que ayudas a Eden a construir un refugio en un mundo postapocalíptico. Es gratis, con una valoración de 4,4 sobre 5 de 79697 valoraciones, y conviene saltárselo si buscas acción rápida o una experiencia sin combinación de bloques."
 category: "Apps & Games"
 date: "2026-10-19"
 sourceName: "Google Play"
@@ -21,15 +21,15 @@ iap: ""
 requirements: ""
 ---
 
-![Merge Survival : Wasteland - Aplicaciones en Google Play](/assets/img/apps/app-0983a5e811.jpg)
+![Merge Survival : Wasteland](/assets/img/apps/app-0983a5e811.jpg)
 
-Merge Survival : Wasteland - Aplicaciones en Google Play es un juego de puzles y combinación para Android, desarrollado por StickyHands Inc. La propuesta es ayudar a Eden, una superviviente que deambula por un mundo postapocalíptico, a encontrar un refugio seguro. Combina bloques para crear materiales y explorar en busca de recursos ocultos.
+Merge Survival : Wasteland -  es un juego de puzles y combinación para Android, desarrollado por StickyHands Inc. La propuesta es ayudar a Eden, una superviviente que deambula por un mundo postapocalíptico, a encontrar un refugio seguro. Combina bloques para crear materiales y explorar en busca de recursos ocultos.
 
 La ficha oficial lo presenta como una mezcla de supervivencia, combinación y narrativa sobre un grupo de personas en un entorno destruido por desastres y contaminación. Se puede descargar ahora mismo y su precio es gratuito. La página no detalla compras dentro de la aplicación ni suscripciones.
 
-## Qué es Merge Survival : Wasteland - Aplicaciones en Google Play
+## Qué es Merge Survival : Wasteland -  
 
-Merge Survival : Wasteland - Aplicaciones en Google Play es un juego de puzles en el que combinas bloques para obtener herramientas y materiales de supervivencia. La historia sigue a Eden y a otros supervivientes que se encuentran, chocan y conviven mientras intentan reconstruir algo parecido a un hogar. La ficha oficial describe un campamento ecológico y la importancia de reciclar recursos.
+Merge Survival : Wasteland -  es un juego de puzles en el que combinas bloques para obtener herramientas y materiales de supervivencia. La historia sigue a Eden y a otros supervivientes que se encuentran, chocan y conviven mientras intentan reconstruir algo parecido a un hogar. La ficha oficial describe un campamento ecológico y la importancia de reciclar recursos.
 
 El juego pertenece a la categoría de puzles de Google Play y está disponible para descargar. La página oficial no muestra el tamaño de la descarga ni los dispositivos compatibles. Tampoco indica cuántas instalaciones acumula.
 
@@ -45,7 +45,7 @@ La ficha oficial resume el juego en torno a la combinación de bloques y la expl
 
 ## Precio y disponibilidad
 
-Merge Survival : Wasteland - Aplicaciones en Google Play se puede descargar gratis y está disponible ahora en Google Play. La ficha oficial no indica compras dentro de la aplicación, suscripción ni prueba gratuita, así que ese punto queda sin confirmar. Tampoco muestra la fecha de la última actualización ni la versión actual del juego.
+Merge Survival : Wasteland -  se puede descargar gratis y está disponible ahora en Google Play. La ficha oficial no indica compras dentro de la aplicación, suscripción ni prueba gratuita, así que ese punto queda sin confirmar. Tampoco muestra la fecha de la última actualización ni la versión actual del juego.
 
 La valoración pública es de 4,4 sobre 5 con 79697 valoraciones, un dato que refleja la opinión de los usuarios y no una prueba propia. La página no revela el número de instalaciones ni la clasificación por edades del contenido. Tampoco aclara qué permisos concretos solicita el juego para guardar el progreso.
 

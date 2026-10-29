@@ -1,6 +1,6 @@
 ---
-slug: geminiseedw-precio-funciones-qui-no
-title: "GeminiSeedW — precio, funciones y a quién no"
+slug: "geminiseedw-precio-funciones-qui-no"
+title: "GeminiSeedW, RPG táctico gratis con heroínas y pesca"
 description: "GeminiSeedW es un RPG táctico de fantasía para iPhone y iPad, gratis en la App Store y publicado por ShangHai WePlayDynamics. Usa Medallas de Habilidad en combates por turnos, recluta heroínas de estilo anime y sube tu poder pescando y cocinando. No trae valoraciones todavía, así que quien busque opiniones de otros jugadores debería esperar."
 category: "Apps & Games"
 date: "2026-10-02"
@@ -14,7 +14,7 @@ price: "Gratis"
 developer: "ShangHai WePlayDynamics"
 genre: "Juegos, Juegos de rol, Estrategia"
 kind: "game"
-upcoming: false
+upcoming: "false"
 ---
 
 ![GeminiSeedW](/assets/img/apps/app-afa51a8183.jpg)

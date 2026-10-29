@@ -1,7 +1,7 @@
 ---
-slug: ungodly-aplicaciones-en-google-play-precio-funciones-qui
-title: "UnGodly - Aplicaciones en Google Play — precio, funciones y a quién no"
-description: "UnGodly - Aplicaciones en Google Play es un juego de rol de acción dark fantasy de Azra Games, gratuito y aún no disponible: solo permite prerregistro. No tiene autocombate y exige habilidad y posicionamiento en tiempo real, así que quien busque partidas pasivas o jugar ya mismo debería saltárselo."
+slug: "ungodly-aplicaciones-en-google-play-precio-funciones-qui"
+title: "UnGodly : RPG de acción gratis solo con prerregistro, sin fecha"
+description: "UnGodly es un RPG de acción dark fantasy para móvil, desarrollado por Azra Games y disponible solo como prerregistro en Google Play, sin descarga ni juego por ahora. Es gratis y la ficha confirma combate en tiempo real sin autocombate, reclutamiento y evolución de Primales, subida de nivel, equipo, despertares y narrativa cinematográfica. Debería saltárselo quien quiera jugar hoy mismo o prefiera combates automáticos y partidas pasivas, ya que no hay fecha de lanzamiento conf"
 category: "Apps & Games"
 date: "2026-10-04"
 sourceName: "Google Play"
@@ -17,23 +17,23 @@ kind: "game"
 upcoming: "true"
 ---
 
-![UnGodly - Aplicaciones en Google Play](/assets/img/apps/app-8a06ab628c.jpg)
+![UnGodly](/assets/img/apps/app-8a06ab628c.jpg)
 
-UnGodly - Aplicaciones en Google Play es un juego de rol de acción dark fantasy desarrollado por Azra Games. Es gratis y todavía no está disponible: la ficha solo ofrece prerregistro, así que no se puede descargar ni jugar hoy. Está pensado para quienes buscan combate en tiempo real sin autocombate, con progresión de rol y una narrativa cinematográfica. La respuesta práctica es que reservarlo no cuesta nada y desbloquea recompensas, pero conviene hacerlo con expectativas ajustadas porque no hay fecha confirmada.
+UnGodly -  es un juego de rol de acción dark fantasy desarrollado por Azra Games. Es gratis y todavía no está disponible: la ficha solo ofrece prerregistro, así que no se puede descargar ni jugar hoy. Está pensado para quienes buscan combate en tiempo real sin autocombate, con progresión de rol y una narrativa cinematográfica. La respuesta práctica es que reservarlo no cuesta nada y desbloquea recompensas, pero conviene hacerlo con expectativas ajustadas porque no hay fecha confirmada.
 
-- Qué es: un RPG de acción dark fantasy para móvil, con combate en tiempo real y sin autocombate, según la descripción oficial de UnGodly - Aplicaciones en Google Play.
+- Qué es: un RPG de acción dark fantasy para móvil, con combate en tiempo real y sin autocombate, según la descripción oficial de UnGodly -  .
 - Qué cuesta: es gratis; la ficha no menciona compras dentro de la aplicación, suscripción ni prueba.
 - Qué está confirmado: el prerregistro desbloquea a Sigrun, la Guerrera Rúnica, y recompensas globales por hitos como monedas, objetos de invocación y objetos de experiencia.
 - Qué sigue sin aclararse: no hay fecha de lanzamiento, ni precio de posibles compras, ni lista de dispositivos compatibles.
 - Quién debería saltárselo: quien quiera jugar hoy mismo o prefiera combates automáticos y partidas pasivas.
 
-## Qué es UnGodly - Aplicaciones en Google Play
+## Qué es UnGodly -  
 
-UnGodly - Aplicaciones en Google Play es un juego de rol de acción dark fantasy en el que controlas cada instante de la batalla en tiempo real, sin autocombate y sin atajos. La historia sitúa un mundo destruido por The Devouring, y solo los Primales —guerreros marcados por un poder elemental— pueden resistir la extinción. El jugador recluta y evoluciona a esos Primales, cada uno con su propio rol de combate y estilo de juego. La ficha lo describe como un RPG premium centrado en acción intensa y jugabilidad de rol envolvente, aunque el acceso sigue cerrado.
+UnGodly -  es un juego de rol de acción dark fantasy en el que controlas cada instante de la batalla en tiempo real, sin autocombate y sin atajos. La historia sitúa un mundo destruido por The Devouring, y solo los Primales —guerreros marcados por un poder elemental— pueden resistir la extinción. El jugador recluta y evoluciona a esos Primales, cada uno con su propio rol de combate y estilo de juego. La ficha lo describe como un RPG premium centrado en acción intensa y jugabilidad de rol envolvente, aunque el acceso sigue cerrado.
 
 ## Fecha de lanzamiento y prerregistro
 
-La ficha de UnGodly - Aplicaciones en Google Play no indica fecha de lanzamiento ni ventana estimada. Lo único disponible ahora es el prerregistro, que según la descripción desbloquea a Sigrun, la Guerrera Rúnica, además de recompensas globales por hitos como monedas, objetos de invocación y objetos de experiencia. No se detalla cuándo se entregarán esas recompensas ni si el prerregistro garantiza acceso anticipado. Tampoco hay confirmación de plataformas más allá de la tienda de aplicaciones donde aparece listado.
+La ficha de UnGodly -  no indica fecha de lanzamiento ni ventana estimada. Lo único disponible ahora es el prerregistro, que según la descripción desbloquea a Sigrun, la Guerrera Rúnica, además de recompensas globales por hitos como monedas, objetos de invocación y objetos de experiencia. No se detalla cuándo se entregarán esas recompensas ni si el prerregistro garantiza acceso anticipado. Tampoco hay confirmación de plataformas más allá de la tienda de aplicaciones donde aparece listado.
 
 ## Características principales
 

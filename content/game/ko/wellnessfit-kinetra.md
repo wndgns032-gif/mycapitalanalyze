@@ -1,7 +1,7 @@
 ---
 slug: "wellnessfit-kinetra"
-title: "WellnessFit-Kinetra: 출시일, 기능, 가격 안내"
-description: "WellnessFit-Kinetra는 일상의 작은 움직임을 기록하고 시각적 경로와 주간 인사이트로 꾸준한 리듬을 만드는 건강 및 피트니스 앱입니다."
+title: "WellnessFit-Kinetra: 출시일, 기능, 가격 안내 - 무료 움직임 기록 앱"
+description: "WellnessFit-Kinetra는 산책과 스트레칭 같은 일상의 작은 움직임을 기록하는 건강 및 피트니스 앱으로, 앱스토어에서 만날 수 있는 iOS용 출시 예정작입니다. 가격은 무료이며 예약 주문이 가능하고, 활동 시간과 강도, 기분, 움직임 유형 기록과 시각적 움직임 경로, 가벼운 활동 타이머, 반복 루틴, 즐겨 찾기 저장, 선택적 움직임 알림, 주간 및 월간 패턴 인사이트를 제공합니다. 강도 높은 훈련 프로그램이나 칼로리 목표, 경쟁 순위표를 기대하는 사용자에게는 맞지 않을 수 있으며, 가장 중요한 한계는 출시 예정작이라 2027년 2월 11일 출시일과 세부 구성이 변경될 수 있다는 점입니다."
 category: "Apps & Games"
 date: "2026-09-30"
 sourceName: "App Store"
@@ -13,7 +13,7 @@ price: "무료"
 developer: "AMALIYA RUSTAMOVA"
 genre: "건강 및 피트니스"
 kind: "app"
-upcoming: false
+upcoming: "false"
 ---
 
 ![WellnessFit-Kinetra](/assets/img/apps/app-0f0b03bc09.jpg)

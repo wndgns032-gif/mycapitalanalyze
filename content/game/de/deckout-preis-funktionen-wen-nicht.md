@@ -1,7 +1,7 @@
 ---
-slug: deckout-preis-funktionen-wen-nicht
-title: "DeckOut! — Preis, Funktionen, für wen nicht"
-description: "DeckOut! ist ein kostenloses Kartenduell für iPhone und iPad, in dem du und dein Gegner gleichzeitig eine Karte wählen. Es gibt keine bestätigten In-App-Käufe, keine Bewertungen und nur Englisch. Wer ein Spiel mit deutschen Texten oder ohne Online-Zwang sucht, sollte es überspringen."
+slug: "deckout-preis-funktionen-wen-nicht"
+title: "DeckOut! Kartenduell gratis im Test: Regeln, Arenen, Englisch"
+description: "DeckOut! ist ein rundenbasiertes Kartenduell für iPhone und iPad, bei dem beide Seiten gleichzeitig eine verdeckte Karte wählen und die Regeln so einfach wie Stein, Papier, Schere sind. Gratis im App Store, Version 1.0.1 vom 30. September 2026, mit Online-1v1, drei Arenen mit eigenen Regeln, aufsteigenden Karten, Pokalpfad und täglichen Aufgaben, ohne Konto. Überspringen sollten es alle, die deutsche Menüs oder eine lokalisierte Oberfläche brauchen, denn als Sprache ist nur E"
 category: "Apps & Games"
 date: "2026-10-01"
 sourceName: "App Store"

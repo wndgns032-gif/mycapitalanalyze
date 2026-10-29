@@ -1,7 +1,7 @@
 ---
-slug: super-bean-boy-pre-fun-es-quem-deve
-title: "Super Bean Boy — preço, funções e quem deve evitar"
-description: "Super Bean Boy é um jogo casual e de ação da Beananza, grátis na App Store, com anúncios e uma compra única para removê-los. A pré-venda já aparece na loja, mas o jogo só chega em 31 de outubro de 2026, então quem quer algo para jogar agora deve evitar."
+slug: "super-bean-boy-pre-fun-es-quem-deve"
+title: "Super Bean Boy, plataforma vertical grátis com pré-venda aberta"
+description: "Super Bean Boy é um jogo casual e de ação da Beananza para a App Store, com lançamento previsto para 31 de outubro de 2026 e pré-venda já aberta. O preço é grátis, mantido por anúncios, com compra única Sem Anúncios e Moedas de Ouro opcionais, versão 1.5.0 e 14 idiomas. Quem não gosta de anúncios ou compras dentro do app deve evitar o título, e ainda não há avaliações nem número de downloads divulgados."
 category: "Apps & Games"
 date: "2026-10-23"
 sourceName: "App Store"

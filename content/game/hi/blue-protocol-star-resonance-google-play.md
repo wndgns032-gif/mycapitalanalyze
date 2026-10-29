@@ -1,7 +1,7 @@
 ---
-slug: blue-protocol-star-resonance-google-play
-title: "Blue Protocol: Star Resonance - Google Play पर ऐप्लिकेशन — कीमत"
-description: "Blue Protocol: Star Resonance - Google Play पर ऐप्लिकेशन HaoPlay Limited का फ्री MMORPG है, जो एनीमे-शैली की काल्पनिक दुनिया रेग्नस में सेट है। इसमें खुली दुनिया, रोल बदलने की सुविधा और मल्टीप्लेयर पार्टी लड़ाइयाँ हैं। जो खिलाड़ी सिर्फ सोलो गेम चाहते हैं या जिन्हें टीमवर्क पसंद नहीं, वे इसे छोड़ सकते हैं।"
+slug: "blue-protocol-star-resonance-google-play"
+title: "Blue Protocol: Star Resonance: फ्री एनीमे MMORPG, रोल बदलें"
+description: "Blue Protocol: Star Resonance एक फ्री MMORPG है जिसे HaoPlay Limited ने Google Play पर पेश किया है और यह एनीमे-शैली की काल्पनिक दुनिया रेग्नस में आपके एडवेंचर की शुरुआत करता है। कीमत फ्री है और आप टैंक, हीलर व डैमेज भूमिकाएँ बदल सकते हैं, क्रिस्टल व जड़ी-बूटियाँ इकट्ठा कर सकते हैं, पोशाकों से खुद को अभिव्यक्त कर सकते हैं और पार्टियों में बॉस पर छापा मार सकते हैं। जो अकेले खेलना चाहते हैं या गिल्ड समन्वय पसंद नहीं करते वे इसे छोड़ सकते हैं, क्योंकि इन-ऐप खरीदारी और असली खर्च क"
 category: "Apps & Games"
 date: "2026-10-24"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Blue Protocol: Star Resonance - Google Play पर ऐप्लिकेशन](/assets/img/apps/app-2df8e2c20e.jpg)
+![Blue Protocol: Star Resonance](/assets/img/apps/app-2df8e2c20e.jpg)
 
-Blue Protocol: Star Resonance - Google Play पर ऐप्लिकेशन एक फ्री MMORPG है जिसे HaoPlay Limited ने पेश किया है। यह एनीमे-शैली की काल्पनिक दुनिया रेग्नस में आपके एडवेंचर की शुरुआत करता है। गेम अभी Google Play पर उपलब्ध है और डाउनलोड किया जा सकता है।
+Blue Protocol: Star Resonance -  एक फ्री MMORPG है जिसे HaoPlay Limited ने पेश किया है। यह एनीमे-शैली की काल्पनिक दुनिया रेग्नस में आपके एडवेंचर की शुरुआत करता है। गेम अभी Google Play पर उपलब्ध है और डाउनलोड किया जा सकता है।
 
 इसका स्टोर पेज 3.7 में से 5 रेटिंग दिखाता है, जो 9948 रेटिंग्स पर आधारित है। यानी इसे कई लोगों ने आज़माया है, पर रेटिंग औसत से थोड़ी ऊपर ही है। कीमत फ्री है, लेकिन इन-ऐप खरीदारी के बारे में पेज कुछ नहीं बताता।
 
-## Blue Protocol: Star Resonance - Google Play पर ऐप्लिकेशन क्या है?
+## Blue Protocol: Star Resonance -  क्या है?
 
 यह एक रोल-प्लेइंग गेम है जो खुली दुनिया के अन्वेषण और मल्टीप्लेयर लड़ाइयों को जोड़ता है। स्टोर विवरण के मुताबिक आप रेग्नस की विशाल भूमि पर दुर्लभ क्रिस्टल खोज सकते हैं और जड़ी-बूटियाँ या मशरूम इकट्ठा कर सकते हैं। बीच-बीच में राक्षसों की भगदड़ में फँसना भी इसका हिस्सा है।
 

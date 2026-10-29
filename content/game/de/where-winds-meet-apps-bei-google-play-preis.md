@@ -1,7 +1,7 @@
 ---
-slug: where-winds-meet-apps-bei-google-play-preis
-title: "Where Winds Meet – Apps bei Google Play — Preis, Funktionen"
-description: "Where Winds Meet – Apps bei Google Play ist ein kostenloses Open-World-Action-Adventure-RPG im Wuxia-Stil von Exptional Global, spielbar im Crossplay auf XBOX, PS5, PC und Mobile. Der Preis ist gratis, Angaben zu In-App-Käufen macht die offizielle Seite nicht. Wer kein Wuxia und keine offene Welt mit vielen Aktivitäten sucht, kann getrost überspringen."
+slug: "where-winds-meet-apps-bei-google-play-preis"
+title: "Where Winds Meet — Preis, Funktionen"
+description: "Where Winds Meet ist ein kostenloses Open-World-Action-Adventure-RPG im Wuxia-Stil von Exptional Global, spielbar im Crossplay auf XBOX, PS5, PC und Mobile. Der Preis ist gratis, Angaben zu In-App-Käufen macht die offizielle Seite nicht. Wer kein Wuxia und keine offene Welt mit vielen Aktivitäten sucht, kann getrost überspringen."
 category: "Apps & Games"
 date: "2026-10-16"
 sourceName: "Google Play"
@@ -21,15 +21,15 @@ iap: ""
 requirements: ""
 ---
 
-![Where Winds Meet – Apps bei Google Play](/assets/img/apps/app-859ec6f5ed.jpg)
+![Where Winds Meet](/assets/img/apps/app-859ec6f5ed.jpg)
 
-Where Winds Meet – Apps bei Google Play ist ein Open-World-Action-Adventure-RPG, das in der Tradition des Wuxia verwurzelt ist. Laut offizieller Beschreibung schlüpfst du in die Rolle eines jungen Schwertmeisters im chinesischen 10. Jahrhundert. Entwickelt wird es von Exptional Global.
+Where Winds Meet –  ist ein Open-World-Action-Adventure-RPG, das in der Tradition des Wuxia verwurzelt ist. Laut offizieller Beschreibung schlüpfst du in die Rolle eines jungen Schwertmeisters im chinesischen 10. Jahrhundert. Entwickelt wird es von Exptional Global.
 
 Die offizielle Seite nennt Crossplay auf XBOX, PS5, PC und Mobile. Der Eintrag ist bereits verfügbar und lässt sich jetzt herunterladen. Wie viele Installationen es gibt und wann die letzte Aktualisierung erfolgte, zeigt die offizielle Seite nicht.
 
-## Was ist Where Winds Meet – Apps bei Google Play?
+## Was ist Where Winds Meet –  ?
 
-Where Winds Meet – Apps bei Google Play ist ein episches Open-World-Action-Adventure-RPG in der Epoche der Fünf Dynastien und Zehn Königreiche. Du deckst vergessene Wahrheiten auf und lüftest das Geheimnis deiner eigenen Identität. Die Welt umfasst laut Beschreibung über 20 unterschiedliche Regionen.
+Where Winds Meet –  ist ein episches Open-World-Action-Adventure-RPG in der Epoche der Fünf Dynastien und Zehn Königreiche. Du deckst vergessene Wahrheiten auf und lüftest das Geheimnis deiner eigenen Identität. Die Welt umfasst laut Beschreibung über 20 unterschiedliche Regionen.
 
 Du entscheidest, ob du als Held oder als Agent des Chaos agierst. Verbreite Chaos, trotze dem Gesetz und stelle dich Kopfgeldern, Verfolgungen oder sogar einer Gefängnisstrafe. Oder schließe Freundschaften mit Dorfbewohnern und schmiede Allianzen. Jede Handlung soll Gewicht haben.
 
@@ -56,4 +56,4 @@ Wer Wuxia, offene Welten und Crossplay auf Konsole und PC sucht, findet hier lau
 
 Wer keine offene Welt mit vielen Aktivitäten und Kämpfen im Wuxia-Stil möchte, sollte überspringen. Auch wer ein Spiel ohne mögliche Zusatzkäufe sucht, hat hier keine klare Zusage. Die wichtigste Einschränkung bleibt, dass die offizielle Seite zu In-App-Käufen und Aktualisierungen nichts sagt.
 
-Ob Where Winds Meet – Apps bei Google Play für dich passt, hängt vor allem von deinem Interesse an Wuxia und offenen Welten ab. Lade es kostenlos herunter, wenn dich das Setting anspricht, und überspringe es, wenn du keine Zusatzkäufe riskieren willst.
+Ob Where Winds Meet –  für dich passt, hängt vor allem von deinem Interesse an Wuxia und offenen Welten ab. Lade es kostenlos herunter, wenn dich das Setting anspricht, und überspringe es, wenn du keine Zusatzkäufe riskieren willst.

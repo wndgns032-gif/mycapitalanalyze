@@ -1,7 +1,7 @@
 ---
-slug: hug-the-dot-price-features-and-who-should
+slug: "hug-the-dot-price-features-and-who-should"
 title: "Hug the Dot — Price, Features and Who Should Skip"
-description: "Hug the Dot is a free minimalist action game where you press and hold a neon dot that speeds up across the screen, collecting pickups to boost multipliers while trying to stay on it for as long as possible. Players who prefer ad‑free experiences or want more complex controls should skip it."
+description: "Hug the Dot is a minimalist single-touch action game for iOS in which you press and hold a dot that wanders across the screen and speeds up every second. It is free with occasional ads between runs and offers daily courses identical for every player, pickups that change the dot's size, speed or multiplier, replay reviews of your finger path, and offline random courses. Skip it if you dislike ad-supported games, and note that it is only a pre-order with a release date of 2026-"
 category: "Apps & Games"
 date: "2026-10-29"
 sourceName: "App Store"
@@ -15,7 +15,7 @@ developer: "Mic Johansson"
 genre: "Games, Action, Casual"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "EN"
 iap: ""
 requirements: "iOS 15.0+"

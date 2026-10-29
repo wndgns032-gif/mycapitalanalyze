@@ -1,7 +1,7 @@
 ---
-slug: block-puzzle-colors-blast-google-play
-title: "Block Puzzle: Colors Blast - Google Play তে অ্যাপ — দাম"
-description: "Block Puzzle: Colors Blast - Google Play তে অ্যাপ হলো JC Puzzle Games Studio-র একটি ফ্রি ক্যাজুয়াল ব্লক পাজল গেম, যেখানে রঙিন ব্লক সাজিয়ে সারি বা কলাম পূর্ণ করে স্কোর করা যায়। দাম নেই, তবে ইন-অ্যাপ কেনাকাটা আছে কি না তা পেজে লেখা নেই; যারা টাইমার ছাড়া ধীরে খেলতে চান না বা রঙিন অ্যানিমেশন পছন্দ করেন না, তাদের জন্য এটি নয়।"
+slug: "block-puzzle-colors-blast-google-play"
+title: "Block Puzzle: Colors Blast — ফ্রি অফলাইন ব্লক পাজল"
+description: "Block Puzzle: Colors Blast হলো JC Puzzle Games Studio-র একটি ফ্রি ক্যাজুয়াল ব্লক পাজল গেম, যেখানে রঙিন ব্লক সাজিয়ে সারি বা কলাম পূর্ণ করে স্কোর করা যায়। দাম নেই, তবে ইন-অ্যাপ কেনাকাটা আছে কি না তা পেজে লেখা নেই; যারা টাইমার ছাড়া ধীরে খেলতে চান না বা রঙিন অ্যানিমেশন পছন্দ করেন না, তাদের জন্য এটি নয়।"
 category: "Apps & Games"
 date: "2026-10-24"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Block Puzzle: Colors Blast - Google Play তে অ্যাপ](/assets/img/apps/app-073882aa38.jpg)
+![Block Puzzle: Colors Blast](/assets/img/apps/app-073882aa38.jpg)
 
-Block Puzzle: Colors Blast - Google Play তে অ্যাপ হলো JC Puzzle Games Studio-র তৈরি একটি ফ্রি ক্যাজুয়াল ব্লক পাজল গেম। এতে রঙিন ব্লক গ্রিডে টেনে বসিয়ে পূর্ণ সারি বা কলাম মুছে ফেলতে হয়। গেমটি এখনই ডাউনলোড করা যায় এবং এটি সম্পূর্ণ ফ্রি হিসেবে তালিকাভুক্ত।
+Block Puzzle: Colors Blast -  হলো JC Puzzle Games Studio-র তৈরি একটি ফ্রি ক্যাজুয়াল ব্লক পাজল গেম। এতে রঙিন ব্লক গ্রিডে টেনে বসিয়ে পূর্ণ সারি বা কলাম মুছে ফেলতে হয়। গেমটি এখনই ডাউনলোড করা যায় এবং এটি সম্পূর্ণ ফ্রি হিসেবে তালিকাভুক্ত।
 
 গেমটির রেটিং ৫-এর মধ্যে ৩.৬, যা ২৮৪টি রেটিং থেকে এসেছে। ইনস্টল সংখ্যা, সর্বশেষ আপডেটের তারিখ বা ভার্সন নম্বর অফিসিয়াল পেজে দেখানো হয়নি। নিচে শুধু তালিকায় যা নিশ্চিতভাবে আছে তা দিয়ে সিদ্ধান্ত নেওয়ার চেষ্টা করা হয়েছে।
 
-## Block Puzzle: Colors Blast - Google Play তে অ্যাপ কী
+## Block Puzzle: Colors Blast -  কী
 
 এটি একটি ক্যাজুয়াল ব্লক পাজল গেম, যেখানে প্রাণবন্ত ব্লক টেনে এনে মসৃণ গ্রিডে বসাতে হয়। সম্পূর্ণ সারি বা কলাম সাফ করলে চেইন প্রতিক্রিয়া তৈরি হয় এবং স্কোর বাড়ে।
 

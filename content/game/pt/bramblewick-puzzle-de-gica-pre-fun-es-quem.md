@@ -1,6 +1,6 @@
 ---
-slug: bramblewick-puzzle-de-gica-pre-fun-es-quem
-title: "Bramblewick: Puzzle de lógica — preço, funções e quem deve evitar"
+slug: "bramblewick-puzzle-de-gica-pre-fun-es-quem"
+title: "Bramblewick: Puzzle de lógica: jogo de lógica grátis para iPhone e"
 description: "Bramblewick: Puzzle de lógica é um jogo de quebra-cabeça casual grátis para iPhone e iPad, com anúncios entre os níveis e sem necessidade de conta. A versão 1.0.6 chegou em 30 de setembro de 2026 e o jogo roda em oito idiomas. Quem não tolera anúncios ou esperava uma nota alta de outros jogadores deve evitar por enquanto."
 category: "Apps & Games"
 date: "2026-10-02"
@@ -14,7 +14,7 @@ price: "Grátis"
 developer: "Regularly LTD"
 genre: "Jogos, Quebra-cabeça, Casual"
 kind: "game"
-upcoming: false
+upcoming: "false"
 ---
 
 ![Bramblewick: Puzzle de lógica](/assets/img/apps/app-14d133404c.jpg)

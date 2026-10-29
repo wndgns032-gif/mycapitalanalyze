@@ -1,6 +1,6 @@
 ---
-slug: japanese-cook-exam-passrun-harga-fitur-dan-siapa
-title: "Japanese Cook Exam - PassRun — harga, fitur dan siapa yang tidak"
+slug: "japanese-cook-exam-passrun-harga-fitur-dan-siapa"
+title: "Japanese Cook Exam - PassRun: Latihan 300 Soal Ujian Tulis Gratis"
 description: "Japanese Cook Exam - PassRun adalah aplikasi latihan ujian tulis Japanese Cuisine Cook dari HRD Korea dengan 300 soal dan pembahasan lengkap, gratis diunduh tanpa pendaftaran. Cocok untuk calon pekerja migran yang mengejar sertifikat memasak Jepang, tapi lewati kalau kamu butuh latihan memasak praktik atau bimbingan langsung."
 category: "Apps & Games"
 date: "2026-10-03"

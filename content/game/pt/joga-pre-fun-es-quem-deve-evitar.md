@@ -1,6 +1,6 @@
 ---
-slug: joga-pre-fun-es-quem-deve-evitar
-title: "Jogaê — preço, funções e quem deve evitar"
+slug: "joga-pre-fun-es-quem-deve-evitar"
+title: "Jogaê: app de jogos de festa grátis para 3 a 12 jogadores"
 description: "Jogaê é um app de jogos de festa para iPhone e iPad em que o celular comanda as regras, os papéis secretos, o cronômetro e a votação de cada rodada. O download é grátis e existe uma assinatura Premium mensal ou anual com 7 dias grátis, mas o valor não aparece na ficha do app. Quem procura jogo individual, offline ou para menos de 3 jogadores deve evitar."
 category: "Apps & Games"
 date: "2026-10-03"

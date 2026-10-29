@@ -1,7 +1,7 @@
 ---
-slug: pitch-dice-rpg-de-tbol-precio-funciones-qui
-title: "Pitch&Dice: RPG de fútbol — precio, funciones y a quién no"
-description: "Pitch&Dice: RPG de fútbol es un juego de rol de mesa sobre la carrera de un futbolista, gratis en el App Store para iPhone y iPad. La primera carrera es completa sin pagar; Carrera ilimitada es una compra única. Conviene saltárselo si buscas fútbol simulado con clubes reales."
+slug: "pitch-dice-rpg-de-tbol-precio-funciones-qui"
+title: "Pitch&Dice: RPG de fútbol, RPG de mesa con d20 gratis en iPhone"
+description: "Pitch&Dice: RPG de fútbol es un juego de rol de mesa sobre una carrera de futbolista, disponible en iPhone y iPad. Es gratis y ofrece tiradas de d20, cuatro clases, 16 especializaciones, mapa de temporada, Escenario de la semana y 49 logros. Debe evitarlo quien busque fútbol simulado realista, y su límite principal es que la valoración es de 0,0 sobre 5 con 0 valoraciones."
 category: "Apps & Games"
 date: "2026-10-29"
 sourceName: "App Store"

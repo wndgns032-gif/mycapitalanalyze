@@ -1,7 +1,7 @@
 ---
-slug: origami-fold-prix-fonctions-et-qui-doit-viter
-title: "Origami Fold — prix, fonctions et qui doit éviter"
-description: "Origami Fold est un jeu de pliage apaisant signé Marcel Wlotzka, vendu 3,99 € sur l'App Store, avec 50 niveaux inclus et des packs payants. Il est en précommande pour le 23 octobre 2026. À éviter si vous cherchez un jeu d'action rapide ou si vous ne voulez payer aucun contenu supplémentaire."
+slug: "origami-fold-prix-fonctions-et-qui-doit-viter"
+title: "Origami Fold, un jeu de pliage à 3,99 € sur iPhone et iPad"
+description: "Origami Fold est un jeu de pliage au ressenti papier, édité par Marcel Wlotzka, classé dans les jeux de réflexion et jouable sur tout iPhone et iPad. Il coûte 3,99 € sans publicité ni compte, avec 50 niveaux en cinq chapitres, trois niveaux de guidage, un mode Free Fold, huit tables et neuf papiers à débloquer. À éviter si vous cherchez de l'action ou refusez les achats supplémentaires, car des packs de figures, de tables et de papiers sont vendus à part, sans prix indiqué."
 category: "Apps & Games"
 date: "2026-10-23"
 sourceName: "App Store"
@@ -15,7 +15,7 @@ developer: "Marcel Wlotzka"
 genre: "Jeux, Parties rapides, Divertissement, Casse-tête"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "NL,EN,FR,DE,IT,JA,KO,PT,RU,ZH,ES,ZH"
 iap: ""
 requirements: "iOS 27.0+"

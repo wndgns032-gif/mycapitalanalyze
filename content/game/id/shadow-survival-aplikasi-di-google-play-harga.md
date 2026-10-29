@@ -1,7 +1,7 @@
 ---
-slug: shadow-survival-aplikasi-di-google-play-harga
-title: "Shadow Survival - Aplikasi di Google Play — harga"
-description: "Shadow Survival - Aplikasi di Google Play adalah gim arkade bertahan hidup vampir karya LiberalDust yang bisa diunduh gratis. Halaman resminya tidak mencantumkan harga pembelian dalam aplikasi, dan gim ini sebaiknya dilewati jika Anda mencari kendali dua tangan yang rumit atau pertarungan penuh taktik."
+slug: "shadow-survival-aplikasi-di-google-play-harga"
+title: "Shadow Survival, Gim Arkade Vampir Gratis dengan Rating 4.7"
+description: "Shadow Survival adalah gim arkade bertahan hidup vampir dari pengembang LiberalDust yang tersedia dan bisa diunduh sekarang di Google Play. Gim ini gratis diunduh dan menawarkan pertarungan melawan monster berbondong-bondong, kendali satu tangan, penyusunan dek keterampilan, peningkatan serta penggabungan keterampilan, pilihan pahlawan di banyak peta, dan trofi dari pertempuran. Lewati gim ini jika Anda mencari kendali dua tangan yang rumit atau pertarungan penuh taktik, dan"
 category: "Apps & Games"
 date: "2026-10-19"
 sourceName: "Google Play"
@@ -21,15 +21,15 @@ iap: ""
 requirements: ""
 ---
 
-![Shadow Survival - Aplikasi di Google Play](/assets/img/apps/app-346c610802.jpg)
+![Shadow Survival](/assets/img/apps/app-346c610802.jpg)
 
-Shadow Survival - Aplikasi di Google Play adalah gim arkade bertahan hidup vampir dari pengembang LiberalDust. Dalam gim ini kesatria membunuh monster yang muncul dalam kegelapan sambil menaikkan level dan bertahan hidup. Gim ini sudah tersedia dan bisa diunduh sekarang di Google Play.
+Shadow Survival -  adalah gim arkade bertahan hidup vampir dari pengembang LiberalDust. Dalam gim ini kesatria membunuh monster yang muncul dalam kegelapan sambil menaikkan level dan bertahan hidup. Gim ini sudah tersedia dan bisa diunduh sekarang di Google Play.
 
 Halaman resminya menampilkan rating 4.7 dari 5 berdasarkan 10.915 penilaian pengguna. Gim ini gratis diunduh, tetapi halaman resminya tidak merinci apakah ada pembelian dalam aplikasi. Berikut hal yang perlu Anda tahu sebelum memasangnya.
 
-## Apa itu Shadow Survival - Aplikasi di Google Play
+## Apa itu Shadow Survival -  
 
-Shadow Survival - Aplikasi di Google Play adalah gim bertahan hidup bertema vampir di mana Anda mengendalikan kesatria melawan monster yang muncul dalam kegelapan. Deskripsi resminya menyebut pemain menaikkan level, menyusun dek keterampilan, dan bertahan hidup dari gelombang monster. Pertempuran berlangsung di banyak peta dengan karakter pahlawan yang bisa dipilih.
+Shadow Survival -  adalah gim bertahan hidup bertema vampir di mana Anda mengendalikan kesatria melawan monster yang muncul dalam kegelapan. Deskripsi resminya menyebut pemain menaikkan level, menyusun dek keterampilan, dan bertahan hidup dari gelombang monster. Pertempuran berlangsung di banyak peta dengan karakter pahlawan yang bisa dipilih.
 
 Gim ini masuk kategori arkade di Google Play dan dikembangkan bersama Liberty Dust, pengembang Dark Survival. Halaman resminya tidak menyebutkan jumlah unduhan maupun tanggal pembaruan terakhir. Gim ini juga tidak mencantumkan daftar bahasa yang didukung.
 
@@ -46,7 +46,7 @@ Deskripsi resmi menyoroti pertarungan melawan monster yang berbondong-bondong da
 
 ## Harga dan ketersediaan
 
-Shadow Survival - Aplikasi di Google Play bisa diunduh gratis di Google Play. Halaman resminya tidak menyatakan apakah ada pembelian dalam aplikasi, langganan, atau masa uji coba. Karena itu, biaya tambahan di luar unduhan belum bisa dipastikan dari informasi yang tersedia.
+Shadow Survival -  bisa diunduh gratis di Google Play. Halaman resminya tidak menyatakan apakah ada pembelian dalam aplikasi, langganan, atau masa uji coba. Karena itu, biaya tambahan di luar unduhan belum bisa dipastikan dari informasi yang tersedia.
 
 Status gim ini sudah rilis dan dapat dimainkan sekarang, bukan dalam tahap pra-pendaftaran. Versi aplikasi, jumlah unduhan, dan tanggal pembaruan terakhir tidak ditampilkan pada halaman resminya. Rating 4.7 dari 10.915 penilaian adalah opini pengguna di Google Play, bukan penilaian dari kami.
 

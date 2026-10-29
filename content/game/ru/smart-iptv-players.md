@@ -1,6 +1,6 @@
 ---
-slug: smart-iptv-players
-title: "Smart IPTV Players — цена, функции и кому не стоит"
+slug: "smart-iptv-players"
+title: "Smart IPTV Players, плеер IPTV для iPhone с подпиской от $4.99"
 description: "Smart IPTV Players — бесплатное приложение для iPhone и iPad: просмотр IPTV-каналов, плейлисты M3U и XSPF, EPG, AirPlay и Chromecast. Базовая версия ограничена тремя каналами на плейлист, двумя избранными и одним плейлистом, поэтому Premium оформляют те, кому нужны безлимит и родительский контроль. Кому не стоит: тем, у кого нет собственного источника плейлиста."
 category: "Apps & Games"
 date: "2026-10-01"

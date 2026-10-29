@@ -1,7 +1,7 @@
 ---
-slug: flowcut-video-editor-maker-preis-funktionen-wen-nicht
-title: "FlowCut - Video Editor & Maker — Preis, Funktionen, für wen nicht"
-description: "FlowCut - Video Editor & Maker ist eine kostenlose Video-Editor-App für iPhone und iPad. Sie bietet Schnitt, Filter, Musik und Text. In-App-Käufe werden nicht angegeben. Wer eine App mit Bewertungen oder erweiterten Profi-Funktionen sucht, sollte sie überspringen."
+slug: "flowcut-video-editor-maker-preis-funktionen-wen-nicht"
+title: "FlowCut - Video Editor & Maker: Kostenlose Video-App im Check"
+description: "FlowCut - Video Editor & Maker ist eine kostenlose Video-Editor-App für iPhone und iPad, die Schnitt, Filter, Audio und Text für Alltagsmomente wie Familienfeste, Reisen oder Haustiere bietet. Die App kostet nichts, nennt keine In-App-Käufe oder Abonnements und umfasst in Version 1.0.0 vom 2. Oktober 2026 eine Zeitleiste, Tempo- und Effektwerkzeuge sowie Audio- und Textelemente. Wer eine App mit vielen Nutzerbewertungen, erweiterten Profi-Funktionen oder garantiertem Support"
 category: "Apps & Games"
 date: "2026-10-03"
 sourceName: "App Store"

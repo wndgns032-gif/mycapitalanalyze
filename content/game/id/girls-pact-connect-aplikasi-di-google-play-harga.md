@@ -1,7 +1,7 @@
 ---
-slug: girls-pact-connect-aplikasi-di-google-play-harga
-title: "Girls Pact: Connect - Aplikasi di Google Play — harga"
-description: "Girls Pact: Connect - Aplikasi di Google Play adalah RPG idle bertema Jepang dari Solaplay Games yang gratis dimainkan dan belum dirilis. Pra-registrasi kini dibuka, tetapi harga item dalam aplikasi, tanggal rilis, dan isi hadiahnya belum diumumkan resmi. Lewati dulu jika kamu tidak menyukai gacha atau ingin game yang bisa langsung dimainkan hari ini."
+slug: "girls-pact-connect-aplikasi-di-google-play-harga"
+title: "Girls Pact: Connect, RPG idle gratis tanpa tanggal rilis"
+description: "Girls Pact: Connect adalah RPG idle bertema Jepang dari Solaplay Games yang gratis dimainkan dan belum dirilis. Pra-registrasi kini dibuka, tetapi harga item dalam aplikasi, tanggal rilis, dan isi hadiahnya belum diumumkan resmi. Lewati dulu jika kamu tidak menyukai gacha atau ingin game yang bisa langsung dimainkan hari ini."
 category: "Apps & Games"
 date: "2026-10-11"
 sourceName: "Google Play"
@@ -21,15 +21,15 @@ iap: ""
 requirements: ""
 ---
 
-![Girls Pact: Connect - Aplikasi di Google Play](/assets/img/apps/app-f6343923e1.jpg)
+![Girls Pact: Connect](/assets/img/apps/app-f6343923e1.jpg)
 
-Girls Pact: Connect - Aplikasi di Google Play adalah RPG idle bertema Jepang dari Solaplay Games yang saat ini berstatus belum dirilis. Halaman resminya di Google Play membuka pra-registrasi, jadi kamu bisa mendaftar lebih dulu sebelum game tersedia. Game ini gratis dimainkan dan menggabungkan koleksi karakter, Live2D, serta pertempuran otomatis.
+Girls Pact: Connect -  adalah RPG idle bertema Jepang dari Solaplay Games yang saat ini berstatus belum dirilis. Halaman resminya di Google Play membuka pra-registrasi, jadi kamu bisa mendaftar lebih dulu sebelum game tersedia. Game ini gratis dimainkan dan menggabungkan koleksi karakter, Live2D, serta pertempuran otomatis.
 
 Pendaftaran awal menjanjikan sejumlah hadiah, termasuk pilihan satu dari empat karakter SSR inti. Karena game belum bisa diunduh, belum ada yang bisa mencobanya dan belum ada penilaian pemain. Berikut hal-hal yang benar-benar tercantum di halaman resminya.
 
-## Apa itu Girls Pact: Connect - Aplikasi di Google Play
+## Apa itu Girls Pact: Connect -  
 
-Girls Pact: Connect - Aplikasi di Google Play adalah RPG idle bergaya Jepang yang berfokus pada mengumpulkan karakter gadis dan membangun tim. Deskripsi resminya menyebut lebih dari 100 karakter dengan berbagai tipe, termasuk gadis manusia, elf, dan lainnya. Setiap karakter memakai animasi Live2D dan memiliki tiga tampilan spesial yang bisa dibuka.
+Girls Pact: Connect -  adalah RPG idle bergaya Jepang yang berfokus pada mengumpulkan karakter gadis dan membangun tim. Deskripsi resminya menyebut lebih dari 100 karakter dengan berbagai tipe, termasuk gadis manusia, elf, dan lainnya. Setiap karakter memakai animasi Live2D dan memiliki tiga tampilan spesial yang bisa dibuka.
 
 Pertempuran berjalan otomatis selama 24 jam sehari, sehingga progres tetap berjalan saat kamu tidak membuka game. Enam elemen dipakai untuk menyusun tim, yaitu Bumi, Air, Api, Angin, Cahaya, dan Kegelapan. Halaman resminya tidak menyebutkan mode pemain lawan pemain atau fitur sosial apa pun.
 

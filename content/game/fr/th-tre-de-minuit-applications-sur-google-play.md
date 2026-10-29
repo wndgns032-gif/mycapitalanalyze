@@ -1,7 +1,7 @@
 ---
-slug: th-tre-de-minuit-applications-sur-google-play
-title: "Théâtre de Minuit – Applications sur Google Play — prix"
-description: "Théâtre de Minuit – Applications sur Google Play est un jeu de cartes payant à 2,69 €, sans abonnement annoncé, qui réunit un mode Klondike et un mode Chain sur 1 000 niveaux. La fiche officielle précise que cette version est destinée aux tests internes, avec des traductions encore en cours d'amélioration. À éviter si vous cherchez un jeu fini et documenté."
+slug: "th-tre-de-minuit-applications-sur-google-play"
+title: "Théâtre de Minuit, jeu de cartes Klondike et Chain à 2,69 €"
+description: "Théâtre de Minuit est un jeu de cartes payant à 2,69 €, sans abonnement annoncé, qui réunit un mode Klondike et un mode Chain sur 1 000 niveaux. La fiche officielle précise que cette version est destinée aux tests internes, avec des traductions encore en cours d'amélioration. À éviter si vous cherchez un jeu fini et documenté."
 category: "Apps & Games"
 date: "2026-10-26"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Théâtre de Minuit – Applications sur Google Play](/assets/img/apps/app-cc177f30fd.jpg)
+![Théâtre de Minuit](/assets/img/apps/app-cc177f30fd.jpg)
 
-Théâtre de Minuit – Applications sur Google Play est un jeu de puzzle développé par Delicious Games Co., Ltd. et proposé au tarif de 2,69 €. La fiche officielle le présente comme une expérience de cartes où la ville s'endort et où une carte dorée vous invite au théâtre. Deux assistants, FAYE et NOA, accompagnent le joueur dans les parties.
+Théâtre de Minuit –  est un jeu de puzzle développé par Delicious Games Co., Ltd. et proposé au tarif de 2,69 €. La fiche officielle le présente comme une expérience de cartes où la ville s'endort et où une carte dorée vous invite au théâtre. Deux assistants, FAYE et NOA, accompagnent le joueur dans les parties.
 
 Le titre se joue en format portrait et se lance depuis un hall où l'on choisit un mode. Aucune note n'est encore affichée : la fiche indique 0,0 sur 5 pour 0 évaluation. Le nombre d'installations et la date de dernière mise à jour ne sont pas communiqués.
 
-## Qu'est-ce que Théâtre de Minuit – Applications sur Google Play ?
+## Qu'est-ce que Théâtre de Minuit –  ?
 
 Il s'agit d'un jeu de cartes à deux visages. Le mode Klondike demande de ranger 52 cartes et de compléter les quatre enseignes, avec la réserve de cartes de FAYE et la prévoyance de NOA pour préparer le coup suivant. Le mode Chain propose de relier et collecter des cartes au fil de 1 000 niveaux, chacun avec ses objectifs et ses mécanismes à découvrir pour gagner des étoiles.
 

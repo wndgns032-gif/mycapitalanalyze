@@ -1,7 +1,7 @@
 ---
-slug: play-com-angames-android-google-avatarbendingtheworld
-title: "아바타: 충돌하는 세계 — 살 만한가요? 가격·기능·건너뛸 사람"
-description: "아바타: 충돌하는 세계는 애니메이션 '아바타: 아앙의 전설' 세계관을 배경으로 한 Tilting Point의 전략 게임으로, 영지 경영과 네 가지 벤딩, 글로벌 연맹전을 내세우며 현재 사전 등록 중이고 가격은 무료입니다. 확률형 아이템과 부분 유료 결제가 포함되어 있고, 실시간 연맹전과 경쟁형 전략 게임에 흥미가 없는 사람은 건너뛰는 편이 낫습니다."
+slug: "play-com-angames-android-google-avatarbendingtheworld"
+title: "아바타: 충돌하는 세계 — 무료 전략 게임의 과금 구조와 사전 등록"
+description: "아바타: 충돌하는 세계는 Tilting Point가 선보이는 전략 게임으로, 정령 세계에서 온 어둠의 존재와 광신도 집단에 맞서 도시를 재건하는 모바일 전략 게임입니다. 가격은 무료로 표시되어 있지만 확률형 아이템과 부분 유료 아이템 구매가 포함되며, 영지 경영과 벤딩 선택, 스킬 트리, 아바타의 전당 영웅 획득, 월드맵 탐험, 글로벌 연맹전이 확인된 핵심 시스템입니다. 실시간 연맹전과 경쟁 중심 콘텐츠를 부담스러워하거나 확률형 아이템이 있는 게임을 피하는 사람은 건너뛰는 편이 낫고, 가장 큰 한계는 아직 출시되지 않아 정확한 출시일과 과금 규모, 실제 전투 밸런스를 확인할 수 없다는 점입니다."
 category: "Apps & Games"
 date: "2026-10-05"
 sourceName: "Google Play"
@@ -15,7 +15,7 @@ developer: "Tilting Point"
 genre: "GAME_STRATEGY"
 kind: "game"
 sourceCollection: "preregistration"
-upcoming: true
+upcoming: "true"
 ---
 
 ![아바타: 충돌하는 세계](/assets/img/apps/app-7d277f29a2.jpg)

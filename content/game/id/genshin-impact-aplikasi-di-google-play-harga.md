@@ -1,7 +1,7 @@
 ---
-slug: genshin-impact-aplikasi-di-google-play-harga
-title: "Genshin Impact - Aplikasi di Google Play — harga"
-description: "Genshin Impact - Aplikasi di Google Play adalah game RPG open world gratis dari COGNOSPHERE PTE. LTD. Temukan tujuh elemen, jelajahi Teyvat, dan cari saudara kembar yang hilang. Halaman resminya tidak mencantumkan harga item dalam aplikasi, jadi biaya tambahan belum jelas. Lewati jika kamu tidak menyukai game open world berdurasi panjang atau ingin kepastian biaya di awal."
+slug: "genshin-impact-aplikasi-di-google-play-harga"
+title: "Genshin Impact, RPG open world gratis dengan tujuh elemen"
+description: "Genshin Impact adalah game RPG open world gratis dari COGNOSPHERE PTE. LTD. Temukan tujuh elemen, jelajahi Teyvat, dan cari saudara kembar yang hilang. Halaman resminya tidak mencantumkan harga item dalam aplikasi, jadi biaya tambahan belum jelas. Lewati jika kamu tidak menyukai game open world berdurasi panjang atau ingin kepastian biaya di awal."
 category: "Apps & Games"
 date: "2026-10-20"
 sourceName: "Google Play"
@@ -21,15 +21,15 @@ iap: ""
 requirements: ""
 ---
 
-![Genshin Impact - Aplikasi di Google Play](/assets/img/apps/app-972c69cb64.jpg)
+![Genshin Impact](/assets/img/apps/app-972c69cb64.jpg)
 
-Genshin Impact - Aplikasi di Google Play adalah game RPG open world gratis dari COGNOSPHERE PTE. LTD. Kamu berperan sebagai pengembara yang mencari saudara kembarnya di dunia Teyvat. Dunia itu dihuni tujuh elemen yang saling berpadu saat bertarung maupun menjelajah.
+Genshin Impact -  adalah game RPG open world gratis dari COGNOSPHERE PTE. LTD. Kamu berperan sebagai pengembara yang mencari saudara kembarnya di dunia Teyvat. Dunia itu dihuni tujuh elemen yang saling berpadu saat bertarung maupun menjelajah.
 
 Game ini bisa diunduh dan dimainkan sekarang tanpa biaya awal. Halaman resminya tidak mencantumkan harga item dalam aplikasi, jadi biaya tambahan belum bisa dipastikan. Ulasan pengguna di Play Store memberi nilai 3,9 dari 5 berdasarkan 5.241.756 penilaian.
 
-## Apa itu Genshin Impact - Aplikasi di Google Play
+## Apa itu Genshin Impact -  
 
-Genshin Impact - Aplikasi di Google Play menempatkanmu sebagai pengembara di Teyvat, dunia fantasi luas dengan tujuh bangsa. Ceritanya dimulai saat dewa tak dikenal merenggut saudara kembarmu dan menyegel kekuatanmu. Kamu lalu terbangun di dunia yang sudah berubah dan harus mencari jawabannya.
+Genshin Impact -  menempatkanmu sebagai pengembara di Teyvat, dunia fantasi luas dengan tujuh bangsa. Ceritanya dimulai saat dewa tak dikenal merenggut saudara kembarmu dan menyegel kekuatanmu. Kamu lalu terbangun di dunia yang sudah berubah dan harus mencari jawabannya.
 
 Peta open world-nya bisa dijelajahi bebas sejak awal, termasuk memanjat gunung dan menyeberangi sungai. Interaksi dengan peri terbang atau monumen elemen bisa memunculkan rahasia baru. Halaman resminya tidak merinci daftar perangkat yang didukung.
 

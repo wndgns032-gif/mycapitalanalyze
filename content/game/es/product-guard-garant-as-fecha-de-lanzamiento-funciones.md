@@ -1,7 +1,7 @@
 ---
 slug: "product-guard-garant-as-fecha-de-lanzamiento-funciones"
-title: "Product Guard Garantías: fecha de lanzamiento, funciones y precio"
-description: "Product Guard Garantías es una app de utilidades para no perder garantías: escanea recibos, recibe avisos y prepara reclamaciones. Llega el 30 de septiembre de 2026."
+title: "Product Guard Garantías: app gratis para no perder garantías"
+description: "Product Guard Garantías es una aplicación de utilidades y productividad para iOS desarrollada por Shabab H Siddique que busca evitar que las garantías de los productos que compramos caduquen sin usarse. Es gratuita en su versión básica, se sincroniza de forma privada con iCloud, funciona sin conexión y permite registrar productos escaneando el código de barras o fotografiando el recibo. Debe descartarla quien use Android o quien necesite la app ya instalada, porque su versión"
 category: "Apps & Games"
 date: "2026-09-30"
 sourceName: "App Store"
@@ -13,7 +13,7 @@ price: "Gratis"
 developer: "Shabab H Siddique"
 genre: "Utilidades, Productividad"
 kind: "app"
-upcoming: false
+upcoming: "false"
 ---
 
 ![Product Guard Garantías](/assets/img/apps/app-d8de93977c.jpg)

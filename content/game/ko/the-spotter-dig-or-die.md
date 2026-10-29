@@ -1,7 +1,7 @@
 ---
-slug: the-spotter-dig-or-die
-title: "The Spotter: Dig or Die — 살 만한가요? 가격·기능·건너뛸 사람"
-description: "The Spotter: Dig or Die은(는) 좀비 무리로부터 주유소를 지키며 낮에는 지하를 파는 생존 시뮬레이션 게임입니다. 기본 가격은 무료로 표시되어 있고, 공식 페이지에는 인앱 구매나 구독, 체험판 여부가 나오지 않습니다. 밤의 전투보다 낮의 채굴·자원 관리에 흥미가 없는 사람은 건너뛰는 편이 낫습니다."
+slug: "the-spotter-dig-or-die"
+title: "The Spotter: Dig or Die — 무료 생존 시뮬레이션 게임의 낮 채굴과 밤 방어"
+description: "The Spotter: Dig or Die은 Doghowl Games Ltd가 만든 생존 시뮬레이션 게임으로, 낮의 채굴과 밤의 방어를 오가며 황야의 고물 주유소에서 신호소를 복구하는 작품입니다. 공식 페이지 기준 가격은 무료로 표시되어 있고, 삽에서 고성능 드릴로의 장비 업그레이드, 자동 기관총과 레이저포, 로켓탄 방어, 함정과 주포탑 직접 탑승, 궤도포와 테슬라 아크로 이어지는 기술 트리가 확인됩니다. 채굴이나 방어 중 한쪽만 원하는 사람은 건너뛰는 편이 낫고, 가장 큰 제약은 정식 출시일이 공개되지 않아 사전예약만 가능하다는 점입니다."
 category: "Apps & Games"
 date: "2026-10-11"
 sourceName: "Google Play"

@@ -1,7 +1,7 @@
 ---
-slug: plip-prix-fonctions-et-qui-doit-viter
-title: "PLIP! — prix, fonctions et qui doit éviter"
-description: "PLIP! est un jeu de rythme où une bulle rebondit et une goutte traverse les barrières. Il coûte 5,99 € sur l'App Store, sans achat intégré ni abonnement mentionné, et n'est pas encore sorti. Passez votre chemin si vous cherchez un jeu gratuit ou déjà disponible."
+slug: "plip-prix-fonctions-et-qui-doit-viter"
+title: "PLIP!, un jeu d'adresse à 5,99 € avec 24 niveaux sur iPhone"
+description: "PLIP! est un jeu d'adresse sur iPhone et iPad où une bulle rebondit sur des barrières colorées tandis qu'une goutte les traverse d'un simple toucher d'écran. Affiché à 5,99 € sans achat intégré ni abonnement annoncé, il propose 24 niveaux dans 8 décors, des courants d'air, des pointes et 15 langues. À éviter pour qui cherche un jeu gratuit ou jouable tout de suite : sa sortie est fixée au 16 octobre 2026 et la fiche ne détaille ni difficulté ni durée de vie."
 category: "Apps & Games"
 date: "2026-10-16"
 sourceName: "App Store"
@@ -15,7 +15,7 @@ developer: "铭旭 王"
 genre: "Jeux, Divertissement, Aventure, Parties rapides"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "AR,EN,FR,HI,ID,JA,KO,PT,RU,ZH,ES,TH,ZH,TR,VI"
 iap: ""
 requirements: "iOS 17.0+"

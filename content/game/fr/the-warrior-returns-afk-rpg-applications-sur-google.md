@@ -1,7 +1,7 @@
 ---
-slug: the-warrior-returns-afk-rpg-applications-sur-google
-title: "The Warrior Returns : AFK RPG – Applications sur Google Play — prix"
-description: "The Warrior Returns : AFK RPG – Applications sur Google Play est un RPG inactif gratuit de STUDIO LICO Corp., adapté du webtoon Le Retour du Guerrier. Les combats continuent hors ligne et les récompenses de lancement sont annoncées dans la fiche. À éviter si vous cherchez un jeu sans achats intégrés ou une note déjà établie."
+slug: "the-warrior-returns-afk-rpg-applications-sur-google"
+title: "The Warrior Returns : AFK RPG — un idle RPG gratuit tiré du webtoon"
+description: "The Warrior Returns : AFK RPG est un jeu de rôle inactif gratuit édité par STUDIO LICO Corp, disponible dès maintenant sur Google Play et adapté du webtoon Le Retour du Guerrier. Le téléchargement est gratuit, sans précommande ni préinscription, avec des combats automatiques qui continuent hors ligne et rapportent des récompenses, des effets de compétences spectaculaires, la collection des guerriers légendaires comme Minsu Kim et Seongjun Lee, ainsi que des tickets d'invocati"
 category: "Apps & Games"
 date: "2026-10-19"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![The Warrior Returns : AFK RPG – Applications sur Google Play](/assets/img/apps/app-ca1e3dd9e4.jpg)
+![The Warrior Returns : AFK RPG](/assets/img/apps/app-ca1e3dd9e4.jpg)
 
-The Warrior Returns : AFK RPG – Applications sur Google Play est un RPG inactif gratuit édité par STUDIO LICO Corp. Il adapte le webtoon Le Retour du Guerrier et promet des combats qui continuent même après la déconnexion. La fiche officielle ne précise ni date de sortie ni nombre d'installations.
+The Warrior Returns : AFK RPG –  est un RPG inactif gratuit édité par STUDIO LICO Corp. Il adapte le webtoon Le Retour du Guerrier et promet des combats qui continuent même après la déconnexion. La fiche officielle ne précise ni date de sortie ni nombre d'installations.
 
 Le jeu est disponible dès maintenant sur Google Play, sans précommande ni préinscription. Aucun prix payant n'est affiché : le téléchargement est gratuit. En revanche, la page ne détaille pas les achats intégrés.
 
-## Qu'est-ce que The Warrior Returns : AFK RPG – Applications sur Google Play ?
+## Qu'est-ce que The Warrior Returns : AFK RPG –  ?
 
 Il s'agit d'un jeu de rôle au format inactif, tiré de la série WEBTOON à succès. Le héros, Minsu Kim, revient dans son monde et choisit la chute de la Corée du Sud. Le titre reprend cette histoire sombre et les guerriers de l'original.
 
@@ -44,7 +44,7 @@ La progression repose sur la montée de niveau, l'amélioration des héros et ce
 
 ## Prix et disponibilité
 
-The Warrior Returns : AFK RPG – Applications sur Google Play est téléchargeable gratuitement sur Google Play. La fiche ne mentionne ni abonnement ni essai gratuit, et ne détaille pas les achats intégrés. Aucune date de sortie n'est affichée, et la page ne donne pas de date de dernière mise à jour. La note publique est de 0,0 sur 5 pour 0 avis, ce qui ne permet aucun retour d'utilisateurs.
+The Warrior Returns : AFK RPG –  est téléchargeable gratuitement sur Google Play. La fiche ne mentionne ni abonnement ni essai gratuit, et ne détaille pas les achats intégrés. Aucune date de sortie n'est affichée, et la page ne donne pas de date de dernière mise à jour. La note publique est de 0,0 sur 5 pour 0 avis, ce qui ne permet aucun retour d'utilisateurs.
 
 ## À qui s'adresse-t-il - et à qui non
 

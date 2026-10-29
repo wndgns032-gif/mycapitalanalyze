@@ -1,7 +1,7 @@
 ---
-slug: block-puzzle-wood-blast-google-play
-title: "Block Puzzle Wood Blast - Google Play তে অ্যাপ — দাম"
-description: "Block Puzzle Wood Blast - Google Play তে অ্যাপ হলো Wood Puzzle Sudoku Games-এর একটি ফ্রি পাজল গেম, যা অফলাইনেও খেলা যায়। এতে 10x10 ক্লাসিক ব্লক পাজল, জিগস মোড ও দৈনিক চ্যালেঞ্জ আছে, তবে ইন-অ্যাপ কেনাকাটার তথ্য প্রকাশ করা হয়নি। যারা অনলাইন প্রতিযোগিতা বা নিশ্চিত বিজ্ঞাপনমুক্ত অভিজ্ঞতা চান, তাদের জন্য এটি উপযুক্ত নাও হতে পারে।"
+slug: "block-puzzle-wood-blast-google-play"
+title: "Block Puzzle Wood Blast: ফ্রি অফলাইন ব্লক পাজল"
+description: "Block Puzzle Wood Blast হলো Wood Puzzle Sudoku Games-এর একটি ফ্রি পাজল গেম, যা অফলাইনেও খেলা যায়। এতে 10x10 ক্লাসিক ব্লক পাজল, জিগস মোড ও দৈনিক চ্যালেঞ্জ আছে, তবে ইন-অ্যাপ কেনাকাটার তথ্য প্রকাশ করা হয়নি। যারা অনলাইন প্রতিযোগিতা বা নিশ্চিত বিজ্ঞাপনমুক্ত অভিজ্ঞতা চান, তাদের জন্য এটি উপযুক্ত নাও হতে পারে।"
 category: "Apps & Games"
 date: "2026-10-26"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Block Puzzle Wood Blast - Google Play তে অ্যাপ](/assets/img/apps/app-183be31f13.jpg)
+![Block Puzzle Wood Blast](/assets/img/apps/app-183be31f13.jpg)
 
-Block Puzzle Wood Blast - Google Play তে অ্যাপ হলো Wood Puzzle Sudoku Games-এর তৈরি একটি ফ্রি পাজল গেম। গুগল প্লে-তে এটি 5-এর মধ্যে 3.7 রেটিং পেয়েছে, মোট 173316টি রেটিং থেকে। গেমটি এখন ডাউনলোডের জন্য পাওয়া যাচ্ছে।
+Block Puzzle Wood Blast -  হলো Wood Puzzle Sudoku Games-এর তৈরি একটি ফ্রি পাজল গেম। গুগল প্লে-তে এটি 5-এর মধ্যে 3.7 রেটিং পেয়েছে, মোট 173316টি রেটিং থেকে। গেমটি এখন ডাউনলোডের জন্য পাওয়া যাচ্ছে।
 
 বিবরণ অনুযায়ী এটি একটি ব্লক পাজল গেম, যেখানে কাঠের ব্লক সাজিয়ে সারি ও কলাম পূর্ণ করতে হয়। অ্যাপটি অফলাইনেও খেলা যায় এবং এতে তিনটি আলাদা গেম মোডের কথা বলা হয়েছে।
 
-## Block Puzzle Wood Blast - Google Play তে অ্যাপ কী
+## Block Puzzle Wood Blast -  কী
 
 এটি একটি পাজল গেম, যেখানে 10x10 গ্রিডে কাঠের ব্লক টেনে এনে ফেলে সারি ও কলাম সম্পূর্ণ করতে হয়। একবারে একাধিক ব্লক ভাঙলে বেশি স্কোর পাওয়ার কথা বিবরণে বলা হয়েছে। গেমটিতে ঘোরানো, গ্রিড রিফ্রেশ এবং ব্লক স্ম্যাশ করার মতো টুলসও আছে।
 

@@ -1,6 +1,6 @@
 ---
-slug: japan-prix-fonctions-et-qui-doit-viter
-title: "満タンJAPAN — prix, fonctions et qui doit éviter"
+slug: "japan-prix-fonctions-et-qui-doit-viter"
+title: "満タンJAPAN, un puzzle de préfectures en bois à 0,99 €"
 description: "満タンJAPAN est un jeu de puzzle où vous devez faire tenir les 47 préfectures du Japon, représentées par des pièces en bois à l’échelle identique, dans une boîte en bois. Le jeu est payant, affiché à 0,99 € sur l’App Store français. Il s’adresse aux amateurs de casse-tête et de réflexion spatiale, mais ceux qui cherchent une carte précise du Japon ou des graphismes modernes devraient passer leur chemin."
 category: "Apps & Games"
 date: "2026-10-02"
@@ -14,7 +14,7 @@ price: "0,99 €"
 developer: "masakazu okano"
 genre: "Jeux, Casse-tête, Éducation"
 kind: "game"
-upcoming: false
+upcoming: "false"
 ---
 
 ![満タンJAPAN](/assets/img/apps/app-05b69a7174.jpg)

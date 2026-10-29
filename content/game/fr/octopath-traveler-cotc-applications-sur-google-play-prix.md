@@ -1,7 +1,7 @@
 ---
-slug: octopath-traveler-cotc-applications-sur-google-play-prix
-title: "OCTOPATH TRAVELER: CotC – Applications sur Google Play — prix"
-description: "OCTOPATH TRAVELER: CotC – Applications sur Google Play est un JRPG mobile gratuit sous licence officielle Square Enix, avec combats au tour par tour et graphismes HD-2D. La fiche Google Play annonce un prix de 0 euro, mais ne détaille ni les achats intégrés ni le nombre d'installations. À éviter si vous cherchez un jeu sans dépense ou hors connexion."
+slug: "octopath-traveler-cotc-applications-sur-google-play-prix"
+title: "OCTOPATH TRAVELER: CotC — un JRPG mobile gratuit en HD-2D"
+description: "OCTOPATH TRAVELER: CotC est un JRPG mobile gratuit sous licence officielle Square Enix, avec combats au tour par tour et graphismes HD-2D. La fiche Google Play annonce un prix de 0 euro, mais ne détaille ni les achats intégrés ni le nombre d'installations. À éviter si vous cherchez un jeu sans dépense ou hors connexion."
 category: "Apps & Games"
 date: "2026-10-15"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![OCTOPATH TRAVELER: CotC – Applications sur Google Play](/assets/img/apps/app-46c8235556.jpg)
+![OCTOPATH TRAVELER: CotC](/assets/img/apps/app-46c8235556.jpg)
 
-OCTOPATH TRAVELER: CotC – Applications sur Google Play est un jeu de rôle mobile édité par Exptional Global et publié sous licence officielle Square Enix. Il se déroule sur le continent d'Orsterra et reprend le style pixellisé HD-2D de la série OCTOPATH TRAVELER. La fiche Google Play le classe dans la catégorie GAME_ROLE_PLAYING et le propose au téléchargement dès maintenant.
+OCTOPATH TRAVELER: CotC –  est un jeu de rôle mobile édité par Exptional Global et publié sous licence officielle Square Enix. Il se déroule sur le continent d'Orsterra et reprend le style pixellisé HD-2D de la série OCTOPATH TRAVELER. La fiche Google Play le classe dans la catégorie GAME_ROLE_PLAYING et le propose au téléchargement dès maintenant.
 
 Le jeu est noté 4,1 sur 5 à partir de 21 109 avis d'utilisateurs sur Google Play. Ces notes sont des opinions d'utilisateurs, pas une évaluation de notre part. La fiche ne précise ni le nombre d'installations, ni la date de dernière mise à jour, ni les éventuels achats intégrés.
 
-## Qu'est-ce que OCTOPATH TRAVELER: CotC – Applications sur Google Play ?
+## Qu'est-ce que OCTOPATH TRAVELER: CotC –  ?
 
 Il s'agit d'un JRPG mobile qui raconte une nouvelle histoire sur le continent d'Orsterra, où des anneaux imprégnés de pouvoirs divins sont tombés entre les mains de trois malfaiteurs. Le joueur incarne l'« élu de l'anneau » et part affronter les maîtres de la richesse, du pouvoir et de la gloire. Le scénario principal est complété par des intrigues secondaires, tantôt intenses, tantôt chaleureuses, tantôt joyeuses.
 
@@ -47,7 +47,7 @@ Chaque métier possède ses propres statistiques et caractéristiques, ce qui in
 
 ## Prix et disponibilité
 
-OCTOPATH TRAVELER: CotC – Applications sur Google Play est affiché comme gratuit sur Google Play, sans prix d'achat indiqué. La fiche ne mentionne ni abonnement, ni essai gratuit, ni achat intégré, et ne donne aucun détail sur d'éventuelles dépenses en jeu. Le jeu est disponible au téléchargement dès maintenant sur Google Play.
+OCTOPATH TRAVELER: CotC –  est affiché comme gratuit sur Google Play, sans prix d'achat indiqué. La fiche ne mentionne ni abonnement, ni essai gratuit, ni achat intégré, et ne donne aucun détail sur d'éventuelles dépenses en jeu. Le jeu est disponible au téléchargement dès maintenant sur Google Play.
 
 La fiche officielle ne précise pas la date de dernière mise à jour, le nombre d'installations, la classification de contenu ni la liste des langues prises en charge. Elle ne précise pas non plus les appareils compatibles. Le seul chiffre de satisfaction affiché est la note de 4,1 sur 5 issue de 21 109 avis.
 

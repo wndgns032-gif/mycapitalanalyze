@@ -1,7 +1,7 @@
 ---
-slug: sword-staff-aplikasi-di-google-play-harga
-title: "Sword x Staff - Aplikasi di Google Play — harga"
-description: "Sword x Staff - Aplikasi di Google Play adalah RPG santai dari BOLTRAY GAMES yang belum dirilis dan masih berstatus pra-registrasi. Pendaftaran gratis dan menjanjikan tampilan senjata spesial, tetapi belum ada tanggal rilis resmi maupun rincian harga di halaman resminya."
+slug: "sword-staff-aplikasi-di-google-play-harga"
+title: "Sword x Staff, RPG santai gratis dengan kelas ganda, kapan rilis?"
+description: "Sword x Staff adalah game role-playing santai dari BOLTRAY GAMES yang tersedia lewat Google Play dan kini masih berstatus pra-registrasi tanpa tanggal rilis pasti. Harga unduhannya gratis, dengan sistem kelas ganda, pertumbuhan otomatis termasuk naik level sambil berbaring, Fantomon sebagai teman, dan pertarungan tim real-time. Sebaiknya lewati dulu jika tidak sabar menunggu, karena ketiadaan tanggal rilis resmi menjadi batasan paling penting saat ini."
 category: "Apps & Games"
 date: "2026-10-15"
 sourceName: "Google Play"
@@ -21,21 +21,21 @@ iap: ""
 requirements: ""
 ---
 
-![Sword x Staff - Aplikasi di Google Play](/assets/img/apps/app-f728824b37.jpg)
+![Sword x Staff](/assets/img/apps/app-f728824b37.jpg)
 
-Sword x Staff - Aplikasi di Google Play adalah game RPG santai dari BOLTRAY GAMES yang saat ini belum dirilis. Halaman resminya masih berstatus pra-registrasi, jadi belum ada satu pun pemain yang bisa memainkannya. Pendaftaran dilakukan lewat Google Play dan tidak dipungut biaya apa pun.
+Sword x Staff -  adalah game RPG santai dari BOLTRAY GAMES yang saat ini belum dirilis. Halaman resminya masih berstatus pra-registrasi, jadi belum ada satu pun pemain yang bisa memainkannya. Pendaftaran dilakukan lewat Google Play dan tidak dipungut biaya apa pun.
 
 Game ini menjanjikan pengalaman tanpa tekanan, dengan sistem kelas ganda dan pertanian otomatis. Namun tanggal rilis resminya belum dicantumkan, sehingga belum ada kepastian kapan game ini bisa dimainkan. Berikut hal-hal yang sudah dikonfirmasi halaman resminya.
 
-## Apa itu Sword x Staff - Aplikasi di Google Play
+## Apa itu Sword x Staff -  
 
-Sword x Staff - Aplikasi di Google Play adalah game role-playing santai yang menonjolkan kebebasan mengganti kelas dan keterampilan. Deskripsi resminya menyebut pemain bisa melepas progres membosankan dan tekanan naik level. Game ini juga menawarkan pertarungan tim real-time dan eksplorasi peta luas.
+Sword x Staff -  adalah game role-playing santai yang menonjolkan kebebasan mengganti kelas dan keterampilan. Deskripsi resminya menyebut pemain bisa melepas progres membosankan dan tekanan naik level. Game ini juga menawarkan pertarungan tim real-time dan eksplorasi peta luas.
 
 Pemain ditemani makhluk bernama Fantomon yang menggemaskan. Pertumbuhan karakter berjalan otomatis, bahkan bisa dilakukan sambil berbaring di tempat tidur. Kategori resminya adalah role-playing, dan pengembangnya adalah BOLTRAY GAMES.
 
 ## Tanggal rilis dan pra-registrasi
 
-Halaman resmi Sword x Staff - Aplikasi di Google Play tidak mencantumkan tanggal rilis sama sekali. Statusnya masih pra-registrasi, jadi belum ada tanggal pasti kapan game ini tersedia. Pendaftaran sekarang hanya menjamin akses saat game diluncurkan nanti.
+Halaman resmi Sword x Staff -  tidak mencantumkan tanggal rilis sama sekali. Statusnya masih pra-registrasi, jadi belum ada tanggal pasti kapan game ini tersedia. Pendaftaran sekarang hanya menjamin akses saat game diluncurkan nanti.
 
 Pendaftar dijanjikan tampilan senjata spesial berupa 'Sosis Gurita' atau 'Sosis Renyah'. Halaman resminya tidak menjelaskan syarat lain untuk mendapatkannya. Karena tanggal rilis belum ada, hadiah pra-registrasi ini juga belum bisa dipastikan kapan dibagikan.
 
@@ -52,7 +52,7 @@ Deskripsi resminya menyebut beberapa fitur inti yang bisa diharapkan pemain nant
 
 ## Harga dan yang belum diumumkan
 
-Halaman resmi Sword x Staff - Aplikasi di Google Play mencantumkan harga gratis untuk mengunduhnya. Tidak ada informasi soal pembelian dalam aplikasi, langganan, atau masa uji coba di halaman tersebut. Karena itu, biaya tambahan di dalam game belum bisa dipastikan sampai game ini benar-benar dirilis.
+Halaman resmi Sword x Staff -  mencantumkan harga gratis untuk mengunduhnya. Tidak ada informasi soal pembelian dalam aplikasi, langganan, atau masa uji coba di halaman tersebut. Karena itu, biaya tambahan di dalam game belum bisa dipastikan sampai game ini benar-benar dirilis.
 
 Yang jelas belum diumumkan adalah tanggal rilis, ukuran unduhan, dan daftar perangkat yang didukung. Halaman resminya juga tidak menyebut jumlah bahasa yang didukung. Pemain yang tidak sabar menunggu tanpa tanggal pasti sebaiknya menunda dulu.
 

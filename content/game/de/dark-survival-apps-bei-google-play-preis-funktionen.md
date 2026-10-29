@@ -1,7 +1,7 @@
 ---
-slug: dark-survival-apps-bei-google-play-preis-funktionen
-title: "Dark Survival – Apps bei Google Play — Preis, Funktionen"
-description: "Dark Survival – Apps bei Google Play ist ein kostenloses Vampir-Überlebensspiel von LiberalDust, in dem ein Ritter gegen Monster aus der Dunkelheit kämpft. Du levelst durch Kämpfe, wählst Fähigkeiten und überlebst so lange wie möglich. Der Eintrag nennt weder In-App-Käufe noch Installationszahlen. Wer kurze, rundenlose Action ohne Story sucht, findet hier einen Einstieg; wer Tiefe oder klare Kostenangaben braucht, sollte eher abwarten."
+slug: "dark-survival-apps-bei-google-play-preis-funktionen"
+title: "Dark Survival — Preis, Funktionen"
+description: "Dark Survival ist ein kostenloses Vampir-Überlebensspiel von LiberalDust, in dem ein Ritter gegen Monster aus der Dunkelheit kämpft. Du levelst durch Kämpfe, wählst Fähigkeiten und überlebst so lange wie möglich. Der Eintrag nennt weder In-App-Käufe noch Installationszahlen. Wer kurze, rundenlose Action ohne Story sucht, findet hier einen Einstieg; wer Tiefe oder klare Kostenangaben braucht, sollte eher abwarten."
 category: "Apps & Games"
 date: "2026-10-21"
 sourceName: "Google Play"
@@ -21,15 +21,15 @@ iap: ""
 requirements: ""
 ---
 
-![Dark Survival – Apps bei Google Play](/assets/img/apps/app-91327d71a8.jpg)
+![Dark Survival](/assets/img/apps/app-91327d71a8.jpg)
 
-Dark Survival – Apps bei Google Play ist ein Vampir-Überlebensspiel vom Entwicklerduo LiberalDust. Du steuerst einen mächtigen Ritter, besiegst Monster aus der Dunkelheit und steigst im Level auf. Laut Beschreibung warten neben dem Ritter weitere einzigartige Charaktere auf dich.
+Dark Survival –  ist ein Vampir-Überlebensspiel vom Entwicklerduo LiberalDust. Du steuerst einen mächtigen Ritter, besiegst Monster aus der Dunkelheit und steigst im Level auf. Laut Beschreibung warten neben dem Ritter weitere einzigartige Charaktere auf dich.
 
 Der Eintrag im Play Store ist kostenlos, Angaben zu In-App-Käufen macht die Seite nicht. Die Bewertung liegt bei 4,0 von 5 aus 30341 Bewertungen, ein Erscheinungsdatum oder Installationszahlen nennt die Seite nicht.
 
-## Was ist Dark Survival – Apps bei Google Play?
+## Was ist Dark Survival –  ?
 
-Dark Survival – Apps bei Google Play ist ein Arcade-Spiel, in dem ein Ritter gegen Monster aus der Dunkelheit kämpft. Du levelst durch besiegte Gegner, wählst verschiedene Fähigkeiten und versuchst, möglichst lange zu überleben. Die Beschreibung verspricht mehrere spielbare Charaktere neben dem Ritter und nennt das Spiel bewusst einfach gehalten.
+Dark Survival –  ist ein Arcade-Spiel, in dem ein Ritter gegen Monster aus der Dunkelheit kämpft. Du levelst durch besiegte Gegner, wählst verschiedene Fähigkeiten und versuchst, möglichst lange zu überleben. Die Beschreibung verspricht mehrere spielbare Charaktere neben dem Ritter und nennt das Spiel bewusst einfach gehalten.
 
 Der Hersteller wirbt mit kurzen Sitzungen für unterwegs, etwa in der U-Bahn oder in einer langweiligen Unterrichtsstunde. Eine Story, einen Online-Modus oder einen Termin für neue Inhalte nennt die Seite nicht.
 
@@ -46,7 +46,7 @@ Die Beschreibung nennt vor allem den Kern der Kämpfe und das Aufleveln.
 
 Der Download ist kostenlos, das bestätigt der Play-Store-Eintrag. Ob es In-App-Käufe, ein Abo oder eine Testversion gibt, zeigt die Seite nicht. Auch Installationszahlen, Versionsnummer und Datum der letzten Aktualisierung fehlen.
 
-Dark Survival – Apps bei Google Play ist bereits verfügbar und kann sofort heruntergeladen werden. Ein Erscheinungsdatum lässt sich daraus nicht ableiten, weil Play-Seiten nur eine Aktualisierung nennen.
+Dark Survival –  ist bereits verfügbar und kann sofort heruntergeladen werden. Ein Erscheinungsdatum lässt sich daraus nicht ableiten, weil Play-Seiten nur eine Aktualisierung nennen.
 
 ## Für wen es passt - und für wen nicht
 

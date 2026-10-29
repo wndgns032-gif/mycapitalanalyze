@@ -1,7 +1,7 @@
 ---
 slug: "ai-video-with-omni-clips-2026-10-19"
-title: "AI Video with Omni Clips 完全ガイド"
-description: "AI Video with Omni Clipsは、テキストや画像から動画を生成できるGEDIMEX, UABの写真・ビデオアプリ。2026年10月19日配信予定で、無料版とプレミアム購読プランが用意されています。"
+title: "AI Video with Omni Clips 完全ガイド：無料で使える範囲と課金構造"
+description: "AI Video with Omni Clipsは、テキストの説明や画像から視覚的に魅力的な動画を制作できるクリエイティブアプリで、GEDIMEX, UABが開発しApp Storeの写真／ビデオカテゴリで2026年10月19日に配信予定です。基本は無料で予約注文を受け付けていますが、無料版は透かし入り動画を1本生成できダウンロードと共有は含まれず、プレミアム購読では週により多くの動画生成とダウンロード・共有が可能になります。テキストから動画と画像から動画の2モード、エフェクトやプリセットプロンプト、6ステップの制作フロー、ビデオ履歴を備える一方、プロ向けの高度な編集機能を求める人には向かず、具体的な購読料金や無料トライアルの有無は現時点で不明です。"
 category: "Apps & Games"
 date: "2026-09-30"
 sourceName: "App Store"
@@ -13,8 +13,9 @@ price: "無料"
 developer: "GEDIMEX, UAB"
 genre: "写真／ビデオ, ユーティリティ"
 kind: "app"
-upcoming: false
+upcoming: "false"
 ---
+
 ![AI Video with Omni Clips](/assets/img/apps/app-25655065f9.jpg)
 
 AI Video with Omni Clipsは、テキストの説明や画像から視覚的に魅力的な動画を制作するためのクリエイティブアプリです。GEDIMEX, UABが開発し、App Storeの「写真／ビデオ」カテゴリで2026年10月19日に配信予定となっています。現時点では予約注文（Pre-order）を受け付けており、無料で入手できると案内されています。

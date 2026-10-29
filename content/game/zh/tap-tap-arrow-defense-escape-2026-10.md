@@ -1,7 +1,7 @@
 ---
 slug: "tap-tap-arrow-defense-escape-2026-10"
 title: "Tap Tap Arrow Defense Escape：2026年10月9日上线"
-description: "Tap Tap Arrow Defense Escape 是一款即将于 2026 年 10 月 9 日推出的免费益智游戏，玩家需在恰当时机点击，引导彩色箭头穿过不断变化的迷宫路线。"
+description: "Tap Tap Arrow Defense Escape 是一款由 UBI Soft Pvt Ltd 开发的益智解谜游戏，目前已在 App Store 上架并处于即将推出与可预购状态。游戏采用免费下载的价格模式，当前版本号为 1.0，官方确认的核心特色包括引导彩色箭头穿过含转弯与意外变化的迷宫、在对的时机点击以及每关带来全新谜题。官方还表示游戏适合短时间游玩也能满足更长挑战，易于上手且精通后令人满足，但关卡总数与内购情况尚未公布。如果你期待深度叙事、角色成长或多人元素，这款游戏可能并不适合，目前公开信息有限是最需要留意的局限。预计发售日期为 2026 年 10 月 9 日，该日期可能随开发进度调整，建议以最新页面信息为准。"
 category: "Apps & Games"
 date: "2026-09-30"
 sourceName: "App Store"
@@ -13,8 +13,9 @@ price: "免费"
 developer: "UBI Soft Pvt Ltd"
 genre: "游戏, 模拟, 体育, 益智解谜"
 kind: "game"
-upcoming: false
+upcoming: "false"
 ---
+
 ![Tap Tap Arrow Defense Escape](/assets/img/apps/app-9128b113c4.jpg)
 
 Tap Tap Arrow Defense Escape 是一款由 UBI Soft Pvt Ltd 开发的益智解谜游戏，目前已在 App Store 上架并处于“即将推出 / 可预购”状态。根据官方页面信息，这款游戏让玩家引导彩色箭头穿过由路径、转弯和惊喜组成的巧妙迷宫。你需要在对的时机点击，跟随不断变化的路线，找到通往终点的正确方向。

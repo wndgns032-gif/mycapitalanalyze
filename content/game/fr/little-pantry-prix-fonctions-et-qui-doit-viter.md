@@ -1,6 +1,6 @@
 ---
-slug: little-pantry-prix-fonctions-et-qui-doit-viter
-title: "LITTLE PANTRY — prix, fonctions et qui doit éviter"
+slug: "little-pantry-prix-fonctions-et-qui-doit-viter"
+title: "LITTLE PANTRY, jeu gratuit de simulation avec le renard Fred"
 description: "LITTLE PANTRY est un jeu de simulation pour iPhone et iPad où l’on range des ingrédients dans un garde-manger pour que le renard Fred prépare des plats. Il est gratuit, sans prix affiché ni achat intégré confirmé, et il s’adresse surtout aux joueurs qui aiment les petites boucles calmes. À éviter si vous cherchez un jeu exigeant ou déjà noté par la communauté."
 category: "Apps & Games"
 date: "2026-10-01"
@@ -14,7 +14,7 @@ price: "Gratuit"
 developer: "Ciagram"
 genre: "Jeux, Simulation, Parties rapides"
 kind: "game"
-upcoming: false
+upcoming: "false"
 ---
 
 ![LITTLE PANTRY](/assets/img/apps/app-0ffd095b3d.jpg)

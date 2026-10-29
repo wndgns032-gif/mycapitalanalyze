@@ -1,6 +1,6 @@
 ---
-slug: jigsaw-wonders-drop-puzzle-preis-funktionen-wen-nicht
-title: "Jigsaw Wonders: Drop Puzzle — Preis, Funktionen, für wen nicht"
+slug: "jigsaw-wonders-drop-puzzle-preis-funktionen-wen-nicht"
+title: "Jigsaw Wonders: Drop Puzzle: Gratis-Puzzle ohne Tablett im Test"
 description: "Jigsaw Wonders: Drop Puzzle ist ein kostenloses Puzzle-Spiel für iPhone und iPad, in dem ein volles Raster aus Teilen mehrerer Bilder durch Tauschen und Verschmelzen geleert wird. 500 Level, 1.840 Motive und Münz-Hilfen sind bestätigt, In-App-Käufe nennt die Store-Seite nicht. Wer zeitlich begrenzte Events und Ranglisten nicht mag, sollte überspringen."
 category: "Apps & Games"
 date: "2026-10-02"

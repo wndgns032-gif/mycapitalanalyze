@@ -1,7 +1,7 @@
 ---
-slug: livetopia-party
-title: "Livetopia: Party! — 살 만한가요? 가격·기능·건너뛸 사람"
-description: "Livetopia: Party!는 해변 도시를 배경으로 자유롭게 역할을 바꿔 노는 생활 시뮬레이션 게임이며, 기본 무료로 제공됩니다. 다만 인앱 결제 여부와 설치 수는 스토어에 공개되지 않았고, 규칙 없이 노는 자유도만 원하는 사람에게는 맞지 않을 수 있습니다."
+slug: "livetopia-party"
+title: "Livetopia: Party! 무료 생활 시뮬레이션, 어떤 사람에게 맞나"
+description: "Livetopia: Party!는 Century Games PTE. LTD.가 만든 캐주얼 생활 시뮬레이션 게임으로, 해변 도시를 무대로 전 세계 친구들과 실시간으로 어울려 노는 것을 내세웁니다. 기본 가격은 무료이며 스토어 평점은 144,025개 평가에서 4.4점이고, 의사·소방관·건축가·슈퍼스타·좀비 같은 역할 변신과 미니 게임, 의상과 집 꾸미기, 포켓 펫 육성을 즐길 수 있습니다. 정해진 목표와 규칙, 경쟁 요소를 원하는 사람은 건너뛰는 편이 낫고, 인앱 결제와 지원 기기 목록이 공개되지 않아 설치 전 직접 확인이 필요한 점이 가장 큰 한계입니다."
 category: "Apps & Games"
 date: "2026-10-04"
 sourceName: "Google Play"

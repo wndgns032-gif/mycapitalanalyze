@@ -1,7 +1,7 @@
 ---
-slug: livetopia-party-applications-sur-google-play-prix
-title: "Livetopia: Party! – Applications sur Google Play — prix"
-description: "Livetopia: Party! – Applications sur Google Play est un jeu de simulation gratuit signé Century Games PTE. LTD., où l'on explore une ville en bord de mer, se fait des amis et adopte des animaux magiques. Le titre est disponible dès maintenant, mais les achats intégrés ne sont pas précisés et il faut aimer le jeu de rôle social."
+slug: "livetopia-party-applications-sur-google-play-prix"
+title: "Livetopia: Party!, simulation sociale gratuite à Métroville"
+description: "Livetopia: Party! est un jeu de simulation gratuit édité par Century Games PTE. LTD. et disponible sur Google Play, où l'on incarne le personnage de son choix dans la ville côtière de Métroville. Le modèle est gratuit et le jeu confirme plus de 100 tenues et accessoires, des animaux de compagnie à adopter, des métiers variés et des discussions en temps réel avec d'autres joueurs. À éviter si vous n'aimez pas le jeu de rôle social en ligne ou si vous refusez de dépendre des au"
 category: "Apps & Games"
 date: "2026-10-04"
 sourceName: "Google Play"
@@ -17,19 +17,19 @@ kind: "game"
 upcoming: "false"
 ---
 
-![Livetopia: Party! – Applications sur Google Play](/assets/img/apps/app-739ad02418.jpg)
+![Livetopia: Party!](/assets/img/apps/app-739ad02418.jpg)
 
-Livetopia: Party! – Applications sur Google Play est un jeu de simulation gratuit édité par Century Games PTE. LTD. et classé dans la catégorie casual. Le principe est simple : on incarne qui on veut dans une ville moderne en bord de mer, on discute en temps réel avec d'autres joueurs et on décore sa maison. Le téléchargement est immédiat et sans frais, donc l'essayer ne coûte rien. En revanche, ceux qui cherchent une progression solo ou un jeu sans interactions sociales passeront leur chemin.
+Livetopia: Party! –  est un jeu de simulation gratuit édité par Century Games PTE. LTD. et classé dans la catégorie casual. Le principe est simple : on incarne qui on veut dans une ville moderne en bord de mer, on discute en temps réel avec d'autres joueurs et on décore sa maison. Le téléchargement est immédiat et sans frais, donc l'essayer ne coûte rien. En revanche, ceux qui cherchent une progression solo ou un jeu sans interactions sociales passeront leur chemin.
 
-- Ce que c'est : Livetopia: Party! – Applications sur Google Play, un jeu de simulation multijoueur où l'on choisit un métier, un style et une maison dans une ville appelée Métroville.
+- Ce que c'est : Livetopia: Party! –  , un jeu de simulation multijoueur où l'on choisit un métier, un style et une maison dans une ville appelée Métroville.
 - Ce que ça coûte : l'application est gratuite ; la fiche ne dit rien des achats intégrés, ni d'un abonnement ou d'un essai.
 - Ce qui est confirmé : une note de 4,5 sur 5 attribuée par 144 033 personnes, plus de 100 tenues et accessoires annoncés, et des animaux de compagnie à adopter.
 - Ce qui reste flou : le nombre d'installations, la date de dernière mise à jour et le contenu exact des achats intégrés ne figurent pas sur la fiche.
 - Qui doit éviter : ceux qui n'aiment pas le jeu de rôle social en ligne, et les joueurs qui refusent de dépendre d'autres personnes pour s'amuser.
 
-## Ce qu'est Livetopia: Party! – Applications sur Google Play
+## Ce qu'est Livetopia: Party! –  
 
-Livetopia: Party! – Applications sur Google Play se présente comme un jeu de simulation plein de surprises, à explorer seul ou entre amis. La ville de Métroville sert de décor : on y croise d'autres joueurs en temps réel, on y discute et on y lance des activités communes comme un pique-nique ou une aventure improvisée. Le jeu revendique un partenariat avec Livetopia, un jeu Roblox, pour proposer une expérience de jeu de rôle réaliste. La fiche officielle ne précise ni le nombre d'installations, ni la date de dernière mise à jour, ni le détail des achats intégrés.
+Livetopia: Party! –  se présente comme un jeu de simulation plein de surprises, à explorer seul ou entre amis. La ville de Métroville sert de décor : on y croise d'autres joueurs en temps réel, on y discute et on y lance des activités communes comme un pique-nique ou une aventure improvisée. Le jeu revendique un partenariat avec Livetopia, un jeu Roblox, pour proposer une expérience de jeu de rôle réaliste. La fiche officielle ne précise ni le nombre d'installations, ni la date de dernière mise à jour, ni le détail des achats intégrés.
 
 ## Les fonctions principales
 

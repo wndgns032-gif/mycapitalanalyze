@@ -1,6 +1,6 @@
 ---
-slug: galope-copa-gal-ctica-precio-funciones-qui-no
-title: "A Galope: Copa Galáctica — precio, funciones y a quién no"
+slug: "galope-copa-gal-ctica-precio-funciones-qui-no"
+title: "A Galope: Copa Galáctica, carreras rítmicas gratis para 2026"
 description: "A Galope: Copa Galáctica es un juego de carreras de caballos con acción rítmica y decisiones roguelike en pixel art. Es gratis, sin anuncios ni compras dentro de la app, y se puede reservar en el App Store con fecha prevista para el 22 de octubre de 2026. Debería saltárselo quien busque un juego para dos manos o con gráficos realistas."
 category: "Apps & Games"
 date: "2026-10-22"
@@ -15,7 +15,7 @@ developer: "BERKE DEMIR"
 genre: "Juegos"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "EN,DE,ID,ES,TR"
 iap: ""
 requirements: "iOS 16.0+"

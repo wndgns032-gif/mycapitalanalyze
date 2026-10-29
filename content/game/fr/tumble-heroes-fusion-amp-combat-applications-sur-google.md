@@ -1,7 +1,7 @@
 ---
-slug: tumble-heroes-fusion-amp-combat-applications-sur-google
-title: "Tumble Heroes: Fusion &amp; combat – Applications sur Google Play"
-description: "Tumble Heroes: Fusion &amp; combat – Applications sur Google Play est un jeu mobile gratuit de Delicious Games Co., Ltd. qui mêle fusion de héros et combats automatiques. La fiche officielle ne précise ni achats intégrés ni date de mise à jour. À éviter si vous cherchez un jeu solo narratif ou des combats entièrement manuels."
+slug: "tumble-heroes-fusion-amp-combat-applications-sur-google"
+title: "Tumble Heroes: Fusion &amp; combat"
+description: "Tumble Heroes: Fusion & combat est un jeu casual de Delicious Games Co., Ltd. qui mêle fusion de héros et combats automatiques, disponible sur Google Play. Le titre est gratuit, sans abonnement ni achat intégré annoncé, et repose sur l'invocation et le renforcement de héros, la Défense des portes et des mini-jeux comme les paires de cartes, la roulette et le minigolf. À écarter si vous cherchez un avis fiable ou des chiffres d'installations, car la note publique est de 0,0 su"
 category: "Apps & Games"
 date: "2026-10-24"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Tumble Heroes: Fusion &amp; combat – Applications sur Google Play](/assets/img/apps/app-38f01a22aa.jpg)
+![Tumble Heroes: Fusion &amp; combat](/assets/img/apps/app-38f01a22aa.jpg)
 
-Tumble Heroes: Fusion &amp; combat – Applications sur Google Play est un jeu de la catégorie casual signé Delicious Games Co., Ltd. Il associe la collection et la fusion de héros à des combats automatiques, avec des mini-jeux entre deux affrontements. La fiche officielle le présente comme gratuit, sans détailler d'éventuels achats intégrés.
+Tumble Heroes: Fusion &amp; combat –  est un jeu de la catégorie casual signé Delicious Games Co., Ltd. Il associe la collection et la fusion de héros à des combats automatiques, avec des mini-jeux entre deux affrontements. La fiche officielle le présente comme gratuit, sans détailler d'éventuels achats intégrés.
 
 Le titre est disponible dès maintenant sur Google Play, donc il n'y a ni précommande ni préinscription à attendre. La page officielle n'affiche aucune note exploitable : 0,0 sur 5 pour 0 évaluation. Aucun nombre d'installations, aucune date de mise à jour et aucun détail de version n'y figurent non plus.
 
-## Qu'est-ce que Tumble Heroes: Fusion &amp; combat – Applications sur Google Play ?
+## Qu'est-ce que Tumble Heroes: Fusion &amp; combat –  ?
 
 Il s'agit d'un jeu de fusion dans lequel vous combinez des héros identiques pour révéler le rang suivant. La boucle décrite par l'éditeur consiste à invoquer des héros, à les renforcer, puis à les envoyer au combat automatique. Un mode distinct, la Défense des portes, propose un défi différent avec des conditions d'entrée et des conséquences de victoire ou de défaite à consulter avant de partir.
 

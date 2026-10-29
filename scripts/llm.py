@@ -58,6 +58,65 @@ DEFAULT_FLASH = {
     'nvidia': 'nvidia/deepseek-v4-flash',   # NVIDIA NIM 무료 티어 (일일 토큰 상한 없음)
 }
 
+# 🔴 2026-10-27 실측: Groq 무료 티어의 TPM(분당 토큰) 한도는 8,000 이다.
+#   Groq 의 요청 예약 계산식 = prompt_tokens + min(max_tokens, 8192).
+#   → max_tokens 를 기본값 16,384 로 두면 "min(16384, 8192) = 8192" 가 예약되어,
+#     prompt 3,946 토큰짜리 요청조차 예약 12,138 토큰으로 **거부(HTTP 413)** 된다.
+#   실측(2026-10-27): prompt 5,004 + max_tokens 4,096 조합도 예약 9,100 으로 TPM 초과.
+#   → Groq 는 max_tokens 를 **프롬프트 크기에 맞춰 자동 축소**해야 한다.
+PROVIDER_MAX_TOKENS = {
+    'groq': 4096,
+    'groq2': 4096,
+}
+
+# Groq TPM 예약 한도 (추정 prompt + max_tokens 가 넘지 않게 맞추기 위한 기준값)
+GROQ_TPM_LIMIT = 8000
+GROQ_TPM_MARGIN = 400
+
+
+def _estimate_tokens(text):
+    """토크나이저 없이 프롬프트 크기를 추정한다.
+    실측 보정(2026-10-27, tiktoken o200k_base 대조):
+      한글/일본어/중국어 약 1.25글자/토큰, 라틴·기호 약 0.22글자/토큰.
+    (처음엔 1.6 / 0.28 로 잡았더니 실제보다 27% 과대추정 → max_tokens 를
+     필요 이상으로 잘라 본문이 부족했다. 아래 값은 실제값에 맞춘 보정값이다.)
+    과대추정은 요청을 작게 잡을 뿐 실패를 만들지 않지만, 과소추정하면 429 가 되므로
+    이 값은 보수적으로 유지한다.
+    """
+    if not text:
+        return 0
+    n = 0.0
+    for ch in text:
+        o = ord(ch)
+        if 0xAC00 <= o <= 0xD7A3 or 0x3040 <= o <= 0x30FF or 0x4E00 <= o <= 0x9FFF:
+            n += 1.25      # 한글/일본어/중국어
+        else:
+            n += 0.22      # 라틴/기호 등
+    return int(n) + 8
+
+
+def _fit_max_tokens(name, model, messages, want):
+    """제공자 한도에 맞춰 max_tokens 를 줄인다. Groq 는 prompt + max_tokens 예약이므로
+    프롬프트가 큰 글(게임 프롬프트 5,400 토큰)에서는 max_tokens 를 함께 줄여야 한다.
+
+    🔴 2026-10-27 실측: gpt-oss 의 completion 예산은 **추론 + 본문**이 같이 쓴다.
+      effort=medium 이면 추론만 3,125 토큰을 먹어서 본문이 0이 되는 경우도 있었다.
+      → 본문이 쓸 몫(최소 1,400)을 먼저 확보하고, 남는 만큼만 추론에 허용한다.
+    """
+    if name not in ('groq', 'groq2'):
+        return want
+    est = sum(_estimate_tokens(m.get('content') or '') for m in messages)
+    # 본문은 최소 1,400 토큰(한글 1,600자 이상) 필요 — 이것을 먼저 잠근다.
+    body_need = 1400 if 'gpt-oss' in model else 700
+    room = GROQ_TPM_LIMIT - GROQ_TPM_MARGIN - est
+    if room < body_need:
+        # 프롬프트 자체가 한도를 넘는다 → 최소값으로 내린다.
+        # (413 이 나면 chat() 이 한 단계 더 축소하며 재시도한다)
+        return max(512, body_need)
+    return max(body_need, min(want, room))
+
+
+
 # 무료 제공자 — 비용이 0원이므로 flash 전용 정책(비용 통제 목적)을 적용하지 않는다.
 # config 의 섹션에 "free": true 로 표시하거나 이름이 이 목록에 있으면 예외 처리한다.
 FREE_PROVIDERS = {'gemini', 'groq', 'groq2', 'openrouter', 'nvidia', 'cloudflare',
@@ -202,9 +261,22 @@ def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,
         body = {
             'model': model,
             'messages': messages,
-            'max_tokens': max_tokens,
+            'max_tokens': _fit_max_tokens(name, model, messages,
+                                          PROVIDER_MAX_TOKENS.get(name, max_tokens)),
             'temperature': temperature,
         }
+        # 🔴 2026-10-27 실측 결함: Groq 의 gpt-oss 는 **추론 모델**이라서
+        #   reasoning_effort 를 안 주면 내부 추론에 토큰을 9,900개나 쓴다.
+        #   실측 비교(동일 게임 글 프롬프트, prompt 5,004 토큰):
+        #     effort 미지정 → completion 10,938 (reasoning 9,900) → TPM 8,000 창을
+        #                    파고들어 HTTP 413 "Requested 12138" 로 요청 자체가 거부됨
+        #     effort='low'    → completion   866 (reasoning   337) → 본문 706~909자 (분량 부족)
+        #     effort='medium' → completion 4,054 (reasoning 3,125) → 본문 1,311자 (하한 통과)
+        #   'low' 는 추론이 너무 적어 본문이 짧아져 하한 미달로 폐기된다.
+        #   'medium' 이 분량·TPM 균형점이다. 'high' 는 추론만 늘려 본문이 늘지 않는다.
+        #   이 글은 "사실 정리" 작업이라 깊은 추론이 필요 없다.
+        if 'gpt-oss' in model and 'reasoning_effort' not in body:
+            body['reasoning_effort'] = 'medium'
         if response_format:
             body['response_format'] = response_format
         if name == 'deepseek':
@@ -242,7 +314,11 @@ def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,
                 _stat(name, True)
                 return content, name
             except urllib.error.HTTPError as e:
-                detail = e.read().decode('utf-8', 'ignore')[:200]
+                # 🔴 2026-10-27: 에러 본문을 200자로 자르면 Groq 429 의
+                #   "Please try again in 25.02s" 까지 잘려서 **대기시간 파싱이 실패**한다.
+                #   (실측: 고정 5초 대기 → 매번 재시도 실패 → 3회 소진 후 폴백)
+                #   → 400자로 넓혀서 회복 시간을 정확히 읽는다.
+                detail = e.read().decode('utf-8', 'ignore')[:400]
                 last_err = 'HTTP %s %s' % (e.code, detail)
                 log('  [llm] %s 실패: %s' % (name, last_err))
                 # 429(요청 한도)·503(일시적 고부하) 는 **기다리면 다시 된다**.
@@ -258,18 +334,69 @@ def chat(messages, max_tokens=16384, temperature=0.6, response_format=None,
                     #   영구 쿼터 소진은 즉시 폴백(서킷 브레이커가 이후 호출을 건너뛴다).
                     permanent = ('current quota' in detail.lower()
                                  or 'quota exceeded' in detail.lower()
-                                 or 'billing' in detail.lower()
-                                 or 'insufficient' in detail.lower())
+                                 or 'insufficient' in detail.lower()
+                                 or 'insufficient_quota' in detail.lower()
+                                 or 'check your billing' in detail.lower()
+                                 or 'out of credits' in detail.lower()
+                                 or 'payment required' in detail.lower())
                     if permanent:
                         log('  [llm] %s 429 영구 쿼터 소진 → 즉시 폴백' % name)
                         break
+                    # 🔴 2026-10-27 실측 (신규): Groq **일일 한도(TPD)** 소진.
+                    #   메시지: "tokens per day (TPD): Limit 200000, Used 195582 ...
+                    #             Please try again in 2m57.984s"
+                    #   → 회복까지 몇 시간~하루. 재시도 3번 = 전부 실패.
+                    #   "tokens per minute (TPM)" 과 **구분**해서 즉시 폴백해야 한다.
+                    if 'tokens per day' in detail.lower() or '(tpd)' in detail.lower():
+                        log('  [llm] %s 429 일일 한도(TPD) 소진 → 즉시 폴백' % name)
+                        break
+                    # 🔴 2026-10-27 실측: Groq 429 메시지에 실제 회복 시간이 들어 있다
+                    #   ("Please try again in 25.02s"). 고정 5초 대기는 그 시간보다
+                    #   짧아서 **매번 재시도가 또 실패**했다(실측 로그: 3회 연속 429).
+                    #   → 서버가 알려준 시간을 그대로 쓴다.
                     wait = 5 if e.code == 429 else 3
+                    m_wait = re.search(r'try again in\s*([0-9.]+)\s*s', detail, re.I)
+                    if m_wait:
+                        wait = max(wait, min(120, int(float(m_wait.group(1))) + 1))
+                    else:
+                        # "2m57.984s" 형식 (분 단위)도 읽는다.
+                        m_min = re.search(r'try again in\s*([0-9]+)m\s*([0-9.]+)\s*s', detail, re.I)
+                        if m_min:
+                            wait = int(m_min.group(1)) * 60 + int(float(m_min.group(2))) + 1
+                    # 회복이 2분 넘으면 재시도해도 소용없다(실측 "try again in 6m55.152s").
+                    # 120초 캡으로 잘려 5초만 기다렸다가 또 429 → 3회 전부 실패.
+                    if wait > 120:
+                        log('  [llm] %s 429 회복까지 %d초 → 재시도 불가, 즉시 폴백'
+                            % (name, wait))
+                        break
+                    # Groq TPM(분당 8,000)은 **분 단위 창**이라 "try again in Ns" 만큼
+                    #   기다리면 반드시 회복한다. 단 N이 크면 요청이 길어지므로
+                    #   두 번 연속 실패하면 다음 제공자로 넘어간다.
                     log('  [llm] %s %s → %d초 대기 후 재시도(무료 티어)' % (name, e.code, wait))
                     time.sleep(wait)
                     if attempt <= retries:
                         continue
                 if e.code in (401, 402, 403, 404, 429):
                     break  # 다른 제공자로 폴백
+                # 🔴 2026-10-27: HTTP 413 "Request too large for model ... on tokens per
+                #   minute (TPM): Limit 8000, Requested 12138" — 이건 프롬프트가
+                #   나빠서가 아니라 **max_tokens 예약분 + reasoning 토큰**이 TPM 8000을
+                #   넘긴 경우다. 실측(2026-10-27): gpt-oss-120b 는 한 호출에
+                #   completion 10,938 토큰(reasoning 9,900)을 소모했다.
+                #   → 해결책: max_tokens 를 줄여 재시도. 413 은 429 와 달리
+                #   "5초 뒤에 회복"이 아니라 **요청 자체가 큼**이므로 기다리는 게 소용없다.
+                if e.code == 413:
+                    new_mt = max(1024, max_tokens // 2)
+                    if new_mt == max_tokens:
+                        log('  [llm] %s 413 → max_tokens=%d 로 더 줄일 수 없음, 폴백'
+                            % (name, max_tokens))
+                        break
+                    log('  [llm] %s 413(요청 과대) → max_tokens %d → %d 로 축소 재시도'
+                        % (name, max_tokens, new_mt))
+                    max_tokens = new_mt
+                    if attempt <= retries:
+                        continue
+                    break
                 if attempt <= retries:
                     time.sleep(3)
                     continue

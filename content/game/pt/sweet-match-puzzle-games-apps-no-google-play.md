@@ -1,7 +1,7 @@
 ---
-slug: sweet-match-puzzle-games-apps-no-google-play
-title: "Sweet Match - Puzzle Games – Apps no Google Play — preço"
-description: "Sweet Match - Puzzle Games – Apps no Google Play é um jogo de quebra-cabeça match-3 gratuito da Wood Puzzle Sudoku Games. A página oficial não informa compras no aplicativo, e a aventura da bruxa Nora em milhares de fases pode não agradar quem busca desafios complexos."
+slug: "sweet-match-puzzle-games-apps-no-google-play"
+title: "Sweet Match - Puzzle Games: match-3 grátis no Google Play"
+description: "Sweet Match - Puzzle Games é um jogo de quebra-cabeça match-3 gratuito para Android, disponível no Google Play, com a jovem bruxa Nora e o espírito esquilo Hazel na missão de restaurar a Academia Starhaven. O modelo é gratuito para baixar, com milhares de fases relaxantes de doces, geleias e biscoitos, itens mágicos, superpotenciadores, presentes diários e quebra-cabeças offline, da desenvolvedora Wood Puzzle Sudoku Games. Quem procura quebra-cabeças complexos ou partidas com"
 category: "Apps & Games"
 date: "2026-10-24"
 sourceName: "Google Play"
@@ -21,13 +21,13 @@ iap: ""
 requirements: ""
 ---
 
-![Sweet Match - Puzzle Games – Apps no Google Play](/assets/img/apps/app-89770eec59.jpg)
+![Sweet Match - Puzzle Games](/assets/img/apps/app-89770eec59.jpg)
 
-Sweet Match - Puzzle Games – Apps no Google Play é um jogo de quebra-cabeça match-3 gratuito, disponível agora no Google Play. A descrição oficial apresenta a jovem bruxa Nora e o espírito esquilo Hazel na missão de restaurar a Academia Starhaven. A desenvolvedora Wood Puzzle Sudoku Games promete milhares de fases relaxantes com doces, geleias e biscoitos.
+Sweet Match - Puzzle Games –  é um jogo de quebra-cabeça match-3 gratuito, disponível agora no Google Play. A descrição oficial apresenta a jovem bruxa Nora e o espírito esquilo Hazel na missão de restaurar a Academia Starhaven. A desenvolvedora Wood Puzzle Sudoku Games promete milhares de fases relaxantes com doces, geleias e biscoitos.
 
 A página oficial não informa o tamanho do download, o número de instalações nem a data da última atualização. Também não há avaliações registradas até o momento. Por isso, o que segue se baseia apenas no texto público da ficha.
 
-## O que é Sweet Match - Puzzle Games – Apps no Google Play
+## O que é Sweet Match - Puzzle Games –  
 
 É um jogo casual de combinar três ou mais doces em linha para eliminá-los do tabuleiro. Cada área da academia que você conserta revela um pouco mais da história, segundo a descrição. O texto cita ainda personagens cativantes e segredos escondidos ao longo da jornada.
 

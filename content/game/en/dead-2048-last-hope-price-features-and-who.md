@@ -1,7 +1,7 @@
 ---
-slug: dead-2048-last-hope-price-features-and-who
+slug: "dead-2048-last-hope-price-features-and-who"
 title: "Dead 2048: Last Hope — Price, Features and Who Should Skip"
-description: "Dead 2048: Last Hope is an upcoming 2048-style tower defense game from Cogoo Inc. for iPhone and iPad. You merge towers, stop zombie waves and work toward a Vaccine Center. The official page does not disclose a price. Skip it if you want a finished game now or dislike swipe-merge puzzles."
+description: "Dead 2048: Last Hope is an upcoming iPhone and iPad puzzle and strategy game from Cogoo Inc. that mixes 2048-style swipe merging with zombie tower defense. The price is not disclosed, and the confirmed systems are merging towers, stopping zombie waves, choosing supplies between waves and working toward the Vaccine Center; version 0.1.5 is listed. Skip it if you dislike swipe-merge boards or zombie themes, because the game is not available to download yet and its final balance"
 category: "Apps & Games"
 date: "2026-10-20"
 sourceName: "App Store"
@@ -15,7 +15,7 @@ developer: "Cogoo Inc."
 genre: "Games, Entertainment, Puzzle, Strategy"
 kind: "game"
 sourceCollection: ""
-upcoming: false
+upcoming: "false"
 langs: "EN,FR,DE,ID,IT,JA,KO,PT,RU,ZH,ES,TH,ZH,VI"
 iap: ""
 requirements: "iOS 15.0+"
