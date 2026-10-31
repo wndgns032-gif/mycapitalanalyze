@@ -15,7 +15,7 @@ developer: "Beananza"
 genre: "Jogos, Casual, Ação"
 kind: "game"
 sourceCollection: ""
-upcoming: "true"
+upcoming: false
 langs: "AR,BN,EN,FR,DE,HI,ID,JA,KO,PT,RU,ZH,ES,UR"
 iap: ""
 requirements: "iOS 17.0+"

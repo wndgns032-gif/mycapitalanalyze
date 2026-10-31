@@ -12,7 +12,7 @@ releaseDate: "2026-10-31"
 developer: "Lud Dynamics Co., Ltd."
 genre: "Spiele, Rollenspiel, Gelegenheits­spiele"
 kind: "game"
-upcoming: "true"
+upcoming: false
 ---
 
 ![The Apocalypsnake](/assets/img/apps/app-0b738f6ed1.jpg)
