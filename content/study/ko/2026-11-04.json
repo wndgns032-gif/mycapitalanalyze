@@ -1,0 +1,154 @@
+{
+  "day": 29,
+  "date": "2026-11-04",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "Having completed the quarterly report, the manager ____ the team to prepare for the upcoming audit.",
+      "choices": [
+        "asking",
+        "will ask",
+        "asked",
+        "asks"
+      ],
+      "answer": 2,
+      "explain": "‘Having completed…’은 과거 완료형 분사구문이며, 주절도 과거 시제로 일치해야 하므로 ‘asked’가 정답이다.",
+      "point": "분사구문"
+    },
+    {
+      "q": "The new software, ___ by the IT department, improves data processing speed by 30%.",
+      "choices": [
+        "develop",
+        "developing",
+        "develops",
+        "developed"
+      ],
+      "answer": 3,
+      "explain": "‘by the IT department’ 뒤에 과거분사가 와야 하므로 ‘developed’가 올바른 선택이다.",
+      "point": "분사구문"
+    },
+    {
+      "q": "___ the deadline approaching, many employees stayed late to finish their tasks.",
+      "choices": [
+        "Having",
+        "Because",
+        "With",
+        "Since"
+      ],
+      "answer": 2,
+      "explain": "‘With the deadline approaching’은 현재분사구문으로, ‘With’를 사용해 전체 문장을 연결한다.",
+      "point": "분사구문"
+    },
+    {
+      "q": "The conference, ___ in Tokyo last year, will be held in Seoul this time.",
+      "choices": [
+        "helded",
+        "holding",
+        "held",
+        "having held"
+      ],
+      "answer": 2,
+      "explain": "‘held in Tokyo last year’는 과거분사 형태가 필요하므로 ‘held’가 정답이다.",
+      "point": "분사구문"
+    },
+    {
+      "q": "___ the new policy, the company expects to reduce expenses significantly.",
+      "choices": [
+        "Implements",
+        "Implemented",
+        "Implements",
+        "Implementing"
+      ],
+      "answer": 3,
+      "explain": "‘Implementing the new policy’는 현재분사구문으로, 주절의 동작이 앞으로 일어날 것을 나타낸다.",
+      "point": "분사구문"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "Upcoming International Conference Schedule",
+      "body": "Subject: International Conference 2024 – Schedule and Details\nFrom: kim.jae@globalcorp.com\nTo: allstaff@globalcorp.com\nDate: October 5, 2024\n\nDear Team,\n\nWe are pleased to announce the schedule for the International Conference 2024, which will take place in Seoul from November 12 to November 15. Please review the agenda below and mark your calendars accordingly.\n\nConference Schedule\nNovember 12 – 09:00–10:30 Opening Remarks and Keynote Address\nNovember 12 – 11:00–12:30 Session A: Market Trends in Asia\nNovember 12 – 14:00–15:30 Session B: Digital Transformation Strategies\nNovember 13 – 09:00–10:30 Workshop 1: Data Analytics\nNovember 13 – 11:00–12:30 Workshop 2: Cloud Computing\nNovember 14 – 09:00–12:00 Panel Discussion: Future of Global Trade\nNovember 15 – 09:00–10:00 Closing Ceremony\n\nPlease confirm your attendance by replying to this email by October 20. For any questions, contact the event coordinator, Lee Min-ho, at minho.lee@globalcorp.com.\n\nWe look forward to a productive and engaging conference.\n\nBest regards,\nJae Kim\nEvent Manager"
+    },
+    "questions": [
+      {
+        "q": "What is the main purpose of this email?",
+        "choices": [
+          "To request a report",
+          "To announce a new product launch",
+          "To provide the schedule for an upcoming conference",
+          "To inform about a policy change"
+        ],
+        "answer": 2,
+        "explain": "이메일은 회의 일정을 안내하고 참석을 요청하는 것이 목적이므로 B가 정답이다.",
+        "evidence": "We are pleased to announce the schedule for the International Conference 2024, which will take place in Seoul from November 12 to November 15."
+      },
+      {
+        "q": "On which day will the Panel Discussion be held?",
+        "choices": [
+          "November 13",
+          "November 15",
+          "November 12",
+          "November 14"
+        ],
+        "answer": 3,
+        "explain": "일정표에 ‘November 14 – 09:00–12:00 Panel Discussion’이라고 명시되어 있다.",
+        "evidence": "November 14 – 09:00–12:00 Panel Discussion: Future of Global Trade"
+      },
+      {
+        "q": "By what date should employees confirm their attendance?",
+        "choices": [
+          "November 10",
+          "October 20",
+          "November 1",
+          "October 5"
+        ],
+        "answer": 1,
+        "explain": "이메일 본문에 참석 확인 마감일이 ‘October 20’이라고 적혀 있다.",
+        "evidence": "Please confirm your attendance by replying to this email by October 20."
+      },
+      {
+        "q": "Who should be contacted for questions about the event?",
+        "choices": [
+          "Lee Min-ho",
+          "Global Corp HR",
+          "Jae Kim",
+          "The IT department"
+        ],
+        "answer": 0,
+        "explain": "문의 담당자는 ‘Lee Min-ho’이며, 이메일 주소도 함께 제공된다.",
+        "evidence": "For any questions, contact the event coordinator, Lee Min-ho, at minho.lee@globalcorp.com."
+      }
+    ]
+  },
+  "part5_point": "분사구문",
+  "part7_type": "이중 지문(이메일+일정표)",
+  "vocab": {
+    "words": [
+      {
+        "w": "fluctuate",
+        "pos": "동",
+        "mean": "변동하다",
+        "ex": "Prices fluctuate seasonally."
+      },
+      {
+        "w": "incentive",
+        "pos": "명",
+        "mean": "인센티브 · 유인",
+        "ex": "Sales incentives boosted performance."
+      },
+      {
+        "w": "inventory",
+        "pos": "명",
+        "mean": "재고",
+        "ex": "The inventory is checked monthly."
+      }
+    ],
+    "confusable": {
+      "a": "principal",
+      "b": "principle",
+      "diff": "principal = 형용사 '주요한'·명사 '교장' / principle = 명사 '원칙'"
+    },
+    "tip": "Part 7은 문서 종류(이메일·공지·광고)를 먼저 파악하면 '목적' 문제가 바로 풀립니다."
+  }
+}
