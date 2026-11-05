@@ -902,5 +902,29 @@
   "https://www.cnbc.com/2026/11/04/uber-stock-q3-2026-earnings.html": {
     "slug": "cnbc-economy-967d509664",
     "at": "2026-11-04T14:34:47.102012Z"
+  },
+  "https://www.cnbc.com/2026/11/05/barkin-sees-interest-rate-hikes-ahead-but-at-a-gradual-pace.html": {
+    "slug": "cnbc-finance-bb158f4d17",
+    "at": "2026-11-05T14:40:42.266376Z"
+  },
+  "https://fred.stlouisfed.org/blog/2026/11/using-the-annual-integrated-survey-to-recalibrate-the-monthly-data": {
+    "slug": "fred-blog-35f7fc13db",
+    "at": "2026-11-05T14:40:42.682285Z"
+  },
+  "https://www.forbes.com/sites/rickellis/2026/11/05/netflixs-black-doves-remains-a-killer-spy-thriller/": {
+    "slug": "forbes-business-238fa8e7af",
+    "at": "2026-11-05T14:40:43.334852Z"
+  },
+  "https://www.forbes.com/sites/mikedojc/2026/11/05/a-tale-of-two-golf-gloves/": {
+    "slug": "forbes-business-2f05e63a64",
+    "at": "2026-11-05T14:40:43.675547Z"
+  },
+  "https://fortune.com/2026/11/05/php2shell-cyber-storm-watch-unpatched-vulnerabilities-ai-news-coverage/": {
+    "slug": "fortune-ae8efa062d",
+    "at": "2026-11-05T14:40:44.016247Z"
+  },
+  "https://fortune.com/2026/11/05/affordability-crisis-broke-american-dream/": {
+    "slug": "fortune-2f31295622",
+    "at": "2026-11-05T14:40:44.415158Z"
   }
 }
