@@ -1,0 +1,154 @@
+{
+  "day": 30,
+  "date": "2026-11-05",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "The manager will review the report ____ Friday.",
+      "choices": [
+        "at",
+        "on",
+        "in",
+        "by"
+      ],
+      "answer": 1,
+      "explain": "‘on Friday’가 날짜를 나타내는 전형적인 전치사 표현입니다.",
+      "point": "전치사"
+    },
+    {
+      "q": "Our team is responsible ____ handling customer inquiries.",
+      "choices": [
+        "of",
+        "to",
+        "for",
+        "about"
+      ],
+      "answer": 2,
+      "explain": "‘responsible for …’가 올바른 전치사搭配입니다.",
+      "point": "전치사"
+    },
+    {
+      "q": "Please send the revised contract ____ email by the end of the day.",
+      "choices": [
+        "on",
+        "by",
+        "via",
+        "through"
+      ],
+      "answer": 2,
+      "explain": "‘via email’은 ‘~을 통해’라는 의미로 전치사 via를 사용합니다.",
+      "point": "전치사"
+    },
+    {
+      "q": "The conference will be held ____ the new headquarters.",
+      "choices": [
+        "in",
+        "on",
+        "at",
+        "to"
+      ],
+      "answer": 2,
+      "explain": "‘at the headquarters’는 특정 장소를 가리킬 때 쓰는 전치사입니다.",
+      "point": "전치사"
+    },
+    {
+      "q": "She was promoted ____ recognition of her outstanding performance.",
+      "choices": [
+        "for",
+        "with",
+        "due to",
+        "because of"
+      ],
+      "answer": 0,
+      "explain": "‘for recognition’은 ‘인정 때문에’라는 의미로 전치사 for가 적절합니다.",
+      "point": "전치사"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "Request for Updated Project Timeline",
+      "body": "Subject: Request for Updated Project Timeline\n\nDear Mr. Lee,\n\nI hope this message finds you well. I am writing to ask for an updated timeline for the Alpha‑Beta integration project. As we discussed in last week’s meeting, the client has requested a revised delivery date due to recent changes in their internal schedule.\n\nCould you please provide the new milestones, including the expected completion date for the testing phase, by Thursday, March 12? Additionally, if there are any resource constraints that might affect the schedule, kindly let us know so we can adjust our plans accordingly.\n\nYour prompt response will help us keep the client informed and maintain our commitment to quality service. Thank you for your cooperation.\n\nBest regards,\nSofia Martinez\nProject Coordinator"
+    },
+    "questions": [
+      {
+        "q": "What does the writer request from Mr. Lee?",
+        "choices": [
+          "A meeting agenda",
+          "A budget report",
+          "An updated timeline",
+          "A personnel list"
+        ],
+        "answer": 2,
+        "explain": "본문에서 ‘I am writing to ask for an updated timeline…’이라고 명시되어 있어 최신 일정표를 요청하는 것이 맞습니다.",
+        "evidence": "I am writing to ask for an updated timeline for the Alpha‑Beta integration project."
+      },
+      {
+        "q": "By when does the writer need the new milestones?",
+        "choices": [
+          "Monday, March 9",
+          "Tuesday, March 10",
+          "Friday, March 13",
+          "Thursday, March 12"
+        ],
+        "answer": 3,
+        "explain": "‘by Thursday, March 12’라는 문구가 정확한 마감일을 제시하고 있습니다.",
+        "evidence": "by Thursday, March 12"
+      },
+      {
+        "q": "What specific phase's completion date is mentioned?",
+        "choices": [
+          "Design phase",
+          "Testing phase",
+          "Implementation phase",
+          "Review phase"
+        ],
+        "answer": 1,
+        "explain": "본문에 ‘expected completion date for the testing phase’라고 명시되어 있어 테스트 단계가 언급됩니다.",
+        "evidence": "expected completion date for the testing phase"
+      },
+      {
+        "q": "Why does the writer emphasize a prompt response?",
+        "choices": [
+          "To reduce costs",
+          "To keep the client informed",
+          "To schedule a celebration",
+          "To meet internal deadlines"
+        ],
+        "answer": 1,
+        "explain": "‘Your prompt response will help us keep the client informed’이라는 문장에서 고객에게 정보를 제공하기 위해 신속한 회신이 필요함을 알 수 있습니다.",
+        "evidence": "Your prompt response will help us keep the client informed"
+      }
+    ]
+  },
+  "part5_point": "전치사",
+  "part7_type": "이메일",
+  "vocab": {
+    "words": [
+      {
+        "w": "itinerary",
+        "pos": "명",
+        "mean": "여행 일정",
+        "ex": "Please review your itinerary."
+      },
+      {
+        "w": "liability",
+        "pos": "명",
+        "mean": "책임 · 부채",
+        "ex": "The company accepted no liability."
+      },
+      {
+        "w": "mandatory",
+        "pos": "형",
+        "mean": "의무적인",
+        "ex": "Attendance is mandatory."
+      }
+    ],
+    "confusable": {
+      "a": "farther",
+      "b": "further",
+      "diff": "farther = 물리적 거리(더 멀리) / further = 추가의·더 나아가(추상)"
+    },
+    "tip": "정답은 동의어 치환 — 지문 단어와 같은 뜻의 다른 표현이 정답입니다."
+  }
+}
