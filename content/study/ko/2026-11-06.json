@@ -1,0 +1,115 @@
+{
+  "day": 31,
+  "date": "2026-11-06",
+  "track": "psat",
+  "track_title": "PSAT 자료해석",
+  "type_card": {
+    "name": "증감 추이 판독",
+    "steps": [
+      "풀이 1단계",
+      "2단계",
+      "3단계"
+    ],
+    "pitfall": "증감 비율을 퍼센트가 아닌 소수로 착각할 수 있다",
+    "shortcut": "증감 = (새값 ÷ 옛값) - 1"
+  },
+  "problems": [
+    {
+      "title": "수출입 증가율",
+      "table": {
+        "headers": [
+          "구분",
+          "2024",
+          "2025"
+        ],
+        "rows": [
+          [
+            "수출액(억 달러)",
+            "120",
+            "150"
+          ],
+          [
+            "수입액(억 달러)",
+            "80",
+            "90"
+          ]
+        ]
+      },
+      "q": "2025년 대비 2024년 수출액 증가율은 얼마인가?",
+      "choices": [
+        "20",
+        "25%",
+        "30",
+        "35",
+        "40"
+      ],
+      "answer": 1,
+      "solution": "2025년 수출액을 2024년 수출액으로 나누고 1을 빼면 증가율이 된다. 150 ÷ 120 - 1 = 0.25, 즉 25%이다. 따라서 정답은 25%이다.",
+      "calc_expr": "150/120-1",
+      "calc_value": 0.25
+    },
+    {
+      "title": "인구 증가율",
+      "table": {
+        "headers": [
+          "구분",
+          "2022",
+          "2023"
+        ],
+        "rows": [
+          [
+            "인구(만 명)",
+            "5000",
+            "5250"
+          ],
+          [
+            "출생아수(명)",
+            "300",
+            "315"
+          ]
+        ]
+      },
+      "q": "2023년 대비 2022년 인구 증가율은 얼마인가?",
+      "choices": [
+        "5%",
+        "04",
+        "05",
+        "06",
+        "07"
+      ],
+      "answer": 0,
+      "solution": "2023년 인구를 2022년 인구로 나누고 1을 빼면 증가율이 된다. 5250 ÷ 5000 - 1 = 0.05, 즉 5%이다. 따라서 정답은 5%이다.",
+      "calc_expr": "5250/5000-1",
+      "calc_value": 0.05
+    }
+  ],
+  "psat_type": "증감 추이 판독",
+  "vocab": {
+    "words": [
+      {
+        "w": "notify",
+        "pos": "동",
+        "mean": "통지하다",
+        "ex": "Please notify us of any changes."
+      },
+      {
+        "w": "obsolete",
+        "pos": "형",
+        "mean": "구식의",
+        "ex": "The software is now obsolete."
+      },
+      {
+        "w": "outstanding",
+        "pos": "형",
+        "mean": "미결제의 · 뛰어난",
+        "ex": "Two invoices are still outstanding."
+      }
+    ],
+    "confusable": {
+      "a": "lend",
+      "b": "borrow",
+      "diff": "lend = 빌려주다(lend A to B) / borrow = 빌리다(borrow A from B)"
+    },
+    "tip": "부정어(not·never·without)에 밑줄 — Part 7에서 부정 표현이 정답의 힌트입니다."
+  }
+}
