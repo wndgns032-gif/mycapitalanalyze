@@ -1,0 +1,115 @@
+{
+  "day": 32,
+  "date": "2026-11-07",
+  "track": "psat",
+  "track_title": "PSAT 자료해석",
+  "type_card": {
+    "name": "최대·최소 항목 찾기",
+    "steps": [
+      "풀이 1단계",
+      "2단계",
+      "3단계"
+    ],
+    "pitfall": "함정 한 줄",
+    "shortcut": "암기용 요약 공식"
+  },
+  "problems": [
+    {
+      "title": "Revenue 증가율",
+      "table": {
+        "headers": [
+          "Category",
+          "2019",
+          "2020"
+        ],
+        "rows": [
+          [
+            "Revenue (million)",
+            "200",
+            "260"
+          ],
+          [
+            "Cost (million)",
+            "150",
+            "180"
+          ]
+        ]
+      },
+      "q": "2020년 Revenue가 2019년에 비해 몇 퍼센트 증가했는가?",
+      "choices": [
+        "20%",
+        "25%",
+        "30%",
+        "35%",
+        "40%"
+      ],
+      "answer": 2,
+      "solution": "2020년 Revenue를 2019년 Revenue로 나눈 뒤 1을 빼면 증가율을 구할 수 있다. 260 ÷ 200 = 1.3이며, 1.3‑1 = 0.3이다. 0.3은 30%에 해당한다.",
+      "calc_expr": "260/200-1",
+      "calc_value": "0.3"
+    },
+    {
+      "title": "Enrollment 증가율",
+      "table": {
+        "headers": [
+          "Year",
+          "2018",
+          "2019"
+        ],
+        "rows": [
+          [
+            "Enrollment",
+            "500",
+            "550"
+          ],
+          [
+            "Graduates",
+            "300",
+            "330"
+          ]
+        ]
+      },
+      "q": "2019년 Enrollment이 2018년에 비해 몇 퍼센트 증가했는가?",
+      "choices": [
+        "5%",
+        "8%",
+        "10%",
+        "12%",
+        "15%"
+      ],
+      "answer": 2,
+      "solution": "Enrollment의 2019년 값을 2018년 값으로 나눈 뒤 1을 빼면 증가율이 된다. 550 ÷ 500 = 1.1이며, 1.1‑1 = 0.1이다. 0.1은 10%에 해당한다.",
+      "calc_expr": "550/500-1",
+      "calc_value": "0.1"
+    }
+  ],
+  "psat_type": "최대·최소 항목 찾기",
+  "vocab": {
+    "words": [
+      {
+        "w": "oversee",
+        "pos": "동",
+        "mean": "감독하다",
+        "ex": "She oversees the project."
+      },
+      {
+        "w": "prospective",
+        "pos": "형",
+        "mean": "잠재적인 · 예상되는",
+        "ex": "We met a prospective client."
+      },
+      {
+        "w": "reimburse",
+        "pos": "동",
+        "mean": "상환하다",
+        "ex": "Travel costs will be reimbursed."
+      }
+    ],
+    "confusable": {
+      "a": "beside",
+      "b": "besides",
+      "diff": "beside = ~옆에(위치) / besides = ~게다가(추가)"
+    },
+    "tip": "분사구문은 주절 주어를 확인 — 행위자면 -ing, 대상이면 -ed입니다."
+  }
+}
