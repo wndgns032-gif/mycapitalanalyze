@@ -1,0 +1,154 @@
+{
+  "day": 36,
+  "date": "2026-11-11",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "The manager reminded ___ that the deadline was approaching.",
+      "choices": [
+        "them",
+        "him",
+        "her",
+        "it"
+      ],
+      "answer": 0,
+      "explain": "‘remind’는 목적어가 필요하므로 대명사는 목적격 ‘them’이 맞습니다. ‘the manager’가 여러 직원을 상기시키는 상황을 나타냅니다.",
+      "point": "대명사 일치"
+    },
+    {
+      "q": "Every candidate must bring ___ identification card to the interview.",
+      "choices": [
+        "his",
+        "her",
+        "their",
+        "its"
+      ],
+      "answer": 2,
+      "explain": "‘Every candidate’는 단수이지만 성별을 알 수 없으므로 ‘their’를 사용해 중성적인 의미를 전달합니다. 이는 현대 영어에서 허용되는 용법입니다.",
+      "point": "대명사 일치"
+    },
+    {
+      "q": "The committee will announce ___ decision after the meeting.",
+      "choices": [
+        "its",
+        "their",
+        "his",
+        "her"
+      ],
+      "answer": 0,
+      "explain": "‘committee’는 집합 명사로 단수 취급되므로 소유격은 ‘its’가 맞습니다. ‘their’는 복수 명사에 쓰입니다.",
+      "point": "대명사 일치"
+    },
+    {
+      "q": "When a customer calls, ___ should be greeted politely.",
+      "choices": [
+        "he",
+        "she",
+        "they",
+        "it"
+      ],
+      "answer": 2,
+      "explain": "‘customer’의 성별을 알 수 없으므로 중성 복수형 ‘they’를 사용해 포괄적으로 표현합니다.",
+      "point": "대명사 일치"
+    },
+    {
+      "q": "The software updates will affect ___ users worldwide.",
+      "choices": [
+        "his",
+        "her",
+        "its",
+        "their"
+      ],
+      "answer": 3,
+      "explain": "‘users’는 복수 명사이므로 소유격도 복수형 ‘their’를 써야 합니다.",
+      "point": "대명사 일치"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "Upcoming System Maintenance Notice",
+      "body": "Dear Employees,\n\nWe will be performing scheduled system maintenance to improve performance and security. The maintenance will start at 02:00 AM on June 15 and is expected to be completed by 06:00 AM the same day. During this time, the internal network, email services, and the company intranet will be unavailable. The system is expected to be down for approximately four hours. All regular operations will resume automatically once the maintenance is finished. For any urgent issues, please contact the IT Support team at it-support@example.com. We appreciate your understanding and cooperation.\n\nSincerely,\nOperations Management"
+    },
+    "questions": [
+      {
+        "q": "What is the primary purpose of this notice?",
+        "choices": [
+          "To request employee feedback",
+          "To schedule a meeting",
+          "To inform about system maintenance",
+          "To announce a new product launch"
+        ],
+        "answer": 2,
+        "explain": "공지의 핵심 내용은 시스템 유지보수에 관한 안내이며, 이는 선택지 B와 일치합니다.",
+        "evidence": "We will be performing scheduled system maintenance to improve performance and security."
+      },
+      {
+        "q": "When will the maintenance begin?",
+        "choices": [
+          "06:00 AM on June 16",
+          "02:00 AM on June 15",
+          "12:00 PM on June 15",
+          "10:00 PM on June 14"
+        ],
+        "answer": 1,
+        "explain": "본문에 유지보수 시작 시간이 명시되어 있으며, 정확히 02:00 AM on June 15입니다.",
+        "evidence": "The maintenance will start at 02:00 AM on June 15"
+      },
+      {
+        "q": "How long is the expected downtime?",
+        "choices": [
+          "Approximately 2 hours",
+          "Approximately 4 hours",
+          "Approximately 8 hours",
+          "Approximately 6 hours"
+        ],
+        "answer": 1,
+        "explain": "본문에서 시스템이 약 4시간 동안 중단될 것이라고 안내하고 있습니다.",
+        "evidence": "The system is expected to be down for approximately four hours."
+      },
+      {
+        "q": "Which department should be contacted for urgent issues during the maintenance?",
+        "choices": [
+          "IT Support",
+          "Marketing",
+          "Finance",
+          "Human Resources"
+        ],
+        "answer": 0,
+        "explain": "긴급 상황 발생 시 연락해야 할 부서는 IT Support 팀이라고 명시되어 있습니다.",
+        "evidence": "please contact the IT Support team"
+      }
+    ]
+  },
+  "part5_point": "대명사 일치",
+  "part7_type": "사내 공지",
+  "vocab": {
+    "words": [
+      {
+        "w": "viable",
+        "pos": "형",
+        "mean": "실행 가능한",
+        "ex": "A viable alternative."
+      },
+      {
+        "w": "waive",
+        "pos": "동",
+        "mean": "면제하다 · 포기하다",
+        "ex": "The fee was waived."
+      },
+      {
+        "w": "warranty",
+        "pos": "명",
+        "mean": "보증",
+        "ex": "The warranty lasts two years."
+      }
+    ],
+    "confusable": {
+      "a": "imminent",
+      "b": "eminent",
+      "diff": "imminent = 임박한(곧 일어날) / eminent = 저명한(유명한)"
+    },
+    "tip": "하루 3개씩만 — 한 달이면 90개. 양보다 매일이 훨씬 중요합니다."
+  }
+}
