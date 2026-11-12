@@ -1,0 +1,154 @@
+{
+  "day": 37,
+  "date": "2026-11-12",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "The comprehensive proposal for the regional branch offices ____ final approval from the board of directors before implementation.",
+      "choices": [
+        "requiring",
+        "are requiring",
+        "requires",
+        "require"
+      ],
+      "answer": 2,
+      "explain": "문장의 주어는 전치사구(for the regional branch offices)의 수식을 받는 단수 명사 'proposal'입니다. 따라서 단수 동사인 (B) requires가 정답입니다. 복수 형태의 동사(require, are requiring)나 동명사(requiring)는 주어와 수일치가 맞지 않습니다.",
+      "point": "주어-동사 수일치"
+    },
+    {
+      "q": "Each of the certified technicians on our maintenance team ____ responsible for inspecting at least ten units per day.",
+      "choices": [
+        "were",
+        "are",
+        "have been",
+        "is"
+      ],
+      "answer": 3,
+      "explain": "'Each of + 복수명사' 구문에서 주어의 핵심은 단수 대명사 'Each'입니다. 따라서 단수 취급하여 단수 동사인 (B) is가 올바른 답입니다. 복수 동사인 are, were, have been은 수일치에 어긋납니다.",
+      "point": "주어-동사 수일치"
+    },
+    {
+      "q": "A detailed list of attendees registered for the upcoming leadership seminar ____ been uploaded to the company intranet.",
+      "choices": [
+        "have",
+        "has",
+        "were",
+        "are"
+      ],
+      "answer": 1,
+      "explain": "주어 부분에서 수식어구(of attendees registered for the upcoming leadership seminar)를 제외한 핵심 주어는 단수 명사 'A detailed list'입니다. 따라서 현재완료 수동태(has been uploaded)를 구성하는 단수 조동사 (B) has가 정답입니다.",
+      "point": "주어-동사 수일치"
+    },
+    {
+      "q": "Neither the department head nor the team members ____ satisfied with the initial test results of the new inventory software.",
+      "choices": [
+        "were",
+        "has been",
+        "is",
+        "was"
+      ],
+      "answer": 0,
+      "explain": "'neither A nor B' 상관접속사 구문에서는 동사에 더 가까운 B에 수일치를 시킵니다. B 자리의 'the team members'가 복수 명사이므로 복수 동사인 (B) were가 적절합니다.",
+      "point": "주어-동사 수일치"
+    },
+    {
+      "q": "The newly introduced policy regarding remote work arrangements ____ to all full-time employees starting next month.",
+      "choices": [
+        "applying",
+        "applies",
+        "apply",
+        "are applied"
+      ],
+      "answer": 1,
+      "explain": "전치사구(regarding remote work arrangements)의 수식을 받는 주어의 핵은 단수 명사 'The newly introduced policy'입니다. 따라서 3인칭 단수 현재 시제 동사인 (B) applies가 정답입니다. apply는 자동사로 쓰여 '~에 적용되다'를 나타낼 때 'apply to' 형태를 취합니다.",
+      "point": "주어-동사 수일치"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "Pristine Workspace Solutions",
+      "body": "Is your office looking worn after a busy quarter? Pristine Workspace Solutions offers premier commercial cleaning services tailored to businesses of all sizes throughout the metropolitan area. We specialize in comprehensive floor care, eco-friendly sanitization, and deep cleaning for conference rooms and executive suites.\n\nOur fully licensed and bonded cleaning professionals operate flexible schedules, allowing us to perform all maintenance after standard business hours so your daily operations remain completely undisturbed. For a limited time, new corporate clients who sign an annual contract before October 31 will receive their first month of service at a 20 percent discount. In addition, we provide a complimentary carpet steam cleaning with every quarterly package.\n\nTo schedule a free on-site consultation and customized price estimate, call our client liaison team today at 555-0144 or visit our official website at www.pristineworkspace.com. Elevate your workplace hygiene with the experts you can trust!"
+    },
+    "questions": [
+      {
+        "q": "What kind of service is being advertised?",
+        "choices": [
+          "Office furniture sales",
+          "Commercial cleaning services",
+          "Interior architectural design",
+          "Building security management"
+        ],
+        "answer": 1,
+        "explain": "광고문 첫 단락에서 기업을 대상으로 한 상업용 청소 서비스를 제공한다고 명시되어 있으므로 (B)가 정답입니다.",
+        "evidence": "Pristine Workspace Solutions offers premier commercial cleaning services tailored to businesses of all sizes throughout the metropolitan area."
+      },
+      {
+        "q": "When does the company conduct its maintenance work?",
+        "choices": [
+          "Early in the morning before 7:00 A.M.",
+          "Exclusively on weekend afternoons",
+          "After regular business hours",
+          "During scheduled lunch breaks"
+        ],
+        "answer": 2,
+        "explain": "업무에 방해가 되지 않도록 통상적인 영업시간 이후에 모든 유지보수 작업을 수행한다고 설명하고 있으므로 (C)가 정답입니다.",
+        "evidence": "Our fully licensed and bonded cleaning professionals operate flexible schedules, allowing us to perform all maintenance after standard business hours so your daily operations remain completely undisturbed."
+      },
+      {
+        "q": "How can clients qualify for a 20 percent discount?",
+        "choices": [
+          "By entering into a one-year agreement by October 31",
+          "By booking service for at least five locations",
+          "By paying for services in cash upfront",
+          "By recommending another corporate business"
+        ],
+        "answer": 0,
+        "explain": "10월 31일 이전에 연간 계약(annual contract)을 체결하는 신규 기업 고객에게 첫 달 서비스 요금을 20% 할인해 준다고 언급되어 있으므로 (A)가 정답입니다.",
+        "evidence": "For a limited time, new corporate clients who sign an annual contract before October 31 will receive their first month of service at a 20 percent discount."
+      },
+      {
+        "q": "What is provided free of charge with every quarterly package?",
+        "choices": [
+          "Exterior window washing",
+          "Air conditioning filter replacement",
+          "Carpet steam cleaning",
+          "Disinfectant supply refills"
+        ],
+        "answer": 2,
+        "explain": "분기별 패키지마다 무료(complimentary)로 카페트 스팀 청소 서비스가 제공된다고 하였으므로 (C)가 정답입니다.",
+        "evidence": "In addition, we provide a complimentary carpet steam cleaning with every quarterly package."
+      }
+    ]
+  },
+  "part5_point": "주어-동사 수일치",
+  "part7_type": "광고·전단",
+  "vocab": {
+    "words": [
+      {
+        "w": "appraise",
+        "pos": "동",
+        "mean": "평가하다 · 감정하다",
+        "ex": "The property was appraised."
+      },
+      {
+        "w": "benchmark",
+        "pos": "명",
+        "mean": "기준점",
+        "ex": "Set a benchmark for quality."
+      },
+      {
+        "w": "turnover",
+        "pos": "명",
+        "mean": "매출액 · 이직률",
+        "ex": "Annual turnover rose 12 percent."
+      }
+    ],
+    "confusable": {
+      "a": "loose",
+      "b": "lose",
+      "diff": "loose = 헐렁한(형용사) / lose = 잃다(동사)"
+    },
+    "tip": "단어는 문장째로 외우기 — 뒤 명사까지 묶어 외우면 Part 7에서 그대로 보입니다."
+  }
+}
