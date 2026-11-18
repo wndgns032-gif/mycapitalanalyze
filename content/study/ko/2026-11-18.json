@@ -1,0 +1,154 @@
+{
+  "day": 43,
+  "date": "2026-11-18",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "The project was delayed ____ the supplier failed to deliver the components on time.",
+      "choices": [
+        "because",
+        "due to",
+        "although",
+        "despite"
+      ],
+      "answer": 0,
+      "explain": "‘because’는 종속접속사로, 뒤에 절을 이끕니다. ‘due to’는 전치사구이며 명사 뒤에 쓰여야 합니다.",
+      "point": "접속사와 전치사 구분"
+    },
+    {
+      "q": "She arrived at the conference ____ the early morning rain.",
+      "choices": [
+        "despite",
+        "because of",
+        "although",
+        "due to"
+      ],
+      "answer": 1,
+      "explain": "‘because of’는 전치사구로 명사를 수식합니다. ‘despite’와 ‘although’는 접속사·전치사이지만 여기서는 전치사구가 필요합니다.",
+      "point": "접속사와 전치사 구분"
+    },
+    {
+      "q": "____ the high demand, the company decided to increase production.",
+      "choices": [
+        "Due to",
+        "Although",
+        "Because",
+        "Despite"
+      ],
+      "answer": 3,
+      "explain": "‘Despite’는 전치사이며 명사구 ‘the high demand’와 함께 사용됩니다. ‘Due to’도 전치사지만 ‘due to’ 뒤에는 명사가 와야 합니다.",
+      "point": "접속사와 전치사 구분"
+    },
+    {
+      "q": "The manager will attend the meeting ____ his schedule permits.",
+      "choices": [
+        "if",
+        "although",
+        "because",
+        "despite"
+      ],
+      "answer": 0,
+      "explain": "‘if’는 조건절을 이끄는 접속사입니다. ‘although’는 양보절, ‘because’는 이유절, ‘despite’는 전치사이므로 여기선 ‘if’가 맞습니다.",
+      "point": "접속사와 전치사 구분"
+    },
+    {
+      "q": "They postponed the event ____ the unexpected snowstorm.",
+      "choices": [
+        "despite",
+        "because of",
+        "although",
+        "due to"
+      ],
+      "answer": 3,
+      "explain": "‘due to’는 전치사구로 ‘the unexpected snowstorm’와 같이 명사를 직접 받습니다. ‘because of’도 전치사구이지만 여기서는 ‘due to’가 더 자연스럽습니다.",
+      "point": "접속사와 전치사 구분"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "TechCorp Announces Innovative Smartphone",
+      "body": "TechCorp unveiled its latest flagship smartphone, the XPro Max, during a live-streamed event on November 20. The device’s standout feature is its 108-megapixel camera, which incorporates AI‑enhanced image stabilization and low‑light optimization. In addition to the camera, the XPro Max offers a 6.7‑inch OLED display with a 120‑Hz refresh rate and a battery that supports 65‑W fast charging. The launch is scheduled for December 5, and the phone will be available in North America, Europe, and selected Asian markets. TechCorp aims the phone at professional photographers and content creators who demand high‑resolution imaging and rapid workflow. To encourage early adoption, customers who pre‑order will receive a complimentary wireless charger and a three‑year extended warranty. The company expects strong sales, projecting 2 million units sold within the first quarter after release."
+    },
+    "questions": [
+      {
+        "q": "What is the standout feature of the XPro Max?",
+        "choices": [
+          "Three‑year warranty",
+          "108‑megapixel camera",
+          "65‑W fast charging",
+          "6.7‑inch OLED display"
+        ],
+        "answer": 1,
+        "explain": "문장에서 ‘The device’s standout feature is its 108-megapixel camera’라고 명시되어 있습니다. 따라서 정답은 108‑megapixel camera입니다.",
+        "evidence": "The device’s standout feature is its 108-megapixel camera"
+      },
+      {
+        "q": "When is the smartphone scheduled to launch?",
+        "choices": [
+          "November 20",
+          "January 10",
+          "December 5",
+          "February 15"
+        ],
+        "answer": 2,
+        "explain": "본문에 ‘The launch is scheduled for December 5’라는 문장이 있어 출시일은 12월 5일임을 알 수 있습니다.",
+        "evidence": "The launch is scheduled for December 5"
+      },
+      {
+        "q": "Which group is the primary target for the XPro Max?",
+        "choices": [
+          "Casual gamers",
+          "Business executives",
+          "Students",
+          "Professional photographers and content creators"
+        ],
+        "answer": 3,
+        "explain": "‘TechCorp aims the phone at professional photographers and content creators’라는 문장에서 목표 고객층을 확인할 수 있습니다.",
+        "evidence": "TechCorp aims the phone at professional photographers and content creators"
+      },
+      {
+        "q": "What promotional item is offered to customers who pre‑order?",
+        "choices": [
+          "Free case",
+          "Extra storage",
+          "Discounted headphones",
+          "Complimentary wireless charger"
+        ],
+        "answer": 3,
+        "explain": "‘customers who pre‑order will receive a complimentary wireless charger’라는 문장이 직접적인 증거가 됩니다.",
+        "evidence": "customers who pre‑order will receive a complimentary wireless charger"
+      }
+    ]
+  },
+  "part5_point": "접속사와 전치사 구분",
+  "part7_type": "기사문",
+  "vocab": {
+    "words": [
+      {
+        "w": "inventory",
+        "pos": "명",
+        "mean": "재고",
+        "ex": "The inventory is checked monthly."
+      },
+      {
+        "w": "itinerary",
+        "pos": "명",
+        "mean": "여행 일정",
+        "ex": "Please review your itinerary."
+      },
+      {
+        "w": "liability",
+        "pos": "명",
+        "mean": "책임 · 부채",
+        "ex": "The company accepted no liability."
+      }
+    ],
+    "confusable": {
+      "a": "rise",
+      "b": "raise",
+      "diff": "rise = 자동사, 스스로 오르다(가격이 오른다) / raise = 타동사, 올리다(가격을 올리다)"
+    },
+    "tip": "부정어(not·never·without)에 밑줄 — Part 7에서 부정 표현이 정답의 힌트입니다."
+  }
+}
