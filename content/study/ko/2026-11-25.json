@@ -1,0 +1,154 @@
+{
+  "day": 50,
+  "date": "2026-11-25",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "The manager ____ the report by Friday.",
+      "choices": [
+        "will have completed",
+        "completes",
+        "had completed",
+        "has completed"
+      ],
+      "answer": 0,
+      "explain": "‘by Friday’는 미래 시점을 나타내므로 미래완료형인 ‘will have completed’가 시제에 맞는다.",
+      "point": "시제 일치"
+    },
+    {
+      "q": "When the sales team ____ the new pricing structure, the customers will notice lower rates.",
+      "choices": [
+        "had implemented",
+        "will implement",
+        "implemented",
+        "implements"
+      ],
+      "answer": 3,
+      "explain": "‘when’ 절은 현재형을 사용하고, 주절은 미래형이므로 ‘implements’가 올바른 시제이다.",
+      "point": "시제 일치"
+    },
+    {
+      "q": "By the time the conference ____ , we ____ all the promotional materials.",
+      "choices": [
+        "starts / will have prepared",
+        "will have started / will have prepared",
+        "started / had prepared",
+        "will start / have prepared"
+      ],
+      "answer": 0,
+      "explain": "‘by the time’ 뒤에는 현재형이 오고, 그 앞절에 대비해 ‘will have prepared’와 같이 미래완료형을 써야 시제 일치가 맞는다.",
+      "point": "시제 일치"
+    },
+    {
+      "q": "If the supplier ____ the shipment earlier, we ____ avoid the delay.",
+      "choices": [
+        "ships / can avoid",
+        "shipped / could avoid",
+        "had shipped / could have avoided",
+        "will ship / will avoid"
+      ],
+      "answer": 2,
+      "explain": "가정법 과거완료 ‘had shipped’와 결과에 대한 과거가능성 ‘could have avoided’가 시제 일치를 이루며, 다른 선택지는 시제 형태가 맞지 않는다.",
+      "point": "시제 일치"
+    },
+    {
+      "q": "The client says that the contract ____ next month, so we ____ the final draft now.",
+      "choices": [
+        "was signed / will prepare",
+        "has signed / prepare",
+        "is signed / prepared",
+        "will be signed / should prepare"
+      ],
+      "answer": 3,
+      "explain": "‘says that’ 뒤에는 미래 사실을 나타내므로 ‘will be signed’가 맞고, 현재 시점에서 해야 할 일은 ‘should prepare’이다.",
+      "point": "시제 일치"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "Revised Schedule for Project Kick‑off Meeting",
+      "body": "Subject: Revised Schedule for Project Kick‑off Meeting\n\nDear Team,\n\nI am writing to inform you that the project kick‑off meeting originally planned for Tuesday, March 12 at 10:00 a.m. has been moved to Wednesday, March 13 at 2:00 p.m. due to a conflict with the client’s site visit. The agenda will remain the same, covering the project timeline, deliverables, and roles. Please confirm your availability by the end of the day tomorrow so that we can finalize the conference‑room reservation. If you have any concerns about the new time, let me know as soon as possible.\n\nThank you for your flexibility.\n\nBest regards,\nEmily Chen\nProject Coordinator"
+    },
+    "questions": [
+      {
+        "q": "What is the main purpose of this email?",
+        "choices": [
+          "To cancel the meeting",
+          "To request a report",
+          "To reschedule the meeting",
+          "To introduce a new project"
+        ],
+        "answer": 2,
+        "explain": "이메일은 회의 일정을 ‘has been moved’라고 밝히며 일정을 변경한다는 것이 주된 목적이다.",
+        "evidence": "the project kick‑off meeting originally planned for Tuesday, March 12 at 10:00 a.m. has been moved to Wednesday, March 13 at 2:00 p.m."
+      },
+      {
+        "q": "By when should the recipients confirm their availability?",
+        "choices": [
+          "By next Monday",
+          "By the end of the week",
+          "By the end of the day tomorrow",
+          "No confirmation is required"
+        ],
+        "answer": 2,
+        "explain": "‘Please confirm your availability by the end of the day tomorrow’ 라는 문장에서 확인 기한을 정확히 알 수 있다.",
+        "evidence": "Please confirm your availability by the end of the day tomorrow"
+      },
+      {
+        "q": "Which topics will be covered in the meeting?",
+        "choices": [
+          "Marketing strategy and sales forecast",
+          "Client feedback and product testing",
+          "Budget, staffing, and timeline",
+          "Project timeline, deliverables, and roles"
+        ],
+        "answer": 3,
+        "explain": "‘The agenda will remain the same, covering the project timeline, deliverables, and roles’ 라는 문장에서 회의 안건을 확인할 수 있다.",
+        "evidence": "covering the project timeline, deliverables, and roles"
+      },
+      {
+        "q": "If a recipient cannot attend the new time, what should they do?",
+        "choices": [
+          "Cancel all other meetings",
+          "Attend anyway",
+          "Ignore the change",
+          "Let the sender know as soon as possible"
+        ],
+        "answer": 3,
+        "explain": "‘If you have any concerns about the new time, let me know as soon as possible’ 라는 문장이 바로 그 지시이다.",
+        "evidence": "let me know as soon as possible"
+      }
+    ]
+  },
+  "part5_point": "시제 일치",
+  "part7_type": "이메일",
+  "vocab": {
+    "words": [
+      {
+        "w": "warranty",
+        "pos": "명",
+        "mean": "보증",
+        "ex": "The warranty lasts two years."
+      },
+      {
+        "w": "appraise",
+        "pos": "동",
+        "mean": "평가하다 · 감정하다",
+        "ex": "The property was appraised."
+      },
+      {
+        "w": "benchmark",
+        "pos": "명",
+        "mean": "기준점",
+        "ex": "Set a benchmark for quality."
+      }
+    ],
+    "confusable": {
+      "a": "stationary",
+      "b": "stationery",
+      "diff": "stationary = 정지한(움직이지 않는) / stationery = 문구류"
+    },
+    "tip": "Part 5는 품사 문제가 절반 — 빈칸 앞뒤 품사만 확인하면 3초컷입니다."
+  }
+}
