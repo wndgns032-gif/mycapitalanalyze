@@ -1,0 +1,154 @@
+{
+  "day": 51,
+  "date": "2026-11-26",
+  "track": "toeic",
+  "track_title": "TOEIC",
+  "part5": [
+    {
+      "q": "If the manager ____ the report by Friday, we could finalize the budget.",
+      "choices": [
+        "had submitted",
+        "would have submitted",
+        "will submit",
+        "submits"
+      ],
+      "answer": 0,
+      "explain": "이 문장은 과거에 일어나지 않은 상황을 가정하고 있으므로 가정법 과거완료 형태인 'had submitted'가 정답이다.",
+      "point": "가정법"
+    },
+    {
+      "q": "Were the client to agree to the new terms, the project ____ start next month.",
+      "choices": [
+        "could",
+        "will",
+        "would",
+        "should"
+      ],
+      "answer": 0,
+      "explain": "조건절에 'were'가 생략된 가정법 현재형이며, 결과는 가능성을 나타내는 'could'가 맞다.",
+      "point": "가정법"
+    },
+    {
+      "q": "If we ____ more time, we would have completed the training program.",
+      "choices": [
+        "were having",
+        "have had",
+        "had",
+        "have"
+      ],
+      "answer": 2,
+      "explain": "과거에 더 많은 시간이 있었다면이라는 가정이므로 과거형 'had'를 사용한다.",
+      "point": "가정법"
+    },
+    {
+      "q": "Had the system ____ earlier, we could have avoided the outage.",
+      "choices": [
+        "to upgrade",
+        "upgraded",
+        "been upgraded",
+        "upgrading"
+      ],
+      "answer": 2,
+      "explain": "‘Had … been upgraded’는 가정법 과거완료 구조이며, ‘been upgraded’가 올바른 형태이다.",
+      "point": "가정법"
+    },
+    {
+      "q": "If the supplier ____ a discount, we might be able to lower the product price.",
+      "choices": [
+        "will offer",
+        "offered",
+        "had offered",
+        "offers"
+      ],
+      "answer": 1,
+      "explain": "현재 시점의 가정을 나타내므로 과거형 'offered'가 적절하다.",
+      "point": "가정법"
+    }
+  ],
+  "part7": {
+    "passage": {
+      "title": "Upcoming System Maintenance and Updated Password Policy",
+      "body": "To: All Employees\nFrom: IT Department\nDate: November 27, 2026\nSubject: Scheduled System Maintenance and Updated Password Policy\n\nDear Team,\n\nPlease be informed that a scheduled maintenance of the corporate network will take place on Saturday, December 3, from 02:00 AM to 06:00 AM (local time). During this window, all internal servers, email services, and shared drives will be temporarily unavailable. We recommend that you save your work and log out of the system before the maintenance begins. Additionally, starting December 10, the company will enforce a new password policy requiring a minimum of twelve characters, including at least one uppercase letter, one number, and one special symbol. Passwords must be changed every 90 days. Failure to comply with the new policy may result in temporary account restrictions. For assistance, contact the IT Help Desk at extension 1234. Thank you for your cooperation."
+    },
+    "questions": [
+      {
+        "q": "When will the corporate network be unavailable due to maintenance?",
+        "choices": [
+          "Saturday, December 3, 02:00-06:00 AM",
+          "Sunday, December 4, 02:00-06:00 AM",
+          "Saturday, December 10, 02:00-06:00 AM",
+          "Friday, December 2, 02:00-06:00 AM"
+        ],
+        "answer": 0,
+        "explain": "공지문에 네트워크 점검이 12월 3일 토요일 오전 2시부터 6시까지 진행된다고 명시되어 있다.",
+        "evidence": "scheduled maintenance of the corporate network will take place on Saturday, December 3, from 02:00 AM to 06:00 AM"
+      },
+      {
+        "q": "What is the minimum number of characters required for the new password?",
+        "choices": [
+          "8 characters",
+          "10 characters",
+          "12 characters",
+          "14 characters"
+        ],
+        "answer": 2,
+        "explain": "새 비밀번호 정책에서 최소 12자 이상이어야 한다고 규정하고 있다.",
+        "evidence": "minimum of twelve characters"
+      },
+      {
+        "q": "How often must employees change their passwords under the new policy?",
+        "choices": [
+          "Every 30 days",
+          "Every 60 days",
+          "Every 90 days",
+          "Every 120 days"
+        ],
+        "answer": 2,
+        "explain": "공지문에 비밀번호는 90일마다 변경해야 한다고 명시되어 있다.",
+        "evidence": "Passwords must be changed every 90 days."
+      },
+      {
+        "q": "What consequence is mentioned for not complying with the new password policy?",
+        "choices": [
+          "Permanent account deletion",
+          "Temporary account restrictions",
+          "Salary reduction",
+          "No consequence"
+        ],
+        "answer": 1,
+        "explain": "정책을 따르지 않을 경우 일시적인 계정 제한이 발생할 수 있다고 안내하고 있다.",
+        "evidence": "may result in temporary account restrictions"
+      }
+    ]
+  },
+  "part5_point": "가정법",
+  "part7_type": "사내 공지",
+  "vocab": {
+    "words": [
+      {
+        "w": "turnover",
+        "pos": "명",
+        "mean": "매출액 · 이직률",
+        "ex": "Annual turnover rose 12 percent."
+      },
+      {
+        "w": "concise",
+        "pos": "형",
+        "mean": "간결한",
+        "ex": "Keep the report concise."
+      },
+      {
+        "w": "accommodate",
+        "pos": "동",
+        "mean": "수용하다 · 숙박을 제공하다",
+        "ex": "The hotel can accommodate 500 guests."
+      }
+    ],
+    "confusable": {
+      "a": "adapt",
+      "b": "adopt",
+      "diff": "adapt = 적응하다·개조하다 / adopt = 채택하다·입양하다"
+    },
+    "tip": "접속사 vs 전치사: 빈칸 뒤에 '주어+동사'가 오면 접속사(Since), 명사만 오면 전치사(Because of)입니다."
+  }
+}
